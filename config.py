@@ -1,5 +1,6 @@
 import os 
 import torch
+from chromadb.config import Settings
 from pathlib import Path
 
 BASE_DIR = Path(__file__).parent  # Get the parent directory of this script
