@@ -20,6 +20,14 @@ To get started with NeoGPT, follow these simple steps:
    cd NeoGPT
    pip install -r requirements.txt
     ```
+
+## To do
+- ✓ RAG (Retrieval Augmented Generation) 
+- ☐ User Interface
+- ☐ Memory Support to RAG
+- ☐ Multi Lingual Support
+- ☐ FAISS Support
+
 ## Features
 
 - **Task Automation:** NeoGPT can automate a wide range of tasks, from text generation to data analysis, making it a versatile tool for various domains.
