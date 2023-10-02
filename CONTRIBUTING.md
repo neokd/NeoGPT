@@ -4,7 +4,7 @@ Thank you for considering contributing to NeoGPT! We welcome contributions from 
 
 ## Reporting Issues
 
-If you encounter a bug, have a feature request, or want to suggest an improvement, please open an issue on our [GitHub issue tracker](https://github.com/yourusername/NeoGPT/issues). When reporting issues, be sure to provide as much detail as possible, including steps to reproduce the problem, your operating system, and the NeoGPT version you are using.
+If you encounter a bug, have a feature request, or want to suggest an improvement, please open an issue on our [GitHub issue tracker](https://github.com/neokd/NeoGPT/issues). When reporting issues, be sure to provide as much detail as possible, including steps to reproduce the problem, your operating system, and the NeoGPT version you are using.
 
 ## Pull Requests
 

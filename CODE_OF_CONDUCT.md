@@ -18,7 +18,7 @@ We, the maintainers and contributors of NeoGPT, are committed to providing a fri
 
 ## Reporting Violations
 
-If you witness or experience any behavior that violates this Code of Conduct, please report it to the project maintainers by contacting us at [GitHub Discussions](https://github.com/yourusername/NeoGPT/discussions). All reports will be kept confidential, and we will take appropriate action to address the issue.
+If you witness or experience any behavior that violates this Code of Conduct, please report it to the project maintainers by contacting us at [GitHub Discussions](https://github.com/neokd/NeoGPT/discussions). All reports will be kept confidential, and we will take appropriate action to address the issue.
 
 ## Enforcement
 
