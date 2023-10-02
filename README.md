@@ -1,10 +1,6 @@
 # 🚀 NeoGPT
 
-NeoGPT is a powerful, easy-to-use LLM (Large Language Model) based application designed to perform specific tasks on local systems. It's a versatile tool capable of handling various tasks, from text generation to data analysis. NeoGPT features a user-friendly command-line interface (CLI) to cater to users with diverse technical backgrounds. It's also extensible, allowing users to enhance its capabilities with custom plugins or scripts.
-
-## 🔬 Experimental
-
-Explore our multi-agent bot that generates responses based on a single user prompt. This experimental project showcases the capabilities of NeoGPT.
+NeoGPT is a powerful, easy-to-use LLM (Large Language Model) based application designed to perform specific tasks on local systems. Currently RAG (Retrieval Augmented Generation) is supported.
 
 ## 🎉 Join Us for Hacktoberfest 2023
 ![Hacktoberfest Banner](./readme.png)
@@ -38,6 +34,11 @@ To embark on your NeoGPT journey, follow these simple steps:
 - **User-Friendly Interface:** NeoGPT is designed with a user-friendly command-line interface (CLI) that makes it accessible to users with varying levels of technical expertise.
 
 - **Extensible:** You can easily extend NeoGPT's functionality by adding custom plugins or scripts.
+
+## 🔬 Experimental
+
+Explore our multi-agent bot that generates responses based on a single user prompt. This experimental project showcases the capabilities of NeoGPT.
+
 
 # 👥 Contributing
 We welcome contributions to NeoGPT! If you have ideas for new features or improvements, please open an issue or submit a pull request. For more information, see our [contributing guide](CONTRIBUTING.md).
