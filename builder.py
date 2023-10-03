@@ -1,15 +1,11 @@
-import logging
 import os
-import warnings
-from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
-from typing import Optional, Iterator, List, Dict
-from langchain.docstore.document import Document
-from langchain.document_loaders import PDFMinerLoader, TextLoader
+import logging
+from concurrent.futures import ProcessPoolExecutor, as_completed
+from typing import List
+from langchain.document_loaders import DOCUMENT_MAP
 from langchain.schema import Document
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.embeddings import HuggingFaceInstructEmbeddings
-import sqlite3
-from chromadb.config import Settings
 from langchain.vectorstores import Chroma
 from config import (
     SOURCE_DIR,
@@ -19,13 +15,9 @@ from config import (
     DEVICE_TYPE,
 )
 
-
-
-DOCUMENT_MAP = {
-    '.pdf': PDFMinerLoader,
-    '.txt': TextLoader,
-
-}
+logging.basicConfig(
+    format="%(asctime)s - %(levelname)s - %(filename)s:%(lineno)s - %(message)s", level=logging.INFO,
+)
 
 def load_single_document(file_path: str) -> Document:
     # Loads a single document from a file path
@@ -33,20 +25,9 @@ def load_single_document(file_path: str) -> Document:
     loader_class = DOCUMENT_MAP.get(file_extension)
     if loader_class:
         loader = loader_class(file_path)
+        return loader.load()[0]
     else:
         raise ValueError("Document type is undefined")
-    return loader.load()[0]
-
-def load_document_batch(filepaths):
-    logging.info("Loading document batch")
-    # Create a thread pool
-    with ThreadPoolExecutor(len(filepaths)) as exe:
-        # Load files
-        futures = [exe.submit(load_single_document, name) for name in filepaths]
-        # Collect data
-        data_list = [future.result() for future in futures]
-        # Return data and file paths
-        return (data_list, filepaths)
 
 def load_documents(source_directory: str) -> List[Document]:
     doc_paths = []
@@ -55,7 +36,7 @@ def load_documents(source_directory: str) -> List[Document]:
         for file_name in files:
             file_extension = os.path.splitext(file_name)[1]
             source_file_path = os.path.join(root, file_name)
-            if file_extension in DOCUMENT_MAP.keys():
+            if file_extension in DOCUMENT_MAP:
                 doc_paths.append(source_file_path)
 
     n_workers = min(os.cpu_count(), len(doc_paths))
@@ -65,17 +46,19 @@ def load_documents(source_directory: str) -> List[Document]:
 
     with ProcessPoolExecutor(n_workers) as executor:
         futures = []
+
         # Split the load operations into chunks
         for i in range(0, len(doc_paths), chunk_size):
             # Select a chunk of filenames
             filepaths = doc_paths[i: (i + chunk_size)]
             # Submit the task
-            future = executor.submit(load_document_batch, filepaths)
+            future = executor.submit(load_single_document, filepaths[0])
             futures.append(future)
+
         # Process all results
         for future in as_completed(futures):
             # Open the file and load the data
-            contents, _ = future.result()
+            contents = future.result()
             docs.extend(contents)
 
     return docs
@@ -107,7 +90,4 @@ def builder():
     logging.info(f"Loaded Documents to Chroma DB Successfully")
 
 if __name__ == "__main__":
-    logging.basicConfig(
-        format="%(asctime)s - %(levelname)s - %(filename)s:%(lineno)s - %(message)s", level=logging.INFO,
-    )
     builder()
