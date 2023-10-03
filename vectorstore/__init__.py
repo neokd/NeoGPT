@@ -1,0 +1,3 @@
+"""
+    VectorStore Types for NeoGPT
+"""
