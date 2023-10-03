@@ -6,10 +6,10 @@ from langchain.document_loaders import PDFMinerLoader, TextLoader
 from langchain.schema import Document
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.embeddings import HuggingFaceInstructEmbeddings
-import sqlite3
 from typing import Optional, Iterator, List, Dict
 from chromadb.config import Settings
 from langchain.vectorstores import Chroma
+# from vectorstore.chroma import ChromaStore
 from config import (
     SOURCE_DIR,
     CHROMA_PERSIST_DIRECTORY,
@@ -80,7 +80,6 @@ def load_documents(source_directory : str) -> list[Document]:
             # open the file and load the data
             contents, _ = future.result()
             docs.extend(contents)
-
     return docs
 
 
@@ -101,11 +100,12 @@ def builder():
         cache_folder=MODEL_DIRECTORY,
     )
 
+
     db = Chroma.from_documents(
-        texts,
-        embeddings,
-        persist_directory=CHROMA_PERSIST_DIRECTORY,
-        client_settings=CHROMA_SETTINGS,
+       documents = texts,
+         embeddings = embeddings,
+            persist_directory = CHROMA_PERSIST_DIRECTORY,
+        settings=CHROMA_SETTINGS,
 
     )
     logging.info(f"Loaded Documents to Chroma DB Successfully")

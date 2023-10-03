@@ -7,7 +7,7 @@ SOURCE_DIR = os.path.join(os.path.dirname(__file__), "documents")
 # To store models from HuggingFace
 MODEL_DIRECTORY = os.path.join(os.path.dirname(__file__), "models")
 # PARENT DB DIRECTORY
-PARENT_DB_DIRECTORY = os.path.join(os.path.dirname(__file__), "db")
+CHROMA_PERSIST_DIRECTORY = os.path.join(os.path.dirname(__file__), "db")
 # MODELS 
 MODEL_NAME = "TheBloke/Mistral-7B-Instruct-v0.1-GGUF"
 MODEL_FILE = "mistral-7b-instruct-v0.1.Q4_K_M.gguf"
@@ -33,5 +33,3 @@ CHROMA_SETTINGS = Settings(
     anonymized_telemetry=False,
     is_persistent=True,
 )
-
-CHROMA_PERSIST_DIRECTORY = os.path.join(PARENT_DB_DIRECTORY, "chroma")

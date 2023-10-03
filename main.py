@@ -12,7 +12,7 @@ from langchain.prompts import PromptTemplate
 from huggingface_hub import hf_hub_download
 from langchain.callbacks.base import BaseCallbackHandler
 from config import (
-    PERSIST_DIRECTORY,
+    CHROMA_PERSIST_DIRECTORY,
     MODEL_DIRECTORY,
     SOURCE_DIR,
     EMBEDDING_MODEL,
@@ -78,7 +78,7 @@ def db_retriver(device_type:str = DEVICE_TYPE, LOGGING=logging):
         cache_folder=MODEL_DIRECTORY,
     )
     db = Chroma(
-        persist_directory=PERSIST_DIRECTORY,
+        persist_directory=CHROMA_PERSIST_DIRECTORY,
         embedding_function=embeddings,
     )
     retriever = db.as_retriever()
@@ -98,7 +98,7 @@ def db_retriver(device_type:str = DEVICE_TYPE, LOGGING=logging):
         chain_type_kwargs={"prompt": prompt},
     )
 
-    chain({'question'  : "Briefly summarise the entire HuggingGPT paper with each step for 2 pages",},return_only_outputs=True)
+    chain({'question'  : "",},return_only_outputs=True)
 
 
 if __name__ == '__main__':
