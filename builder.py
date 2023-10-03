@@ -102,11 +102,10 @@ def builder():
 
 
     db = Chroma.from_documents(
-       documents = texts,
-         embeddings = embeddings,
-            persist_directory = CHROMA_PERSIST_DIRECTORY,
-        settings=CHROMA_SETTINGS,
-
+        texts,
+        embeddings,
+        persist_directory=CHROMA_PERSIST_DIRECTORY,
+        client_settings=CHROMA_SETTINGS,
     )
     logging.info(f"Loaded Documents to Chroma DB Successfully")
     
