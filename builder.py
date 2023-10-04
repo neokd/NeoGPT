@@ -2,7 +2,7 @@ import logging
 import os
 from concurrent.futures import ProcessPoolExecutor,ThreadPoolExecutor, as_completed
 from langchain.docstore.document import Document
-from langchain.document_loaders import PDFMinerLoader, TextLoader
+from langchain.document_loaders import PDFMinerLoader, TextLoader,UnstructuredHTMLLoader,CSVLoader
 from langchain.schema import Document
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.embeddings import HuggingFaceInstructEmbeddings
@@ -23,6 +23,9 @@ from config import (
 DOCUMENT_MAP = {
     '.pdf': PDFMinerLoader,
     '.txt': TextLoader,
+    '.csv' :CSVLoader,
+    '.html' :UnstructuredHTMLLoader,
+    
 }
 
 def load_single_document(file_path: str) -> Document:
