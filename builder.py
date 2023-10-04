@@ -2,7 +2,7 @@ import logging
 import os
 from concurrent.futures import ProcessPoolExecutor,ThreadPoolExecutor, as_completed
 from langchain.docstore.document import Document
-from langchain.document_loaders import PDFMinerLoader, TextLoader,UnstructuredHTMLLoader,CSVLoader
+from langchain.document_loaders import PDFMinerLoader, TextLoader,UnstructuredHTMLLoader,CSVLoader,UnstructuredMarkdownLoader,JSONLoader
 from langchain.schema import Document
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.embeddings import HuggingFaceInstructEmbeddings
@@ -25,6 +25,8 @@ DOCUMENT_MAP = {
     '.txt': TextLoader,
     '.csv' :CSVLoader,
     '.html' :UnstructuredHTMLLoader,
+    '.json' :JSONLoader,
+    '.md' :UnstructuredMarkdownLoader,
     
 }
 
