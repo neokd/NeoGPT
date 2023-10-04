@@ -11,7 +11,9 @@ from langchain.document_loaders import (
     UnstructuredEPubLoader,
     UnstructuredExcelLoader,
     UnstructuredPowerPointLoader,
-    UnstructuredWordDocumentLoader
+    UnstructuredWordDocumentLoader,
+    UnstructuredMarkdownLoader,
+    JSONLoader
 )
 
 # Source Directory for Documents to Ingest
@@ -61,4 +63,6 @@ DOCUMENT_EXTENSION = {
     '.ppt' :UnstructuredPowerPointLoader,
     '.docx' :UnstructuredWordDocumentLoader,
     '.doc' :UnstructuredWordDocumentLoader,
+    '.md' :UnstructuredMarkdownLoader,
+    '.json' :JSONLoader,
 }
