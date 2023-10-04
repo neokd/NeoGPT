@@ -1,6 +1,18 @@
 import os 
 import torch
 from chromadb.config import Settings
+from langchain.document_loaders import (
+    PDFMinerLoader, 
+    TextLoader,
+    UnstructuredHTMLLoader,
+    UnstructuredTSVLoader,
+    CSVLoader,
+    UnstructuredEmailLoader,
+    UnstructuredEPubLoader,
+    UnstructuredExcelLoader,
+    UnstructuredPowerPointLoader,
+    UnstructuredWordDocumentLoader
+)
 
 # Source Directory for Documents to Ingest
 SOURCE_DIR = os.path.join(os.path.dirname(__file__), "documents")
@@ -33,3 +45,20 @@ CHROMA_SETTINGS = Settings(
     anonymized_telemetry=False,
     is_persistent=True,
 )
+
+# List of file supported for ingest 
+DOCUMENT_EXTENSION = {
+    '.pdf': PDFMinerLoader,
+    '.txt': TextLoader,
+    '.csv' :CSVLoader,
+    '.html' :UnstructuredHTMLLoader, 
+    '.tsv' :UnstructuredTSVLoader,
+    '.eml' :UnstructuredEmailLoader,
+    '.epub' :UnstructuredEPubLoader,
+    '.xls' :UnstructuredExcelLoader,
+    '.xlsx' :UnstructuredExcelLoader,
+    '.pptx' :UnstructuredPowerPointLoader,
+    '.ppt' :UnstructuredPowerPointLoader,
+    '.docx' :UnstructuredWordDocumentLoader,
+    '.doc' :UnstructuredWordDocumentLoader,
+}

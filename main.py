@@ -98,10 +98,11 @@ def db_retriver(device_type:str = DEVICE_TYPE, LOGGING=logging):
         chain_type_kwargs={"prompt": prompt},
     )
 
-    chain({'question'  : "",},return_only_outputs=True)
+    chain({'question'  : "Write a random number generator guessing game in python",},return_only_outputs=True)
 
 
 if __name__ == '__main__':
+    
     db_retriver()
 
     

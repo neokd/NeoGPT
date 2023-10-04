@@ -2,7 +2,6 @@ import logging
 import os
 from concurrent.futures import ProcessPoolExecutor,ThreadPoolExecutor, as_completed
 from langchain.docstore.document import Document
-from langchain.document_loaders import PDFMinerLoader, TextLoader,UnstructuredHTMLLoader,CSVLoader,UnstructuredMarkdownLoader,JSONLoader
 from langchain.schema import Document
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.embeddings import HuggingFaceInstructEmbeddings
@@ -17,23 +16,16 @@ from config import (
     EMBEDDING_MODEL,
     CHROMA_SETTINGS,
     DEVICE_TYPE,
-    MODEL_DIRECTORY
+    MODEL_DIRECTORY,
+    DOCUMENT_EXTENSION,
 )
 
-DOCUMENT_MAP = {
-    '.pdf': PDFMinerLoader,
-    '.txt': TextLoader,
-    '.csv' :CSVLoader,
-    '.html' :UnstructuredHTMLLoader,
-    '.json' :JSONLoader,
-    '.md' :UnstructuredMarkdownLoader,
-    
-}
+
 
 def load_single_document(file_path: str) -> Document:
     # Loads a single document from a file path
     file_extension = os.path.splitext(file_path)[1]
-    loader_class = DOCUMENT_MAP.get(file_extension)
+    loader_class = DOCUMENT_EXTENSION.get(file_extension)
     if loader_class:
         loader = loader_class(file_path)
     else:
@@ -61,11 +53,9 @@ def load_documents(source_directory : str) -> list[Document]:
         for file_name in files:
             file_extension = os.path.splitext(file_name)[1]
             source_file_path = os.path.join(root, file_name)
-            if file_extension in DOCUMENT_MAP.keys():
+            if file_extension in DOCUMENT_EXTENSION.keys():
                 doc_path.append(source_file_path)
 
-
-    
     n_workers = min(INGEST_THREADS, max(len(doc_path), 1))
     chunk_size = round(len(doc_path) / n_workers)
 
