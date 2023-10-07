@@ -21,12 +21,15 @@ SOURCE_DIR = os.path.join(os.path.dirname(__file__), "documents")
 # To store models from HuggingFace
 MODEL_DIRECTORY = os.path.join(os.path.dirname(__file__), "models")
 # PARENT DB DIRECTORY
-CHROMA_PERSIST_DIRECTORY = os.path.join(os.path.dirname(__file__), "db")
+PARENT_DB_DIRECTORY = os.path.join(os.path.dirname(__file__), "db")
+# CHROMA DB DIRECTORY
+CHROMA_PERSIST_DIRECTORY = os.path.join(PARENT_DB_DIRECTORY, "chroma")
+# FAISS DB DIRECTORY
+FAISS_PERSIST_DIRECTORY = os.path.join(PARENT_DB_DIRECTORY, "faiss")
 # MODELS 
 MODEL_NAME = "TheBloke/Mistral-7B-Instruct-v0.1-GGUF"
 MODEL_FILE = "mistral-7b-instruct-v0.1.Q4_K_M.gguf"
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L12-v2"
-
 # EMBEDDING MODEL CONFIG
 INGEST_THREADS = 8 or os.cpu_count()
 

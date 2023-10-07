@@ -7,11 +7,13 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.embeddings import HuggingFaceInstructEmbeddings
 from typing import Optional, Iterator, List, Dict
 from chromadb.config import Settings
-from langchain.vectorstores import Chroma
+from langchain.vectorstores import Chroma, FAISS
+import argparse
 # from vectorstore.chroma import ChromaStore
 from config import (
     SOURCE_DIR,
     CHROMA_PERSIST_DIRECTORY,
+    FAISS_PERSIST_DIRECTORY,
     INGEST_THREADS,
     EMBEDDING_MODEL,
     CHROMA_SETTINGS,
@@ -19,8 +21,6 @@ from config import (
     MODEL_DIRECTORY,
     DOCUMENT_EXTENSION,
 )
-
-
 
 def load_single_document(file_path: str) -> Document:
     # Loads a single document from a file path
@@ -78,7 +78,7 @@ def load_documents(source_directory : str) -> list[Document]:
     return docs
 
 
-def builder():
+def builder(vectorstore: str = "Chroma"):
     logging.info(f"Loading Documents from {SOURCE_DIR}")
     documents = load_documents(SOURCE_DIR)
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000,chunk_overlap=200)
@@ -95,14 +95,28 @@ def builder():
         cache_folder=MODEL_DIRECTORY,
     )
 
+    match vectorstore:
+        case "Chroma":
+            logging.info(f"Using Chroma for vectorstore")
+            db = Chroma.from_documents(
+                texts,
+                embeddings,
+                persist_directory=CHROMA_PERSIST_DIRECTORY,
+                client_settings=CHROMA_SETTINGS,
+            )
+            logging.info(f"Loaded Documents to Chroma DB Successfully")
+        case "FAISS":
+            logging.info(f"Using FAISS for vectorstore")
+            db = FAISS.from_documents(
+                texts,
+                embeddings
+            )
+            db.save_local(FAISS_PERSIST_DIRECTORY)
+            logging.info(f"Loaded Documents to FAISS DB Successfully")
+    
+    logging.info(f"Builder👷🏻‍♀️ has built your VectorDB successfully!")
 
-    db = Chroma.from_documents(
-        texts,
-        embeddings,
-        persist_directory=CHROMA_PERSIST_DIRECTORY,
-        client_settings=CHROMA_SETTINGS,
-    )
-    logging.info(f"Loaded Documents to Chroma DB Successfully")
+    
     
 # def query():
 #     embeddings = HuggingFaceInstructEmbeddings(
@@ -123,6 +137,14 @@ if __name__ == "__main__":
     logging.basicConfig(
         format="%(asctime)s - %(levelname)s - %(filename)s:%(lineno)s - %(message)s", level=logging.INFO,
     )
-    builder()
+    parser = argparse.ArgumentParser(description="NeoGPT CLI Interface")
+    parser.add_argument(
+        "--db",
+        choices=["Chroma", "FAISS"],
+        default="Chroma",
+        help="Specify the vectorstore (Chroma, FAISS)",
+    )
+    args = parser.parse_args()
+    builder(vectorstore=args.db)
 
 

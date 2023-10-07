@@ -7,7 +7,7 @@ from langchain.embeddings import HuggingFaceInstructEmbeddings
 from langchain.callbacks.manager import CallbackManager
 from langchain.schema.agent import AgentFinish
 from langchain.schema.output import LLMResult
-from langchain.vectorstores import Chroma
+from langchain.vectorstores import Chroma, FAISS
 from huggingface_hub import hf_hub_download
 from langchain.callbacks.base import BaseCallbackHandler
 import argparse
@@ -16,6 +16,7 @@ from prompts.prompt import get_prompt
 
 from config import (
     CHROMA_PERSIST_DIRECTORY,
+    FAISS_PERSIST_DIRECTORY,
     MODEL_DIRECTORY,
     SOURCE_DIR,
     EMBEDDING_MODEL,
@@ -84,7 +85,7 @@ def load_model(device_type:str = DEVICE_TYPE, model_id:str = MODEL_NAME, model_b
         LOGGING.info(f"Error {e}")
 
 # Function to set up the retrieval-based question-answering system
-def db_retriver(device_type:str = DEVICE_TYPE, LOGGING=logging):
+def db_retriver(device_type:str = DEVICE_TYPE,vectorstore:str = "Chroma", LOGGING=logging):
     """
         input: device_type, LOGGING
         output: None
@@ -96,19 +97,28 @@ def db_retriver(device_type:str = DEVICE_TYPE, LOGGING=logging):
         model_kwargs={"device": DEVICE_TYPE},
         cache_folder=MODEL_DIRECTORY,
     )
-    # Load the Chroma DB with the embedding model
-    db = Chroma(
-        persist_directory=CHROMA_PERSIST_DIRECTORY,
-        embedding_function=embeddings,
-    )
-    # Create a retriever object from the Chroma DB
+    match vectorstore:
+        case "Chroma":
+            # Load the Chroma DB with the embedding model
+            db = Chroma(
+                persist_directory=CHROMA_PERSIST_DIRECTORY,
+                embedding_function=embeddings,
+            )
+            LOGGING.info(f"Loaded Chroma DB Successfully")
+        case "FAISS":
+            # Load the FAISS DB with the embedding model
+            db = FAISS.load_local(
+                folder_path=FAISS_PERSIST_DIRECTORY,
+                embeddings=embeddings,
+            )
+            LOGGING.info(f"Loaded FAISS DB Successfully")
+    # Create a retriever object 
     retriever = db.as_retriever()
-    LOGGING.info(f"Loaded Chroma DB Successfully")
     # Load the LLM model
     llm = load_model(device_type, model_id=MODEL_NAME, model_basename=MODEL_FILE, LOGGING=logging)
     # Prompt Builder Function 
     prompt , memory = get_prompt()
-    # Create a retrieval-based question-answering system using the LLM model and the Chroma DB
+    # Create a retrieval-based question-answering system using the LLM model and the Vector DB
     chain = RetrievalQA.from_chain_type(
         llm=llm,
         retriever=retriever,
@@ -131,6 +141,12 @@ if __name__ == '__main__':
         default=DEVICE_TYPE,
         help="Specify the device type (cpu, mps, cuda)",
     )
+    parser.add_argument(
+        "--db",
+        choices=["Chroma", "FAISS"],
+        default="Chroma",
+        help="Specify the vectorstore (Chroma, FAISS)",
+    )
     args = parser.parse_args()
-    db_retriver(device_type=args.device_type, LOGGING=logging)
+    db_retriver(device_type=args.device_type,vectorstore="FAISS", LOGGING=logging)
     

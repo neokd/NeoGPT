@@ -20,10 +20,11 @@ To embark on your NeoGPT journey, follow these simple steps:
 
 ## ✅ To Do
 - ✓ RAG (Retrieval Augmented Generation) 
+- ✓ FAISS Support
 - ☐ User Interface
 - ☐ Memory Support for RAG
 - ☐ Multilingual Support
-- ☐ FAISS Support
+
 
 ## 🌟 Features
 

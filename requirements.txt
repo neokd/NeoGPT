@@ -6,3 +6,4 @@ instructorembedding
 sentence-transformers
 llama-cpp-python
 chainlit
+faiss-cpu
