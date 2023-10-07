@@ -10,10 +10,7 @@ from langchain.schema.output import LLMResult
 from langchain.vectorstores import Chroma
 from huggingface_hub import hf_hub_download
 from langchain.callbacks.base import BaseCallbackHandler
-
 import argparse
-import click
-import psutil
 
 from prompts.prompt import get_prompt
 
@@ -119,76 +116,21 @@ def db_retriver(device_type:str = DEVICE_TYPE, LOGGING=logging):
         chain_type_kwargs={"prompt": prompt, "memory": memory},
     )
     # Run the retrieval-based question-answering system
-    chain("Hello world",return_only_outputs=True)
+    chain("Hello tell me something about linux commands",return_only_outputs=True)
 
-def get_cpu_info():
-    cpu_info = {}
-    cpu_info['CPU'] = psutil.cpu_info()[0].model
-    cpu_info['Cores'] = psutil.cpu_count(logical=False)
-    cpu_info['Threads'] = psutil.cpu_count(logical=True)
-    cpu_info['Usage'] = psutil.cpu_percent(interval=1)
-
-    return cpu_info
-
-def get_gpu_info():
-    try:
-        import gpustat
-        gpu_info = gpustat.GPUStatCollection.new_query().jsonify()
-    except ImportError:
-        gpu_info = "gpustat library not installed. Install it for better GPU information."
-
-    return gpu_info
-
-
-def argparse_get_device_info():
-    parser = argparse.ArgumentParser(description="Get CPU and GPU Information")
-
-    parser.add_argument(
-        "--device-type",
-        choices=["cpu", "mps", "cuda"],
-        default="cpu",
-        help="Specify the device type (cpu, mps, cuda)",
-    )
-    parser.add_argument(
-        "--specific-model",
-        type=str,
-        default="default",
-        help="Specify the specific model or identifier",
-    )
-
-    args = parser.parse_args()
-
-    if args.device_type == "cpu":
-        info = get_cpu_info()
-    elif args.device_type == "cuda" or args.device_type == "mps":
-        info = get_gpu_info()
-    else:
-        info = "Invalid device type specified."
-
-    print(f"Device Type (argparse): {args.device_type}")
-    print(f"Specific Model (argparse): {args.specific_model}")
-    print(info)
-
-
-@click.command()
-@click.option("--device-type", type=click.Choice(["cpu", "mps", "cuda"]), default="cpu", help="Specify the device type (cpu, mps, cuda)")
-@click.option("--specific-model", type=str, default="default", help="Specify the specific model or identifier")
-def click_get_device_info(device_type, specific_model):
-    if device_type == "cpu":
-        info = get_cpu_info()
-    elif device_type == "cuda" or device_type == "mps":
-        info = get_gpu_info()
-    else:
-        info = "Invalid device type specified."
-
-    click.echo(f"Device Type (click): {device_type}")
-    click.echo(f"Specific Model (click): {specific_model}")
-    click.echo(info)
 
 if __name__ == '__main__':
     logging.basicConfig(
         format="%(asctime)s - %(levelname)s - %(filename)s:%(lineno)s - %(message)s", level=logging.INFO,
     )
-    db_retriver()
-    click_get_device_info()
+    # Parse the arguments
+    parser = argparse.ArgumentParser(description="NeoGPT CLI Interface")
+    parser.add_argument(
+        "--device-type",
+        choices=["cpu", "mps", "cuda"],
+        default=DEVICE_TYPE,
+        help="Specify the device type (cpu, mps, cuda)",
+    )
+    args = parser.parse_args()
+    db_retriver(device_type=args.device_type, LOGGING=logging)
     
