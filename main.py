@@ -9,11 +9,14 @@ from langchain.schema.agent import AgentFinish
 from langchain.schema.output import LLMResult
 from langchain.vectorstores import Chroma, FAISS
 from huggingface_hub import hf_hub_download
+from langchain.utilities import GoogleSearchAPIWrapper
+from langchain.retrievers.web_research import WebResearchRetriever
 from langchain.callbacks.base import BaseCallbackHandler
 import argparse
-
+from dotenv import load_dotenv
+import os
 from prompts.prompt import get_prompt
-
+load_dotenv()
 from config import (
     CHROMA_PERSIST_DIRECTORY,
     FAISS_PERSIST_DIRECTORY,
@@ -87,11 +90,11 @@ def load_model(device_type:str = DEVICE_TYPE, model_id:str = MODEL_NAME, model_b
 # Function to set up the retrieval-based question-answering system
 def db_retriver(device_type:str = DEVICE_TYPE,vectorstore:str = "Chroma", LOGGING=logging):
     """
-        input: device_type, LOGGING
+        input: device_type,vectorstore, LOGGING
         output: None
         description: The function is used to set up the retrieval-based question-answering system. It loads the LLM model, the Chroma DB, and the prompt and memory objects. It then creates a retrieval-based question-answering system using the LLM model and the Chroma DB.
     """
-    # Load the embedding model used with Chroma DB.
+    # Load the embedding model 
     embeddings = HuggingFaceInstructEmbeddings(
         model_name=EMBEDDING_MODEL,
         model_kwargs={"device": DEVICE_TYPE},
@@ -128,6 +131,31 @@ def db_retriver(device_type:str = DEVICE_TYPE,vectorstore:str = "Chroma", LOGGIN
     # Run the retrieval-based question-answering system
     chain("Hello tell me something about linux commands",return_only_outputs=True)
 
+### TODO: Add the Web Search Retriever (In Progress)
+def web_retriver(device_type:str = DEVICE_TYPE,vectorstore:str = "Chroma", LOGGING=logging):
+    """
+        input: device_type,vectorstore,LOGGING
+        output: None
+        description: The function is used to set up the retrieval-based question-answering system. It loads the LLM Model and searches on web for the answer backed up by the vectorstore.
+        WARNING: The function is still in progress and is not yet complete.
+    """
+    # Load the embedding model 
+    embeddings = HuggingFaceInstructEmbeddings(
+        model_name=EMBEDDING_MODEL,
+        model_kwargs={"device": DEVICE_TYPE},
+        cache_folder=MODEL_DIRECTORY,
+    )
+    # Import the env
+    try:
+        os.environ["GOOGLE_CSE_ID"] = os.environ.get("GOOGLE_CSE_ID")
+        os.environ["GOOGLE_API_KEY"] = os.environ.get("GOOGLE_API_KEY")
+        # Using Google Search API Wrapper
+        print(os.environ.get("GOOGLE_CSE_ID"))
+        
+    except Exception as e:
+        LOGGING.info(f"Error {e}")
+    search = GoogleSearchAPIWrapper()
+    # ERROR: Unable to search using GoogleSearchAPIWrapper
 
 if __name__ == '__main__':
     logging.basicConfig(
@@ -148,5 +176,6 @@ if __name__ == '__main__':
         help="Specify the vectorstore (Chroma, FAISS)",
     )
     args = parser.parse_args()
-    db_retriver(device_type=args.device_type,vectorstore="FAISS", LOGGING=logging)
+    # db_retriver(device_type=args.device_type,vectorstore="FAISS", LOGGING=logging)
+    web_retriver(device_type=args.device_type,vectorstore="FAISS", LOGGING=logging)
     
