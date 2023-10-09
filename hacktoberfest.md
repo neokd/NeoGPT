@@ -68,6 +68,6 @@ Participating in Hacktoberfest and contributing to our project can earn you some
 
 ## Thank You
 
-We greatly appreciate your contributions to [Your Project Name] during Hacktoberfest 2023. Your support and effort are valuable to our open-source community.
+We greatly appreciate your contributions to NeoGPT during Hacktoberfest 2023. Your support and effort are valuable to our open-source community.
 
 ![Thank You GIF](https://i.pinimg.com/originals/f4/44/93/f444933e5c9ff754fd4c5bc7a45442cc.gif)
