@@ -155,7 +155,34 @@ def web_retriver(device_type:str = DEVICE_TYPE,vectorstore:str = "Chroma", LOGGI
     except Exception as e:
         LOGGING.info(f"Error {e}")
     search = GoogleSearchAPIWrapper()
-    # ERROR: Unable to search using GoogleSearchAPIWrapper
+    # Load the Vector DB
+    match vectorstore:
+        case "Chroma":
+            # Load the Chroma DB with the embedding model
+            db = Chroma(
+                persist_directory=CHROMA_PERSIST_DIRECTORY,
+                embedding_function=embeddings,
+            )
+            LOGGING.info(f"Loaded Chroma DB Successfully")
+        case "FAISS":
+            # Load the FAISS DB with the embedding model
+            db = FAISS.load_local(
+                folder_path=FAISS_PERSIST_DIRECTORY,
+                embeddings=embeddings,
+            )
+            LOGGING.info(f"Loaded FAISS DB Successfully")
+    
+    llm = load_model(device_type, model_id=MODEL_NAME, model_basename=MODEL_FILE, LOGGING=logging)
+          
+    web_research_retriever = WebResearchRetriever.from_llm(
+        vectorstore=db,
+        llm=llm,
+        search=search,
+    )
+    user_input = "What is Task Decomposition in LLM Powered Autonomous Agents?"
+    qa_chain = RetrievalQAWithSourcesChain.from_chain_type(llm=llm ,retriever=web_research_retriever )
+    result = qa_chain({"question": user_input})
+    print(result)
 
 if __name__ == '__main__':
     logging.basicConfig(

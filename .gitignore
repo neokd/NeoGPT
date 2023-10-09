@@ -1,3 +1,5 @@
 models/*
 .DS_Store
 .env
+**/__pycache__
+__pycache__

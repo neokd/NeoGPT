@@ -7,16 +7,13 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.embeddings import HuggingFaceInstructEmbeddings
 from typing import Optional, Iterator, List, Dict
 from chromadb.config import Settings
-from langchain.vectorstores import Chroma, FAISS
 import argparse
-# from vectorstore.chroma import ChromaStore
+from vectorstore.chroma import ChromaStore
+from vectorstore.faiss import FAISSStore
 from config import (
     SOURCE_DIR,
-    CHROMA_PERSIST_DIRECTORY,
-    FAISS_PERSIST_DIRECTORY,
     INGEST_THREADS,
     EMBEDDING_MODEL,
-    CHROMA_SETTINGS,
     DEVICE_TYPE,
     MODEL_DIRECTORY,
     DOCUMENT_EXTENSION,
@@ -98,20 +95,15 @@ def builder(vectorstore: str = "Chroma"):
     match vectorstore:
         case "Chroma":
             logging.info(f"Using Chroma for vectorstore")
-            db = Chroma.from_documents(
-                texts,
-                embeddings,
-                persist_directory=CHROMA_PERSIST_DIRECTORY,
-                client_settings=CHROMA_SETTINGS,
+            db = ChromaStore().from_documents(
+                documents=texts,
             )
             logging.info(f"Loaded Documents to Chroma DB Successfully")
         case "FAISS":
             logging.info(f"Using FAISS for vectorstore")
-            db = FAISS.from_documents(
-                texts,
-                embeddings
+            db = FAISSStore().from_documents(
+                documents=texts,
             )
-            db.save_local(FAISS_PERSIST_DIRECTORY)
             logging.info(f"Loaded Documents to FAISS DB Successfully")
     
     logging.info(f"Builder👷🏻‍♀️ has built your VectorDB successfully!")

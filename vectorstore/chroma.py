@@ -4,30 +4,37 @@
     to provide a simple interface for storing and retrieving documents
     from the database.
 """
-
-
-import chromadb
-from typing import Optional, List
-import os
-from langchain.embeddings import HuggingFaceEmbeddings
+from vectorstore.base import VectorStore
 from langchain.schema.document import Document
-class ChromaStore:
-    CHROMA_SETTINGS = chromadb.Settings(
-        anonymized_telemetry=False,
-        is_persistent=True,
-    )
-    CHROMA_PERSIST_DIRECTORY = os.path.join(os.path.dirname(__file__), "db")
-
+from langchain.vectorstores import Chroma
+from langchain.embeddings import HuggingFaceInstructEmbeddings
+from config import (
+    CHROMA_PERSIST_DIRECTORY,
+    CHROMA_SETTINGS,
+    EMBEDDING_MODEL,
+    DEVICE_TYPE,
+    MODEL_DIRECTORY,
+)
+class ChromaStore(VectorStore):
     def __init__(self) -> None:
-        self.chroma_client = chromadb.PersistentClient(path=self.CHROMA_PERSIST_DIRECTORY,settings=self.CHROMA_SETTINGS)
+        self.chroma = Chroma()
+        self.embeddings = HuggingFaceInstructEmbeddings(
+            model_name=EMBEDDING_MODEL,
+            model_kwargs={"device": DEVICE_TYPE},
+            cache_folder=MODEL_DIRECTORY,
+        )
+    
+    def from_documents(self, documents: list[Document]) -> Document:
+        self.chroma.from_documents(
+            documents=documents,
+            embedding=self.embeddings,
+            persist_directory=CHROMA_PERSIST_DIRECTORY,
+            client_settings=CHROMA_SETTINGS,
+        )
+        return documents
+    
+    def as_retriever(self):
+        return self.chroma.as_retriever()
 
-    def batch_add(self,documents:List[Document]) -> List[Document]:
-        max_batch_size = self.chroma_client.max_batch_size
-        for i in range(0, len(documents), max_batch_size):
-            yield documents[i:i + max_batch_size]
 
-
-
-
-if __name__ == '__main__':
-    ChromaStore()
+    
