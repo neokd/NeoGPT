@@ -1,9 +1,11 @@
 import logging
+import torch 
 from uuid import UUID
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain.chains import RetrievalQA, RetrievalQAWithSourcesChain
 from langchain.llms import LlamaCpp
 from langchain.embeddings import HuggingFaceInstructEmbeddings
+from transformers import AutoModelForSequenceClassification, AutoConfig, AutoTokenizer
 from langchain.callbacks.manager import CallbackManager
 from langchain.schema.agent import AgentFinish
 from langchain.schema.output import LLMResult
@@ -53,23 +55,21 @@ class TokenCallbackHandler(BaseCallbackHandler):
 # Function to load the LLM 
 def load_model(device_type:str = DEVICE_TYPE, model_id:str = MODEL_NAME, model_basename:str = MODEL_FILE, LOGGING=logging):
     """
-        input: device_type, model_id, model_basename, LOGGING
-        output: llm (LlamaCpp)
-        description: The function loads the LLM model locally or downloads it from huggingface, and returns the LLM object.
+        input: device_type('mps','cuba','cpu'), model_id, model_basename, LOGGING
+        output: loaded pre-trained model,loaded tokenizer.
+        description: The function loads the pre-trained model from hugging face and specify the hardware device, and returns the loaded pre-trained model.
     """
+    # Checking for the availability of a CUDA-enabled GPU
+    if device_type == 'cuda' and not torch.cuda.is_available():
+        raise ValueError("CUDA is not available. Please use 'mps' or 'cpu' as the device_type.")
+        
     # Create a callback manager to handle callbacks during model loading
     callback_manager = CallbackManager([StreamingStdOutCallbackHandler(),TokenCallbackHandler()])
     try:
-        # Download the model checkpoint from the Hugging Face Hub
-        model_path = hf_hub_download(
-            repo_id=model_id,
-            filename=model_basename,
-            resume_download=True,
-            cache_dir=MODEL_DIRECTORY,
-        )
-        # Model Parameters
-        kwargs = {
-            "model_path": model_path,
+        # Model Parameters for MPS devices
+        if device_type.lower() == "mps":
+              kwargs = {
+            "model_path": model_id,
             "max_tokens": MAX_TOKEN_LENGTH,
             "n_ctx": MAX_TOKEN_LENGTH,
             "n_batch": 512,  
@@ -77,11 +77,31 @@ def load_model(device_type:str = DEVICE_TYPE, model_id:str = MODEL_NAME, model_b
             "verbose":False,
             "f16_kv":True,
             "streaming":True,
+            "n_gpu_layers":1,   # Only for MPS devices
         }
-        if device_type.lower() == "mps":
-            kwargs["n_gpu_layers"] = 1 # only for MPS devices
-        if device_type.lower() == "cuda":
-            kwargs["n_gpu_layers"] = N_GPU_LAYERS  # set this based on your GPU
+        else:
+            # For 'cuba' or 'cpu' devices
+            # Download the model checkpoint from Hugging Face Hub
+            model_path = hf_hub_download(
+                repo_id=model_id,
+                filename=model_basename,
+                resume_download=True,
+                cache_dir=MODEL_DIRECTORY,
+            )
+            # Model Parameters for 'cuda' or 'cpu' devices
+            kwargs = {
+                "model_path": model_path,
+                "max_tokens": MAX_TOKEN_LENGTH,
+                "n_ctx": MAX_TOKEN_LENGTH,
+                "n_batch": 512,  
+                "callback_manager": callback_manager,
+                "verbose":False,
+                "f16_kv":True,
+                "streaming":True,
+            }
+        if device_type.lower() == "cuda": # only for cuda and cpu devices
+        kwargs["n_gpu_layers"] = N_GPU_LAYERS  # set this based on your GPU
+        
         # Create a LlamaCpp object (language model)
         llm =  LlamaCpp(**kwargs)
         LOGGING.info(f"Loaded {model_id} locally")
