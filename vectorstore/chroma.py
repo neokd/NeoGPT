@@ -18,12 +18,9 @@ from config import (
 class ChromaStore(VectorStore):
     def __init__(
             self,
+            embeddings: HuggingFaceInstructEmbeddings
         ) -> None:
-        self.embeddings = HuggingFaceInstructEmbeddings(
-            model_name=EMBEDDING_MODEL,
-            model_kwargs={"device": DEVICE_TYPE},
-            cache_folder=MODEL_DIRECTORY,
-        )
+        self.embeddings = embeddings
         self.chroma = Chroma(
             persist_directory=CHROMA_PERSIST_DIRECTORY,
             client_settings=CHROMA_SETTINGS,

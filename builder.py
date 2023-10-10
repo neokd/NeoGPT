@@ -95,13 +95,13 @@ def builder(vectorstore: str = "Chroma"):
     match vectorstore:
         case "Chroma":
             logging.info(f"Using Chroma for vectorstore")
-            db = ChromaStore().from_documents(
+            db = ChromaStore(embeddings).from_documents(
                 documents=texts,
             )
             logging.info(f"Loaded Documents to Chroma DB Successfully")
         case "FAISS":
             logging.info(f"Using FAISS for vectorstore")
-            db = FAISSStore().from_documents(
+            db = FAISSStore(embeddings).from_documents(
                 documents=texts,
             )
             logging.info(f"Loaded Documents to FAISS DB Successfully")
