@@ -7,11 +7,13 @@ from langchain.embeddings import HuggingFaceInstructEmbeddings
 from langchain.callbacks.manager import CallbackManager
 from langchain.schema.agent import AgentFinish
 from langchain.schema.output import LLMResult
-from langchain.vectorstores import Chroma, FAISS
 from huggingface_hub import hf_hub_download
 from langchain.utilities import GoogleSearchAPIWrapper
 from langchain.retrievers.web_research import WebResearchRetriever
 from langchain.callbacks.base import BaseCallbackHandler
+from vectorstore.chroma import ChromaStore
+from vectorstore.faiss import FAISSStore
+from langchain.vectorstores import Chroma
 import argparse
 from dotenv import load_dotenv
 import os
@@ -103,17 +105,11 @@ def db_retriver(device_type:str = DEVICE_TYPE,vectorstore:str = "Chroma", LOGGIN
     match vectorstore:
         case "Chroma":
             # Load the Chroma DB with the embedding model
-            db = Chroma(
-                persist_directory=CHROMA_PERSIST_DIRECTORY,
-                embedding_function=embeddings,
-            )
+            db = ChromaStore()
             LOGGING.info(f"Loaded Chroma DB Successfully")
         case "FAISS":
             # Load the FAISS DB with the embedding model
-            db = FAISS.load_local(
-                folder_path=FAISS_PERSIST_DIRECTORY,
-                embeddings=embeddings,
-            )
+            db = FAISSStore().load_local()
             LOGGING.info(f"Loaded FAISS DB Successfully")
     # Create a retriever object 
     retriever = db.as_retriever()
@@ -129,7 +125,7 @@ def db_retriver(device_type:str = DEVICE_TYPE,vectorstore:str = "Chroma", LOGGIN
         chain_type_kwargs={"prompt": prompt, "memory": memory},
     )
     # Run the retrieval-based question-answering system
-    chain("Hello tell me something about linux commands",return_only_outputs=True)
+    chain("Write linux command to copy file from one directory to another directory",return_only_outputs=True)
 
 ### TODO: Add the Web Search Retriever (In Progress)
 def web_retriver(device_type:str = DEVICE_TYPE,vectorstore:str = "Chroma", LOGGING=logging):
@@ -159,17 +155,11 @@ def web_retriver(device_type:str = DEVICE_TYPE,vectorstore:str = "Chroma", LOGGI
     match vectorstore:
         case "Chroma":
             # Load the Chroma DB with the embedding model
-            db = Chroma(
-                persist_directory=CHROMA_PERSIST_DIRECTORY,
-                embedding_function=embeddings,
-            )
+            db = ChromaStore()
             LOGGING.info(f"Loaded Chroma DB Successfully")
         case "FAISS":
             # Load the FAISS DB with the embedding model
-            db = FAISS.load_local(
-                folder_path=FAISS_PERSIST_DIRECTORY,
-                embeddings=embeddings,
-            )
+            db = FAISSStore().load_local()
             LOGGING.info(f"Loaded FAISS DB Successfully")
     
     llm = load_model(device_type, model_id=MODEL_NAME, model_basename=MODEL_FILE, LOGGING=logging)
@@ -203,6 +193,6 @@ if __name__ == '__main__':
         help="Specify the vectorstore (Chroma, FAISS)",
     )
     args = parser.parse_args()
-    # db_retriver(device_type=args.device_type,vectorstore="FAISS", LOGGING=logging)
+    # db_retriver(device_type=args.device_type,vectorstore="Chroma", LOGGING=logging)
     web_retriver(device_type=args.device_type,vectorstore="FAISS", LOGGING=logging)
     

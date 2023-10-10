@@ -16,19 +16,25 @@ from config import (
     MODEL_DIRECTORY,
 )
 class ChromaStore(VectorStore):
-    def __init__(self) -> None:
-        self.chroma = Chroma()
+    def __init__(
+            self,
+        ) -> None:
         self.embeddings = HuggingFaceInstructEmbeddings(
             model_name=EMBEDDING_MODEL,
             model_kwargs={"device": DEVICE_TYPE},
             cache_folder=MODEL_DIRECTORY,
+        )
+        self.chroma = Chroma(
+            persist_directory=CHROMA_PERSIST_DIRECTORY,
+            client_settings=CHROMA_SETTINGS,
+            embedding_function=self.embeddings,
         )
     
     def from_documents(self, documents: list[Document]) -> Document:
         self.chroma.from_documents(
             documents=documents,
             embedding=self.embeddings,
-            persist_directory=CHROMA_PERSIST_DIRECTORY,
+            persist_directory=self.persist_directory,
             client_settings=CHROMA_SETTINGS,
         )
         return documents
