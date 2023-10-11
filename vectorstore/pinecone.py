@@ -10,6 +10,8 @@ from config import (
     EMBEDDING_MODEL,
     DEVICE_TYPE,
     MODEL_DIRECTORY,
+    EMBEDDING_DIMENSION,
+    INDEX_NAME
 )
 
 class PineconeVectorStore(VectorStore):

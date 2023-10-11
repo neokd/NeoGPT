@@ -26,6 +26,9 @@ PARENT_DB_DIRECTORY = os.path.join(os.path.dirname(__file__), "db")
 CHROMA_PERSIST_DIRECTORY = os.path.join(PARENT_DB_DIRECTORY, "chroma")
 # FAISS DB DIRECTORY
 FAISS_PERSIST_DIRECTORY = os.path.join(PARENT_DB_DIRECTORY, "faiss")
+# PINECONE DB DIRECTORY
+PINECONE_PERSIST_DIRECTORY = os.path.join(PARENT_DB_DIRECTORY,"pinecone")
+
 # GGUF MODELS (Recommended , Default and Fast)
 MODEL_NAME = "TheBloke/Mistral-7B-Instruct-v0.1-GGUF"
 MODEL_FILE = "mistral-7b-instruct-v0.1.Q4_K_M.gguf"
@@ -54,6 +57,10 @@ CHROMA_SETTINGS = Settings(
     anonymized_telemetry=False,
     is_persistent=True,
 )
+
+# PINECONE SETTINGS
+EMBEDDING_DIMENSION = ""
+INDEX_NAME = ""
 
 # List of file supported for ingest 
 DOCUMENT_EXTENSION = {
