@@ -15,6 +15,7 @@ from langchain.callbacks.base import BaseCallbackHandler
 from vectorstore.chroma import ChromaStore
 from vectorstore.faiss import FAISSStore
 from langchain.vectorstores import Chroma
+from pinecone import Pinecone,PineconeClient
 import argparse
 from dotenv import load_dotenv
 import os
@@ -91,6 +92,14 @@ def db_retriver(device_type:str = DEVICE_TYPE,vectorstore:str = "Chroma", LOGGIN
             # Load the FAISS DB with the embedding model
             db = FAISSStore().load_local()
             LOGGING.info(f"Loaded FAISS DB Successfully")
+        case "Pinecone":
+            # Initialize Pinecone client
+            # Load the Pinecone DB with the embedding model
+            pinecone_api_key = "your_api_key"
+            pinecone_environment = "your_environment_name"
+            db= Pinecone(api_key=pinecone_api_key, environment=pinecone_environment)
+            LOGGING.info(f"Initialized Pinecone DB Successfully")
+            
     # Create a retriever object 
     retriever = db.as_retriever()
     # Load the LLM model
@@ -135,7 +144,14 @@ def web_retriver(device_type:str = DEVICE_TYPE,vectorstore:str = "Chroma", LOGGI
             # Load the FAISS DB with the embedding model
             db = FAISSStore().load_local()
             LOGGING.info(f"Loaded FAISS DB Successfully")
-    
+        case "Pinecone":
+            # Initialize Pinecone client
+            # Load the Pinecone DB with the embedding model
+            pinecone_api_key = "your_api_key"
+            pinecone_environment = "your_environment_name"
+            db= Pinecone(api_key=pinecone_api_key, environment=pinecone_environment)
+            LOGGING.info(f"Initialized Pinecone DB Successfully")
+            
     llm = load_model(device_type, model_id=MODEL_NAME, model_basename=MODEL_FILE, LOGGING=logging)
           
     web_research_retriever = WebResearchRetriever.from_llm(
