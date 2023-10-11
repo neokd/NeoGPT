@@ -3,7 +3,6 @@ from uuid import UUID
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain.chains import RetrievalQA, RetrievalQAWithSourcesChain
 from langchain.llms import LlamaCpp
-from langchain.embeddings import HuggingFaceInstructEmbeddings
 from langchain.callbacks.manager import CallbackManager
 from langchain.schema.agent import AgentFinish
 from langchain.schema.output import LLMResult
@@ -96,20 +95,14 @@ def db_retriver(device_type:str = DEVICE_TYPE,vectorstore:str = "Chroma", LOGGIN
         output: None
         description: The function is used to set up the retrieval-based question-answering system. It loads the LLM model, the Chroma DB, and the prompt and memory objects. It then creates a retrieval-based question-answering system using the LLM model and the Chroma DB.
     """
-    # Load the embedding model 
-    embeddings = HuggingFaceInstructEmbeddings(
-        model_name=EMBEDDING_MODEL,
-        model_kwargs={"device": DEVICE_TYPE},
-        cache_folder=MODEL_DIRECTORY,
-    )
     match vectorstore:
         case "Chroma":
             # Load the Chroma DB with the embedding model
-            db = ChromaStore(embeddings)
+            db = ChromaStore()
             LOGGING.info(f"Loaded Chroma DB Successfully")
         case "FAISS":
             # Load the FAISS DB with the embedding model
-            db = FAISSStore(embeddings).load_local()
+            db = FAISSStore().load_local()
             LOGGING.info(f"Loaded FAISS DB Successfully")
     # Create a retriever object 
     retriever = db.as_retriever()
@@ -135,12 +128,6 @@ def web_retriver(device_type:str = DEVICE_TYPE,vectorstore:str = "Chroma", LOGGI
         description: The function is used to set up the retrieval-based question-answering system. It loads the LLM Model and searches on web for the answer backed up by the vectorstore.
         WARNING: The function is still in progress and is not yet complete.
     """
-    # Load the embedding model 
-    embeddings = HuggingFaceInstructEmbeddings(
-        model_name=EMBEDDING_MODEL,
-        model_kwargs={"device": DEVICE_TYPE},
-        cache_folder=MODEL_DIRECTORY,
-    )
     # Import the env
     try:
         os.environ["GOOGLE_CSE_ID"] = os.environ.get("GOOGLE_CSE_ID")
@@ -155,11 +142,11 @@ def web_retriver(device_type:str = DEVICE_TYPE,vectorstore:str = "Chroma", LOGGI
     match vectorstore:
         case "Chroma":
             # Load the Chroma DB with the embedding model
-            db = ChromaStore(embeddings)
+            db = ChromaStore()
             LOGGING.info(f"Loaded Chroma DB Successfully")
         case "FAISS":
             # Load the FAISS DB with the embedding model
-            db = FAISSStore(embeddings).load_local()
+            db = FAISSStore().load_local()
             LOGGING.info(f"Loaded FAISS DB Successfully")
     
     llm = load_model(device_type, model_id=MODEL_NAME, model_basename=MODEL_FILE, LOGGING=logging)

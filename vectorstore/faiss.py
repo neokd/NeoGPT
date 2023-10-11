@@ -13,8 +13,12 @@ from config import (
 )
 
 class FAISSStore(VectorStore):
-    def __init__(self, embeddings: HuggingFaceInstructEmbeddings) -> None:
-        self.embeddings = embeddings
+    def __init__(self) -> None:
+        self.embeddings = HuggingFaceInstructEmbeddings(
+            model_name=EMBEDDING_MODEL,
+            model_kwargs={"device": DEVICE_TYPE},
+            cache_folder=MODEL_DIRECTORY,
+        )
         self.faiss = FAISS(
             embedding_function=None,
             index=0,
