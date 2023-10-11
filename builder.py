@@ -4,7 +4,6 @@ from concurrent.futures import ProcessPoolExecutor,ThreadPoolExecutor, as_comple
 from langchain.docstore.document import Document
 from langchain.schema import Document
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.embeddings import HuggingFaceInstructEmbeddings
 from typing import Optional, Iterator, List, Dict
 from chromadb.config import Settings
 import argparse
@@ -85,12 +84,6 @@ def builder(vectorstore: str = "Chroma"):
     logging.info(f"Loaded {len(documents)} documents from {SOURCE_DIR}")
     logging.info(f"Split into {len(texts)} chunks of text")
     logging.info(f"Using {DEVICE_TYPE} device for embedding model")
-
-    embeddings = HuggingFaceInstructEmbeddings(
-        model_name=EMBEDDING_MODEL,
-        model_kwargs={"device": DEVICE_TYPE},
-        cache_folder=MODEL_DIRECTORY,
-    )
 
     match vectorstore:
         case "Chroma":

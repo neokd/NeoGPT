@@ -16,9 +16,7 @@ from config import (
     MODEL_DIRECTORY,
 )
 class ChromaStore(VectorStore):
-    def __init__(
-            self,
-        ) -> None:
+    def __init__(self) -> None:
         self.embeddings = HuggingFaceInstructEmbeddings(
             model_name=EMBEDDING_MODEL,
             model_kwargs={"device": DEVICE_TYPE},
