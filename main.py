@@ -3,13 +3,13 @@ import torch
 from uuid import UUID
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain.chains import RetrievalQA, RetrievalQAWithSourcesChain
-from langchain.llms import LlamaCpp
+from langchain.llms import LlamaCpp, HuggingFacePipeline
 from langchain.callbacks.manager import CallbackManager
 from langchain.schema.agent import AgentFinish
 from langchain.schema.output import LLMResult
 from huggingface_hub import hf_hub_download
 from langchain.utilities import GoogleSearchAPIWrapper
-from transformers import AutoModelForSequenceClassification, AutoTokenizer
+from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, GenerationConfig, pipeline, AutoModelForCausalLM
 from langchain.retrievers.web_research import WebResearchRetriever
 from langchain.callbacks.base import BaseCallbackHandler
 from vectorstore.chroma import ChromaStore
@@ -22,13 +22,8 @@ import os
 from prompts.prompt import get_prompt
 load_dotenv()
 from config import (
-    CHROMA_PERSIST_DIRECTORY,
-    FAISS_PERSIST_DIRECTORY,
     MODEL_DIRECTORY,
-    SOURCE_DIR,
-    EMBEDDING_MODEL,
     DEVICE_TYPE,
-    CHROMA_SETTINGS,
     MODEL_NAME,
     MODEL_FILE,
     N_GPU_LAYERS,
@@ -59,22 +54,77 @@ def load_model(device_type:str = DEVICE_TYPE, model_id:str = MODEL_NAME, model_b
         output: Hugging Face model
         description:  The function loads the pre-trained model from Hugging Face and returns the loaded model.
     """
-    # Checking for the availability of a CUDA-enabled GPU
-    if device_type == 'cuda' and not torch.cuda.is_available():
-        raise ValueError("CUDA is not available. Please use 'mps' or 'cpu' as the device_type.")
-    
-    try:
-         # Load the Hugging Face model and tokenizer
-        model = AutoModelForSequenceClassification.from_pretrained(model_name)
-        tokenizer = AutoTokenizer.from_pretrained(model_name)
+    if model_basename is not None and ".gguf" in model_basename.lower() :
 
-        # Move the model to the specified device (cuda or cpu)
-        model.to(device_type)
+        callback_manager = CallbackManager([StreamingStdOutCallbackHandler(),TokenCallbackHandler()])
+        try:
+        # Download the model checkpoint from the Hugging Face Hub
+            model_path = hf_hub_download(
+                repo_id=model_id,
+                filename=model_basename,
+                resume_download=True,
+                cache_dir=MODEL_DIRECTORY,
+            )
+            # Model Parameters
+            kwargs = {
+                "model_path": model_path,
+                "max_tokens": MAX_TOKEN_LENGTH,
+                "n_ctx": MAX_TOKEN_LENGTH,
+                "n_batch": 512,  
+                "callback_manager": callback_manager,
+                "verbose":False,
+                "f16_kv":True,
+                "streaming":True,
+            }
+            if device_type.lower() == "mps":
+                kwargs["n_gpu_layers"] = 1 # only for MPS devices
+            if device_type.lower() == "cuda":
+                kwargs["n_gpu_layers"] = N_GPU_LAYERS  # set this based on your GPU
+            # Create a LlamaCpp object (language model)
+            llm =  LlamaCpp(**kwargs)
+            LOGGING.info(f"Loaded {model_id} locally")
+            return llm  # Returns a LlamaCpp object (language model)
+        except Exception as e:
+            LOGGING.info(f"Error {e}")
 
-        LOGGING.info(f"Loaded Hugging Face model: {model_name} successfully")
-        return model, tokenizer
-    except Exception as e:
-        LOGGING.info(f"Error {e}")
+    else:
+        try:
+            # Load the Hugging Face model and tokenizer
+            model = AutoModelForCausalLM.from_pretrained(
+                model_id,
+                device_map="auto",
+                # torch_dtype=torch.float16,
+                # low_cpu_mem_usage=True,
+                # load_in_4bit=True,
+                # bnb_4bit_quant_type="nf4",
+                # bnb_4bit_compute_dtype=torch.float16,
+                cache_dir=MODEL_DIRECTORY,
+                trust_remote_code=True
+            )
+            # print(model)
+            tokenizer = AutoTokenizer.from_pretrained(model_id,device_map="auto",trust_remote_code=True)
+            # Move the model to the specified device (cuda or cpu)
+            # model.to(device_type)
+            # model.tie_weights()
+            # torch.set_default_device(device_type)
+            LOGGING.info(f"Loaded Hugging Face model: {model_id} successfully")
+            generation_config = GenerationConfig.from_pretrained(model_id)
+            pipe = pipeline(
+                "text-generation",
+                model=model,
+                tokenizer=tokenizer,
+                max_length=MAX_TOKEN_LENGTH,
+                # temperature=0.2,
+                # top_p=0.95,
+                # do_sample=True,
+                # repetition_penalty=1.15,
+                generation_config=generation_config,
+            )
+            llm = HuggingFacePipeline(pipeline=pipe)
+            llm("Hello World")
+            return llm
+        except Exception as e:
+            LOGGING.info(f"Error {e}")
 
 # Function to set up the retrieval-based question-answering system
 def db_retriver(device_type:str = DEVICE_TYPE,vectorstore:str = "Chroma", LOGGING=logging):
@@ -183,6 +233,6 @@ if __name__ == '__main__':
         help="Specify the vectorstore (Chroma, FAISS)",
     )
     args = parser.parse_args()
-    # db_retriver(device_type=args.device_type,vectorstore="Chroma", LOGGING=logging)
-    web_retriver(device_type=args.device_type,vectorstore="FAISS", LOGGING=logging)
+    db_retriver(device_type=args.device_type,vectorstore="Chroma", LOGGING=logging)
+    # web_retriver(device_type=args.device_type,vectorstore="FAISS", LOGGING=logging)
     

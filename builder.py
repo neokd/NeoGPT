@@ -100,9 +100,7 @@ def builder(vectorstore: str = "Chroma"):
             logging.info(f"Loaded Documents to FAISS DB Successfully")
     
     logging.info(f"Builder👷🏻‍♀️ has built your VectorDB successfully!")
-
-    
-    
+   
 # def query():
 #     embeddings = HuggingFaceInstructEmbeddings(
 #         model_name=EMBEDDING_MODEL_NAME,

@@ -26,9 +26,13 @@ PARENT_DB_DIRECTORY = os.path.join(os.path.dirname(__file__), "db")
 CHROMA_PERSIST_DIRECTORY = os.path.join(PARENT_DB_DIRECTORY, "chroma")
 # FAISS DB DIRECTORY
 FAISS_PERSIST_DIRECTORY = os.path.join(PARENT_DB_DIRECTORY, "faiss")
-# MODELS 
+# GGUF MODELS (Recommended , Default and Fast)
 MODEL_NAME = "TheBloke/Mistral-7B-Instruct-v0.1-GGUF"
 MODEL_FILE = "mistral-7b-instruct-v0.1.Q4_K_M.gguf"
+# HUGGING FACE MODEL (Not recommended for low RAM systems)
+# MODEL_NAME = "microsoft/phi-1_5"
+# MODEL_FILE = None
+# DEFAULT EMBEDDING MODEL
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L12-v2"
 # EMBEDDING MODEL CONFIG
 INGEST_THREADS = 8 or os.cpu_count()
