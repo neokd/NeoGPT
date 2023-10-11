@@ -105,11 +105,11 @@ def db_retriver(device_type:str = DEVICE_TYPE,vectorstore:str = "Chroma", LOGGIN
     match vectorstore:
         case "Chroma":
             # Load the Chroma DB with the embedding model
-            db = ChromaStore()
+            db = ChromaStore(embeddings)
             LOGGING.info(f"Loaded Chroma DB Successfully")
         case "FAISS":
             # Load the FAISS DB with the embedding model
-            db = FAISSStore().load_local()
+            db = FAISSStore(embeddings).load_local()
             LOGGING.info(f"Loaded FAISS DB Successfully")
     # Create a retriever object 
     retriever = db.as_retriever()
@@ -155,11 +155,11 @@ def web_retriver(device_type:str = DEVICE_TYPE,vectorstore:str = "Chroma", LOGGI
     match vectorstore:
         case "Chroma":
             # Load the Chroma DB with the embedding model
-            db = ChromaStore()
+            db = ChromaStore(embeddings)
             LOGGING.info(f"Loaded Chroma DB Successfully")
         case "FAISS":
             # Load the FAISS DB with the embedding model
-            db = FAISSStore().load_local()
+            db = FAISSStore(embeddings).load_local()
             LOGGING.info(f"Loaded FAISS DB Successfully")
     
     llm = load_model(device_type, model_id=MODEL_NAME, model_basename=MODEL_FILE, LOGGING=logging)
