@@ -96,7 +96,7 @@ def load_model(device_type:str = DEVICE_TYPE, model_id:str = MODEL_NAME, model_b
                 desc_act=True,  # set to False can significantly speed up inference but the perplexity may slightly bad
             )
             # Load the Hugging Face model into CPU memory (default)
-            if (device_type == "cpu"):
+            if (DEVICE_TYPE == "cpu"):
                 model = AutoGPTQForCausalLM.from_pretrained(
                     model_id,
                     quantize_config,
