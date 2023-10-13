@@ -9,7 +9,8 @@ from langchain.schema.agent import AgentFinish
 from langchain.schema.output import LLMResult
 from huggingface_hub import hf_hub_download
 from langchain.utilities import GoogleSearchAPIWrapper
-from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, GenerationConfig, pipeline, AutoModelForCausalLM
+from auto_gptq import AutoGPTQForCausalLM, BaseQuantizeConfig
+from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, GenerationConfig, pipeline, AutoModelForCausalLM, TextGenerationPipeline
 from langchain.retrievers.web_research import WebResearchRetriever
 from langchain.callbacks.base import BaseCallbackHandler
 from vectorstore.chroma import ChromaStore
@@ -48,7 +49,7 @@ class TokenCallbackHandler(BaseCallbackHandler):
         print(f"Total cost: {cost_per_token} INR")
 
 # Function to load the LLM 
-def load_model(device_type:str = DEVICE_TYPE, model_id:str = MODEL_NAME, model_basename:str = MODEL_FILE, LOGGING=logging):
+def load_model(device_type:str = DEVICE_TYPE, model_id:str = MODEL_NAME, model_basename:str = MODEL_FILE, LOGGING=logging, quantized_model_id:str = None):
     """
         input: device_type, model_id, model_basename, LOGGING
         output: Hugging Face model
@@ -84,6 +85,42 @@ def load_model(device_type:str = DEVICE_TYPE, model_id:str = MODEL_NAME, model_b
             llm =  LlamaCpp(**kwargs)
             LOGGING.info(f"Loaded {model_id} locally")
             return llm  # Returns a LlamaCpp object (language model)
+        except Exception as e:
+            LOGGING.info(f"Error {e}")
+
+    elif model_basename is not None :
+        try:
+            quantize_config = BaseQuantizeConfig(
+                bits=4,  # quantize model to 4-bit
+                group_size=128,  # it is recommended to set the value to 128
+                desc_act=True,  # set to False can significantly speed up inference but the perplexity may slightly bad
+            )
+            # Load the Hugging Face model into CPU memory (default)
+            if (device_type == "cpu"):
+                model = AutoGPTQForCausalLM.from_pretrained(
+                    model_id,
+                    quantize_config,
+                    trust_remote_code=True
+                )
+            # Use GPU for quantized models if found
+            elif quantized_model_id is not None:
+                model = AutoGPTQForCausalLM.from_quantized(
+                    quantized_model_id,
+                    device="cuda:0"
+                )
+            else:
+                LOGGING.info(f"Error : Quantized model not specified or found")
+            # print(model)
+            tokenizer = AutoTokenizer.from_pretrained(model_id,use_fast=True)
+            LOGGING.info(f"Loaded Hugging Face model: {model_id} successfully")
+            generation_config = GenerationConfig.from_pretrained(model_id)
+            pipe = TextGenerationPipeline(
+                model=model,
+                tokenizer=tokenizer
+            )
+            llm = HuggingFacePipeline(pipeline=pipe)
+            llm("Hello World")
+            return llm
         except Exception as e:
             LOGGING.info(f"Error {e}")
 
