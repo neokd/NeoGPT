@@ -88,7 +88,7 @@ def load_model(device_type:str = DEVICE_TYPE, model_id:str = MODEL_NAME, model_b
         except Exception as e:
             LOGGING.info(f"Error {e}")
 
-    elif model_basename is not None :
+    elif model_basename is not None and ".bin" in model_basename.lower() :
         try:
             quantize_config = BaseQuantizeConfig(
                 bits=4,  # quantize model to 4-bit
