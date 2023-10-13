@@ -49,7 +49,7 @@ class TokenCallbackHandler(BaseCallbackHandler):
         print(f"Total cost: {cost_per_token} INR")
 
 # Function to load the LLM 
-def load_model(device_type:str = DEVICE_TYPE, model_id:str = MODEL_NAME, model_basename:str = MODEL_FILE, LOGGING=logging, quantized_model_id:str = None):
+def load_model(device_type:str = DEVICE_TYPE, model_id:str = MODEL_NAME, model_basename:str = MODEL_FILE, LOGGING=logging):
     """
         input: device_type, model_id, model_basename, LOGGING
         output: Hugging Face model
@@ -103,9 +103,9 @@ def load_model(device_type:str = DEVICE_TYPE, model_id:str = MODEL_NAME, model_b
                     trust_remote_code=True
                 )
             # Use GPU for quantized models if found
-            elif quantized_model_id is not None:
+            else:
                 model = AutoGPTQForCausalLM.from_quantized(
-                    quantized_model_id,
+                    model_id,
                     device="cuda:0"
                 )
             else:
