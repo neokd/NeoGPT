@@ -13,7 +13,8 @@ from langchain.document_loaders import (
     UnstructuredPowerPointLoader,
     UnstructuredWordDocumentLoader,
     UnstructuredMarkdownLoader,
-    JSONLoader
+    JSONLoader,
+    YoutubeLoader
 )
 
 # Source Directory for Documents to Ingest
@@ -30,18 +31,18 @@ FAISS_PERSIST_DIRECTORY = os.path.join(PARENT_DB_DIRECTORY, "faiss")
 PINECONE_PERSIST_DIRECTORY = os.path.join(PARENT_DB_DIRECTORY,"pinecone")
 
 # GGUF MODELS (Recommended , Default and Fast)
-MODEL_NAME = "TheBloke/Mistral-7B-Instruct-v0.1-GGUF"
-MODEL_FILE = "mistral-7b-instruct-v0.1.Q4_K_M.gguf"
+# MODEL_NAME = "TheBloke/Mistral-7B-Instruct-v0.1-GGUF"
+# MODEL_FILE = "mistral-7b-instruct-v0.1.Q4_K_M.gguf"
 # HUGGING FACE MODEL (Not recommended for low RAM systems)
-# MODEL_NAME = "microsoft/phi-1_5"
-# MODEL_FILE = None
+MODEL_NAME = "microsoft/phi-1_5"
+MODEL_FILE = None
 # DEFAULT EMBEDDING MODEL
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L12-v2"
 # EMBEDDING MODEL CONFIG
 INGEST_THREADS = 8 or os.cpu_count()
 
 # MODEL CONFIG
-MAX_TOKEN_LENGTH = 8192 # 8192 is the max for Mistral-7B
+MAX_TOKEN_LENGTH = 2048 # 8192 is the max for Mistral-7B
 N_GPU_LAYERS = 40
 
 # PYTORCH DEVICE COMPATIBILITY
@@ -79,4 +80,5 @@ DOCUMENT_EXTENSION = {
     '.doc' :UnstructuredWordDocumentLoader,
     '.md' :UnstructuredMarkdownLoader,
     '.json' :JSONLoader,
+    '.youtube' :YoutubeLoader,
 }

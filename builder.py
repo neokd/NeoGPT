@@ -12,9 +12,7 @@ from vectorstore.faiss import FAISSStore
 from config import (
     SOURCE_DIR,
     INGEST_THREADS,
-    EMBEDDING_MODEL,
     DEVICE_TYPE,
-    MODEL_DIRECTORY,
     DOCUMENT_EXTENSION,
 )
 
@@ -43,7 +41,6 @@ def load_document_batch(filepaths):
 
 def load_documents(source_directory : str) -> list[Document]:
     doc_path = []
-
 
     for root,_,files in os.walk(source_directory):
         for file_name in files:

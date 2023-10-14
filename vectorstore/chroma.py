@@ -32,7 +32,7 @@ class ChromaStore(VectorStore):
         self.chroma.from_documents(
             documents=documents,
             embedding=self.embeddings,
-            persist_directory=self.persist_directory,
+            persist_directory=CHROMA_PERSIST_DIRECTORY,
             client_settings=CHROMA_SETTINGS,
         )
         return documents

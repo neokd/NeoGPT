@@ -15,8 +15,7 @@ from langchain.retrievers.web_research import WebResearchRetriever
 from langchain.callbacks.base import BaseCallbackHandler
 from vectorstore.chroma import ChromaStore
 from vectorstore.faiss import FAISSStore
-from langchain.vectorstores import Chroma
-from pinecone import Pinecone,PineconeClient
+# from vectorstore.pinecone import PineconeVectorStore
 import argparse
 from dotenv import load_dotenv
 import os
@@ -108,7 +107,7 @@ def load_model(device_type:str = DEVICE_TYPE, model_id:str = MODEL_NAME, model_b
                     model_id,
                     device="cuda:0"
                 )
-            else:
+            
                 LOGGING.info(f"Error : Quantized model not specified or found")
             # print(model)
             tokenizer = AutoTokenizer.from_pretrained(model_id,use_fast=True)
@@ -127,38 +126,48 @@ def load_model(device_type:str = DEVICE_TYPE, model_id:str = MODEL_NAME, model_b
     else:
         try:
             # Load the Hugging Face model and tokenizer
-            model = AutoModelForCausalLM.from_pretrained(
-                model_id,
-                device_map="auto",
-                # torch_dtype=torch.float16,
-                # low_cpu_mem_usage=True,
-                # load_in_4bit=True,
-                # bnb_4bit_quant_type="nf4",
-                # bnb_4bit_compute_dtype=torch.float16,
-                cache_dir=MODEL_DIRECTORY,
-                trust_remote_code=True
+            # model = AutoModelForCausalLM.from_pretrained(
+            #     model_id,
+            #     device_map="auto",
+            #     # torch_dtype=torch.float16,
+            #     # low_cpu_mem_usage=True,
+            #     # load_in_4bit=True,
+            #     # bnb_4bit_quant_type="nf4",
+            #     # bnb_4bit_compute_dtype=torch.float16,
+            #     cache_dir=MODEL_DIRECTORY,
+            #     trust_remote_code=True
+            # )
+            # # print(model)
+            # tokenizer = AutoTokenizer.from_pretrained(model_id,device_map="auto",trust_remote_code=True)
+            # # Move the model to the specified device (cuda or cpu)
+            # # model.to(device_type)
+            # # model.tie_weights()
+            # # torch.set_default_device(device_type)
+            # LOGGING.info(f"Loaded Hugging Face model: {model_id} successfully")
+            # generation_config = GenerationConfig.from_pretrained(model_id)
+            # pipe = pipeline(
+            #     "text-generation",
+            #     model=model,
+            #     tokenizer=tokenizer,
+            #     max_length=MAX_TOKEN_LENGTH,
+            #     temperature=0.2,
+            #     # top_p=0.95,
+            #     do_sample=True,
+            #     # repetition_penalty=1.15,
+            #     generation_config=generation_config,
+            # )
+            kwargs = {
+                # "temperature": 0, 
+                "max_length": MAX_TOKEN_LENGTH, 
+                "cache_dir":  MODEL_DIRECTORY,
+                "trust_remote_code":True 
+            }
+            llm = HuggingFacePipeline.from_model_id(
+                model_id = MODEL_NAME,
+                task="text-generation",
+                # device=0,
+                model_kwargs=kwargs,
             )
-            # print(model)
-            tokenizer = AutoTokenizer.from_pretrained(model_id,device_map="auto",trust_remote_code=True)
-            # Move the model to the specified device (cuda or cpu)
-            # model.to(device_type)
-            # model.tie_weights()
-            # torch.set_default_device(device_type)
-            LOGGING.info(f"Loaded Hugging Face model: {model_id} successfully")
-            generation_config = GenerationConfig.from_pretrained(model_id)
-            pipe = pipeline(
-                "text-generation",
-                model=model,
-                tokenizer=tokenizer,
-                max_length=MAX_TOKEN_LENGTH,
-                # temperature=0.2,
-                # top_p=0.95,
-                # do_sample=True,
-                # repetition_penalty=1.15,
-                generation_config=generation_config,
-            )
-            llm = HuggingFacePipeline(pipeline=pipe)
-            llm("Hello World")
             return llm
         except Exception as e:
             LOGGING.info(f"Error {e}")
@@ -179,13 +188,13 @@ def db_retriver(device_type:str = DEVICE_TYPE,vectorstore:str = "Chroma", LOGGIN
             # Load the FAISS DB with the embedding model
             db = FAISSStore().load_local()
             LOGGING.info(f"Loaded FAISS DB Successfully")
-        case "Pinecone":
+        # case "Pinecone":
             # Initialize Pinecone client
             # Load the Pinecone DB with the embedding model
-            pinecone_api_key = "your_api_key"
-            pinecone_environment = "your_environment_name"
-            db= Pinecone(api_key=pinecone_api_key, environment=pinecone_environment)
-            LOGGING.info(f"Initialized Pinecone DB Successfully")
+            # pinecone_api_key = "your_api_key"
+            # pinecone_environment = "your_environment_name"
+            # db= Pinecone(api_key=pinecone_api_key, environment=pinecone_environment)
+            # LOGGING.info(f"Initialized Pinecone DB Successfully")
             
     # Create a retriever object 
     retriever = db.as_retriever()
@@ -202,7 +211,6 @@ def db_retriver(device_type:str = DEVICE_TYPE,vectorstore:str = "Chroma", LOGGIN
     )
     # Run the retrieval-based question-answering system
     chain("Write linux command to copy file from one directory to another directory",return_only_outputs=True)
-
 ### TODO: Add the Web Search Retriever (In Progress)
 def web_retriver(device_type:str = DEVICE_TYPE,vectorstore:str = "Chroma", LOGGING=logging):
     """
@@ -231,13 +239,13 @@ def web_retriver(device_type:str = DEVICE_TYPE,vectorstore:str = "Chroma", LOGGI
             # Load the FAISS DB with the embedding model
             db = FAISSStore().load_local()
             LOGGING.info(f"Loaded FAISS DB Successfully")
-        case "Pinecone":
-            # Initialize Pinecone client
-            # Load the Pinecone DB with the embedding model
-            pinecone_api_key = "your_api_key"
-            pinecone_environment = "your_environment_name"
-            db= Pinecone(api_key=pinecone_api_key, environment=pinecone_environment)
-            LOGGING.info(f"Initialized Pinecone DB Successfully")
+        # case "Pinecone":
+        #     # Initialize Pinecone client
+        #     # Load the Pinecone DB with the embedding model
+        #     pinecone_api_key = "your_api_key"
+        #     pinecone_environment = "your_environment_name"
+        #     db= Pinecone(api_key=pinecone_api_key, environment=pinecone_environment)
+        #     LOGGING.info(f"Initialized Pinecone DB Successfully")
             
     llm = load_model(device_type, model_id=MODEL_NAME, model_basename=MODEL_FILE, LOGGING=logging)
           
