@@ -21,7 +21,7 @@ To embark on your NeoGPT journey, follow these simple steps:
 ## ✅ To Do
 - ✓ RAG (Question Answering with local files) 📂
 - ✓ Web Based RAG (Search on Web and local files) 🌐📂
-- ✓ Hybrid RAG (Keyword based search and RAG) 🕵️‍♂️📂
+- ✓ Hybrid RAG (Keyword based and Semmantic Search) 🕵️‍♂️📂
 - ✓ FAISS Support 📊
 - ✓ Chromadb Support 🎵
 - ☐ User Interface 💻
