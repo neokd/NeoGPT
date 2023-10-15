@@ -31,18 +31,25 @@ FAISS_PERSIST_DIRECTORY = os.path.join(PARENT_DB_DIRECTORY, "faiss")
 PINECONE_PERSIST_DIRECTORY = os.path.join(PARENT_DB_DIRECTORY,"pinecone")
 
 # GGUF MODELS (Recommended , Default and Fast)
-# MODEL_NAME = "TheBloke/Mistral-7B-Instruct-v0.1-GGUF"
-# MODEL_FILE = "mistral-7b-instruct-v0.1.Q4_K_M.gguf"
+MODEL_NAME = "TheBloke/Mistral-7B-Instruct-v0.1-GGUF"
+MODEL_FILE = "mistral-7b-instruct-v0.1.Q4_K_M.gguf"
+
+# GPTQ MODELS (Quantized Models)
+# MODEL_NAME = "TheBloke/Llama-2-7b-Chat-GPTQ"
+# MODEL_FILE = "model.safetensors"
+
 # HUGGING FACE MODEL (Not recommended for low RAM systems)
-MODEL_NAME = "microsoft/phi-1_5"
-MODEL_FILE = None
+# MODEL_NAME = "microsoft/phi-1_5"
+# MODEL_FILE = None
+
+
 # DEFAULT EMBEDDING MODEL
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L12-v2"
 # EMBEDDING MODEL CONFIG
 INGEST_THREADS = 8 or os.cpu_count()
 
 # MODEL CONFIG
-MAX_TOKEN_LENGTH = 2048 # 8192 is the max for Mistral-7B
+MAX_TOKEN_LENGTH = 8192 # 8192 is the max for Mistral-7B
 N_GPU_LAYERS = 40
 
 # PYTORCH DEVICE COMPATIBILITY
@@ -82,3 +89,7 @@ DOCUMENT_EXTENSION = {
     '.json' :JSONLoader,
     '.youtube' :YoutubeLoader,
 }
+
+# 
+QUERY_COST = 0
+TOTAL_COST = 0

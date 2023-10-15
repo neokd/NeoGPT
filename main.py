@@ -2,23 +2,22 @@ import logging
 import torch
 from uuid import UUID
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
-from langchain.chains import RetrievalQA, RetrievalQAWithSourcesChain
+from langchain.chains import RetrievalQA
 from langchain.llms import LlamaCpp, HuggingFacePipeline
 from langchain.callbacks.manager import CallbackManager
-from langchain.schema.agent import AgentFinish
 from langchain.schema.output import LLMResult
 from huggingface_hub import hf_hub_download
 from langchain.utilities import GoogleSearchAPIWrapper
 from auto_gptq import AutoGPTQForCausalLM, BaseQuantizeConfig
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, GenerationConfig, pipeline, AutoModelForCausalLM, TextGenerationPipeline
 from langchain.retrievers.web_research import WebResearchRetriever
+from langchain.retrievers import BM25Retriever, EnsembleRetriever
 from langchain.callbacks.base import BaseCallbackHandler
 from vectorstore.chroma import ChromaStore
 from vectorstore.faiss import FAISSStore
 # from vectorstore.pinecone import PineconeVectorStore
-import argparse
 from dotenv import load_dotenv
-import os
+import os, time, sys, select, argparse
 from prompts.prompt import get_prompt
 load_dotenv()
 from config import (
@@ -28,6 +27,8 @@ from config import (
     MODEL_FILE,
     N_GPU_LAYERS,
     MAX_TOKEN_LENGTH,
+    QUERY_COST,
+    TOTAL_COST
 )
 from typing import Any
 
@@ -41,11 +42,14 @@ class TokenCallbackHandler(BaseCallbackHandler):
         self._tokens.append(token)
 
     def on_llm_end(self, response: LLMResult, *, run_id: UUID, parent_run_id: UUID | None = None, **kwargs: Any) -> Any:
-        # Calculate the cost based on OpenAI's pricing
-        cost_per_token = ((len(self._tokens) / 1000) * 0.002) * 83.33  # INR Cost per token
+        global TOTAL_COST, QUERY_COST  # Use the global variables
+        # Cost are based on OpenAI's pricing model
+        QUERY_COST = round(((len(self._tokens) / 1000) * 0.002) * 83.33, 5)  # INR Cost per token, rounded to 5 decimal places
+        TOTAL_COST = round(TOTAL_COST + QUERY_COST, 5)  # Accumulate the cost, rounded to 5 decimal places
         total_tokens = len(self._tokens)
         print(f"\n\nTotal tokens generated: {total_tokens}")
-        print(f"Total cost: {cost_per_token} INR")
+        print(f"Query cost: {QUERY_COST} INR")
+        print(f"Total cost: {TOTAL_COST} INR")
 
 # Function to load the LLM 
 def load_model(device_type:str = DEVICE_TYPE, model_id:str = MODEL_NAME, model_basename:str = MODEL_FILE, LOGGING=logging):
@@ -87,75 +91,48 @@ def load_model(device_type:str = DEVICE_TYPE, model_id:str = MODEL_NAME, model_b
         except Exception as e:
             LOGGING.info(f"Error {e}")
 
-    elif model_basename is not None and ".bin" in model_basename.lower() :
+    elif model_basename is not None and ".safetensors" in model_basename.lower() :
         try:
+            if ".safetensors" in model_basename.lower():
+                model_basename = model_basename.replace(".safetensors","")
             quantize_config = BaseQuantizeConfig(
                 bits=4,  # quantize model to 4-bit
                 group_size=128,  # it is recommended to set the value to 128
                 desc_act=True,  # set to False can significantly speed up inference but the perplexity may slightly bad
             )
-            # Load the Hugging Face model into CPU memory (default)
-            if (DEVICE_TYPE == "cpu"):
-                model = AutoGPTQForCausalLM.from_pretrained(
-                    model_id,
-                    quantize_config,
-                    trust_remote_code=True
-                )
-            # Use GPU for quantized models if found
-            else:
-                model = AutoGPTQForCausalLM.from_quantized(
-                    model_id,
-                    device="cuda:0"
-                )
-            
-                LOGGING.info(f"Error : Quantized model not specified or found")
+            # Load GPTQ model from huggingface
+            model = AutoGPTQForCausalLM.from_quantized(
+                model_id,
+                model_basename=model_basename,
+                use_safetensors=True,
+                trust_remote_code=True,
+                # device= "cuda" if torch.cuda.is_available() else "cpu",
+                use_triton=False,
+                model_kwargs= {"cache_dir" : MODEL_DIRECTORY},
+                quantize_config=quantize_config,
+               
+            )
             # print(model)
             tokenizer = AutoTokenizer.from_pretrained(model_id,use_fast=True)
-            LOGGING.info(f"Loaded Hugging Face model: {model_id} successfully")
-            generation_config = GenerationConfig.from_pretrained(model_id)
+            LOGGING.info(f"Loaded GPTQ model: {model_id} successfully")
+            # generation_config = GenerationConfig.from_pretrained(model_id)
             pipe = TextGenerationPipeline(
+                task="text-generation",
                 model=model,
-                tokenizer=tokenizer
+                tokenizer=tokenizer,
+                max_new_tokens=512,
+                temperature=0.7,
+                top_p=0.95,
+                repetition_penalty=1.15
             )
             llm = HuggingFacePipeline(pipeline=pipe)
-            llm("Hello World")
             return llm
         except Exception as e:
             LOGGING.info(f"Error {e}")
 
     else:
         try:
-            # Load the Hugging Face model and tokenizer
-            # model = AutoModelForCausalLM.from_pretrained(
-            #     model_id,
-            #     device_map="auto",
-            #     # torch_dtype=torch.float16,
-            #     # low_cpu_mem_usage=True,
-            #     # load_in_4bit=True,
-            #     # bnb_4bit_quant_type="nf4",
-            #     # bnb_4bit_compute_dtype=torch.float16,
-            #     cache_dir=MODEL_DIRECTORY,
-            #     trust_remote_code=True
-            # )
-            # # print(model)
-            # tokenizer = AutoTokenizer.from_pretrained(model_id,device_map="auto",trust_remote_code=True)
-            # # Move the model to the specified device (cuda or cpu)
-            # # model.to(device_type)
-            # # model.tie_weights()
-            # # torch.set_default_device(device_type)
-            # LOGGING.info(f"Loaded Hugging Face model: {model_id} successfully")
-            # generation_config = GenerationConfig.from_pretrained(model_id)
-            # pipe = pipeline(
-            #     "text-generation",
-            #     model=model,
-            #     tokenizer=tokenizer,
-            #     max_length=MAX_TOKEN_LENGTH,
-            #     temperature=0.2,
-            #     # top_p=0.95,
-            #     do_sample=True,
-            #     # repetition_penalty=1.15,
-            #     generation_config=generation_config,
-            # )
+            LOGGING.warning(f"🚨 You are using an large model. Please use a quantized model for better performance")
             kwargs = {
                 # "temperature": 0, 
                 "max_length": MAX_TOKEN_LENGTH, 
@@ -168,18 +145,19 @@ def load_model(device_type:str = DEVICE_TYPE, model_id:str = MODEL_NAME, model_b
                 # device=0,
                 model_kwargs=kwargs,
             )
+            LOGGING.info(f"Loaded {model_id} successfully")
             return llm
         except Exception as e:
             LOGGING.info(f"Error {e}")
 
 # Function to set up the retrieval-based question-answering system
-def db_retriver(device_type:str = DEVICE_TYPE,vectorstore:str = "Chroma", LOGGING=logging):
+def db_retriver(device_type:str = DEVICE_TYPE,vectordb:str = "Chroma", retriever:str = "local",LOGGING=logging):
     """
         input: device_type,vectorstore, LOGGING
         output: None
         description: The function is used to set up the retrieval-based question-answering system. It loads the LLM model, the Chroma DB, and the prompt and memory objects. It then creates a retrieval-based question-answering system using the LLM model and the Chroma DB.
     """
-    match vectorstore:
+    match vectordb:
         case "Chroma":
             # Load the Chroma DB with the embedding model
             db = ChromaStore()
@@ -195,69 +173,91 @@ def db_retriver(device_type:str = DEVICE_TYPE,vectorstore:str = "Chroma", LOGGIN
             # pinecone_environment = "your_environment_name"
             # db= Pinecone(api_key=pinecone_api_key, environment=pinecone_environment)
             # LOGGING.info(f"Initialized Pinecone DB Successfully")
-            
-    # Create a retriever object 
-    retriever = db.as_retriever()
+
     # Load the LLM model
     llm = load_model(device_type, model_id=MODEL_NAME, model_basename=MODEL_FILE, LOGGING=logging)
+
     # Prompt Builder Function 
     prompt , memory = get_prompt()
-    # Create a retrieval-based question-answering system using the LLM model and the Vector DB
-    chain = RetrievalQA.from_chain_type(
-        llm=llm,
-        retriever=retriever,
-        chain_type="stuff",
-        chain_type_kwargs={"prompt": prompt, "memory": memory},
-    )
-    # Run the retrieval-based question-answering system
-    chain("Write linux command to copy file from one directory to another directory",return_only_outputs=True)
-### TODO: Add the Web Search Retriever (In Progress)
-def web_retriver(device_type:str = DEVICE_TYPE,vectorstore:str = "Chroma", LOGGING=logging):
-    """
-        input: device_type,vectorstore,LOGGING
-        output: None
-        description: The function is used to set up the retrieval-based question-answering system. It loads the LLM Model and searches on web for the answer backed up by the vectorstore.
-        WARNING: The function is still in progress and is not yet complete.
-    """
-    # Import the env
-    try:
-        os.environ["GOOGLE_CSE_ID"] = os.environ.get("GOOGLE_CSE_ID")
-        os.environ["GOOGLE_API_KEY"] = os.environ.get("GOOGLE_API_KEY")
-        # Using Google Search API Wrapper
-        print(os.environ.get("GOOGLE_CSE_ID"))
+    match retriever:
+        case "local":
+            LOGGING.info("Loaded Local Retriever Successfully 🚀")
+            # Create a retriever object 
+            local_retriever = db.as_retriever()
+            chain = RetrievalQA.from_chain_type(
+                llm=llm,
+                retriever=local_retriever,
+                chain_type="stuff",
+                chain_type_kwargs={
+                    "prompt": prompt, 
+                    "memory": memory
+                    },
+                )
         
-    except Exception as e:
-        LOGGING.info(f"Error {e}")
-    search = GoogleSearchAPIWrapper()
-    # Load the Vector DB
-    match vectorstore:
-        case "Chroma":
-            # Load the Chroma DB with the embedding model
-            db = ChromaStore()
-            LOGGING.info(f"Loaded Chroma DB Successfully")
-        case "FAISS":
-            # Load the FAISS DB with the embedding model
-            db = FAISSStore().load_local()
-            LOGGING.info(f"Loaded FAISS DB Successfully")
-        # case "Pinecone":
-        #     # Initialize Pinecone client
-        #     # Load the Pinecone DB with the embedding model
-        #     pinecone_api_key = "your_api_key"
-        #     pinecone_environment = "your_environment_name"
-        #     db= Pinecone(api_key=pinecone_api_key, environment=pinecone_environment)
-        #     LOGGING.info(f"Initialized Pinecone DB Successfully")
-            
-    llm = load_model(device_type, model_id=MODEL_NAME, model_basename=MODEL_FILE, LOGGING=logging)
-          
-    web_research_retriever = WebResearchRetriever.from_llm(
-        vectorstore=db,
-        llm=llm,
-        search=search,
-    )
-    user_input = "What is Task Decomposition in LLM Powered Autonomous Agents?"
-    qa_chain = RetrievalQAWithSourcesChain.from_chain_type(llm=llm ,retriever=web_research_retriever )
-    result = qa_chain({"question": user_input})
-    print(result)
+        case "web":
+            LOGGING.info("Loaded Web Retriever Successfully 🔍")
+            try:
+                os.environ["GOOGLE_CSE_ID"] = os.environ.get("GOOGLE_CSE_ID")
+                os.environ["GOOGLE_API_KEY"] = os.environ.get("GOOGLE_API_KEY")
+            except Exception as e:
+                LOGGING.info(f"Error {e}")
+
+            web_retriever = WebResearchRetriever.from_llm(
+                vectorstore=db,
+                llm=llm,
+                search=GoogleSearchAPIWrapper(),
+            )
+            # Create a retriever chain
+            chain = RetrievalQA.from_chain_type(
+                llm=llm,
+                retriever=web_retriever,
+                chain_type="stuff",
+                chain_type_kwargs={
+                    "prompt": prompt, 
+                    "memory": memory
+                    },
+            )
+
+        case "hybrid":
+            LOGGING.info("Loaded Hybrid Retriever Successfully ⚡️")
+            local_retriver = db.as_retriever()
+            # local_retriever.get_relevant_documents("What is the capital of India?",k=10)
+            bm_retriever = BM25Retriever.from_documents(
+                documents=local_retriver.get_relevant_documents("What is the capital of India?"),
+                # bm25_params={"k1": 3},
+            )
+            ensemble_retriever = EnsembleRetriever(retrievers=[bm_retriever, local_retriver],weights=[0.5, 0.5])
+
+            chain = RetrievalQA.from_chain_type(
+                llm=llm,
+                retriever=ensemble_retriever,
+                chain_type="stuff",
+                chain_type_kwargs={
+                    "prompt": prompt, 
+                    "memory": memory
+                    },
+                # return_source_documents=True,
+            )
+
+    timeout = 30  # 30 seconds
+    # Main loop
+    while True:
+        start_time = time.time()
+        query = None
+        while (time.time() - start_time) < timeout:
+            if sys.stdin in select.select([sys.stdin], [], [], timeout)[0]:
+                query = input("Enter your query: ")
+                break
+
+        if query:
+        # Get the response from the LLM model
+            chain(query)
+        else:
+            print("No query entered for", timeout, "seconds. Exiting.")
+            break # Exit the main loop when the timeout is reached
+
+
+
 
 if __name__ == '__main__':
     logging.basicConfig(
@@ -277,7 +277,13 @@ if __name__ == '__main__':
         default="Chroma",
         help="Specify the vectorstore (Chroma, FAISS)",
     )
+    parser.add_argument(
+        "--retriever",
+        choices=["local", "web","hybrid"],
+        default="local",
+        help="Specify the retriever (local, web, hybrid)",
+    )
+ 
     args = parser.parse_args()
-    db_retriver(device_type=args.device_type,vectorstore="Chroma", LOGGING=logging)
-    # web_retriver(device_type=args.device_type,vectorstore="FAISS", LOGGING=logging)
+    db_retriver(device_type=args.device_type,vectordb=args.db,retriever=args.retriever, LOGGING=logging)
     

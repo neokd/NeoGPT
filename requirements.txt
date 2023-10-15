@@ -7,4 +7,5 @@ sentence-transformers
 llama-cpp-python
 chainlit
 faiss-cpu
-duckduckgo-search
+google-api-python-client
+html2text

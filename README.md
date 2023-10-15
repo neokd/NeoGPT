@@ -19,12 +19,20 @@ To embark on your NeoGPT journey, follow these simple steps:
     ```
 
 ## ✅ To Do
-- ✓ RAG (Retrieval Augmented Generation) 
-- ✓ FAISS Support
-- ☐ User Interface
-- ☐ Memory Support for RAG
-- ☐ Multilingual Support
-
+- ✓ RAG (Question Answering with local files) 📂
+- ✓ Web Based RAG (Search on Web and local files) 🌐📂
+- ✓ Hybrid RAG (Keyword based search and RAG) 🕵️‍♂️📂
+- ✓ FAISS Support 📊
+- ✓ Chromadb Support 🎵
+- ☐ User Interface 💻
+- ☐ Build a user-friendly CLI ⌨️
+- ☐ Upgrade Builder to support multiple file types including URLs 📦🌐
+- ☐ Add support for other LLM types (Ollama) 🧠
+- ☐ Add other database support (MongoDB, ElasticSearch, etc.) 📁🔍
+- ☐ Support for other search engines (DuckDuckGo, Bing, etc.) 🔍
+- ☐ Docker Support 🐳
+- ☐ Better Documentation 📖
+- ☐ Agent based chatbot 🤖
 
 ## 🌟 Features
 
