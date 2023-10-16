@@ -18,7 +18,7 @@ Note: NeoGPT is continuously evolving. Your feedback shapes its future.
    pip install -r requirements.txt
     ```
 
-2. **Run the NeoGPT:** Run the CLI to start using NeoGPT. You can use the `--help` flag to view the available commands and options.
+2. **Run the NeoGPT:** Run the CLI to start using NeoGPT. Requires `Python v3.10`. You can use the `--help` flag to view the available commands and options.
     ```python
         python main.py --build
     ```
