@@ -1,13 +1,13 @@
-# 🚀 NeoGPT
+# NeoGPT 🚀
 
-NeoGPT is a powerful, easy-to-use LLM (Large Language Model) based application designed to perform specific tasks on local systems. Currently RAG (Retrieval Augmented Generation) is supported.
+Say goodbye to boring interactions with documents and YouTube videos. NeoGPT adds excitement to your tasks. From dynamic Q&A to content generation, NeoGPT is your trusted companion. Chat with local documents and conquer lengthy YouTube videos effortlessly. Perfect for professionals, developers, researchers, and enthusiasts.
+
+Note: NeoGPT is continuously evolving. Your feedback shapes its future.
 
 ## 🎉 Join Us for Hacktoberfest 2023
 ![Hacktoberfest Banner](./readme.png)
 
 ## 🚀 Getting Started
-
-To embark on your NeoGPT journey, follow these simple steps:
 
 1. **Installation:** Clone this repository and install the necessary dependencies.
 
@@ -18,8 +18,19 @@ To embark on your NeoGPT journey, follow these simple steps:
    pip install -r requirements.txt
     ```
 
-## ✅ To Do
+2. **Run the NeoGPT:** Run the CLI to start using NeoGPT. You can use the `--help` flag to view the available commands and options.
+    ```python
+        python main.py --build
+    ```
+
+## Supported Retriever 
+- Local Retriever
+- Web Retriever
+- Hybrid Retriever (Ensemble Retriever)
+
+## ✅ Achievements
 - ✓ RAG (Question Answering with local files) 📂
+- ✓ Chat with Youtube Videos 🎥
 - ✓ Web Based RAG (Search on Web and local files) 🌐📂
 - ✓ Hybrid RAG (Keyword based and Semmantic Search) 🕵️‍♂️📂
 - ✓ FAISS Support 📊

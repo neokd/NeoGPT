@@ -16,6 +16,7 @@ from langchain.callbacks.base import BaseCallbackHandler
 from vectorstore.chroma import ChromaStore
 from vectorstore.faiss import FAISSStore
 # from vectorstore.pinecone import PineconeVectorStore
+from builder import builder
 from dotenv import load_dotenv
 import os, time, sys, select, argparse
 from prompts.prompt import get_prompt
@@ -281,7 +282,16 @@ if __name__ == '__main__':
         default="local",
         help="Specify the retriever (local, web, hybrid)",
     )
- 
+    parser.add_argument(
+        "--build",
+        default=False,
+        action="store_true",
+        help="Run the builder",
+    )
+
     args = parser.parse_args()
+    if args.build:
+        builder(vectorstore=args.db)
+
     db_retriver(device_type=args.device_type,vectordb=args.db,retriever=args.retriever, LOGGING=logging)
     

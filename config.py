@@ -14,7 +14,8 @@ from langchain.document_loaders import (
     UnstructuredWordDocumentLoader,
     UnstructuredMarkdownLoader,
     JSONLoader,
-    YoutubeLoader
+    YoutubeLoader,
+    WhatsAppChatLoader
 )
 
 # Source Directory for Documents to Ingest
@@ -70,6 +71,12 @@ CHROMA_SETTINGS = Settings(
 EMBEDDING_DIMENSION = ""
 INDEX_NAME = ""
 
+# Reserved File Names
+RESERVED_FILE_NAMES = [
+    "builder.url",
+    "_chat.txt"
+]
+
 # List of file supported for ingest 
 DOCUMENT_EXTENSION = {
     '.pdf': PDFMinerLoader,
@@ -87,9 +94,13 @@ DOCUMENT_EXTENSION = {
     '.doc' :UnstructuredWordDocumentLoader,
     '.md' :UnstructuredMarkdownLoader,
     '.json' :JSONLoader,
-    '.youtube' :YoutubeLoader,
 }
 
-# 
+# List of URL patterns supported for ingest
+URL_EXTENSION = {
+    '.youtube' :YoutubeLoader,
+}
+# Initial Query Cost and Total Cost
+
 QUERY_COST = 0
 TOTAL_COST = 0

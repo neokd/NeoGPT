@@ -1,6 +1,7 @@
 import logging
 import os
 from concurrent.futures import ProcessPoolExecutor,ThreadPoolExecutor, as_completed
+import re
 from langchain.docstore.document import Document
 from langchain.schema import Document
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -14,6 +15,8 @@ from config import (
     INGEST_THREADS,
     DEVICE_TYPE,
     DOCUMENT_EXTENSION,
+    URL_EXTENSION,
+    RESERVED_FILE_NAMES
 )
 
 def load_single_document(file_path: str) -> Document:
@@ -34,46 +37,81 @@ def load_document_batch(filepaths):
         # load files
         futures = [exe.submit(load_single_document, name) for name in filepaths]
         # collect data
+        
         data_list = [future.result() for future in futures]
         # return data and file paths
         return (data_list, filepaths)
 
 
-def load_documents(source_directory : str) -> list[Document]:
-    doc_path = []
+def process_url(file_path: str) -> Document:
+    file_extension = os.path.splitext(file_path)[1]
+    if file_extension != ".url":
+        return  # Skip if not a .url file
 
+    with open(file_path) as build:
+        urls = build.readlines()
+        for url in urls:
+            if "youtube.com" in url:
+                loader_class = URL_EXTENSION.get('.youtube', None)  # 
+                loader = loader_class.from_youtube_url(
+                    url,
+                    add_video_info=True
+                )
+    return loader.load()[0]
+        
+def load_url_batch(urlpaths):
+    logging.info("Loading Url batch")
+    with ThreadPoolExecutor(len(urlpaths)) as exe:
+        futures = [exe.submit(process_url, name) for name in urlpaths]
+        data_list = [future.result() for future in futures]
+    return (data_list, urlpaths)
+
+
+def build_documents(source_directory : str) -> list[Document]:
+    doc_path = []
+    url_path = []
     for root,_,files in os.walk(source_directory):
         for file_name in files:
             file_extension = os.path.splitext(file_name)[1]
             source_file_path = os.path.join(root, file_name)
-            if file_extension in DOCUMENT_EXTENSION.keys():
+            if file_extension in DOCUMENT_EXTENSION.keys() and file_name not in RESERVED_FILE_NAMES:
                 doc_path.append(source_file_path)
+            elif file_name in RESERVED_FILE_NAMES:
+                url_path.append(source_file_path)
 
-    n_workers = min(INGEST_THREADS, max(len(doc_path), 1))
-    chunk_size = round(len(doc_path) / n_workers)
+    n_workers = min(INGEST_THREADS, max(len(doc_path), 1), max(len(url_path), 1))
+
+    chunk_size = round((len(doc_path) + len(url_path)) / n_workers)
 
     docs = []
-
     with ProcessPoolExecutor(n_workers) as executor:
         futures = []
         # split the load operations into chunks
-        for i in range(0, len(doc_path), chunk_size):
-            # select a chunk of filenames
-            filepaths = doc_path[i : (i + chunk_size)]
-            # submit the task
-            future = executor.submit(load_document_batch, filepaths)
-            futures.append(future)
-        # process all results
+        if len(doc_path) > 0:
+            for i in range(0, len(doc_path), chunk_size):
+                # select a chunk of filenames
+                filepaths = doc_path[i : (i + chunk_size)]
+                # submit the task
+                future = executor.submit(load_document_batch, filepaths)
+                futures.append(future)
+
+        if len(url_path) > 0:  
+
+            for i in range(0, len(url_path), chunk_size):
+                urlpaths = url_path[i : (i + chunk_size)]
+                future = executor.submit(load_url_batch, urlpaths)
+                futures.append(future)
+
         for future in as_completed(futures):
-            # open the file and load the data
             contents, _ = future.result()
             docs.extend(contents)
-    return docs
 
+    return docs
+            
 
 def builder(vectorstore: str = "Chroma"):
     logging.info(f"Loading Documents from {SOURCE_DIR}")
-    documents = load_documents(SOURCE_DIR)
+    documents = build_documents(SOURCE_DIR)
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000,chunk_overlap=200)
 
     texts = text_splitter.split_documents(documents)
