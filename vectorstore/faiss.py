@@ -44,3 +44,6 @@ class FAISSStore(VectorStore):
 
     def as_retriever(self):
         return self.docstore.as_retriever()
+    
+    def get(self):
+        return self.load_local()

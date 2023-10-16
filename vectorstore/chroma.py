@@ -39,6 +39,9 @@ class ChromaStore(VectorStore):
     
     def as_retriever(self):
         return self.chroma.as_retriever()
+    
+    def get(self):
+        return self.chroma.get()
 
 
     

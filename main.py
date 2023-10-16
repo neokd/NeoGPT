@@ -30,7 +30,20 @@ from config import (
     QUERY_COST,
     TOTAL_COST
 )
-from typing import Any
+from typing import Any, Dict, List, Optional
+
+class StreamingStdOutCallbackHandler(BaseCallbackHandler):
+    def on_llm_start(
+        self, serialized: Dict[str, Any], prompts: List[str], **kwargs: Any
+    ) -> None:
+        sys.stdout.write("\n")
+        sys.stdout.write("NeoGPT 🤖: ")
+
+    def on_llm_new_token(self, token: str, **kwargs: Any) -> None:
+        """Run on new LLM token. Only available when streaming is enabled."""
+        sys.stdout.write(token)
+        sys.stdout.flush()
+
 
 # Define a custom callback handler class for token collection
 class TokenCallbackHandler(BaseCallbackHandler):
@@ -222,10 +235,9 @@ def db_retriver(device_type:str = DEVICE_TYPE,vectordb:str = "Chroma", retriever
             LOGGING.info("Loaded Hybrid Retriever Successfully ⚡️")
             local_retriver = db.as_retriever()
             # local_retriever.get_relevant_documents("What is the capital of India?",k=10)
-            bm_retriever = BM25Retriever.from_documents(
-                documents=local_retriver.get_relevant_documents("What is the capital of India?"),
-                # bm25_params={"k1": 3},
-            )
+            bm_retriever = BM25Retriever.from_texts(db.get())
+            # bm_retriever.update_do
+            # print(bm_retriever)
             ensemble_retriever = EnsembleRetriever(retrievers=[bm_retriever, local_retriver],weights=[0.5, 0.5])
 
             chain = RetrievalQA.from_chain_type(
@@ -239,25 +251,11 @@ def db_retriver(device_type:str = DEVICE_TYPE,vectordb:str = "Chroma", retriever
                 # return_source_documents=True,
             )
 
-    timeout = 30  # 30 seconds
     # Main loop
     while True:
-        start_time = time.time()
-        query = None
-        while (time.time() - start_time) < timeout:
-            if sys.stdin in select.select([sys.stdin], [], [], timeout)[0]:
-                query = input("Enter your query: ")
-                break
-
-        if query:
-        # Get the response from the LLM model
-            chain(query)
-        else:
-            print("No query entered for", timeout, "seconds. Exiting.")
-            break # Exit the main loop when the timeout is reached
-
-
-
+        query = input("\nEnter your query 🙋‍♂️: ")
+        chain(query)
+        
 
 if __name__ == '__main__':
     logging.basicConfig(
