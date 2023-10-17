@@ -32,8 +32,8 @@ Note: NeoGPT is continuously evolving. Your feedback shapes its future.
     Currently the database is built using 2 papers: 
     - [Attention Is All You Need](https://arxiv.org/pdf/1706.03762.pdf)
     - [HuggingGPT](https://arxiv.org/pdf/2303.17580.pdf)
-    Youtube Video from 1littlecoder:
-    - [22 AI News EXPLAINED!!!](https://www.youtube.com/watch?v=BPknz-hCnec)
+    
+    - Youtube Video from 1littlecoder: [22 AI News EXPLAINED!!!](https://www.youtube.com/watch?v=BPknz-hCnec)
 
 
 3. **Run NeoGPT:** Run the CLI to start using NeoGPT. Requires `Python v3.10`. You can use the `--help` flag to view the available commands and options.
