@@ -1,11 +1,11 @@
 # NeoGPT 🚀
 
-Say goodbye to boring interactions with documents and YouTube videos. NeoGPT adds excitement to your tasks. From dynamic Q&A to content generation, NeoGPT is your trusted companion. Chat with local documents and conquer lengthy YouTube videos effortlessly. Perfect for professionals, developers, researchers, and enthusiasts.
+Say goodbye to boring interactions with documents and YouTube videos. NeoGPT is your trusted companion to chat with local documents and lengthy YouTube videos effortlessly. Perfect for professionals, developers, researchers, and enthusiasts.
 
 Note: NeoGPT is continuously evolving. Your feedback shapes its future.
 
 ## 🎉 Join Us for Hacktoberfest 2023
-![Hacktoberfest Banner](./readme.png)
+![Hacktoberfest Banner](./images/readme.png)
 
 ## 🚀 Getting Started
 
@@ -18,9 +18,27 @@ Note: NeoGPT is continuously evolving. Your feedback shapes its future.
    pip install -r requirements.txt
     ```
 
-2. **Run the NeoGPT:** Run the CLI to start using NeoGPT. Requires `Python v3.10`. You can use the `--help` flag to view the available commands and options.
+2. **Building Database** Currently NeoGPT supports local files and Youtube videos. To build the database add your local files to the documents directory and URL in the `builder.url` file. Then run the builder script.
+    
     ```python
-        python main.py --build
+        python builder.py
+    ```
+    This will create a database file in the `db` folder. You can also specify the database to use `--db` flag.
+    Supported databases are:
+    - `Chroma` (default) 
+    - `FAISS` 
+    - `Pinecone` (experimental)
+
+    Currently the database is built using 2 papers: 
+    - [Attention Is All You Need](https://arxiv.org/pdf/1706.03762.pdf)
+    - [HuggingGPT](https://arxiv.org/pdf/2303.17580.pdf)
+    Youtube Video from 1littlecoder:
+    - [22 AI News EXPLAINED!!!](https://www.youtube.com/watch?v=BPknz-hCnec)
+
+
+3. **Run NeoGPT:** Run the CLI to start using NeoGPT. Requires `Python v3.10`. You can use the `--help` flag to view the available commands and options.
+    ```python
+        python main.py 
     ```
 
 ## Supported Retriever 

@@ -1,3 +1,6 @@
+# The file is currently in development and is not ready for use.
+# Run python main.py to interact in the terminal
+
 from vectorstore.chroma import ChromaStore
 import logging
 import streamlit as st
@@ -41,6 +44,7 @@ if prompt := st.chat_input("What is up?"):
 
     with st.chat_message("assistant"):
         response = chain(prompt, return_only_outputs=True)
+        st.write(response['result'])
 
-    st.session_state.messages.append({"role": "assistant", "content": response})
+    st.session_state.messages.append({"role": "assistant", "content": response['result']})
 

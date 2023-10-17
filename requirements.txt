@@ -9,3 +9,4 @@ chainlit
 faiss-cpu
 google-api-python-client
 html2text
+streamlit
