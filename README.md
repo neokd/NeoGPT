@@ -24,7 +24,7 @@ Note: NeoGPT is continuously evolving. Your feedback shapes its future.
    cd NeoGPT
    
    # Create a new Conda environment and specify the python version, for example, 'neogpt-env'
-   conda create --name neogpt-env python=3.8
+   conda create --name neogpt-env python=3.10
 
    # Activate the Conda environment
    conda activate neogpt-env
