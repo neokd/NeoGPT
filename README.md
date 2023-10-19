@@ -2,10 +2,15 @@
 
 Say goodbye to boring interactions with documents and YouTube videos. NeoGPT is your trusted companion to chat with local documents and lengthy YouTube videos effortlessly. Perfect for professionals, developers, researchers, and enthusiasts.
 
+<video controls loop>
+  <source src="asset/NeoGPT.mp4" type="video/mp4">
+</video>
+<br/>
+
 Note: NeoGPT is continuously evolving. Your feedback shapes its future.
 
 ## 🎉 Join Us for Hacktoberfest 2023
-![Hacktoberfest Banner](./images/readme.png)
+![Hacktoberfest Banner](./asset/readme.png)
 
 ## 🚀 Getting Started
 
@@ -46,13 +51,14 @@ Note: NeoGPT is continuously evolving. Your feedback shapes its future.
 - Web Retriever
 - Hybrid Retriever (Ensemble Retriever)
 
-## ✅ Achievements
+## ✅ Project Roadmap
 - ✓ RAG (Question Answering with local files) 📂
 - ✓ Chat with Youtube Videos 🎥
 - ✓ Web Based RAG (Search on Web and local files) 🌐📂
 - ✓ Hybrid RAG (Keyword based and Semmantic Search) 🕵️‍♂️📂
 - ✓ FAISS Support 📊
 - ✓ Chromadb Support 🎵
+- ☐ Chat with SQL DB 🤖
 - ☐ User Interface 💻
 - ☐ Build a user-friendly CLI ⌨️
 - ☐ Upgrade Builder to support multiple file types including URLs 📦🌐

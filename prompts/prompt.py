@@ -6,7 +6,7 @@ import numpy as np
 # Default System level prompt
 SYSTEM_PROMPT = """
         You are a helpful assistant, you will use the provided context to answer user questions.
-        Read the given context before answering questions and think step by step. If you can not answer a user  question based on the provided context, inform the user. Do not use any other information for answering user.
+        Read the given context before answering questions and think step by step. If you can not answer a user  question based on the provided context, inform the user. Do not use any other information for answering user. Initialize the conversation with a greeting if no context is provided.
 """
 # Default memory window size
 DEFAULT_MEMORY_KEY = 2

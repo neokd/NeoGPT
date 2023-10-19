@@ -20,7 +20,9 @@ from builder import builder
 from dotenv import load_dotenv
 import os, time, sys, select, argparse
 from prompts.prompt import get_prompt
+from colorama import init, Fore
 load_dotenv()
+init()
 from config import (
     MODEL_DIRECTORY,
     DEVICE_TYPE,
@@ -34,18 +36,31 @@ from config import (
 from typing import Any, Dict, List, Optional
 
 class StreamingStdOutCallbackHandler(BaseCallbackHandler):
+
     def on_llm_start(
         self, serialized: Dict[str, Any], prompts: List[str], **kwargs: Any
     ) -> None:
+        # Start a new line for a clean display
         sys.stdout.write("\n")
-        sys.stdout.write("NeoGPT 🤖: ")
+        sys.stdout.write(Fore.BLUE + "NeoGPT 🤖 is thinking...")
+
+        # Add a loading animation to show activity
+        loading_chars = "/-\\"
+        for char in loading_chars:
+            sys.stdout.write('\b' + char)  # Move the cursor back to overwrite the token
+            sys.stdout.flush()
+            time.sleep(0.1)
+        
+        sys.stdout.write(Fore.BLUE + "\nNeoGPT 🤖:")
 
     def on_llm_new_token(self, token: str, **kwargs: Any) -> None:
-        """Run on new LLM token. Only available when streaming is enabled."""
-        sys.stdout.write(token)
+        # Display the generated token in a friendly way
+        sys.stdout.write(Fore.WHITE + token)
         sys.stdout.flush()
 
-
+        
+       
+               
 # Define a custom callback handler class for token collection
 class TokenCallbackHandler(BaseCallbackHandler):
     def __init__(self):
@@ -61,9 +76,9 @@ class TokenCallbackHandler(BaseCallbackHandler):
         QUERY_COST = round(((len(self._tokens) / 1000) * 0.002) * 83.33, 5)  # INR Cost per token, rounded to 5 decimal places
         TOTAL_COST = round(TOTAL_COST + QUERY_COST, 5)  # Accumulate the cost, rounded to 5 decimal places
         total_tokens = len(self._tokens)
-        print(f"\n\nTotal tokens generated: {total_tokens}")
-        print(f"Query cost: {QUERY_COST} INR")
-        print(f"Total cost: {TOTAL_COST} INR")
+        print(Fore.WHITE + f"\n\nTotal tokens generated: {total_tokens}")
+        print(Fore.WHITE + f"Query cost: {QUERY_COST} INR")
+        print(Fore.WHITE + f"Total cost: {TOTAL_COST} INR")
 
 # Function to load the LLM 
 def load_model(device_type:str = DEVICE_TYPE, model_id:str = MODEL_NAME, model_basename:str = MODEL_FILE, LOGGING=logging):
@@ -253,8 +268,12 @@ def db_retriver(device_type:str = DEVICE_TYPE,vectordb:str = "Chroma", retriever
             )
 
     # Main loop
+    print("Running... type '/exit' to quit")
     while True:
-        query = input("\nEnter your query 🙋‍♂️: ")
+        query = input(Fore.LIGHTCYAN_EX +"\nEnter your query 🙋‍♂️: ")
+        if(query == "/exit"):
+            LOGGING.info("Byee 👋.")
+            break
         chain(query)
         
 
