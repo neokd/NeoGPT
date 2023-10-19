@@ -1,19 +1,12 @@
 #!/bin/bash
-  
 
-# Set the default options
-MODEL_DIR="gpt-3.5-turbo"
-TEMP_DIR="/tmp/neo_gpt"
+# Set your OpenAI API key
 API_KEY="YOUR_OPENAI_API_KEY"
 
 # Function to display usage instructions
 usage() {
   echo "Usage: $0 [options] text"
   echo "Options:"
-  echo "  -m, --model-dir DIR    Specify the model directory (default: gpt-3.5-turbo)"
-  echo "  -o, --output FILE      Specify the output file (default: stdout)"
-  echo "  -t, --temp-dir DIR     Specify the temporary directory (default: /tmp/neo_gpt)"
-  echo "  -k, --api-key KEY      Specify your OpenAI API key (default: YOUR_OPENAI_API_KEY)"
   echo "  -h, --help             Show this help message"
   exit 1
 }
@@ -21,22 +14,6 @@ usage() {
 # Parse command line options
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    -m|--model-dir)
-      MODEL_DIR="$2"
-      shift 2
-      ;;
-    -o|--output)
-      OUTPUT_FILE="$2"
-      shift 2
-      ;;
-    -t|--temp-dir)
-      TEMP_DIR="$2"
-      shift 2
-      ;;
-    -k|--api-key)
-      API_KEY="$2"
-      shift 2
-      ;;
     -h|--help)
       usage
       ;;
@@ -53,22 +30,29 @@ if [ -z "$API_KEY" ] || [ "$API_KEY" == "YOUR_OPENAI_API_KEY" ]; then
   exit 1
 fi
 
-# Check if required arguments are provided
-if [ -z "$TEXT" ]; then
-  echo "Error: Missing text input."
-  usage
-fi
+# Create a temporary directory for NeoGPT
+NEOGPT_DIR="/tmp/neogpt"
+mkdir -p "$NEOGPT_DIR"
+cd "$NEOGPT_DIR"
 
-# Create the temporary directory if it doesn't exist
-mkdir -p "$TEMP_DIR"
+# Clone the NeoGPT repository
+git clone https://github.com/openai/gpt-3.5-turbo.git
 
-# Run NeoGPT
-if [ -z "$OUTPUT_FILE" ]; then
-  openai api completions.create --model "$MODEL_DIR" --max_tokens 150 --temperature 0.7 --top_p 1.0 --stop "" --prompt "$TEXT" > "$TEMP_DIR/response.json"
-  cat "$TEMP_DIR/response.json" | jq -r '.choices[0].text'
-else
-  openai api completions.create --model "$MODEL_DIR" --max_tokens 150 --temperature 0.7 --top_p 1.0 --stop "" --prompt "$TEXT" > "$OUTPUT_FILE"
-fi
+# Change to the NeoGPT directory
+cd gpt-3.5-turbo
+
+# Install Python dependencies from requirements.txt
+pip install -r requirements.txt
+
+# Set the OpenAI API key
+export OPENAI_API_KEY="$API_KEY"
+
+# Run NeoGPT with the provided text
+python main.py --text "$TEXT"
+
+# Clean up: Remove the temporary directory
+cd ..
+rm -rf "$NEOGPT_DIR"
 
 # To use the script, follow these steps:
 
