@@ -2,9 +2,9 @@
 
 Say goodbye to boring interactions with documents and YouTube videos. NeoGPT is your trusted companion to chat with local documents and lengthy YouTube videos effortlessly. Perfect for professionals, developers, researchers, and enthusiasts.
 
-<video controls loop>
-  <source src="asset/NeoGPT.mp4" type="video/mp4">
-</video>
+![NeoGPT Gif](https://github.com/neokd/NeoGPT/assets/71772185/82d5c63d-81b5-4b45-95d4-53641016bfdc)
+
+
 <br/>
 
 Note: NeoGPT is continuously evolving. Your feedback shapes its future.
