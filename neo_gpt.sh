@@ -1,4 +1,5 @@
 #!/bin/bash
+  
 
 # Set the default options
 MODEL_DIR="gpt-3.5-turbo"
