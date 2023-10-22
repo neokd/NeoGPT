@@ -9,6 +9,19 @@ Say goodbye to boring interactions with documents and YouTube videos. NeoGPT is 
 
 Note: NeoGPT is continuously evolving. Your feedback shapes its future.
 
+# Table of Contents
+- [Getting Started](#getting-started)
+  - [Installation](#installation)
+  - [Building Database](#building-database)
+  - [Run NeoGPT](#run-neogpt)
+- [Supported Retriever](#supported-retriever)
+- [Project Roadmap](#project-roadmap)
+- [Features](#features)
+- [Persona](#persona)
+- [Experimental](#experimental)
+- [Contributing](#contributing)
+- [License](#license)
+
 ## 🎉 Join Us for Hacktoberfest 2023
 ![Hacktoberfest Banner](./asset/readme.png)
 
