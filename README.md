@@ -11,9 +11,6 @@ Note: NeoGPT is continuously evolving. Your feedback shapes its future.
 
 # Table of Contents
 - [Getting Started](#getting-started)
-  - [Installation](#installation)
-  - [Building Database](#building-database)
-  - [Run NeoGPT](#run-neogpt)
 - [Supported Retriever](#supported-retriever)
 - [Project Roadmap](#project-roadmap)
 - [Features](#features)
@@ -25,7 +22,7 @@ Note: NeoGPT is continuously evolving. Your feedback shapes its future.
 ## 🎉 Join Us for Hacktoberfest 2023
 ![Hacktoberfest Banner](./asset/readme.png)
 
-## 🚀 Getting Started
+## Getting Started
 
 1. **Installation:** Clone this repository and install the necessary dependencies.
 
@@ -81,7 +78,7 @@ Note: NeoGPT is continuously evolving. Your feedback shapes its future.
 - Web Retriever
 - Hybrid Retriever (Ensemble Retriever)
 
-## ✅ Project Roadmap
+## Project Roadmap
 - ✓ RAG (Question Answering with local files) 📂
 - ✓ Chat with Youtube Videos 🎥
 - ✓ Web Based RAG (Search on Web and local files) 🌐📂
@@ -99,7 +96,7 @@ Note: NeoGPT is continuously evolving. Your feedback shapes its future.
 - ☐ Better Documentation 📖
 - ☐ Agent based chatbot 🤖
 
-## 🌟 Features
+## Features
 
 - **Task Automation:** NeoGPT can automate a wide range of tasks, from text generation to data analysis, making it a versatile tool for various domains.
 
@@ -112,7 +109,7 @@ Note: NeoGPT is continuously evolving. Your feedback shapes its future.
 - **Persona** You can add various persona to NeoGPT to make it more human like.
 
 
-## 📚 Persona 
+## Persona 
 
 The persona feature allows you to customize NeoGPT's responses based on your preferences. You can choose from a variety of personas, each with its own unique characteristics. For example, if you want NeoGPT to be more friendly, you can choose the FRIEND persona. If you want NeoGPT to be more professional, you can choose the RECRUITER persona. You can also create your own persona by editing `prompts/prompt.py` file. The following personas are currently available:
 
@@ -128,13 +125,13 @@ The persona feature allows you to customize NeoGPT's responses based on your pre
 | RESEARCHER  | Analyzes, synthesizes, and provides insights.       |
 
 
-## 🔬 Experimental
+## Experimental
 
 Explore our multi-agent bot that generates responses based on a single user prompt. This experimental project showcases the capabilities of NeoGPT.
 
 
-# 👥 Contributing
+## Contributing
 We welcome contributions to NeoGPT! If you have ideas for new features or improvements, please open an issue or submit a pull request. For more information, see our [contributing guide](CONTRIBUTING.md).
 
-# 📄 License
+## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details. Let's innovate together! 🤖✨
