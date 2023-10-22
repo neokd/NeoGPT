@@ -15,7 +15,6 @@ Note: NeoGPT is continuously evolving. Your feedback shapes its future.
 - [Project Roadmap](#project-roadmap)
 - [Features](#features)
 - [Persona](#persona)
-- [Experimental](#experimental)
 - [Contributing](#contributing)
 - [License](#license)
 
