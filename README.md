@@ -125,11 +125,6 @@ The persona feature allows you to customize NeoGPT's responses based on your pre
 | RESEARCHER  | Analyzes, synthesizes, and provides insights.       |
 
 
-## Experimental
-
-Explore our multi-agent bot that generates responses based on a single user prompt. This experimental project showcases the capabilities of NeoGPT.
-
-
 ## Contributing
 We welcome contributions to NeoGPT! If you have ideas for new features or improvements, please open an issue or submit a pull request. For more information, see our [contributing guide](CONTRIBUTING.md).
 
