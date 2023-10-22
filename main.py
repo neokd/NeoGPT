@@ -180,7 +180,7 @@ def load_model(device_type:str = DEVICE_TYPE, model_id:str = MODEL_NAME, model_b
             LOGGING.info(f"Error {e}")
 
 # Function to set up the retrieval-based question-answering system
-def db_retriver(device_type:str = DEVICE_TYPE,vectordb:str = "Chroma", retriever:str = "local",LOGGING=logging):
+def db_retriver(device_type:str = DEVICE_TYPE,vectordb:str = "Chroma", retriever:str = "local",persona:str="default" ,LOGGING=logging):
     """
         input: device_type,vectorstore, LOGGING
         output: None
@@ -207,7 +207,7 @@ def db_retriver(device_type:str = DEVICE_TYPE,vectordb:str = "Chroma", retriever
     llm = load_model(device_type, model_id=MODEL_NAME, model_basename=MODEL_FILE, LOGGING=logging)
 
     # Prompt Builder Function 
-    prompt , memory = get_prompt()
+    prompt , memory = get_prompt(persona=persona)
     match retriever:
         case "local":
             LOGGING.info("Loaded Local Retriever Successfully 🚀")
@@ -268,7 +268,14 @@ def db_retriver(device_type:str = DEVICE_TYPE,vectordb:str = "Chroma", retriever
             )
 
     # Main loop
-    print("Running... type '/exit' to quit")
+    print(Fore.LIGHTYELLOW_EX + "Running... type '/exit' to quit")
+    print(Fore.LIGHTYELLOW_EX + "Warning: The stats are based on OpenAI's pricing model and doesn't cost you anything. The stats are for demonstration purposes only.")
+
+    if persona != "default":
+
+        print(Fore.LIGHTYELLOW_EX + "Note: You are using a persona. The persona is used to customize the chatbot i.e. how the chatbot should behave. It depends on the document you ingest into the DB. You can change the persona by using the --persona flag. The default persona is 'default'.")
+        print("Persona:", Fore.LIGHTYELLOW_EX + persona.upper())
+
     while True:
         query = input(Fore.LIGHTCYAN_EX +"\nEnter your query 🙋‍♂️: ")
         if(query == "/exit"):
@@ -302,6 +309,12 @@ if __name__ == '__main__':
         help="Specify the retriever (local, web, hybrid)",
     )
     parser.add_argument(
+        "--persona",
+        choices=["default", "recruiter", "academician", "friend", "ml_engineer", "journalist", "interviewer", "ceo", "researcher"],
+        default="default",
+        help="Specify the persona (default, recruiter). It allows you to customize the persona i.e. how the chatbot should behave.",
+    )
+    parser.add_argument(
         "--build",
         default=False,
         action="store_true",
@@ -312,5 +325,5 @@ if __name__ == '__main__':
     if args.build:
         builder(vectorstore=args.db)
 
-    db_retriver(device_type=args.device_type,vectordb=args.db,retriever=args.retriever, LOGGING=logging)
+    db_retriver(device_type=args.device_type,vectordb=args.db,retriever=args.retriever,persona=args.persona, LOGGING=logging)
     

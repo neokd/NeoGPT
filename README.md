@@ -96,6 +96,25 @@ Note: NeoGPT is continuously evolving. Your feedback shapes its future.
 
 - **Extensible:** You can easily extend NeoGPT's functionality by adding custom plugins or scripts.
 
+- **Persona** You can add various persona to NeoGPT to make it more human like.
+
+
+## 📚 Persona 
+
+The persona feature allows you to customize NeoGPT's responses based on your preferences. You can choose from a variety of personas, each with its own unique characteristics. For example, if you want NeoGPT to be more friendly, you can choose the FRIEND persona. If you want NeoGPT to be more professional, you can choose the RECRUITER persona. You can also create your own persona by editing `prompts/prompt.py` file. The following personas are currently available:
+
+
+| Persona     | Description                                          |
+|-------------|------------------------------------------------------|
+| DEFAULT     | A helpful assistant with extensive knowledge.       |
+| RECRUITER   | An experienced recruiter who finds the best candidates. |
+| ACADEMICIAN | Engages in in-depth research and presents findings.  |
+| FRIEND      | Provides comfort and encouragement as a friend.     |
+| ML_ENGINEER | Explains complex ML concepts in an easy-to-understand manner. |
+| CEO         | Acts as the CEO, making strategic decisions.        |
+| RESEARCHER  | Analyzes, synthesizes, and provides insights.       |
+
+
 ## 🔬 Experimental
 
 Explore our multi-agent bot that generates responses based on a single user prompt. This experimental project showcases the capabilities of NeoGPT.

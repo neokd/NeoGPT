@@ -31,6 +31,9 @@ FAISS_PERSIST_DIRECTORY = os.path.join(PARENT_DB_DIRECTORY, "faiss")
 # PINECONE DB DIRECTORY
 PINECONE_PERSIST_DIRECTORY = os.path.join(PARENT_DB_DIRECTORY,"pinecone")
 
+# DEFAULT MEMORY KEY FOR CONVERSATION MEMORY (DEFAULT IS 2) 
+DEFAULT_MEMORY_KEY = 2
+
 # GGUF MODELS (Recommended , Default and Fast)
 MODEL_NAME = "TheBloke/Mistral-7B-Instruct-v0.1-GGUF"
 MODEL_FILE = "mistral-7b-instruct-v0.1.Q4_K_M.gguf"
@@ -100,7 +103,7 @@ DOCUMENT_EXTENSION = {
 URL_EXTENSION = {
     '.youtube' :YoutubeLoader,
 }
-# Initial Query Cost and Total Cost
 
+# Initial Query Cost and Total Cost
 QUERY_COST = 0
 TOTAL_COST = 0
