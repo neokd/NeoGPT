@@ -17,6 +17,7 @@ Note: NeoGPT is continuously evolving. Your feedback shapes its future.
 - [Persona](#persona)
 - [Contributing](#contributing)
 - [License](#license)
+- [Discord](#discord)
 
 ## 🎉 Join Us for Hacktoberfest 2023
 ![Hacktoberfest Banner](./asset/readme.png)
@@ -129,3 +130,8 @@ We welcome contributions to NeoGPT! If you have ideas for new features or improv
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details. Let's innovate together! 🤖✨
+
+## Discord
+<a href = "https://discord.gg/JW7YD5Yt">
+   <img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Discord"/>
+</a>
