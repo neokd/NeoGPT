@@ -62,3 +62,4 @@ if __name__ == '__main__':
 
     db_retriver(device_type=args.device_type,vectordb=args.db,retriever=args.retriever,persona=args.persona, LOGGING=logging)
     
+
