@@ -124,22 +124,17 @@ def load_model(device_type:str = DEVICE_TYPE, model_id:str = MODEL_NAME, model_b
         try:
             if ".safetensors" in model_basename.lower():
                 model_basename = model_basename.replace(".safetensors","")
-            quantize_config = BaseQuantizeConfig(
-                bits=4,  # quantize model to 4-bit
-                group_size=128,  # it is recommended to set the value to 128
-                desc_act=True,  # set to False can significantly speed up inference but the perplexity may slightly bad
-            )
             # Load GPTQ model from huggingface
             model = AutoGPTQForCausalLM.from_quantized(
                 model_id,
                 model_basename=model_basename,
                 use_safetensors=True,
                 trust_remote_code=True,
+                device_map="auto",
                 # device= "cuda" if torch.cuda.is_available() else "cpu",
                 use_triton=False,
-                model_kwargs= {"cache_dir" : MODEL_DIRECTORY},
-                quantize_config=quantize_config,
-               
+                cache_dir=MODEL_DIRECTORY,
+                quantize_config=None,
             )
             # print(model)
             tokenizer = AutoTokenizer.from_pretrained(model_id,use_fast=True)
@@ -310,9 +305,9 @@ if __name__ == '__main__':
     )
     parser.add_argument(
         "--persona",
-        choices=["default", "recruiter", "academician", "friend", "ml_engineer", "journalist", "interviewer", "ceo", "researcher"],
+        choices=["default", "recruiter", "academician", "friend", "ml_engineer", "interviewer", "ceo", "researcher"],
         default="default",
-        help="Specify the persona (default, recruiter). It allows you to customize the persona i.e. how the chatbot should behave.",
+        help="Specify the persona (default, recruiter, etc). It allows you to customize the persona i.e. how the chatbot should behave.",
     )
     parser.add_argument(
         "--build",

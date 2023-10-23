@@ -38,14 +38,17 @@ DEFAULT_MEMORY_KEY = 2
 MODEL_NAME = "TheBloke/Mistral-7B-Instruct-v0.1-GGUF"
 MODEL_FILE = "mistral-7b-instruct-v0.1.Q4_K_M.gguf"
 
+# MISTRAL MODEL LITE 
+# MODEL_NAME = "TheBloke/MistralLite-7B-GGUF"
+# MODEL_FILE = "mistrallite.Q4_K_M.gguf"
+
 # GPTQ MODELS (Quantized Models)
-# MODEL_NAME = "TheBloke/Llama-2-7b-Chat-GPTQ"
+# MODEL_NAME = "TheBloke/Tinyllama-2-1b-miniguanaco-GPTQ"
 # MODEL_FILE = "model.safetensors"
 
 # HUGGING FACE MODEL (Not recommended for low RAM systems)
 # MODEL_NAME = "microsoft/phi-1_5"
 # MODEL_FILE = None
-
 
 # DEFAULT EMBEDDING MODEL
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L12-v2"
