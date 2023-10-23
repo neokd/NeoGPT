@@ -1,0 +1,64 @@
+from colorama import init
+import logging
+from builder import builder
+from dotenv import load_dotenv
+import argparse
+from modules.DB_retriver import db_retriver
+from config import (
+    MODEL_DIRECTORY,
+    DEVICE_TYPE,
+    MODEL_NAME,
+    MODEL_FILE,
+    N_GPU_LAYERS,
+    MAX_TOKEN_LENGTH,
+    QUERY_COST,
+    TOTAL_COST
+)
+    
+load_dotenv()
+
+init()
+
+if __name__ == '__main__':
+    logging.basicConfig(
+        format="%(asctime)s - %(levelname)s - %(filename)s:%(lineno)s - %(message)s", level=logging.INFO,
+    )
+    # Parse the arguments
+    parser = argparse.ArgumentParser(description="NeoGPT CLI Interface")
+    parser.add_argument(
+        "--device-type",
+        choices=["cpu", "mps", "cuda"],
+        default=DEVICE_TYPE,
+        help="Specify the device type (cpu, mps, cuda)",
+    )
+    parser.add_argument(
+        "--db",
+        choices=["Chroma", "FAISS"],
+        default="Chroma",
+        help="Specify the vectorstore (Chroma, FAISS)",
+    )
+    parser.add_argument(
+        "--retriever",
+        choices=["local", "web","hybrid"],
+        default="local",
+        help="Specify the retriever (local, web, hybrid)",
+    )
+    parser.add_argument(
+        "--persona",
+        choices=["default", "recruiter", "academician", "friend", "ml_engineer", "journalist", "interviewer", "ceo", "researcher"],
+        default="default",
+        help="Specify the persona (default, recruiter). It allows you to customize the persona i.e. how the chatbot should behave.",
+    )
+    parser.add_argument(
+        "--build",
+        default=False,
+        action="store_true",
+        help="Run the builder",
+    )
+
+    args = parser.parse_args()
+    if args.build:
+        builder(vectorstore=args.db)
+
+    db_retriver(device_type=args.device_type,vectordb=args.db,retriever=args.retriever,persona=args.persona, LOGGING=logging)
+    
