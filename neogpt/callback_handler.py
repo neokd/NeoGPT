@@ -5,6 +5,10 @@ from langchain.schema.output import LLMResult
 from langchain.callbacks.base import BaseCallbackHandler
 from colorama import init, Fore
 from typing import Any, Dict, List, Optional
+from neogpt.config import (
+    TOTAL_COST,
+    QUERY_COST
+)
 
 class StreamingStdOutCallbackHandler(BaseCallbackHandler):
 

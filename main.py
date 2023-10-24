@@ -3,16 +3,9 @@ import logging
 from builder import builder
 from dotenv import load_dotenv
 import argparse
-from neogpt.retriver import db_retriver
+from neogpt.retriever import db_retriver
 from neogpt.config import (
-    MODEL_DIRECTORY,
     DEVICE_TYPE,
-    MODEL_NAME,
-    MODEL_FILE,
-    N_GPU_LAYERS,
-    MAX_TOKEN_LENGTH,
-    QUERY_COST,
-    TOTAL_COST
 )
     
 load_dotenv()

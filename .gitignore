@@ -3,3 +3,5 @@ models/*
 .env
 **/__pycache__
 __pycache__
+neogpt/__pycache__
+neogpt/models/*

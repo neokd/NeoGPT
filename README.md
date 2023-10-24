@@ -111,7 +111,7 @@ Note: NeoGPT is continuously evolving. Your feedback shapes its future.
 
 ## Persona 
 
-The persona feature allows you to customize NeoGPT's responses based on your preferences. You can choose from a variety of personas, each with its own unique characteristics. For example, if you want NeoGPT to be more friendly, you can choose the FRIEND persona. If you want NeoGPT to be more professional, you can choose the RECRUITER persona. You can also create your own persona by editing `prompts/prompt.py` file. The following personas are currently available:
+The persona feature allows you to customize NeoGPT's responses based on your preferences. You can choose from a variety of personas, each with its own unique characteristics. For example, if you want NeoGPT to be more friendly, you can choose the FRIEND persona. If you want NeoGPT to be more professional, you can choose the RECRUITER persona. You can also create your own persona by editing `neogpt/prompts/prompt.py` file. The following personas are currently available:
 
 
 | Persona     | Description                                          |

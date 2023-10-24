@@ -5,10 +5,7 @@ from neogpt.config import (
     MODEL_FILE,
     N_GPU_LAYERS,
     MAX_TOKEN_LENGTH,
-    QUERY_COST,
-    TOTAL_COST
 )
-
 from neogpt.callback_handler import StreamingStdOutCallbackHandler,TokenCallbackHandler
 from langchain.callbacks.manager import CallbackManager
 from huggingface_hub import hf_hub_download
