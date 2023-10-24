@@ -3,8 +3,8 @@ import logging
 from builder import builder
 from dotenv import load_dotenv
 import argparse
-from modules.DB_retriver import db_retriver
-from config import (
+from neogpt.retriver import db_retriver
+from neogpt.config import (
     MODEL_DIRECTORY,
     DEVICE_TYPE,
     MODEL_NAME,
