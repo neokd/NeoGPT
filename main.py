@@ -44,7 +44,12 @@ if __name__ == '__main__':
         action="store_true",
         help="Run the builder",
     )
-
+    parser.add_argument(
+        "--show_source",
+        default=False,
+        action="store_true",
+        help="The source documents are displayed if the show_sources flag is set to True.",
+    )
     args = parser.parse_args()
     if args.build:
         builder(vectorstore=args.db)
