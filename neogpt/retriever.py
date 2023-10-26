@@ -15,7 +15,7 @@ from neogpt.config import (
     MODEL_FILE,
 )
 
-def db_retriver(device_type:str = DEVICE_TYPE,vectordb:str = "Chroma", retriever:str = "local",persona:str="default" ,LOGGING=logging):
+def db_retriver(device_type:str = DEVICE_TYPE,vectordb:str = "Chroma", retriever:str = "local",persona:str="default" ,show_source:bool="False",LOGGING=logging):
     """
         Fn: db_retriver
         Description: The function sets up the retrieval-based question-answering system.
@@ -63,6 +63,7 @@ def db_retriver(device_type:str = DEVICE_TYPE,vectordb:str = "Chroma", retriever
                     "prompt": prompt, 
                     "memory": memory
                     },
+                return_source_documents=True,
                 )
         
         case "web":
@@ -87,6 +88,7 @@ def db_retriver(device_type:str = DEVICE_TYPE,vectordb:str = "Chroma", retriever
                     "prompt": prompt, 
                     "memory": memory
                     },
+                return_source_documents=True,
             )
 
         case "hybrid":
@@ -106,7 +108,7 @@ def db_retriver(device_type:str = DEVICE_TYPE,vectordb:str = "Chroma", retriever
                     "prompt": prompt, 
                     "memory": memory
                     },
-                # return_source_documents=True,
+                return_source_documents=True,
             )
 
     # Main loop
@@ -122,5 +124,17 @@ def db_retriver(device_type:str = DEVICE_TYPE,vectordb:str = "Chroma", retriever
         if(query == "/exit"):
             LOGGING.info("Byee 👋.")
             break
-        chain(query)
-   
+        res = chain(query)
+        answer, docs = res["result"], res["source_documents"]
+        
+        print("\n\n> Question:")
+        print(query)
+        print("\n> Answer:")
+        print(answer)
+
+        if show_source:
+            print("----------------------------------SOURCE DOCUMENTS---------------------------")
+            for document in docs:
+                print("\n> " + document.metadata["source"] + ":")
+                print(document.page_content)
+            print("----------------------------------SOURCE DOCUMENTS---------------------------")
