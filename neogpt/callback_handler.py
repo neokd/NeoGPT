@@ -11,7 +11,9 @@ from neogpt.config import (
 )
 
 class StreamingStdOutCallbackHandler(BaseCallbackHandler):
-
+    """
+    The StreamingStdOutCallbackHandler class is a callback handler from langchain that displays the generated tokens and adds a loading animation to show activity.
+    """
     def on_llm_start(
         self, serialized: Dict[str, Any], prompts: List[str], **kwargs: Any
     ) -> None:
@@ -36,6 +38,10 @@ class StreamingStdOutCallbackHandler(BaseCallbackHandler):
 
 # Define a custom callback handler class for token collection
 class TokenCallbackHandler(BaseCallbackHandler):
+    """
+    The TokenCallbackHandler class is a custom callback handler class for token and shows the cost of the query, total cost and total tokens generated.
+    The cost are based on OpenAI's pricing model.
+    """
     def __init__(self):
         super().__init__()
         self._tokens = []

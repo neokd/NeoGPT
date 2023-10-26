@@ -20,6 +20,14 @@ from neogpt.config import (
 )
 
 def load_single_document(file_path: str) -> Document:
+    """
+        fn: load_single_document
+        Description: The function loads the single document
+        Args:
+            file_path (str): File path
+        return:
+            Document: Document
+    """
     # Loads a single document from a file path
     file_extension = os.path.splitext(file_path)[1]
     loader_class = DOCUMENT_EXTENSION.get(file_extension)
@@ -31,6 +39,14 @@ def load_single_document(file_path: str) -> Document:
 
 
 def load_document_batch(filepaths):
+    """
+        fn: load_document_batch
+        Description: The function loads the document batch
+        Args:
+            filepaths (list): List of file paths
+        return:
+            list: List of data from the files
+    """
     logging.info("Loading document batch")
     # create a thread pool
     with ThreadPoolExecutor(len(filepaths)) as exe:
@@ -43,12 +59,20 @@ def load_document_batch(filepaths):
         return (data_list, filepaths)
 
 
-def process_url(file_path: str) -> Document:
-    file_extension = os.path.splitext(file_path)[1]
+def process_url(url_path: str) -> Document:
+    """
+        fn: process_url
+        Description: The function processes the url
+        Args:
+            file_path (str): File path
+        return:
+            Document: Document
+    """
+    file_extension = os.path.splitext(url_path)[1]
     if file_extension != ".url":
         return  # Skip if not a .url file
 
-    with open(file_path) as build:
+    with open(url_path) as build:
         urls = build.readlines()
         for url in urls:
             if "youtube.com" in url:
@@ -60,6 +84,14 @@ def process_url(file_path: str) -> Document:
     return loader.load()[0]
         
 def load_url_batch(urlpaths):
+    """
+        fn: load_url_batch
+        Description: The function loads the url batch
+        Args:
+            urlpaths (list): List of url paths
+        return:
+            list: List of data from the urls
+    """
     logging.info("Loading Url batch")
     with ThreadPoolExecutor(len(urlpaths)) as exe:
         futures = [exe.submit(process_url, name) for name in urlpaths]
@@ -68,6 +100,14 @@ def load_url_batch(urlpaths):
 
 
 def build_documents(source_directory : str) -> list[Document]:
+    """
+        fn: build_documents
+        Description: The function builds the documents from the source directory
+        Args:
+            source_directory (str): Source directory
+        return:
+            list[Document]: List of documents
+    """
     doc_path = []
     url_path = []
     for root,_,files in os.walk(source_directory):
@@ -110,6 +150,14 @@ def build_documents(source_directory : str) -> list[Document]:
             
 
 def builder(vectorstore: str = "Chroma"):
+    """
+        fn: builder
+        Description: The function builds the vectorstore (Chroma, FAISS)
+        Args:
+            vectorstore (str, optional): Vectorstore (Chroma, FAISS). Defaults to "Chroma".
+        return:
+            None
+    """
     logging.info(f"Loading Documents from {SOURCE_DIR}")
     documents = build_documents(SOURCE_DIR)
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000,chunk_overlap=200)

@@ -5,7 +5,16 @@ import numpy as np
 
 # The prompts are taken from https://github.com/f/awesome-chatgpt-prompts. Thanks to the author for the amazing work.
 
-# Default System Prompt
+
+# Persona Prompts for Chatbot
+#    - Default (Default Persona of an Assistant)
+#    - Recruiter (Persona of a Recruiter recruiting for a job)
+#    - Academician (Persona of an Academician who is expert in a field)
+#    - Friend (Persona of a Friend who is supportive)
+#    - ML Engineer (Persona of a Machine Learning Engineer)
+#    - CEO (Persona of a Chief Executive Officer of a company)
+#    - Researcher (Persona of a Researcher who is expert in research and analysis)
+
 PERSONA_PROMPT = {
     'DEFAULT': """
         You are a helpful assistant, you will use the provided context to answer user questions.
@@ -34,9 +43,15 @@ PERSONA_PROMPT = {
 
 def get_prompt(model_type:str = "mistral", persona:str = "default", memory_key:int = DEFAULT_MEMORY_KEY):
     """
-        input: model_type, persona, memory_key
-        output: prompt, memory
-        desciption: The function is used to get the prompt and memory for the model.
+        Fn: get_prompt
+        Description: The function returns the prompt and memory for the chatbot.
+        Args:
+            model_type (str, optional): Model type (mistral, gptq). Defaults to "mistral".
+            persona (str, optional): Persona (default, recruiter). Defaults to "default".
+            memory_key (int, optional): Memory key. Defaults to DEFAULT_MEMORY_KEY.
+        return:
+            prompt (PromptTemplate): Returns a PromptTemplate object
+            memory (ConversationBufferWindowMemory): Returns a ConversationBufferWindowMemory object
     """
     INSTRUCTION_TEMLATE = """
         Context: {history} \n {context}

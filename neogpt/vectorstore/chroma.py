@@ -16,6 +16,11 @@ from neogpt.config import (
     MODEL_DIRECTORY,
 )
 class ChromaStore(VectorStore):
+    """
+    The ChromaStore class provides a wrapper around the ChromaDB
+    to provide a simple interface for storing and retrieving documents
+    from the database.
+    """
     def __init__(self) -> None:
         self.embeddings = HuggingFaceInstructEmbeddings(
             model_name=EMBEDDING_MODEL,
@@ -42,6 +47,9 @@ class ChromaStore(VectorStore):
     
     def get(self):
         return self.chroma.get()
+    
+    def _embeddings(self):
+        return self.embeddings
 
 
     

@@ -1,5 +1,7 @@
 import os 
 import torch
+from dotenv import load_dotenv
+from colorama import init
 from chromadb.config import Settings
 from langchain.document_loaders import (
     PDFMinerLoader, 
@@ -17,6 +19,10 @@ from langchain.document_loaders import (
     YoutubeLoader,
     WhatsAppChatLoader
 )
+# Load Environment Variables
+load_dotenv()
+# Initialize Colorama
+init()
 
 # Source Directory for Documents to Ingest
 SOURCE_DIR = os.path.join(os.path.dirname(__file__), "documents")

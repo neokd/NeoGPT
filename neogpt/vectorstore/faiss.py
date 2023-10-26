@@ -13,6 +13,11 @@ from neogpt.config import (
 )
 
 class FAISSStore(VectorStore):
+    """
+    The FAISSStore class provides a wrapper around the FAISS
+    to provide a simple interface for storing and retrieving documents
+    from the database.
+    """
     def __init__(self) -> None:
         self.embeddings = HuggingFaceInstructEmbeddings(
             model_name=EMBEDDING_MODEL,
@@ -47,3 +52,6 @@ class FAISSStore(VectorStore):
     
     def get(self):
         return self.load_local()
+    
+    def _embeddings(self):
+        return self.embeddings

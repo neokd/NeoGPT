@@ -17,9 +17,17 @@ import logging
 # Function to load the LLM 
 def load_model(device_type:str = DEVICE_TYPE, model_id:str = MODEL_NAME, model_basename:str = MODEL_FILE, LOGGING=logging):
     """
-        input: device_type, model_id, model_basename, LOGGING
-        output: Hugging Face model
-        description:  The function loads the pre-trained model from Hugging Face and returns the loaded model.
+        Fn: load_model
+        Description: The function loads the LLM model (LLamaCpp, GPTQ, HuggingFacePipeline)
+        Args:
+            device_type (str, optional): Device type (cpu, mps, cuda). Defaults to DEVICE_TYPE.
+            model_id (str, optional): Model ID. Defaults to MODEL_NAME.
+            model_basename (str, optional): Model basename. Defaults to MODEL_FILE.
+            LOGGING (logging, optional): Logging. Defaults to logging.
+        return: 
+            llm (LlamaCpp): Returns a LlamaCpp object (language model)
+            llm (GPTQ): Returns a GPTQ object (language model)
+            llm (HuggingFacePipeline): Returns a HuggingFace Pipeline object (language model)
     """
     if model_basename is not None and ".gguf" in model_basename.lower() :
 

@@ -1,16 +1,12 @@
-from colorama import init
 import logging
 from builder import builder
-from dotenv import load_dotenv
 import argparse
 from neogpt.retriever import db_retriver
 from neogpt.config import (
     DEVICE_TYPE,
 )
     
-load_dotenv()
 
-init()
 
 if __name__ == '__main__':
     logging.basicConfig(
@@ -32,13 +28,13 @@ if __name__ == '__main__':
     )
     parser.add_argument(
         "--retriever",
-        choices=["local", "web","hybrid"],
+        choices=["local","web","hybrid"],
         default="local",
         help="Specify the retriever (local, web, hybrid)",
     )
     parser.add_argument(
         "--persona",
-        choices=["default", "recruiter", "academician", "friend", "ml_engineer", "journalist", "interviewer", "ceo", "researcher"],
+        choices=["default", "recruiter", "academician", "friend", "ml_engineer", "ceo", "researcher"],
         default="default",
         help="Specify the persona (default, recruiter). It allows you to customize the persona i.e. how the chatbot should behave.",
     )

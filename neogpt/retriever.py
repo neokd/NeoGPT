@@ -1,11 +1,5 @@
-from neogpt.config import (
-    DEVICE_TYPE,
-    MODEL_NAME,
-    MODEL_FILE,
-)
-
 import logging
-from langchain.chains import RetrievalQA
+from langchain.chains import RetrievalQA, HypotheticalDocumentEmbedder, LLMChain
 from neogpt.vectorstore.chroma import ChromaStore
 from neogpt.vectorstore.faiss import FAISSStore
 from neogpt.load_llm import load_model
@@ -15,14 +9,24 @@ from langchain.retrievers.web_research import WebResearchRetriever
 from langchain.utilities import GoogleSearchAPIWrapper
 from langchain.retrievers import BM25Retriever, EnsembleRetriever
 from colorama import Fore
+from neogpt.config import (
+    DEVICE_TYPE,
+    MODEL_NAME,
+    MODEL_FILE,
+)
 
-
-# Function to set up the retrieval-based question-answering system
 def db_retriver(device_type:str = DEVICE_TYPE,vectordb:str = "Chroma", retriever:str = "local",persona:str="default" ,LOGGING=logging):
     """
-        input: device_type,vectorstore, LOGGING
-        output: None
-        description: The function is used to set up the retrieval-based question-answering system. It loads the LLM model, the Chroma DB, and the prompt and memory objects. It then creates a retrieval-based question-answering system using the LLM model and the Chroma DB.
+        Fn: db_retriver
+        Description: The function sets up the retrieval-based question-answering system.
+        Args:
+            device_type (str, optional): Device type (cpu, mps, cuda). Defaults to DEVICE_TYPE.
+            vectordb (str, optional): Vectorstore (Chroma, FAISS). Defaults to "Chroma".
+            retriever (str, optional): Retriever (local, web, hybrid). Defaults to "local".
+            persona (str, optional): Persona (default, recruiter). Defaults to "default".
+            LOGGING (logging, optional): Logging. Defaults to logging.
+        return: 
+            None
     """
     match vectordb:
         case "Chroma":
