@@ -1,8 +1,9 @@
-# MacOS specific for autogpt that i could run
 auto-gptq==0.3.2
 chromadb==0.4.14
 colorama==0.4.6
-coloredlogs==15.0.1
+faiss-cpu==1.7.4
+google-api-python-client==2.105.0
+html2text==2020.1.16
 huggingface-hub==0.17.3
 InstructorEmbedding==1.0.1
 langchain==0.0.317
@@ -15,5 +16,4 @@ sentence-transformers==2.2.2
 torch==2.1.0
 transformers==4.34.1
 unstructured==0.10.25
-openpyxl==3.1.2
 youtube-transcript-api==0.6.1
