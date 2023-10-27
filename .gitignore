@@ -5,3 +5,4 @@ models/*
 __pycache__
 neogpt/__pycache__
 neogpt/models/*
+.venv

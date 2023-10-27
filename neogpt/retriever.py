@@ -1,14 +1,16 @@
+import os
+import time
+from datetime import datetime
 import logging
-from langchain.chains import RetrievalQA, HypotheticalDocumentEmbedder, LLMChain
-from neogpt.vectorstore.chroma import ChromaStore
-from neogpt.vectorstore.faiss import FAISSStore
+from colorama import Fore
 from neogpt.load_llm import load_model
 from neogpt.prompts.prompt import get_prompt
-import os
-from langchain.retrievers.web_research import WebResearchRetriever
+from neogpt.vectorstore.faiss import FAISSStore
+from neogpt.vectorstore.chroma import ChromaStore
 from langchain.utilities import GoogleSearchAPIWrapper
 from langchain.retrievers import BM25Retriever, EnsembleRetriever
-from colorama import Fore
+from langchain.retrievers.web_research import WebResearchRetriever
+from langchain.chains import RetrievalQA, HypotheticalDocumentEmbedder, LLMChain
 from neogpt.config import (
     DEVICE_TYPE,
     MODEL_NAME,
@@ -119,8 +121,19 @@ def db_retriver(device_type:str = DEVICE_TYPE,vectordb:str = "Chroma", retriever
     if persona != "default":
         print("NeoGPT 🤖 is in "+ Fore.LIGHTMAGENTA_EX + persona + Fore.LIGHTYELLOW_EX + " mode.")
 
+
+    #  Main Loop with timer
+    last_input_time = datetime.now()
     while True:
+        time_difference = (datetime.now() - last_input_time).total_seconds()
+        # Check if 3 minutes have passed since the last input
+        if time_difference > 180:
+            print("No input received for 3 minutes. Exiting the program.")
+            break
+
         query = input(Fore.LIGHTCYAN_EX +"\nEnter your query 🙋‍♂️: ")
+        last_input_time = datetime.now()  # update the last_input_time to now
+
         if(query == "/exit"):
             LOGGING.info("Byee 👋.")
             break
