@@ -30,3 +30,4 @@ def hybrid_retriever(db,llm,persona="default"):
         },
         return_source_documents=True,
     )
+    return chain

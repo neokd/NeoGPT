@@ -15,7 +15,7 @@ from neogpt.config import (
     MODEL_FILE,
 )
 
-def db_retriver(device_type:str = DEVICE_TYPE,vectordb:str = "Chroma", retriever:str = "local",persona:str="default" ,show_source:bool="False",LOGGING=logging):
+def db_retriver(device_type:str = DEVICE_TYPE,vectordb:str = "Chroma", retriever:str = "local",persona:str="default" ,show_source:bool=True,LOGGING=logging):
     """
         Fn: db_retriver
         Description: The function sets up the retrieval-based question-answering system.
@@ -87,12 +87,11 @@ def db_retriver(device_type:str = DEVICE_TYPE,vectordb:str = "Chroma", retriever
         res = chain(query)
         answer, docs = res["result"], res["source_documents"]
         
-        print("\n\n> Question:")
-        print(query)
-        print("\n> Answer:")
-        print(answer)
+        
 
         if show_source:
+            print("Question: " + Fore.LIGHTGREEN_EX + query)
+            print("Answer: " + Fore.LIGHTGREEN_EX + answer)
             print("----------------------------------SOURCE DOCUMENTS---------------------------")
             for document in docs:
                 # print("\n> " + document.metadata["source"] + ":")
