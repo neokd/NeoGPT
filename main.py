@@ -1,7 +1,7 @@
 import logging
 from builder import builder
 import argparse
-from neogpt.retriever import db_retriver
+from neogpt.manager import db_retriver
 from neogpt.config import (
     DEVICE_TYPE,
 )
