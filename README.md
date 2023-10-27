@@ -85,10 +85,10 @@ Note: NeoGPT is continuously evolving. Your feedback shapes its future.
 - ✓ Hybrid RAG (Keyword based and Semmantic Search) 🕵️‍♂️📂
 - ✓ FAISS Support 📊
 - ✓ Chromadb Support 🎵
+- ✓ Build a user-friendly CLI ⌨️
+- ✓ Upgrade Builder to support multiple file types including URLs 📦🌐
 - ☐ Chat with SQL DB 🤖
 - ☐ User Interface 💻
-- ☐ Build a user-friendly CLI ⌨️
-- ☐ Upgrade Builder to support multiple file types including URLs 📦🌐
 - ☐ Add support for other LLM types (Ollama) 🧠
 - ☐ Add other database support (MongoDB, ElasticSearch, etc.) 📁🔍
 - ☐ Support for other search engines (DuckDuckGo, Bing, etc.) 🔍

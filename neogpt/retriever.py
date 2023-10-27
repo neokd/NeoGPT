@@ -148,6 +148,6 @@ def db_retriver(device_type:str = DEVICE_TYPE,vectordb:str = "Chroma", retriever
         if show_source:
             print("----------------------------------SOURCE DOCUMENTS---------------------------")
             for document in docs:
-                print("\n> " + document.metadata["source"] + ":")
-                print(document.page_content)
+                # print("\n> " + document.metadata["source"] + ":")
+                print(document)
             print("----------------------------------SOURCE DOCUMENTS---------------------------")
