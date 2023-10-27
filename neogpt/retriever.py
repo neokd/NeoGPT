@@ -128,7 +128,7 @@ def db_retriver(device_type:str = DEVICE_TYPE,vectordb:str = "Chroma", retriever
         time_difference = (datetime.now() - last_input_time).total_seconds()
         # Check if 3 minutes have passed since the last input
         if time_difference > 180:
-            print("No input received for 3 minutes. Exiting the program.")
+            print("\n \nNo input received for 3 minutes. Exiting the program.")
             break
 
         query = input(Fore.LIGHTCYAN_EX +"\nEnter your query 🙋‍♂️: ")
