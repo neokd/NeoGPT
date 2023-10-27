@@ -19,6 +19,8 @@ from neogpt.config import (
     RESERVED_FILE_NAMES
 )
 
+LOG_FILE = "log_file.log"
+
 def load_single_document(file_path: str) -> Document:
     """
         fn: load_single_document
@@ -201,6 +203,7 @@ def builder(vectorstore: str = "Chroma"):
 
 if __name__ == "__main__":
     logging.basicConfig(
+        filename=LOG_FILE,
         format="%(asctime)s - %(levelname)s - %(filename)s:%(lineno)s - %(message)s", level=logging.INFO,
     )
     parser = argparse.ArgumentParser(description="NeoGPT CLI Interface")
