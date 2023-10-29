@@ -51,7 +51,14 @@ class FAISSStore(VectorStore):
         return self.docstore.as_retriever()
     
     def get(self):
-        return self.load_local()
+        self.docstore = self.faiss.load_local(
+            folder_path=FAISS_PERSIST_DIRECTORY,
+            embeddings=self.embeddings,
+        )
+        if self.docstore is not None:
+            return str(self.docstore)
+        else:
+            return "No document store loaded."
     
     def _embeddings(self):
         return self.embeddings

@@ -1,4 +1,4 @@
-from langchain.prompts import PromptTemplate
+from langchain.prompts import PromptTemplate, ChatPromptTemplate, FewShotChatMessagePromptTemplate
 from langchain.memory import ConversationBufferWindowMemory
 from neogpt.config import DEFAULT_MEMORY_KEY
 import numpy as np
@@ -78,6 +78,75 @@ def get_prompt(model_type:str = "mistral", persona:str = "default", memory_key:i
     return prompt, memory
 
 
-if __name__ == '__main__':
-    prompt, memory = get_prompt(persona="recruiter")
+def few_shot_prompt():
+    examples = [
+        {
+            "input": "Tell me about the history of artificial intelligence.",
+            "output": "Explain the historical development of artificial intelligence."
+        },
+        {
+            "input": "What skills are essential for a data scientist?",
+            "output": "List the key skills required for a data scientist role."
+        },
+        {
+            "input": "Discuss the implications of quantum mechanics in modern physics.",
+            "output": "Examine the significance of quantum mechanics in contemporary physics."
+        },
+        {
+            "input": "Where's a great place to hang out this weekend?",
+            "output": "Do you know of any cool spots for the weekend?"
+        },
+        {
+            "input": "Explain the gradient descent algorithm for training neural networks.",
+            "output": "Describe the gradient descent algorithm used in neural network training."
+        },
+        {
+            "input": "What are our revenue projections for the next quarter?",
+            "output": "Provide the revenue forecasts for the upcoming quarter."
+        },
+        {
+            "input": "Can you elucidate the recent developments in quantum computing?",
+            "output": "Elaborate on the latest advancements in quantum computing research."
+        }
+    ]
+
+    example_prompt = ChatPromptTemplate.from_messages(
+        [
+            ("human", "{input}"),
+            ("ai", "{output}"),
+        ]
+    )
+    few_shot_prompt = FewShotChatMessagePromptTemplate(
+        example_prompt=example_prompt,
+        examples=examples,
+    )
+    prompt = ChatPromptTemplate.from_messages([
+        ("system", """I want you to act as a text based web browser browsing an imaginary internet. You should only reply with the contents of the page, nothing else. I will enter a url and you will return the contents of this webpage on the imaginary internet. Don't write explanations."""),
+        few_shot_prompt,
+        ("user", "{question}"),
+    ])
+    return prompt
+
+def stepback_prompt(model_type:str = "mistral", persona:str = "default", memory_key:int = DEFAULT_MEMORY_KEY):
+    INSTRUCTION_TEMLATE = """
+    You are an expert of world knowledge. I am going to ask you a question. Your response should be comprehensive and not contradicted with the following context if they are relevant. Otherwise, ignore them if they are not relevant.
+    
+    {normal_context}
+    {step_back_context}
+
+    Original Question: {question}
+    Answer:
+    """
+    memory = ConversationBufferWindowMemory(k=memory_key,return_messages=True,input_key="question", memory_key="history")
+
+    INSTRUCTION_BEGIN, INSTRUCTION_END = "[INST]", "[/INST]"
+    SYSTEM_BEGIN, SYSTEM_END = "[SYS]", "[/SYS]"
+
+    prompt = PromptTemplate(input_variables=["normal_context", "step_back_context", "question"], template=INSTRUCTION_TEMLATE)
+
+    return prompt, memory
+
+
+
+
     
