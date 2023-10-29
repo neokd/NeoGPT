@@ -89,8 +89,12 @@ def db_retriver(device_type:str = DEVICE_TYPE,vectordb:str = "Chroma", retriever
         if(query == "/exit"):
             LOGGING.info("Byee 👋.")
             break
-
-        res = chain(query)
+        
+        if retriever == "stepback":
+            res = chain.invoke({"question": query, "memory": []})
+        else:
+            res = chain(query)
+        res = chain.invoke({"question": query})
 
         if show_source:
             answer, docs = res["result"], res["source_documents"]
