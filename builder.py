@@ -19,7 +19,7 @@ from neogpt.config import (
     RESERVED_FILE_NAMES
 )
 
-LOG_FILE = "log_file.log"
+LOG_FILE = "builder.log"
 
 def load_single_document(file_path: str) -> Document:
     """
