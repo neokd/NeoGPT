@@ -6,3 +6,4 @@ __pycache__
 neogpt/__pycache__
 neogpt/models/*
 .venv
+.vscode
