@@ -1,3 +1,5 @@
+import sys
+from streamlit.web import cli as stcli
 import logging
 import argparse
 import os
@@ -53,6 +55,12 @@ if __name__ == '__main__':
         action="store_true",
         help="The source documents are displayed if the show_sources flag is set to True.",
     )
+    parser.add_argument(
+        "--ui",
+        default= False,
+        action="store_true",
+        help="Start a UI server for NeoGPT",
+    )
     args = parser.parse_args()
 
     if args.build:
@@ -65,5 +73,10 @@ if __name__ == '__main__':
         builder(vectorstore="Chroma")
 
     db_retriver(device_type=args.device_type,vectordb=args.db,retriever=args.retriever,persona=args.persona, LOGGING=logging)
-    
+
+    if args.ui:
+        sys.argv = ["streamlit", "run", "ui.py"]
+        sys.exit(stcli.main())
+    else:
+        db_retriver()
 
