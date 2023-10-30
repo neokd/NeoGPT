@@ -7,7 +7,8 @@ from neogpt.vectorstore.chroma import ChromaStore
 from neogpt.retrievers import (
     local_retriever,
     web_research,
-    hybrid_retriever
+    hybrid_retriever,
+    stepback
 )
 from neogpt.config import (
     DEVICE_TYPE,
@@ -15,7 +16,7 @@ from neogpt.config import (
     MODEL_FILE,
 )
 
-def db_retriver(device_type:str = DEVICE_TYPE,vectordb:str = "Chroma", retriever:str = "local",persona:str="default" ,show_source:bool=True,LOGGING=logging):
+def db_retriver(device_type:str = DEVICE_TYPE,vectordb:str = "Chroma", retriever:str = "local",persona:str="default" ,show_source:bool=False,LOGGING=logging):
     """
         Fn: db_retriver
         Description: The function sets up the retrieval-based question-answering system.
@@ -35,7 +36,10 @@ def db_retriver(device_type:str = DEVICE_TYPE,vectordb:str = "Chroma", retriever
             LOGGING.info(f"Loaded Chroma DB Successfully")
         case "FAISS":
             # Load the FAISS DB with the embedding model
-            db = FAISSStore().load_local()
+            if retriever == "hybrid":
+                db = FAISSStore()
+            else:
+                db = FAISSStore().load_local()
             LOGGING.info(f"Loaded FAISS DB Successfully")
         # case "Pinecone":
             # Initialize Pinecone client
@@ -57,6 +61,8 @@ def db_retriver(device_type:str = DEVICE_TYPE,vectordb:str = "Chroma", retriever
             chain = web_research(db, llm , persona)
         case "hybrid":
             chain = hybrid_retriever(db, llm , persona)
+        case "stepback":
+            chain = stepback(llm,db)
             
             
 
@@ -79,17 +85,19 @@ def db_retriver(device_type:str = DEVICE_TYPE,vectordb:str = "Chroma", retriever
             break
 
         query = input(Fore.LIGHTCYAN_EX +"\nEnter your query 🙋‍♂️: ")
-        
 
         if(query == "/exit"):
             LOGGING.info("Byee 👋.")
             break
-        res = chain(query)
-        answer, docs = res["result"], res["source_documents"]
         
-        
+        if retriever == "stepback":
+            res = chain.invoke({"question": query, "memory": []})
+        else:
+            res = chain(query)
+        res = chain.invoke({"question": query})
 
         if show_source:
+            answer, docs = res["result"], res["source_documents"]
             print("Question: " + Fore.LIGHTGREEN_EX + query)
             print("Answer: " + Fore.LIGHTGREEN_EX + answer)
             print("----------------------------------SOURCE DOCUMENTS---------------------------")

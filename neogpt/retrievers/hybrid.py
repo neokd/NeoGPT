@@ -15,9 +15,8 @@ def hybrid_retriever(db,llm,persona="default"):
     """
     prompt, memory = get_prompt(persona=persona)
     # Create a retriever object
-    local_retriver = db.as_retriever()
     bm_retriever = BM25Retriever.from_texts(db.get())
-
+    local_retriver = db.as_retriever()
     ensemble_retriever = EnsembleRetriever(retrievers=[bm_retriever, local_retriver],weights=[0.5, 0.5])
 
     chain = RetrievalQA.from_chain_type(
