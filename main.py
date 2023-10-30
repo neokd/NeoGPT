@@ -5,7 +5,7 @@ from neogpt.manager import db_retriver
 from neogpt.config import (
     DEVICE_TYPE,
 )
-    
+
 
 
 if __name__ == '__main__':
