@@ -1,19 +1,25 @@
 import logging
-from .load_llm import load_model
+from neogpt.load_llm import load_model
 import streamlit as st
 from langchain.chains import RetrievalQA
-from .vectorstore.chroma import ChromaStore
-from .prompts.prompt import get_prompt
+from neogpt.vectorstore.chroma import ChromaStore
+from neogpt.prompts.prompt import get_prompt
+from neogpt.config import (
+    DEVICE_TYPE, 
+    MODEL_NAME,
+    MODEL_FILE
+)
 
 @st.cache_resource(show_spinner=True)
 def create_chain():
     with st.spinner(text="Loading the model"):
+        
         db = ChromaStore()
         logging.info(f"Loaded Chroma DB Successfully.")
-        st.chat_message(f"Loaded Chroma DB Successfully.")
+        # st.chat_message(f"Loaded Chroma DB Successfully.")
         retriever = db.as_retriever()
         # Load the LLM model
-        llm = load_model('cpu', model_id='TheBloke/Mistral-7B-Instruct-v0.1-GGUF', model_basename='mistral-7b-instruct-v0.1.Q4_K_M.gguf', LOGGING=logging)
+        llm = load_model(DEVICE_TYPE, model_id=MODEL_NAME, model_basename=MODEL_FILE, LOGGING=logging)
         # Prompt Builder Function 
         prompt , memory = get_prompt()
         # Create a retrieval-based question-answering system using the LLM model and the Vector DB
@@ -53,7 +59,8 @@ def run_ui():
 
         # Display assistant response in chat message container
         with st.chat_message("assistant"):
-            st.markdown(response)
+            with st.spinner(text="NeoGPT is thinking..."):
+                st.markdown(response)
         # Add assistant response to chat history
         st.session_state.messages.append({"role": "assistant", "content": response})
 
