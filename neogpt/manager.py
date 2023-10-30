@@ -91,10 +91,10 @@ def db_retriver(device_type:str = DEVICE_TYPE,vectordb:str = "Chroma", retriever
             break
         
         if retriever == "stepback":
-            res = chain.invoke({"question": query, "memory": []})
+            res = chain.invoke(query)
         else:
             res = chain(query)
-        res = chain.invoke({"question": query})
+        # res = chain.invoke({"question": query})
 
         if show_source:
             answer, docs = res["result"], res["source_documents"]

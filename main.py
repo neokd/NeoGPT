@@ -72,11 +72,9 @@ if __name__ == '__main__':
     if not os.path.exists(CHROMA_PERSIST_DIRECTORY):
         builder(vectorstore="Chroma")
 
-    db_retriver(device_type=args.device_type,vectordb=args.db,retriever=args.retriever,persona=args.persona, LOGGING=logging)
-
     if args.ui:
-        sys.argv = ["streamlit", "run", "ui.py"]
+        sys.argv = ["streamlit", "run", "neogpt/ui.py"]
         sys.exit(stcli.main())
     else:
-        db_retriver()
+        db_retriver(device_type=args.device_type,vectordb=args.db,retriever=args.retriever,persona=args.persona, LOGGING=logging)
 

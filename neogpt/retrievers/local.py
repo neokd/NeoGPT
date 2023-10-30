@@ -1,5 +1,5 @@
 from langchain.chains import RetrievalQA
-from neogpt.prompts.prompt import get_prompt    
+from neogpt.prompts.prompt import get_prompt   
 import logging
 
 def local_retriever(db, llm, persona="default"):
