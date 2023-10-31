@@ -8,7 +8,7 @@ WORKDIR /app-neo
 COPY . /app-neo/
 
 #Run the dependency installation script as well as builder script to build the database
-RUN pip install -r requirements.txt &&  python builder.py
+RUN pip install -r dev-requirement.txt &&  python builder.py
 
 # Specify the command to run on container startup
 CMD [ "python" ,"main.py"]
