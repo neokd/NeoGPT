@@ -30,6 +30,7 @@ def create_chain():
             chain_type_kwargs={"prompt": prompt, "memory": memory},
         )
 
+chain = create_chain()
 
 def run_ui():
     st.title("NeoGPT Bot 🤖")
@@ -37,9 +38,6 @@ def run_ui():
     # initialize chat history
     if "messages" not in st.session_state:
         st.session_state.messages = []
-
-    if "chain" not in st.session_state:
-        st.session_state.chain = create_chain()
 
     #Display chat message from history on app rerun
     for message in st.session_state.messages:
@@ -53,16 +51,14 @@ def run_ui():
             st.markdown(prompt)
         # Add user message to chat history
         st.session_state.messages.append({"role": "user", "content": prompt})
-
-        # Get response from the LLM
-        response = f"Neo: {st.session_state.chain(prompt, return_only_outputs=True)['result']}"
-
+        response = chain(prompt, return_only_outputs=True)["result"]
         # Display assistant response in chat message container
         with st.chat_message("assistant"):
-            with st.spinner(text="NeoGPT is thinking..."):
-                st.markdown(response)
-        # Add assistant response to chat history
+            st.markdown(response)
+        # # Add assistant response to chat history
         st.session_state.messages.append({"role": "assistant", "content": response})
+
+
 
 if __name__ == "__main__":
     # run this file

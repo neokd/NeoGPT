@@ -6,7 +6,7 @@ from neogpt.config import (
     N_GPU_LAYERS,
     MAX_TOKEN_LENGTH,
 )
-from neogpt.callback_handler import StreamingStdOutCallbackHandler,TokenCallbackHandler
+from neogpt.callback_handler import StreamingStdOutCallbackHandler,TokenCallbackHandler,StreamlitStreamingHandler
 from langchain.callbacks.manager import CallbackManager
 from huggingface_hub import hf_hub_download
 from langchain.llms import LlamaCpp, HuggingFacePipeline
@@ -31,7 +31,7 @@ def load_model(device_type:str = DEVICE_TYPE, model_id:str = MODEL_NAME, model_b
     """
     if model_basename is not None and ".gguf" in model_basename.lower() :
 
-        callback_manager = CallbackManager([StreamingStdOutCallbackHandler(),TokenCallbackHandler()])
+        callback_manager = CallbackManager([StreamingStdOutCallbackHandler(),TokenCallbackHandler(),StreamlitStreamingHandler()])
         try:
         # Download the model checkpoint from the Hugging Face Hub
             model_path = hf_hub_download(

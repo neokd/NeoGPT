@@ -59,3 +59,27 @@ class TokenCallbackHandler(BaseCallbackHandler):
         print(Fore.WHITE + f"\n\nTotal tokens generated: {total_tokens}")
         print(Fore.WHITE + f"Query cost: {QUERY_COST} INR")
         print(Fore.WHITE + f"Total cost: {TOTAL_COST} INR")
+
+class StreamlitStreamingHandler(StreamingStdOutCallbackHandler):
+    def __init__(self) -> None:
+        super().__init__()
+        self.output = st.empty()
+        self._token = ''
+    
+    def on_llm_start(
+        self, serialized: Dict[str, Any], prompts: List[str], **kwargs: Any
+    ) -> None:
+        """Run when LLM starts running."""
+        del self.output
+        self._token = ''
+        self.output = st.empty()
+        
+
+    def on_llm_new_token(self, token: str, **kwargs: Any) -> None:
+        """Run on new LLM token. Only available when streaming is enabled."""
+        self._token += token
+        self.output.info(self._token)
+
+    def on_llm_end(self, response: LLMResult, **kwargs: Any) -> None:
+        # Remove info message
+        st.empty()
