@@ -46,7 +46,7 @@ Note: NeoGPT is continuously evolving. Your feedback shapes its future.
    conda activate neogpt-env
 
    # Now install the requirements using pip
-   pip install -r dev-requirement.txt
+   pip install -r requirements.txt
    ```
 
 
