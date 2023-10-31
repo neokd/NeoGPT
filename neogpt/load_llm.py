@@ -15,7 +15,7 @@ from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, GenerationConfig,
 import logging
 
 # Function to load the LLM 
-def load_model(device_type:str = DEVICE_TYPE, model_id:str = MODEL_NAME, model_basename:str = MODEL_FILE, LOGGING=logging):
+def load_model(device_type:str = DEVICE_TYPE, model_id:str = MODEL_NAME, model_basename:str = MODEL_FILE,ui:bool = False, LOGGING=logging):
     """
         Fn: load_model
         Description: The function loads the LLM model (LLamaCpp, GPTQ, HuggingFacePipeline)
@@ -30,8 +30,10 @@ def load_model(device_type:str = DEVICE_TYPE, model_id:str = MODEL_NAME, model_b
             llm (HuggingFacePipeline): Returns a HuggingFace Pipeline object (language model)
     """
     if model_basename is not None and ".gguf" in model_basename.lower() :
-
-        callback_manager = CallbackManager([StreamingStdOutCallbackHandler(),TokenCallbackHandler(),StreamlitStreamingHandler()])
+        if ui:
+            callback_manager = CallbackManager([StreamlitStreamingHandler()])
+        else:
+            callback_manager = CallbackManager([StreamingStdOutCallbackHandler(),TokenCallbackHandler(),StreamlitStreamingHandler()])
         try:
         # Download the model checkpoint from the Hugging Face Hub
             model_path = hf_hub_download(

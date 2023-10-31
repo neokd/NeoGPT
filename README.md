@@ -72,6 +72,10 @@ Note: NeoGPT is continuously evolving. Your feedback shapes its future.
     ```python
         python main.py 
     ```
+    You can also use `--ui` flag to run the Streamlit UI. 
+    ```python
+        python main.py --ui
+    ```
 
 ## Supported Retriever 
 - Local Retriever
@@ -87,8 +91,8 @@ Note: NeoGPT is continuously evolving. Your feedback shapes its future.
 - ✓ Chromadb Support 🎵
 - ✓ Build a user-friendly CLI ⌨️
 - ✓ Upgrade Builder to support multiple file types including URLs 📦🌐
+- ✓ User Interface 💻 (Streamlit)
 - ☐ Chat with SQL DB 🤖
-- ☐ User Interface 💻
 - ☐ Add support for other LLM types (Ollama) 🧠
 - ☐ Add other database support (MongoDB, ElasticSearch, etc.) 📁🔍
 - ☐ Support for other search engines (DuckDuckGo, Bing, etc.) 🔍

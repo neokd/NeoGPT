@@ -73,6 +73,8 @@ if __name__ == '__main__':
         builder(vectorstore="Chroma")
 
     if args.ui:
+        logging.info("Starting the UI server for NeoGPT 🤖")
+        logging.info("Note: The UI server only supports local retriever and Chroma DB")
         sys.argv = ["streamlit", "run", "neogpt/ui.py"]
         sys.exit(stcli.main())
     else:
