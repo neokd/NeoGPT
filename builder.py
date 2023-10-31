@@ -19,6 +19,9 @@ from neogpt.config import (
     RESERVED_FILE_NAMES
 )
 
+from tqdm import tqdm
+
+
 LOG_FILE = "builder.log"
 
 def load_single_document(file_path: str) -> Document:
@@ -53,9 +56,12 @@ def load_document_batch(filepaths):
     # create a thread pool
     with ThreadPoolExecutor(len(filepaths)) as exe:
         # load files
-        futures = [exe.submit(load_single_document, name) for name in filepaths]
+        #futures = [exe.submit(load_single_document, name) for name in tqdm(filepaths)]
         # collect data
-        
+        futures = []
+        for name in tqdm(filepaths):
+            print("Loading file: "+name)
+            futures.append(exe.submit(load_single_document, name))
         data_list = [future.result() for future in futures]
         # return data and file paths
         return (data_list, filepaths)
@@ -96,7 +102,11 @@ def load_url_batch(urlpaths):
     """
     logging.info("Loading Url batch")
     with ThreadPoolExecutor(len(urlpaths)) as exe:
-        futures = [exe.submit(process_url, name) for name in urlpaths]
+        #futures = [exe.submit(process_url, name) for name in tqdm(urlpaths)]
+        futures = []
+        for name in tqdm(urlpaths):
+            futures.append(exe.submit(process_url, name))
+            print("Loading file: "+name)
         data_list = [future.result() for future in futures]
     return (data_list, urlpaths)
 
