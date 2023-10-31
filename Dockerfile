@@ -1,5 +1,5 @@
 # Use the latest Python image as the base image
-FROM python:latest
+FROM python:3.11
 
 # Set the working directory inside the container
 WORKDIR /app-neo
@@ -8,7 +8,7 @@ WORKDIR /app-neo
 COPY . /app-neo/
 
 #Run the dependency installation script as well as builder script to build the database
-RUN pip install -r requirements.txt &&  python builder.py
+RUN pip install -r dev-requirement.txt &&  python builder.py
 
 # Specify the command to run on container startup
 CMD [ "python" ,"main.py"]
