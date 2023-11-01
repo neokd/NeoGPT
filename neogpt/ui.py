@@ -15,9 +15,10 @@ st.set_page_config(
     page_icon="🤖",
 )
 
+persona_list = ["default", "recruiter", "academician", "friend", "ml_engineer", "ceo", "researcher"]
 
 @st.cache_resource(show_spinner=True)
-def create_chain():
+def create_chain(persona):
     with st.spinner(text="Loading the model"):
         
         db = ChromaStore()
@@ -27,7 +28,7 @@ def create_chain():
         # Load the LLM model
         llm = load_model(DEVICE_TYPE, model_id=MODEL_NAME, model_basename=MODEL_FILE,ui=True, LOGGING=logging)
         # Prompt Builder Function 
-        prompt , memory = get_prompt()
+        prompt , memory = get_prompt(persona=persona)
         # Create a retrieval-based question-answering system using the LLM model and the Vector DB
         return RetrievalQA.from_chain_type(
             llm=llm,
@@ -36,9 +37,9 @@ def create_chain():
             chain_type_kwargs={"prompt": prompt, "memory": memory},
         )
 
-chain = create_chain()
-
 def run_ui():
+    persona = st.session_state.persona if "persona" in st.session_state else "default"
+    chain = create_chain(persona)
     
     with st.sidebar:
         st.markdown("# NeoGPT 🤖")
@@ -49,6 +50,7 @@ def run_ui():
         st.markdown(f"Device: **{DEVICE_TYPE}**")
         st.markdown(f"Retriever: **Local Retrieval**")
         st.markdown(f"Database: **Chroma DB**")
+        st.session_state.persona = st.selectbox("Persona", options=persona_list, on_change=lambda: st.session_state.pop("messages", None))
         st.divider()
         st.markdown("### Feedback and Contact")
         st.warning(f"Feedback? Please open an issue on [GitHub issues page](https://github.com/neokd/NeoGPT/issues/new)")
@@ -57,8 +59,11 @@ def run_ui():
         
         
     st.title("NeoGPT🤖")
-    
-    # initialize chat history
+
+    if st.session_state.persona != persona:
+        persona = st.session_state.persona
+        chain = create_chain(persona)
+
     if "messages" not in st.session_state:
         project_info = st.empty()
         project_info.markdown(
