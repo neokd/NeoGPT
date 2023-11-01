@@ -30,7 +30,7 @@ Note: NeoGPT is continuously evolving. Your feedback shapes its future.
    ```
    git clone https://github.com/neokd/NeoGPT.git
    cd NeoGPT
-   pip install -r dev-requirement.txt
+   pip install -r dev-requirements.txt
     ```
     Alternatively, using conda:
 
