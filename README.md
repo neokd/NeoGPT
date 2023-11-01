@@ -19,18 +19,14 @@ Note: NeoGPT is continuously evolving. Your feedback shapes its future.
 - [License](#license)
 - [Discord](#discord)
 
-## 🎉 Join Us for Hacktoberfest 2023
-![Hacktoberfest Banner](./asset/readme.png)
-
 ## Getting Started
 
 1. **Installation:** Clone this repository and install the necessary dependencies.
 
-
    ```
    git clone https://github.com/neokd/NeoGPT.git
    cd NeoGPT
-   pip install -r dev-requirements.txt
+   pip install -r requirements.txt
     ```
     Alternatively, using conda:
 
