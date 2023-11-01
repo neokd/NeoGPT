@@ -16,13 +16,11 @@ from neogpt.config import (
     DEVICE_TYPE,
     DOCUMENT_EXTENSION,
     URL_EXTENSION,
-    RESERVED_FILE_NAMES
+    RESERVED_FILE_NAMES,
+    LOG_FILE
 )
-
 from tqdm import tqdm
 
-
-LOG_FILE = "builder.log"
 
 def load_single_document(file_path: str) -> Document:
     """

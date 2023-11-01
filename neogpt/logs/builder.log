@@ -1,0 +1,19 @@
+2023-11-01 17:38:29,632 - INFO - builder.py:171 - Loading Documents from /Users/kuldeep/Project/NeoGPT/neogpt/documents
+2023-11-01 17:38:34,400 - INFO - builder.py:177 - Loaded 3 documents from /Users/kuldeep/Project/NeoGPT/neogpt/documents
+2023-11-01 17:38:34,400 - INFO - builder.py:178 - Split into 230 chunks of text
+2023-11-01 17:38:34,400 - INFO - builder.py:179 - Using mps device for embedding model
+2023-11-01 17:38:34,400 - INFO - builder.py:189 - Using FAISS for vectorstore
+2023-11-01 17:38:35,093 - INFO - SentenceTransformer.py:66 - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L12-v2
+2023-11-01 17:38:35,688 - WARNING - faiss.py:99 - `embedding_function` is expected to be an Embeddings object, support for passing in a function will soon be removed.
+2023-11-01 17:38:50,261 - INFO - loader.py:64 - Loading faiss.
+2023-11-01 17:38:50,427 - INFO - loader.py:66 - Successfully loaded faiss.
+2023-11-01 17:38:50,437 - INFO - builder.py:193 - Loaded Documents to FAISS DB Successfully
+2023-11-01 17:38:50,437 - INFO - builder.py:195 - Builder👷🏻‍♀️ has built your VectorDB successfully!
+2023-11-01 17:38:59,345 - INFO - builder.py:171 - Loading Documents from /Users/kuldeep/Project/NeoGPT/neogpt/documents
+2023-11-01 17:39:04,210 - INFO - builder.py:177 - Loaded 3 documents from /Users/kuldeep/Project/NeoGPT/neogpt/documents
+2023-11-01 17:39:04,210 - INFO - builder.py:178 - Split into 230 chunks of text
+2023-11-01 17:39:04,210 - INFO - builder.py:179 - Using mps device for embedding model
+2023-11-01 17:39:04,210 - INFO - builder.py:183 - Using Chroma for vectorstore
+2023-11-01 17:39:04,865 - INFO - SentenceTransformer.py:66 - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L12-v2
+2023-11-01 17:39:20,325 - INFO - builder.py:187 - Loaded Documents to Chroma DB Successfully
+2023-11-01 17:39:20,325 - INFO - builder.py:195 - Builder👷🏻‍♀️ has built your VectorDB successfully!

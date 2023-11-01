@@ -116,3 +116,7 @@ URL_EXTENSION = {
 # Initial Query Cost and Total Cost
 QUERY_COST = 0
 TOTAL_COST = 0
+
+# LOG CONFIG
+LOG_FOLDER = os.path.join(os.path.dirname(__file__), "logs")
+LOG_FILE = os.path.join(LOG_FOLDER, "builder.log")
