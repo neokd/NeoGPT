@@ -33,9 +33,9 @@ if __name__ == '__main__':
     )
     parser.add_argument(
         "--retriever",
-        choices=["local","web","hybrid","stepback"],
+        choices=["local","web","hybrid","stepback","sql","compress"],
         default="local",
-        help="Specify the retriever (local, web, hybrid)",
+        help="Specify the retriever (local, web, hybrid, stepback, sql, compress). It allows you to customize the retriever i.e. how the chatbot should retrieve the documents.",
     )
     parser.add_argument(
         "--persona",

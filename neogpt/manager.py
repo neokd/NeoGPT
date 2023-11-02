@@ -2,13 +2,17 @@ import logging
 from datetime import datetime
 from colorama import Fore
 from neogpt.load_llm import load_model
-from neogpt.vectorstore.faiss import FAISSStore
-from neogpt.vectorstore.chroma import ChromaStore
+from neogpt.vectorstore import (
+    ChromaStore,
+    FAISSStore
+)
 from neogpt.retrievers import (
     local_retriever,
     web_research,
     hybrid_retriever,
-    stepback
+    stepback,
+    sql_retriever,
+    context_compress
 )
 from neogpt.config import (
     DEVICE_TYPE,
@@ -63,9 +67,11 @@ def db_retriver(device_type:str = DEVICE_TYPE,vectordb:str = "Chroma", retriever
             chain = hybrid_retriever(db, llm , persona)
         case "stepback":
             chain = stepback(llm,db)
-            
-            
-
+        case "compress":
+            chain = context_compress(llm,db,persona)
+        case "sql":
+            chain = sql_retriever(llm, persona)
+        
     # Main loop
     LOGGING.info("Note: The stats are based on OpenAI's pricing model. The cost is calculated based on the number of tokens generated. You don't have to pay anything to use the chatbot. The cost is only for reference.")
 
@@ -91,9 +97,9 @@ def db_retriver(device_type:str = DEVICE_TYPE,vectordb:str = "Chroma", retriever
             break
         
         if retriever == "stepback":
-            res = chain.invoke(query)
+            res = chain.invoke({"question": query})
         else:
-            res = chain(query)
+            res = chain.invoke(query)
         # res = chain.invoke({"question": query})
 
         if show_source:

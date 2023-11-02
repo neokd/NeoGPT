@@ -33,7 +33,7 @@ def load_model(device_type:str = DEVICE_TYPE, model_id:str = MODEL_NAME, model_b
         if ui:
             callback_manager = CallbackManager([StreamlitStreamingHandler()])
         else:
-            callback_manager = CallbackManager([StreamingStdOutCallbackHandler(),TokenCallbackHandler(),StreamlitStreamingHandler()])
+            callback_manager = CallbackManager([StreamingStdOutCallbackHandler(),TokenCallbackHandler()])
         try:
         # Download the model checkpoint from the Hugging Face Hub
             model_path = hf_hub_download(

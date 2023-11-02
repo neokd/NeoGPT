@@ -8,8 +8,10 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from typing import Optional, Iterator, List, Dict
 from chromadb.config import Settings
 import argparse
-from neogpt.vectorstore.chroma import ChromaStore
-from neogpt.vectorstore.faiss import FAISSStore
+from neogpt.vectorstore import (
+    ChromaStore,
+    FAISSStore
+)
 from neogpt.config import (
     SOURCE_DIR,
     INGEST_THREADS,

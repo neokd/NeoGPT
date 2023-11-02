@@ -1,6 +1,3 @@
-"""
-    
-"""
 from langchain.schema.output_parser import StrOutputParser
 from langchain.utilities import DuckDuckGoSearchAPIWrapper
 from neogpt.prompts.prompt import few_shot_prompt, stepback_prompt
@@ -19,7 +16,7 @@ def stepback(llm,db):
     # question = "was chatgpt around while trump was president?"
     # print(retriever(question_gen.invoke({"question": question})))
     prompt, memory = stepback_prompt()
-    
+    retriever = db.as_retriever()
     chain = {
         "normal_context": RunnableLambda(lambda x: x['question']) | retriever,
         "step_back_context": question_gen | retriever,

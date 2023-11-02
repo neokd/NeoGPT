@@ -10,31 +10,53 @@ from neogpt.config import (
     TOTAL_COST,
     QUERY_COST
 )
+import threading
 
 class StreamingStdOutCallbackHandler(BaseCallbackHandler):
-    """
-    The StreamingStdOutCallbackHandler class is a callback handler from langchain that displays the generated tokens and adds a loading animation to show activity.
-    """
-    def on_llm_start(
-        self, serialized: Dict[str, Any], prompts: List[str], **kwargs: Any
-    ) -> None:
+    def __init__(self):
+        super().__init__()
+        self.loading_thread = None
+        self.streaming = False
+        self.thinking_animation_thread = None
+        self.neo_gpt_printed = False
+
+    def on_llm_start(self, serialized: Dict[str, Any], prompts: List[str], **kwargs: Any) -> None:
         # Start a new line for a clean display
         sys.stdout.write("\n")
-        sys.stdout.write(Fore.BLUE + "NeoGPT 🤖 is thinking...")
 
-        # Add a loading animation to show activity
-        loading_chars = "/-\\"
-        for char in loading_chars:
-            sys.stdout.write('\b' + char)  # Move the cursor back to overwrite the token
-            sys.stdout.flush()
-            time.sleep(0.1)
-        
-        sys.stdout.write(Fore.BLUE + "\nNeoGPT 🤖:")
+        # Start a thread for the "NeoGPT 🤖 is thinking..." message
+        self.thinking_animation_thread = threading.Thread(target=self.thinking_animation)
+        self.thinking_animation_thread.start()
 
     def on_llm_new_token(self, token: str, **kwargs: Any) -> None:
+        # Stop the thinking animation thread when a new token is generated
+        self.streaming = True
+
+        if self.thinking_animation_thread and self.thinking_animation_thread.is_alive():
+            self.thinking_animation_thread.join()  # Wait for the thread to finish
+
+        if not self.neo_gpt_printed:
+            sys.stdout.write(Fore.BLUE + "\nNeoGPT 🤖:")
+            self.neo_gpt_printed = True
+
         # Display the generated token in a friendly way
         sys.stdout.write(Fore.WHITE + token)
         sys.stdout.flush()
+
+    def thinking_animation(self):
+        thinking_message = "NeoGPT 🤖 is thinking..."
+        loading_chars = "/-\\"
+        animation_idx = 0
+
+        sys.stdout.write(Fore.BLUE + thinking_message)
+
+        while not self.streaming:
+            sys.stdout.write(loading_chars[animation_idx])
+            sys.stdout.flush()
+            time.sleep(0.1)
+            sys.stdout.write('\b')  # Move the cursor back to overwrite the animation
+            animation_idx = (animation_idx + 1) % len(loading_chars)
+
 
 
 # Define a custom callback handler class for token collection

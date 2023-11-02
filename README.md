@@ -9,6 +9,8 @@ Say goodbye to boring interactions with documents and YouTube videos. NeoGPT is 
 
 Note: NeoGPT is continuously evolving. Your feedback shapes its future.
 
+Join our [Discord](https://discord.gg/JW7YD5Yt) community to stay up to date with the latest developments.
+
 # Table of Contents
 - [Getting Started](#getting-started)
 - [Supported Retriever](#supported-retriever)
@@ -45,7 +47,6 @@ Note: NeoGPT is continuously evolving. Your feedback shapes its future.
    pip install -r requirements.txt
    ```
 
-
 2. **Building Database** Currently NeoGPT supports local files and Youtube videos. To build the database add your local files to the documents directory and URL in the `builder.url` file. Then run the builder script.
     
     ```python
@@ -55,13 +56,11 @@ Note: NeoGPT is continuously evolving. Your feedback shapes its future.
     Supported databases are:
     - `Chroma` (default) 
     - `FAISS` 
-    - `Pinecone` (experimental)
 
-    Currently the database is built using 2 papers: 
+    Currently the database is built using 2 papers and 1 youtube video: 
     - [Attention Is All You Need](https://arxiv.org/pdf/1706.03762.pdf)
     - [HuggingGPT](https://arxiv.org/pdf/2303.17580.pdf)
-    
-    - Youtube Video from 1littlecoder: [22 AI News EXPLAINED!!!](https://www.youtube.com/watch?v=BPknz-hCnec)
+    - [22 AI News EXPLAINED!!!](https://www.youtube.com/watch?v=BPknz-hCnec)
 
 
 3. **Run NeoGPT:** Run the CLI to start using NeoGPT. Requires `Python v3.10`. You can use the `--help` flag to view the available commands and options.
@@ -77,6 +76,9 @@ Note: NeoGPT is continuously evolving. Your feedback shapes its future.
 - Local Retriever
 - Web Retriever
 - Hybrid Retriever (Ensemble Retriever)
+- SQL Retriever (Experimental)
+- Context Compressor Retriever
+- Stepback Prompting + RAG + DuckDuckGo Search
 
 ## Project Roadmap
 - ✓ RAG (Question Answering with local files) 📂
@@ -88,10 +90,10 @@ Note: NeoGPT is continuously evolving. Your feedback shapes its future.
 - ✓ Build a user-friendly CLI ⌨️
 - ✓ Upgrade Builder to support multiple file types including URLs 📦🌐
 - ✓ User Interface 💻 (Streamlit)
-- ☐ Chat with SQL DB 🤖
+- ✓ Chat with SQL DB 🤖
+- ✓ Support for other search engines (DuckDuckGo) 🔍
 - ☐ Add support for other LLM types (Ollama) 🧠
 - ☐ Add other database support (MongoDB, ElasticSearch, etc.) 📁🔍
-- ☐ Support for other search engines (DuckDuckGo, Bing, etc.) 🔍
 - ☐ Docker Support 🐳
 - ☐ Better Documentation 📖
 - ☐ Agent based chatbot 🤖
@@ -130,8 +132,3 @@ We welcome contributions to NeoGPT! If you have ideas for new features or improv
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details. Let's innovate together! 🤖✨
-
-## Discord
-<a href = "https://discord.gg/JW7YD5Yt">
-   <img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Discord"/>
-</a>
