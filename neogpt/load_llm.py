@@ -10,7 +10,6 @@ from neogpt.callback_handler import StreamingStdOutCallbackHandler,TokenCallback
 from langchain.callbacks.manager import CallbackManager
 from huggingface_hub import hf_hub_download
 from langchain.llms import LlamaCpp, HuggingFacePipeline
-from auto_gptq import AutoGPTQForCausalLM, BaseQuantizeConfig
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, GenerationConfig, pipeline, AutoModelForCausalLM, TextGenerationPipeline
 import logging
 
@@ -61,45 +60,6 @@ def load_model(device_type:str = DEVICE_TYPE, model_id:str = MODEL_NAME, model_b
             llm =  LlamaCpp(**kwargs)
             LOGGING.info(f"Loaded {model_id} locally")
             return llm  # Returns a LlamaCpp object (language model)
-        except Exception as e:
-            LOGGING.info(f"Error {e}")
-
-    elif model_basename is not None and ".safetensors" in model_basename.lower() :
-        try:
-            if ".safetensors" in model_basename.lower():
-                model_basename = model_basename.replace(".safetensors","")
-            quantize_config = BaseQuantizeConfig(
-                bits=4,  # quantize model to 4-bit
-                group_size=128,  # it is recommended to set the value to 128
-                desc_act=True,  # set to False can significantly speed up inference but the perplexity may slightly bad
-            )
-            # Load GPTQ model from huggingface
-            model = AutoGPTQForCausalLM.from_quantized(
-                model_id,
-                model_basename=model_basename,
-                use_safetensors=True,
-                trust_remote_code=True,
-                # device= "cuda" if torch.cuda.is_available() else "cpu",
-                use_triton=False,
-                model_kwargs= {"cache_dir" : MODEL_DIRECTORY},
-                quantize_config=quantize_config,
-               
-            )
-            # print(model)
-            tokenizer = AutoTokenizer.from_pretrained(model_id,use_fast=True)
-            LOGGING.info(f"Loaded GPTQ model: {model_id} successfully")
-            # generation_config = GenerationConfig.from_pretrained(model_id)
-            pipe = TextGenerationPipeline(
-                task="text-generation",
-                model=model,
-                tokenizer=tokenizer,
-                max_new_tokens=512,
-                temperature=0.7,
-                top_p=0.95,
-                repetition_penalty=1.15
-            )
-            llm = HuggingFacePipeline(pipeline=pipe)
-            return llm
         except Exception as e:
             LOGGING.info(f"Error {e}")
 

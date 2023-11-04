@@ -17,8 +17,8 @@ from langchain.document_loaders import (
     UnstructuredMarkdownLoader,
     JSONLoader,
     YoutubeLoader,
-    WhatsAppChatLoader
 )
+from langchain.chat_loaders.whatsapp import WhatsAppChatLoader
 # Load Environment Variables
 load_dotenv()
 # Initialize Colorama
@@ -73,7 +73,7 @@ elif torch.backends.mps.is_available():
 else:
     DEVICE_TYPE = "cpu"
 
-#  CHROMA DB SETTINGS
+# CHROMA DB SETTINGS
 CHROMA_SETTINGS = Settings(
     anonymized_telemetry=False,
     is_persistent=True,
@@ -86,7 +86,6 @@ INDEX_NAME = ""
 # Reserved File Names
 RESERVED_FILE_NAMES = [
     "builder.url",
-    "_chat.txt"
 ]
 
 # List of file supported for ingest 
@@ -106,11 +105,18 @@ DOCUMENT_EXTENSION = {
     '.doc' :UnstructuredWordDocumentLoader,
     '.md' :UnstructuredMarkdownLoader,
     '.json' :JSONLoader,
+    '.py' : TextLoader,
+
 }
 
 # List of URL patterns supported for ingest
 URL_EXTENSION = {
     '.youtube' :YoutubeLoader,
+}
+
+# List of all Social Chat and their loaders
+SOCIAL_CHAT_EXTENSION = {
+    'whatsapp' :WhatsAppChatLoader,
 }
 
 # Initial Query Cost and Total Cost

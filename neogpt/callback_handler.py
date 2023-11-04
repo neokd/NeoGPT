@@ -57,6 +57,10 @@ class StreamingStdOutCallbackHandler(BaseCallbackHandler):
             sys.stdout.write('\b')  # Move the cursor back to overwrite the animation
             animation_idx = (animation_idx + 1) % len(loading_chars)
 
+    def on_llm_end(self, response: LLMResult, **kwargs: Any) -> None:
+        """Run when LLM ends running."""
+        self.neo_gpt_printed = False
+        self.streaming = False
 
 
 # Define a custom callback handler class for token collection
