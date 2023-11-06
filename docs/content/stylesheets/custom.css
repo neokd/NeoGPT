@@ -33,12 +33,25 @@ body[data-md-color-scheme="default"] h1 {
 }
 
 button[data-md-component="top"]:hover{
-    background-color:#7e56c2 !important ;
+    background-color:#009485 !important ;
 }
 
 body[data-md-color-scheme="slate"] nav    .md-nav__link--active {
-    color: rgba(126,86,194,1) !important;
+    color: #5fd4c8 !important;
 }
+
+body[data-md-color-scheme="slate"] table thead{
+    background-color: black!important;
+    font-size: 0.7rem !important;
+}
+
+body[data-md-color-scheme="default"] table thead{
+    background-color: black!important;
+    font-size: 0.7rem !important;
+    color:white;
+}
+
+
 /* body[data-md-color-scheme="default"] div .highlight > span {
     background-color: rgba(238,85,82, 0.9);
     font-weight: bolder ;

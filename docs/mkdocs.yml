@@ -32,6 +32,7 @@ theme:
       - navigation.sections
       - search.share
       # - toc.integrate
+      # - header.autohide
       - navigation.top
       - search.suggest
       - search.highlight
@@ -41,19 +42,20 @@ theme:
       - content.code.copy
       - content.action.edit
       - navigation.footer
+      - toc.follow
     palette:
       - scheme: default
         toggle : 
           icon: material/weather-sunny
           name: Switch to dark mode
-        primary: deep purple
-        accent: deep purple
+        primary: teal
+        accent: indigo
       - scheme: slate
         toggle : 
           icon: material/weather-night
           name: Switch to light mode
         primary: black
-        accent: deep purple
+        accent: teal
  
 nav:
   - Home: index.md
@@ -63,6 +65,12 @@ nav:
     - Run NeoGPT: neogpt.md
     - Advanced: 
         - Configuration: advance/configuration.md
+
+  - About: 
+      - Contributing: about/contributing.md
+      - Code Of Conduct: about/code_of_conduct.md
+      - Changelog: about/changelog.md
+
 
 extra_css:
   - stylesheets/custom.css
@@ -82,12 +90,13 @@ markdown_extensions:
       anchor_linenums: true
       line_spans: __span
       pygments_lang_class: true
-
+  - pymdownx.smartsymbols
   - admonition
   - pymdownx.details
   - pymdownx.superfences
   - pymdownx.inlinehilite
   - pymdownx.snippets
+  
 
 
 plugins:
