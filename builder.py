@@ -1,37 +1,32 @@
+import argparse
 import logging
 import os
-from concurrent.futures import ProcessPoolExecutor,ThreadPoolExecutor, as_completed
-import re
+from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
+
 from langchain.docstore.document import Document
-from langchain.schema import Document
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from typing import Optional, Iterator, List, Dict
-from chromadb.config import Settings
-import argparse
-from neogpt.vectorstore import (
-    ChromaStore,
-    FAISSStore
-)
+from tqdm import tqdm
+
 from neogpt.config import (
-    SOURCE_DIR,
-    INGEST_THREADS,
     DEVICE_TYPE,
     DOCUMENT_EXTENSION,
-    URL_EXTENSION,
+    INGEST_THREADS,
+    LOG_FILE,
     RESERVED_FILE_NAMES,
-    LOG_FILE
+    SOURCE_DIR,
+    URL_EXTENSION,
 )
-from tqdm import tqdm
+from neogpt.vectorstore import ChromaStore, FAISSStore
 
 
 def load_single_document(file_path: str) -> Document:
     """
-        fn: load_single_document
-        Description: The function loads the single document
-        Args:
-            file_path (str): File path
-        return:
-            Document: Document
+    fn: load_single_document
+    Description: The function loads the single document
+    Args:
+        file_path (str): File path
+    return:
+        Document: Document
     """
     # Loads a single document from a file path
     file_extension = os.path.splitext(file_path)[1]
@@ -45,22 +40,22 @@ def load_single_document(file_path: str) -> Document:
 
 def load_document_batch(filepaths):
     """
-        fn: load_document_batch
-        Description: The function loads the document batch
-        Args:
-            filepaths (list): List of file paths
-        return:
-            list: List of data from the files
+    fn: load_document_batch
+    Description: The function loads the document batch
+    Args:
+        filepaths (list): List of file paths
+    return:
+        list: List of data from the files
     """
     logging.info("Loading document batch")
     # create a thread pool
     with ThreadPoolExecutor(len(filepaths)) as exe:
         # load files
-        #futures = [exe.submit(load_single_document, name) for name in tqdm(filepaths)]
+        # futures = [exe.submit(load_single_document, name) for name in tqdm(filepaths)]
         # collect data
         futures = []
         for name in tqdm(filepaths):
-            print("Loading file: "+name)
+            print("Loading file: " + name)
             futures.append(exe.submit(load_single_document, name))
         data_list = [future.result() for future in futures]
         # return data and file paths
@@ -69,12 +64,12 @@ def load_document_batch(filepaths):
 
 def process_url(url_path: str) -> Document:
     """
-        fn: process_url
-        Description: The function processes the url
-        Args:
-            file_path (str): File path
-        return:
-            Document: Document
+    fn: process_url
+    Description: The function processes the url
+    Args:
+        file_path (str): File path
+    return:
+        Document: Document
     """
     file_extension = os.path.splitext(url_path)[1]
     if file_extension != ".url":
@@ -84,49 +79,50 @@ def process_url(url_path: str) -> Document:
         urls = build.readlines()
         for url in urls:
             if "youtube.com" in url:
-                loader_class = URL_EXTENSION.get('.youtube', None)  # 
-                loader = loader_class.from_youtube_url(
-                    url,
-                    add_video_info=True
-                )
+                loader_class = URL_EXTENSION.get(".youtube", None)  #
+                loader = loader_class.from_youtube_url(url, add_video_info=True)
     return loader.load()[0]
-        
+
+
 def load_url_batch(urlpaths):
     """
-        fn: load_url_batch
-        Description: The function loads the url batch
-        Args:
-            urlpaths (list): List of url paths
-        return:
-            list: List of data from the urls
+    fn: load_url_batch
+    Description: The function loads the url batch
+    Args:
+        urlpaths (list): List of url paths
+    return:
+        list: List of data from the urls
     """
     logging.info("Loading Url batch")
     with ThreadPoolExecutor(len(urlpaths)) as exe:
-        #futures = [exe.submit(process_url, name) for name in tqdm(urlpaths)]
+        # futures = [exe.submit(process_url, name) for name in tqdm(urlpaths)]
         futures = []
         for name in tqdm(urlpaths):
             futures.append(exe.submit(process_url, name))
-            print("Loading file: "+name)
+            print("Loading file: " + name)
         data_list = [future.result() for future in futures]
     return (data_list, urlpaths)
 
 
-def build_documents(source_directory : str) -> list[Document]:
+def build_documents(source_directory: str) -> list[Document]:
     """
-        fn: build_documents
-        Description: The function builds the documents from the source directory
-        Args:
-            source_directory (str): Source directory
-        return:
-            list[Document]: List of documents
+    fn: build_documents
+    Description: The function builds the documents from the source directory
+    Args:
+        source_directory (str): Source directory
+    return:
+        list[Document]: List of documents
     """
     doc_path = []
     url_path = []
-    for root,_,files in os.walk(source_directory):
+    for root, _, files in os.walk(source_directory):
         for file_name in files:
             file_extension = os.path.splitext(file_name)[1]
             source_file_path = os.path.join(root, file_name)
-            if file_extension in DOCUMENT_EXTENSION.keys() and file_name not in RESERVED_FILE_NAMES:
+            if (
+                file_extension in DOCUMENT_EXTENSION.keys()
+                and file_name not in RESERVED_FILE_NAMES
+            ):
                 doc_path.append(source_file_path)
             elif file_name in RESERVED_FILE_NAMES:
                 url_path.append(source_file_path)
@@ -147,8 +143,7 @@ def build_documents(source_directory : str) -> list[Document]:
                 future = executor.submit(load_document_batch, filepaths)
                 futures.append(future)
 
-        if len(url_path) > 0:  
-
+        if len(url_path) > 0:
             for i in range(0, len(url_path), chunk_size):
                 urlpaths = url_path[i : (i + chunk_size)]
                 future = executor.submit(load_url_batch, urlpaths)
@@ -159,20 +154,20 @@ def build_documents(source_directory : str) -> list[Document]:
             docs.extend(contents)
 
     return docs
-            
+
 
 def builder(vectorstore: str = "Chroma"):
     """
-        fn: builder
-        Description: The function builds the vectorstore (Chroma, FAISS)
-        Args:
-            vectorstore (str, optional): Vectorstore (Chroma, FAISS). Defaults to "Chroma".
-        return:
-            None
+    fn: builder
+    Description: The function builds the vectorstore (Chroma, FAISS)
+    Args:
+        vectorstore (str, optional): Vectorstore (Chroma, FAISS). Defaults to "Chroma".
+    return:
+        None
     """
     logging.info(f"Loading Documents from {SOURCE_DIR}")
     documents = build_documents(SOURCE_DIR)
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000,chunk_overlap=200)
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
 
     texts = text_splitter.split_documents(documents)
 
@@ -182,20 +177,23 @@ def builder(vectorstore: str = "Chroma"):
 
     match vectorstore:
         case "Chroma":
-            logging.info(f"Using Chroma for vectorstore")
+            logging.info("Using Chroma for vectorstore")
             db = ChromaStore().from_documents(
                 documents=texts,
             )
-            logging.info(f"Loaded Documents to Chroma DB Successfully")
+            logging.info("Loaded Documents to Chroma DB Successfully")
         case "FAISS":
-            logging.info(f"Using FAISS for vectorstore")
+            logging.info("Using FAISS for vectorstore")
             db = FAISSStore().from_documents(
                 documents=texts,
             )
-            logging.info(f"Loaded Documents to FAISS DB Successfully")
-    
-    logging.info(f"Builder👷🏻‍♀️ has built your VectorDB successfully!")
-   
+            logging.info("Loaded Documents to FAISS DB Successfully")
+    if db:
+        logging.info("Builder👷🏻‍♀️ has built your VectorDB successfully!")
+    else:
+        logging.info("Builder👷🏻‍♀️ has failed to build your VectorDB")
+
+
 # def query():
 #     embeddings = HuggingFaceInstructEmbeddings(
 #         model_name=EMBEDDING_MODEL_NAME,
@@ -214,7 +212,8 @@ def builder(vectorstore: str = "Chroma"):
 if __name__ == "__main__":
     logging.basicConfig(
         filename=LOG_FILE,
-        format="%(asctime)s - %(levelname)s - %(filename)s:%(lineno)s - %(message)s", level=logging.INFO,
+        format="%(asctime)s - %(levelname)s - %(filename)s:%(lineno)s - %(message)s",
+        level=logging.INFO,
     )
     parser = argparse.ArgumentParser(description="NeoGPT CLI Interface")
     parser.add_argument(

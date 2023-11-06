@@ -8,3 +8,4 @@ neogpt/models/*
 .venv
 .vscode
 .vs
+.ruff_cache/*

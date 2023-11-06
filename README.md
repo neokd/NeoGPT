@@ -1,5 +1,8 @@
 # NeoGPT 🚀
 
+> [!NOTE]  
+> Docs update faster than the README.md. Please refer to the docs for the latest updates. Click [here](https://neokd.github.io/NeoGPT/) to view the docs. 
+
 Say goodbye to boring interactions with documents and YouTube videos. NeoGPT is your trusted companion to chat with local documents and lengthy YouTube videos effortlessly. Perfect for professionals, developers, researchers, and enthusiasts.
 
 ![NeoGPT Gif](https://github.com/neokd/NeoGPT/assets/71772185/82d5c63d-81b5-4b45-95d4-53641016bfdc)
@@ -9,7 +12,7 @@ Say goodbye to boring interactions with documents and YouTube videos. NeoGPT is 
 
 Note: NeoGPT is continuously evolving. Your feedback shapes its future.
 
-Join our [Discord](https://discord.gg/JW7YD5Yt) community to stay up to date with the latest developments.
+Join our [Discord](https://discord.gg/7xU954VYvs) community to stay up to date with the latest developments.
 
 # Table of Contents
 - [Getting Started](#getting-started)
@@ -70,6 +73,14 @@ Join our [Discord](https://discord.gg/JW7YD5Yt) community to stay up to date wit
     You can also use `--ui` flag to run the Streamlit UI. 
     ```python
         python main.py --ui
+    ```
+
+4. **Project Documentation:** 
+    To view the project documentation, run the following command in your terminal or command prompt (Development ⚠️)
+    ```python
+        cd docs
+        pip install -r requirements.txt
+        mkdocs serve
     ```
 
 ## Supported Retriever 

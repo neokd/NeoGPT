@@ -1,0 +1,52 @@
+/* custom.css */
+h1 {
+    font-size: 48px !important;
+    /* font-weight: bold  !important; */
+}
+h2 {
+    font-size: 36px !important;
+}
+h3 {
+    font-size: 30px !important;
+}
+p {
+    font-size: 20px  ; 
+}
+code{
+    font-size: 18px !important;
+}
+/* ul , li, ol {
+    font-size: 28px !important;
+} */
+.md-typeset .admonition,
+.md-typeset details {
+  border-width: 0;
+  border-left-width: 4px;
+}
+
+
+body[data-md-color-scheme="slate"] h1 {
+    color: white;
+}
+body[data-md-color-scheme="default"] h1 {
+    color: black;
+}
+
+button[data-md-component="top"]:hover{
+    background-color:#7e56c2 !important ;
+}
+
+body[data-md-color-scheme="slate"] nav    .md-nav__link--active {
+    color: rgba(126,86,194,1) !important;
+}
+/* body[data-md-color-scheme="default"] div .highlight > span {
+    background-color: rgba(238,85,82, 0.9);
+    font-weight: bolder ;
+    color: white;
+}
+
+
+body[data-md-color-scheme="slate"] div .highlight > span  {
+    background-color: black;
+    font-weight: bolder ;
+} */

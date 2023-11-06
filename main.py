@@ -1,21 +1,18 @@
-import sys
-from streamlit.web import cli as stcli
-import logging
 import argparse
+import logging
 import os
+import sys
+
+from streamlit.web import cli as stcli
+
 from builder import builder
+from neogpt.config import CHROMA_PERSIST_DIRECTORY, DEVICE_TYPE, FAISS_PERSIST_DIRECTORY
 from neogpt.manager import db_retriver
-from neogpt.config import (
-    DEVICE_TYPE,
-    CHROMA_PERSIST_DIRECTORY,
-    FAISS_PERSIST_DIRECTORY
-)
 
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     logging.basicConfig(
-        format="%(asctime)s - %(levelname)s - %(filename)s:%(lineno)s - %(message)s", level=logging.INFO,
+        format="%(asctime)s - %(levelname)s - %(filename)s:%(lineno)s - %(message)s",
+        level=logging.INFO,
     )
     # Parse the arguments
     parser = argparse.ArgumentParser(description="NeoGPT CLI Interface")
@@ -33,13 +30,21 @@ if __name__ == '__main__':
     )
     parser.add_argument(
         "--retriever",
-        choices=["local","web","hybrid","stepback","sql","compress"],
+        choices=["local", "web", "hybrid", "stepback", "sql", "compress"],
         default="local",
         help="Specify the retriever (local, web, hybrid, stepback, sql, compress). It allows you to customize the retriever i.e. how the chatbot should retrieve the documents.",
     )
     parser.add_argument(
         "--persona",
-        choices=["default", "recruiter", "academician", "friend", "ml_engineer", "ceo", "researcher"],
+        choices=[
+            "default",
+            "recruiter",
+            "academician",
+            "friend",
+            "ml_engineer",
+            "ceo",
+            "researcher",
+        ],
         default="default",
         help="Specify the persona (default, recruiter). It allows you to customize the persona i.e. how the chatbot should behave.",
     )
@@ -57,7 +62,7 @@ if __name__ == '__main__':
     )
     parser.add_argument(
         "--ui",
-        default= False,
+        default=False,
         action="store_true",
         help="Start a UI server for NeoGPT",
     )
@@ -66,9 +71,9 @@ if __name__ == '__main__':
     if args.build:
         builder(vectorstore=args.db)
 
-    if  not os.path.exists(FAISS_PERSIST_DIRECTORY):
+    if not os.path.exists(FAISS_PERSIST_DIRECTORY):
         builder(vectorstore="FAISS")
-    
+
     if not os.path.exists(CHROMA_PERSIST_DIRECTORY):
         builder(vectorstore="Chroma")
 
@@ -78,5 +83,10 @@ if __name__ == '__main__':
         sys.argv = ["streamlit", "run", "neogpt/ui.py"]
         sys.exit(stcli.main())
     else:
-        db_retriver(device_type=args.device_type,vectordb=args.db,retriever=args.retriever,persona=args.persona, LOGGING=logging)
-
+        db_retriver(
+            device_type=args.device_type,
+            vectordb=args.db,
+            retriever=args.retriever,
+            persona=args.persona,
+            LOGGING=logging,
+        )

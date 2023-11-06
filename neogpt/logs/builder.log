@@ -119,3 +119,19 @@
 2023-11-03 17:48:21,465 - INFO - builder.py:220 - Loading Documents from /Users/kuldeep/Project/NeoGPT/neogpt/documents
 2023-11-03 17:49:33,124 - INFO - builder.py:220 - Loading Documents from /Users/kuldeep/Project/NeoGPT/neogpt/documents
 2023-11-03 17:51:10,437 - INFO - builder.py:220 - Loading Documents from /Users/kuldeep/Project/NeoGPT/neogpt/documents
+2023-11-05 12:37:58,036 - INFO - builder.py:173 - Loading Documents from /Users/kuldeep/Project/NeoGPT/neogpt/documents
+2023-11-05 12:38:03,033 - INFO - builder.py:179 - Loaded 3 documents from /Users/kuldeep/Project/NeoGPT/neogpt/documents
+2023-11-05 12:38:03,034 - INFO - builder.py:180 - Split into 230 chunks of text
+2023-11-05 12:38:03,034 - INFO - builder.py:181 - Using mps device for embedding model
+2023-11-05 12:38:03,034 - INFO - builder.py:185 - Using Chroma for vectorstore
+2023-11-05 12:38:04,688 - INFO - SentenceTransformer.py:66 - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L12-v2
+2023-11-05 12:38:20,413 - INFO - builder.py:189 - Loaded Documents to Chroma DB Successfully
+2023-11-05 12:38:20,413 - INFO - builder.py:197 - Builder👷🏻‍♀️ has built your VectorDB successfully!
+2023-11-05 15:00:27,928 - INFO - builder.py:173 - Loading Documents from /Users/kuldeep/Project/NeoGPT/neogpt/documents
+2023-11-05 15:00:32,849 - INFO - builder.py:179 - Loaded 3 documents from /Users/kuldeep/Project/NeoGPT/neogpt/documents
+2023-11-05 15:00:32,850 - INFO - builder.py:180 - Split into 230 chunks of text
+2023-11-05 15:00:32,850 - INFO - builder.py:181 - Using mps device for embedding model
+2023-11-05 15:00:32,850 - INFO - builder.py:185 - Using Chroma for vectorstore
+2023-11-05 15:00:33,419 - INFO - SentenceTransformer.py:66 - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L12-v2
+2023-11-05 15:00:48,547 - INFO - builder.py:189 - Loaded Documents to Chroma DB Successfully
+2023-11-05 15:00:48,547 - INFO - builder.py:197 - Builder👷🏻‍♀️ has built your VectorDB successfully!

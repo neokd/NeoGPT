@@ -1,24 +1,26 @@
-import os 
+import os
+
 import torch
-from dotenv import load_dotenv
-from colorama import init
 from chromadb.config import Settings
+from colorama import init
+from dotenv import load_dotenv
+from langchain.chat_loaders.whatsapp import WhatsAppChatLoader
 from langchain.document_loaders import (
-    PDFMinerLoader, 
-    TextLoader,
-    UnstructuredHTMLLoader,
-    UnstructuredTSVLoader,
     CSVLoader,
+    JSONLoader,
+    PDFMinerLoader,
+    TextLoader,
     UnstructuredEmailLoader,
     UnstructuredEPubLoader,
     UnstructuredExcelLoader,
-    UnstructuredPowerPointLoader,
-    UnstructuredWordDocumentLoader,
+    UnstructuredHTMLLoader,
     UnstructuredMarkdownLoader,
-    JSONLoader,
+    UnstructuredPowerPointLoader,
+    UnstructuredTSVLoader,
+    UnstructuredWordDocumentLoader,
     YoutubeLoader,
 )
-from langchain.chat_loaders.whatsapp import WhatsAppChatLoader
+
 # Load Environment Variables
 load_dotenv()
 # Initialize Colorama
@@ -35,16 +37,16 @@ CHROMA_PERSIST_DIRECTORY = os.path.join(PARENT_DB_DIRECTORY, "chroma")
 # FAISS DB DIRECTORY
 FAISS_PERSIST_DIRECTORY = os.path.join(PARENT_DB_DIRECTORY, "faiss")
 # PINECONE DB DIRECTORY
-PINECONE_PERSIST_DIRECTORY = os.path.join(PARENT_DB_DIRECTORY,"pinecone")
+PINECONE_PERSIST_DIRECTORY = os.path.join(PARENT_DB_DIRECTORY, "pinecone")
 
-# DEFAULT MEMORY KEY FOR CONVERSATION MEMORY (DEFAULT IS 2) 
+# DEFAULT MEMORY KEY FOR CONVERSATION MEMORY (DEFAULT IS 2)
 DEFAULT_MEMORY_KEY = 2
 
 # GGUF MODELS (Recommended , Default and Fast)
 MODEL_NAME = "TheBloke/Mistral-7B-Instruct-v0.1-GGUF"
 MODEL_FILE = "mistral-7b-instruct-v0.1.Q4_K_M.gguf"
 
-# MISTRAL MODEL LITE 
+# MISTRAL MODEL LITE
 # MODEL_NAME = "TheBloke/MistralLite-7B-GGUF"
 # MODEL_FILE = "mistrallite.Q4_K_M.gguf"
 
@@ -62,7 +64,7 @@ EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L12-v2"
 INGEST_THREADS = 8 or os.cpu_count()
 
 # MODEL CONFIG
-MAX_TOKEN_LENGTH = 8192 # 8192 is the max for Mistral-7B
+MAX_TOKEN_LENGTH = 8192  # 8192 is the max for Mistral-7B
 N_GPU_LAYERS = 40
 
 # PYTORCH DEVICE COMPATIBILITY
@@ -88,35 +90,34 @@ RESERVED_FILE_NAMES = [
     "builder.url",
 ]
 
-# List of file supported for ingest 
+# List of file supported for ingest
 DOCUMENT_EXTENSION = {
-    '.pdf': PDFMinerLoader,
-    '.txt': TextLoader,
-    '.csv' :CSVLoader,
-    '.html' :UnstructuredHTMLLoader, 
-    '.tsv' :UnstructuredTSVLoader,
-    '.eml' :UnstructuredEmailLoader,
-    '.epub' :UnstructuredEPubLoader,
-    '.xls' :UnstructuredExcelLoader,
-    '.xlsx' :UnstructuredExcelLoader,
-    '.pptx' :UnstructuredPowerPointLoader,
-    '.ppt' :UnstructuredPowerPointLoader,
-    '.docx' :UnstructuredWordDocumentLoader,
-    '.doc' :UnstructuredWordDocumentLoader,
-    '.md' :UnstructuredMarkdownLoader,
-    '.json' :JSONLoader,
-    '.py' : TextLoader,
-
+    ".pdf": PDFMinerLoader,
+    ".txt": TextLoader,
+    ".csv": CSVLoader,
+    ".html": UnstructuredHTMLLoader,
+    ".tsv": UnstructuredTSVLoader,
+    ".eml": UnstructuredEmailLoader,
+    ".epub": UnstructuredEPubLoader,
+    ".xls": UnstructuredExcelLoader,
+    ".xlsx": UnstructuredExcelLoader,
+    ".pptx": UnstructuredPowerPointLoader,
+    ".ppt": UnstructuredPowerPointLoader,
+    ".docx": UnstructuredWordDocumentLoader,
+    ".doc": UnstructuredWordDocumentLoader,
+    ".md": UnstructuredMarkdownLoader,
+    ".json": JSONLoader,
+    ".py": TextLoader,
 }
 
 # List of URL patterns supported for ingest
 URL_EXTENSION = {
-    '.youtube' :YoutubeLoader,
+    ".youtube": YoutubeLoader,
 }
 
 # List of all Social Chat and their loaders
 SOCIAL_CHAT_EXTENSION = {
-    'whatsapp' :WhatsAppChatLoader,
+    "whatsapp": WhatsAppChatLoader,
 }
 
 # Initial Query Cost and Total Cost
