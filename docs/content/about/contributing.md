@@ -24,7 +24,7 @@ We encourage you to contribute code to NeoGPT through pull requests. To do so, p
 
 1. Fork the NeoGPT repository to your own GitHub account.
 2. Clone the forked repository to your local machine.
-3. Create a new branch for your changes: ` git checkout -b feature-name`.
+3. Create a new branch for your changes: `git checkout -b feature-name`.
 4. Implement your changes and commit them with meaningful commit messages.
 5. Push your changes to your forked repository.
 6. Create a pull request (PR) to the main NeoGPT repository, describing your changes and the problem they solve.

@@ -1,4 +1,4 @@
-# How to Make a Pull Request for Hacktoberfest 2023
+# How to Make a Pull Request
 
 Follow these steps to contribute to Hacktoberfest by creating a pull request for the [neokd/NeoGPT](https://github.com/neokd/NeoGPT) repository:
 
