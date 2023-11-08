@@ -1,4 +1,4 @@
-# Code of Conduct
+# __Code of Conduct__
 
 
 NeoGPT is committed to fostering a welcoming and inclusive community. All participants in our community and contributors to our projects are expected to show respect and courtesy to others.

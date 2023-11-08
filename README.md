@@ -12,7 +12,7 @@ Say goodbye to boring interactions with documents and YouTube videos. NeoGPT is 
 
 Note: NeoGPT is continuously evolving. Your feedback shapes its future.
 
-Join our [Discord](https://discord.gg/7xU954VYvs) community to stay up to date with the latest developments.
+Join our [Discord](https://discord.gg/qNqjsGuCTG) community to stay up to date with the latest developments.
 
 # Table of Contents
 - [Getting Started](#getting-started)

@@ -72,8 +72,11 @@ This document outlines various configuration settings for NeoGPT. You can custom
 
 - Supported document formats and their corresponding loaders.  
   Default:
+  
   - `.pdf`: PDFMinerLoader
+
   - `.txt`: TextLoader
+
   - `.csv`: CSVLoader
   - ... (other formats)
 
@@ -82,8 +85,8 @@ Read more about the supported document formats [here](../builder.md#supported-fi
 
 ## URL Extensions
 
-- Supported URL patterns for ingestion.  
-  Default:
+Supported URL patterns for ingestion.  
+
   - `.youtube`: YoutubeLoader
 
 

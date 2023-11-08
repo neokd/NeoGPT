@@ -9,6 +9,8 @@ from colorama import Fore
 from langchain.callbacks.base import BaseCallbackHandler
 from langchain.schema.output import LLMResult
 
+from neogpt.config import QUERY_COST, TOTAL_COST
+
 
 class StreamingStdOutCallbackHandler(BaseCallbackHandler):
     def __init__(self):

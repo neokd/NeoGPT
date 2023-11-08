@@ -66,6 +66,7 @@ if __name__ == "__main__":
         action="store_true",
         help="Start a UI server for NeoGPT",
     )
+    parser.add_argument('--version', action='version', version='You are using NeoGPT🤖 v0.1.0-alpha.')
     args = parser.parse_args()
 
     if args.build:

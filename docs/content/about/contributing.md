@@ -1,4 +1,4 @@
-# Contributing to NeoGPT :heart_on_fire:
+# __Contributing to NeoGPT__ :heart_on_fire:
 
 We welcome contributions from the community to help improve and enhance our project. Please take a moment to review this document to understand how you can contribute effectively.
 
@@ -38,8 +38,8 @@ If you have questions or need assistance while contributing, feel free to reach 
 
 ## Contact Us
 Join our community to stay up to date with the latest developments and to share your feedback.
-[Discord](https://discord.gg/7xU954VYvs) :fontawesome-brands-discord:
-
+[Discord](https://discord.gg/qNqjsGuCTG) :fontawesome-brands-discord:
+<!-- ![My Discord](https://discord-readme-badge.vercel.app/api?id=qNqjsGuCTG -->
 We look forward to your contributions! :heart:
 
 

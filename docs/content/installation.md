@@ -12,7 +12,9 @@ This guide will walk you through the process of setting up NeoGPT on your system
 Before you begin, make sure you have the following prerequisites installed on your system:
 
 - Python 3.10 or higher 
+
 - Git 
+
 - Editor of your choice (VSCode, PyCharm, etc.)
 
 ## Installation Steps
@@ -22,8 +24,19 @@ You can install NeoGPT by following whichever of the following methods is most c
 ### With bash script
 
 It is recommended to use the bash script to install NeoGPT. The bash script will automatically install all the required packages and set up the virtual environment for you. Followed by that it will build the database and run the CLI.
+!!! tip "Recommended"
 
-1. Run the following command in your terminal or command prompt:
+1. Clone the repository using the following command 
+```bash title="Terminal"
+git clone https://github.com/neokd/NeoGPT.git
+```
+
+2. Navigate to the root directory of the repository
+```bash title="Terminal"
+cd NeoGPT
+```
+
+3. Run the following command in your terminal or command prompt:
 ```bash title="Terminal"
 bash ./install.sh
 ```

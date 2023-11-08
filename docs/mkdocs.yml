@@ -2,11 +2,11 @@ site_name: NeoGPT 🤖
 docs_dir: 'content'
 repo_url: https://github.com/neokd/NeoGPT
 repo_name: neokd/NeoGPT
-edit_uri: https://github.com/neokd/NeoGPT/tree/main/docs
+edit_uri: https://github.com/neokd/NeoGPT/tree/main/docs/content/
 
 theme:
     name: material
-    
+
     font: 
       text: Nunito
     icon:
@@ -44,37 +44,38 @@ theme:
       - navigation.footer
       - toc.follow
     palette:
-      - scheme: default
-        toggle : 
-          icon: material/weather-sunny
+      - media: "(prefers-color-scheme: light)"
+        scheme: default
+        toggle:
+          icon: material/weather-night
           name: Switch to dark mode
         primary: teal
-        accent: indigo
-      - scheme: slate
-        toggle : 
-          icon: material/weather-night
+        accent: teal
+    # Palette toggle for dark mode
+      - media: "(prefers-color-scheme: dark)"
+        scheme: slate
+        toggle:
+          icon: material/weather-sunny
           name: Switch to light mode
         primary: black
         accent: teal
- 
-nav:
+        
+nav:    
   - Home: index.md
   - Docs:
     - Installation: installation.md
     - Builder: builder.md
     - Run NeoGPT: neogpt.md
-    - Advanced: 
+    - Settings: 
+        - Configure Search: advance/search.md
         - Configuration: advance/configuration.md
-
   - About: 
       - Contributing: about/contributing.md
       - Code Of Conduct: about/code_of_conduct.md
       - Changelog: about/changelog.md
 
-
 extra_css:
   - stylesheets/custom.css
-
 
 markdown_extensions:
   - tables
@@ -96,16 +97,13 @@ markdown_extensions:
   - pymdownx.superfences
   - pymdownx.inlinehilite
   - pymdownx.snippets
-  
-
+  - pymdownx.magiclink
 
 plugins:
-  - termynal
   - search 
   - git-revision-date-localized:
       enable_creation_date: true
       fallback_to_build_date: true
-    
 
 copyright: Copyright &copy; 2023 neokd
 
@@ -116,7 +114,7 @@ extra:
       name: Github
       
     - icon:  fontawesome/brands/discord
-      link: https://discord.gg/7xU954VYv
+      link: https://discord.gg/qNqjsGuCTG
       name: Discord
   generator: false
 

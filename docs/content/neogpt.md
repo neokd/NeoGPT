@@ -11,7 +11,7 @@ python main.py
 ```
 
 !!! info "Note"
-    On first run, NeoGPT will download the model from HuggingFace and build the database. This may take a few minutes.
+    On first run, NeoGPT will download the model from HuggingFace and build the database. This may take few minutes.
 
 Once everything is set up, you will be greeted with the following message:
 
@@ -34,18 +34,26 @@ python main.py --ui
 
 2. `--db`: You can also use `--db` flag to specify the database to use. Currently the supported databases are:
     - `Chroma` (default)
+    
     - `FAISS`
 ```bash title="Terminal"
 python main.py --db FAISS
 ```
 
 3. `--persona`: You can also use `--persona` flag to specify the persona to use. Currently the supported personas are:
+
     - `DEFAULT`: An helpful assistant that will help you with your queries. (default)
+
     - `RECRUITER`: An experienced recruiter who finds the best candidates. 
+
     - `ACADEMICIAN`: Engages in in-depth research and presents findings. 
+
     - `FRIEND`: Provides comfort and encouragement as a friend. 
+
     - `ML_ENGINEER`: Explains complex ML concepts in an easy-to-understand manner.
+
     - `CEO`: Acts as the CEO, making strategic decisions. 
+
     - `RESEARCHER`: Analyzes, synthesizes, and provides insights. 
 ```bash title="Terminal"
 python main.py --persona default
@@ -57,10 +65,15 @@ python main.py --persona default
 
 4. `--retriever`: You can specify the retriever you want to use in the CLI. Currently the supported retrievers are:
     - Local Retriever (default)
-    - Web Research Retriever
+
+    - Web Research Retriever (Requires Google API Key refer [here](/advance/search/))
+
     - Hybrid Retriever (Ensemble Retriever)
+
     - SQL Retriever (Experimental)
+
     - Context Compressor Retriever 
+    
     - Stepback Prompting Retriever (RAG + DuckDuckGo Search + Stepback Prompting)
 ```bash title="Terminal"
 python main.py --retriever local
