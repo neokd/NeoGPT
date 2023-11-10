@@ -2,7 +2,7 @@
 
 ### Building Database 🛠️
 
-[Builder](https://github.com/neokd/NeoGPT/blob/main/builder.py) is a script to build the vector database for NeoGPT. Currently it support 2 vector databases:
+[Builder](https://github.com/neokd/NeoGPT/blob/main/neogpt/builder.py) is a script to build the vector database for NeoGPT. Currently it support 2 vector databases:
 
 -   Chroma
 
