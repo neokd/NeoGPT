@@ -53,7 +53,7 @@ Join our [Discord](https://discord.gg/qNqjsGuCTG) community to stay up to date w
 2. **Building Database** Currently NeoGPT supports local files and Youtube videos. To build the database add your local files to the documents directory and URL in the `builder.url` file. Then run the builder script.
     
     ```python
-        python builder.py
+        python neogpt/builder.py
     ```
     This will create a database file in the `db` folder. You can also specify the database to use `--db` flag.
     Supported databases are:
