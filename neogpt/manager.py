@@ -3,11 +3,7 @@ from datetime import datetime
 
 from colorama import Fore
 
-from neogpt.config import (
-    DEVICE_TYPE,
-    MODEL_FILE,
-    MODEL_NAME,
-)
+from neogpt.config import DEVICE_TYPE, MODEL_FILE, MODEL_NAME
 from neogpt.load_llm import load_model
 from neogpt.retrievers import (
     context_compress,
@@ -47,10 +43,7 @@ def db_retriver(
             LOGGING.info("Loaded Chroma DB Successfully")
         case "FAISS":
             # Load the FAISS DB with the embedding model
-            if retriever == "hybrid":
-                db = FAISSStore()
-            else:
-                db = FAISSStore().load_local()
+            db = FAISSStore() if retriever == "hybrid" else FAISSStore().load_local()
             LOGGING.info("Loaded FAISS DB Successfully")
         # case "Pinecone":
         # Initialize Pinecone client
@@ -110,10 +103,11 @@ def db_retriver(
             LOGGING.info("Byee 👋.")
             break
 
-        if retriever == "stepback":
-            res = chain.invoke({"question": query})
-        else:
-            res = chain.invoke(query)
+        res = (
+            chain.invoke({"question": query})
+            if retriever == "stepback"
+            else chain.invoke(query)
+        )
         # res = chain.invoke({"question": query})
 
         if show_source:

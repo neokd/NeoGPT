@@ -3,7 +3,7 @@
 ## Google API Key Configuration
 
 !!! info "Note"
-    You need to have a Google API key to use Web Research Retriever. 
+    You need to have a Google API key to use Web Research Retriever.
 
 ### Follow the steps below to get your Google API key:
 1. You can find a `.env-template` file in the root directory of the repository. Rename it to `.env`.
@@ -27,7 +27,7 @@
 
     4. Click on __Create Credentials__ and select __API Key__.
 
-    5. Set is as __GOOGLE_API_KEY__ in the `.env` file. 
+    5. Set is as __GOOGLE_API_KEY__ in the `.env` file.
 
 
 7. Set up a custom search engine. By [Enabling](https://console.developers.google.com/apis/api/customsearch.googleapis.com).
@@ -41,4 +41,4 @@ Set up a custom search engine and add to your `.env` file.
 
 
 !!! warning "Warning"
-    Avoid committing your `.env` file to the repository. It contains sensitive information. 
+    Avoid committing your `.env` file to the repository. It contains sensitive information.

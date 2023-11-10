@@ -57,31 +57,25 @@ Project Roadmap Achievements:
 
 
 ## Contributors
-* @neokd 
+* @neokd
 * @Priyamakeshwari
-* @Gladwin001 
+* @Gladwin001
 * @qasim0014
-* @Chandak-Keshav 
-* @fvaysh 
-* @Ymir-badam 
+* @Chandak-Keshav
+* @fvaysh
+* @Ymir-badam
 * @Abhishekgupta204
-* @bermr 
-* @dikshant182004 
-* @VPraharsha03 
-* @AndreasWintherMoen 
-* @vbhasin999 
-* @PentW0lf 
-* @savyez 
-* @y9rabbito 
-* @zakhaev26 
-* @ha36d 
-* @bryce-seefieldt 
-* @kehsihba19 
+* @bermr
+* @dikshant182004
+* @VPraharsha03
+* @AndreasWintherMoen
+* @vbhasin999
+* @PentW0lf
+* @savyez
+* @y9rabbito
+* @zakhaev26
+* @ha36d
+* @bryce-seefieldt
+* @kehsihba19
 
 We would like to thank all the contributors for their valuable contributions to NeoGPT. :heart_on_fire:
-
-
-
-
-
-

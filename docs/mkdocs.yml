@@ -7,9 +7,9 @@ site_url: https://neokd.github.io/NeoGPT/
 theme:
     name: material
 
-    font: 
+    font:
       text: Nunito
- 
+
     icon:
       repo: fontawesome/brands/github
       previous: fontawesome/solid/angle-left
@@ -60,8 +60,8 @@ theme:
           name: Switch to light mode
         primary: black
         accent: teal
-    
-nav:    
+
+nav:
   - Home: index.md
   - Docs:
     - Installation: installation.md
@@ -71,10 +71,10 @@ nav:
         - Contextual compression: retrievers/context.md
         - Stepback: retrievers/stepback.md
         - SQL : retrievers/sql.md
-    - Settings: 
+    - Settings:
         - Configure Search: advance/search.md
         - Configuration: advance/configuration.md
-  - About: 
+  - About:
       - Contributing: about/contributing.md
       - Code Of Conduct: about/code_of_conduct.md
       - Changelog: about/changelog.md
@@ -110,7 +110,7 @@ markdown_extensions:
   - pymdownx.magiclink
 
 plugins:
-  - search 
+  - search
   - git-revision-date-localized:
       enable_creation_date: true
       fallback_to_build_date: true
@@ -122,7 +122,7 @@ extra:
     - icon: fontawesome/brands/github
       link: https://github.com/neokd/NeoGPT
       name: Github
-      
+
     - icon:  fontawesome/brands/discord
       link: https://discord.gg/qNqjsGuCTG
       name: Discord

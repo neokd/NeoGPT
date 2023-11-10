@@ -5,7 +5,7 @@
 Step-Back Prompting is a strategic approach tailored for Large Language Models (LLMs) to navigate complex tasks laden with intricate details. It involves a two-step process: first, guiding the LLM to formulate a higher-level, generic question about fundamental concepts; and second, leveraging the facts derived from this abstraction to reason effectively about the original, more detailed question. This method minimizes errors in intermediate steps, enhancing the LLM's ability to retrieve and reason over relevant information accurately.
 
 
-```mermaid 
+```mermaid
 graph TD
   A[User's Complex Question] -->|Step-Back Prompting| B[Higher-Level Search Query]
   B -->|Search on Internet| C[Retrieved Context]

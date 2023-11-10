@@ -1,6 +1,7 @@
 """
     The Purpose of this file is to provide a wrapper around the FAISS from langchain
 """
+
 from langchain.embeddings import HuggingFaceInstructEmbeddings
 from langchain.schema.document import Document
 from langchain.vectorstores import FAISS
@@ -28,25 +29,20 @@ class FAISSStore(VectorStore):
             cache_folder=MODEL_DIRECTORY,
         )
         self.faiss = FAISS(
-            embedding_function=None,
-            index=0,
-            index_to_docstore_id={},
-            docstore={},
+            embedding_function=None, index=0, index_to_docstore_id={}, docstore={}
         )
         self.docstore = None
 
     def from_documents(self, documents: list[Document]) -> Document:
         self.docstore = self.faiss.from_documents(
-            documents=documents,
-            embedding=self.embeddings,
+            documents=documents, embedding=self.embeddings
         )
         self.docstore.save_local(FAISS_PERSIST_DIRECTORY)
         # self.faiss.save_local(FAISS_PERSIST_DIRECTORY)
 
     def load_local(self):
         self.docstore = self.faiss.load_local(
-            folder_path=FAISS_PERSIST_DIRECTORY,
-            embeddings=self.embeddings,
+            folder_path=FAISS_PERSIST_DIRECTORY, embeddings=self.embeddings
         )
         return self.docstore
 
@@ -55,8 +51,7 @@ class FAISSStore(VectorStore):
 
     def get(self):
         self.docstore = self.faiss.load_local(
-            folder_path=FAISS_PERSIST_DIRECTORY,
-            embeddings=self.embeddings,
+            folder_path=FAISS_PERSIST_DIRECTORY, embeddings=self.embeddings
         )
         if self.docstore is not None:
             return str(self.docstore)

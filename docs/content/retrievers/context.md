@@ -1,7 +1,7 @@
 # __Contextual Compressor Retriever__
 
 ## Description
-The Contextual Compression Retriever is a crucial component within NeoGPT, designed to enhance the efficiency of document retrieval. It optimizes the information presented to a Large Language Model (LLM) by compressing and filtering documents based on the context of a user's query. 
+The Contextual Compression Retriever is a crucial component within NeoGPT, designed to enhance the efficiency of document retrieval. It optimizes the information presented to a Large Language Model (LLM) by compressing and filtering documents based on the context of a user's query.
 
 Initially, a Base Retriever fetches relevant documents from a storage system, and these, along with the user's query, are then processed by the LLM. Subsequently, a Document Compressor refines the LLM's output, shortening and filtering documents to create a set of contextually compressed documents. This streamlined information is then seamlessly integrated into the application, ensuring users receive concise and relevant responses aligned with the nuances of their original queries.
 

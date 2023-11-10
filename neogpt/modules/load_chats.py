@@ -2,23 +2,22 @@ import logging
 import os
 import re
 from concurrent.futures import ThreadPoolExecutor
-from typing import List
+from typing import TYPE_CHECKING
 
-from langchain.chat_loaders.base import ChatSession
-from langchain.chat_loaders.utils import (
-    map_ai_messages,
-    merge_chat_runs,
-)
+from langchain.chat_loaders.utils import map_ai_messages, merge_chat_runs
 from langchain.schema import AIMessage
 from langchain.schema.document import Document
 
 from neogpt.config import SOCIAL_CHAT_EXTENSION
 
+if TYPE_CHECKING:
+    from langchain.chat_loaders.base import ChatSession
+
 
 def process_chat(loader, file_path, type) -> Document:
     raw_msgs = loader.lazy_load()
     merged_msgs = merge_chat_runs(raw_msgs)
-    messages: List[ChatSession] = list(
+    messages: list[ChatSession] = list(
         map_ai_messages(merged_msgs, sender="Dr. Feather")
     )
     combined_messages = [
@@ -29,10 +28,7 @@ def process_chat(loader, file_path, type) -> Document:
     ]
     return Document(
         page_content="\n".join(combined_messages),
-        metadata={
-            "source": file_path,
-            "type": f"chat-{type}",
-        },
+        metadata={"source": file_path, "type": f"chat-{type}"},
     )
 
 

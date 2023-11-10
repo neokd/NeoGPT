@@ -8,10 +8,7 @@ from neogpt.load_llm import load_model
 from neogpt.prompts.prompt import get_prompt
 from neogpt.vectorstore.chroma import ChromaStore
 
-st.set_page_config(
-    page_title="NeoGPT",
-    page_icon="🤖",
-)
+st.set_page_config(page_title="NeoGPT", page_icon="🤖")
 
 persona_list = [
     "default",

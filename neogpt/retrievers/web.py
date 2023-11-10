@@ -23,15 +23,15 @@ def web_research(db, llm, persona="default"):
         os.environ["GOOGLE_CSE_ID"] = os.environ.get("GOOGLE_CSE_ID")
         os.environ["GOOGLE_API_KEY"] = os.environ.get("GOOGLE_API_KEY")
     except Exception as e:
-        logging.info("Could not load the environment variables for Google Search API" + e)
+        logging.info(
+            "Could not load the environment variables for Google Search API" + e
+        )
 
     try:
         prompt, memory = get_prompt(persona=persona)
 
         retriever = WebResearchRetriever.from_llm(
-            vectorstore=db,
-            llm=llm,
-            search=GoogleSearchAPIWrapper(),
+            vectorstore=db, llm=llm, search=GoogleSearchAPIWrapper()
         )
 
         chain = RetrievalQA.from_chain_type(

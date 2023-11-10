@@ -64,7 +64,7 @@ MODEL_FILE = "mistral-7b-instruct-v0.1.Q4_K_M.gguf"
 # DEFAULT EMBEDDING MODEL
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L12-v2"
 # EMBEDDING MODEL CONFIG
-INGEST_THREADS = 8 or os.cpu_count()
+INGEST_THREADS = 8
 
 # MODEL CONFIG
 MAX_TOKEN_LENGTH = 8192  # 8192 is the max for Mistral-7B
@@ -79,19 +79,14 @@ else:
     DEVICE_TYPE = "cpu"
 
 # CHROMA DB SETTINGS
-CHROMA_SETTINGS = Settings(
-    anonymized_telemetry=False,
-    is_persistent=True,
-)
+CHROMA_SETTINGS = Settings(anonymized_telemetry=False, is_persistent=True)
 
 # PINECONE SETTINGS
 EMBEDDING_DIMENSION = ""
 INDEX_NAME = ""
 
 # Reserved File Names
-RESERVED_FILE_NAMES = [
-    "builder.url",
-]
+RESERVED_FILE_NAMES = ["builder.url"]
 
 # List of file supported for ingest
 DOCUMENT_EXTENSION = {
@@ -122,32 +117,32 @@ URL_EXTENSION = {
 
 # List of all Social Chat and their loaders
 SOCIAL_CHAT_EXTENSION = {
-    r"^(chat_|_chat|whatsapp_|whatsapp_chat|whatsapp_chat_|whatsapp_)" : WhatsAppChatLoader,
+    r"^(chat_|_chat|whatsapp_|whatsapp_chat|whatsapp_chat_|whatsapp_)": WhatsAppChatLoader
 }
 
 
 # List of all file extensions for programming languages and their parsers
 CODE_EXTENSION = {
-    '.cpp': Language.CPP,
-    '.go': Language.GO,
-    '.java': Language.JAVA,
-    '.kt': Language.KOTLIN,
-    '.js': Language.JS,
-    '.ts': Language.TS,
-    '.php': Language.PHP,
-    '.proto': Language.PROTO,
-    '.py': Language.PYTHON,
-    '.rst': Language.RST,
-    '.ruby': Language.RUBY,
-    '.rs': Language.RUST,
-    '.scala': Language.SCALA,
-    '.swift': Language.SWIFT,
-    '.markdown': Language.MARKDOWN,
-    '.latex': Language.LATEX,
-    '.html': Language.HTML,
-    '.sol': Language.SOL,
-    '.cs': Language.CSHARP,
-    '.cobol': Language.COBOL,
+    ".cpp": Language.CPP,
+    ".go": Language.GO,
+    ".java": Language.JAVA,
+    ".kt": Language.KOTLIN,
+    ".js": Language.JS,
+    ".ts": Language.TS,
+    ".php": Language.PHP,
+    ".proto": Language.PROTO,
+    ".py": Language.PYTHON,
+    ".rst": Language.RST,
+    ".ruby": Language.RUBY,
+    ".rs": Language.RUST,
+    ".scala": Language.SCALA,
+    ".swift": Language.SWIFT,
+    ".markdown": Language.MARKDOWN,
+    ".latex": Language.LATEX,
+    ".html": Language.HTML,
+    ".sol": Language.SOL,
+    ".cs": Language.CSHARP,
+    ".cobol": Language.COBOL,
 }
 
 
@@ -160,4 +155,4 @@ LOG_FOLDER = os.path.join(os.path.dirname(__file__), "logs")
 # BUILDER LOG
 BUILDER_LOG_FILE = os.path.join(LOG_FOLDER, "builder.log")
 # NEOGPT LOG
-NEOGPT_LOG_FILE =  os.path.join(LOG_FOLDER, "neogpt.log")
+NEOGPT_LOG_FILE = os.path.join(LOG_FOLDER, "neogpt.log")

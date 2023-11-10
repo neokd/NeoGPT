@@ -75,7 +75,7 @@ We welcome contributions to NeoGPT! If you have ideas for new features or improv
 
 
 ## License
-This project is licensed under the MIT License - see the [LICENSE](https://github.com/neokd/NeoGPT/blob/main/LICENSE) file for details. 
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/neokd/NeoGPT/blob/main/LICENSE) file for details.
 
 !!! warning "Feedback Note"
     **NeoGPT is continuously evolving. Your feedback shapes its future. We're excited about the future of NeoGPT and appreciate your support on this journey! 🚀🤖✨**

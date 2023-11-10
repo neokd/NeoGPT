@@ -7,5 +7,5 @@ __all__ = [
     "load_document_batch",
     "load_url_batch",
     "load_chat_batch",
-    "load_code_batch"
+    "load_code_batch",
 ]

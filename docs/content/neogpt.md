@@ -7,7 +7,7 @@
 Run the CLI to start using NeoGPT. The below command will run NeoGPT with default options.
 
 ```bash title="Terminal"
-python main.py 
+python main.py
 ```
 
 !!! info "Note"
@@ -44,17 +44,17 @@ python main.py --db FAISS
 
     - `DEFAULT`: An helpful assistant that will help you with your queries. (default)
 
-    - `RECRUITER`: An experienced recruiter who finds the best candidates. 
+    - `RECRUITER`: An experienced recruiter who finds the best candidates.
 
-    - `ACADEMICIAN`: Engages in in-depth research and presents findings. 
+    - `ACADEMICIAN`: Engages in in-depth research and presents findings.
 
-    - `FRIEND`: Provides comfort and encouragement as a friend. 
+    - `FRIEND`: Provides comfort and encouragement as a friend.
 
     - `ML_ENGINEER`: Explains complex ML concepts in an easy-to-understand manner.
 
-    - `CEO`: Acts as the CEO, making strategic decisions. 
+    - `CEO`: Acts as the CEO, making strategic decisions.
 
-    - `RESEARCHER`: Analyzes, synthesizes, and provides insights. 
+    - `RESEARCHER`: Analyzes, synthesizes, and provides insights.
 ```bash title="Terminal"
 python main.py --persona default
 ```
@@ -72,8 +72,8 @@ python main.py --persona default
 
     - SQL Retriever (Experimental)
 
-    - Context Compressor Retriever 
-    
+    - Context Compressor Retriever
+
     - Stepback Prompting Retriever (RAG + DuckDuckGo Search + Stepback Prompting)
 ```bash title="Terminal"
 python main.py --retriever local
@@ -82,7 +82,7 @@ python main.py --retriever local
     !!! info "Note"
         Documentation for the retrievers is still in progress. We will update the documentation once it is ready.
 
-5. `--build`: You can use `--build` flag to build the database. This will build the database using the files in `neogpt/documents` folder. 
+5. `--build`: You can use `--build` flag to build the database. This will build the database using the files in `neogpt/documents` folder.
     Basically it will run the `builder.py` script. You can read more about the builder [here](/NeoGPT/builder/).
 ```bash title="Terminal"
 python main.py --build
@@ -108,4 +108,3 @@ This will start the Streamlit UI in your browser, if it doesn't open automatical
 
 !!! warning "Note"
     The Streamlit UI is still in development. It only supports the `Local Retriever` for now.
-    

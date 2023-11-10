@@ -17,7 +17,7 @@ Supported SQL databases:
 - Databricks
 
 
-```mermaid 
+```mermaid
 graph TD
   A[User's Complex Question] -->|LLM| B[Query Generation]
   B -->|Database Interaction | C[Database Output]
@@ -46,16 +46,3 @@ python main.py --retriever sql
 ```
 
 After running the command, you will be prompted to enter a question. Enter a question and press `Enter`. The SQL retriever will generate a SQL query based on the question and execute it on the SQL database. The output will be displayed on the terminal.
-
-
-
-
-
-
-
-
-
-
-
-
-

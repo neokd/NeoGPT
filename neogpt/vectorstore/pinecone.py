@@ -1,6 +1,7 @@
 """
     The Purpose of this file is to provide a wrapper around the PINECONE from langchain
 """
+
 from config import (
     DEVICE_TYPE,
     EMBEDDING_DIMENSION,

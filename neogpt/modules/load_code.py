@@ -17,20 +17,20 @@ def load_single_code(file_path: str) -> Document:
         Code: Code
     """
     import chardet
+
     # Loads a single code file from a file path
     file_extension = os.path.splitext(file_path)[1]
-    if file_extension in CODE_EXTENSION.keys():
+    if file_extension in CODE_EXTENSION:
         with open(file_path, "rb") as f:
             # Detect encoding
             result = chardet.detect(f.read())
-            encoding = result['encoding']
+            encoding = result["encoding"]
 
-        with open(file_path, "r", encoding=encoding) as f:
+        with open(file_path, encoding=encoding) as f:
             code = f.read()
 
         return Document(
-            page_content=code,
-            metadata={"source": file_path, "encoding": encoding},
+            page_content=code, metadata={"source": file_path, "encoding": encoding}
         )
 
 
@@ -52,4 +52,3 @@ def load_code_batch(filepaths):
         data_list = [future.result() for future in futures]
         # return data and file paths
         return (data_list, filepaths)
-

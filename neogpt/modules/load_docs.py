@@ -25,6 +25,7 @@ def load_single_document(file_path: str) -> Document:
         raise ValueError("Document type is undefined")
     return loader.load()[0]
 
+
 def load_document_batch(filepaths):
     """
     fn: load_document_batch

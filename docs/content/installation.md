@@ -3,7 +3,7 @@ title: Installation
 ---
 
 # __Installation__ 🧑‍💻👩‍💻
- 
+
 This guide will walk you through the process of setting up NeoGPT on your system. NeoGPT is designed to be user-friendly and is compatible with a variety of operating systems.
 
 
@@ -11,9 +11,9 @@ This guide will walk you through the process of setting up NeoGPT on your system
 ## __Pre-requisites__
 Before you begin, make sure you have the following prerequisites installed on your system:
 
-- Python 3.10 or higher 
+- Python 3.10 or higher
 
-- Git 
+- Git
 
 - Editor of your choice (VSCode, PyCharm, etc.)
 
@@ -26,7 +26,7 @@ You can install NeoGPT by following whichever of the following methods is most c
 It is recommended to use the bash script to install NeoGPT. The bash script will automatically install all the required packages and set up the virtual environment for you. Followed by that it will build the database and run the CLI.
 !!! tip "Recommended"
 
-1. Clone the repository using the following command 
+1. Clone the repository using the following command
 ```bash title="Terminal"
 git clone https://github.com/neokd/NeoGPT.git
 ```
@@ -40,10 +40,10 @@ cd NeoGPT
 ```bash title="Terminal"
 bash ./install.sh
 ```
- 
-### With pip 
 
-1. Clone the repository using the following command 
+### With pip
+
+1. Clone the repository using the following command
 ```bash title="Terminal"
 git clone https://github.com/neokd/NeoGPT.git
 ```
@@ -74,7 +74,7 @@ pip install -r requirements.txt
 
 ### With conda
 
-1. Clone the repository using the following command 
+1. Clone the repository using the following command
 ```bash title="Terminal"
 git clone https://github.com/neokd/NeoGPT.git
 ```
@@ -105,7 +105,7 @@ If you want to use BLAS or Metal with llama-cpp you can set appropriate flags:
 for BLAS:
 
 ```bash title="Terminal"
-CMAKE_ARGS="-DLLAMA_CUBLAS=on" FORCE_CMAKE=1 pip install llama-cpp-python==0.2.11 
+CMAKE_ARGS="-DLLAMA_CUBLAS=on" FORCE_CMAKE=1 pip install llama-cpp-python==0.2.11
 ```
 
 for Metal (macOS only):
@@ -113,5 +113,3 @@ for Metal (macOS only):
 ```bash title="Terminal"
 CMAKE_ARGS="-DLLAMA_METAL=on"  FORCE_CMAKE=1 pip install llama-cpp-python==0.2.11 --no-cache-dir
 ```
-
-

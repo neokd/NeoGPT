@@ -41,12 +41,13 @@ def load_model(
         llm (HuggingFacePipeline): Returns a HuggingFace Pipeline object (language model)
     """
     if model_basename is not None and ".gguf" in model_basename.lower():
-        if ui:
-            callback_manager = CallbackManager([StreamlitStreamingHandler()])
-        else:
-            callback_manager = CallbackManager(
+        callback_manager = (
+            CallbackManager([StreamlitStreamingHandler()])
+            if ui
+            else CallbackManager(
                 [StreamingStdOutCallbackHandler(), TokenCallbackHandler()]
             )
+        )
         try:
             # Download the model checkpoint from the Hugging Face Hub
             model_path = hf_hub_download(

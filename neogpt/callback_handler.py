@@ -1,7 +1,7 @@
 import sys
 import threading
 import time
-from typing import Any, Dict, List
+from typing import Any
 from uuid import UUID
 
 import streamlit as st
@@ -21,7 +21,7 @@ class StreamingStdOutCallbackHandler(BaseCallbackHandler):
         self.neo_gpt_printed = False
 
     def on_llm_start(
-        self, serialized: Dict[str, Any], prompts: List[str], **kwargs: Any
+        self, serialized: dict[str, Any], prompts: list[str], **kwargs: Any
     ) -> None:
         # Start a new line for a clean display
         sys.stdout.write("\n")
@@ -110,7 +110,7 @@ class StreamlitStreamingHandler(StreamingStdOutCallbackHandler):
         self._token = ""
 
     def on_llm_start(
-        self, serialized: Dict[str, Any], prompts: List[str], **kwargs: Any
+        self, serialized: dict[str, Any], prompts: list[str], **kwargs: Any
     ) -> None:
         """Run when LLM starts running."""
         del self.output

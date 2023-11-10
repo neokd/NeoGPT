@@ -15,16 +15,16 @@ CMD [ "python" ,"main.py"]
 
 #---------------------------------------------------------#
 
-# Documentation for running the application on containers: 
+# Documentation for running the application on containers:
 
 #---------------------------------------------------------#
 
 #---------------------------------------------------------#
-## Build the Docker Image : 
+## Build the Docker Image :
 
 # Run the following command in the directory containing the Dockerfile to build the Docker image.
 
-#> git clone https://github.comneokd/neogpt 
+#> git clone https://github.comneokd/neogpt
 #> cd neopgpt
 #! READ docs/builder.md regarding instructions to build database
 # Without proper adherence,image might show unexpected failure at build times.

@@ -4,6 +4,7 @@
     to provide a simple interface for storing and retrieving documents
     from the database.
 """
+
 from langchain.embeddings import HuggingFaceInstructEmbeddings
 from langchain.schema.document import Document
 from langchain.vectorstores import Chroma

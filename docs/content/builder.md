@@ -109,9 +109,9 @@ The NeoGPT database builder supports a range of document formats, each associate
 
 ### Test data
 
-For testing purposes, we have included 2 papers and 1 youtube video in the `neogpt/documents` folder. 
+For testing purposes, we have included 2 papers and 1 youtube video in the `neogpt/documents` folder.
 
-The database is built using 2 papers and 1 youtube video: 
+The database is built using 2 papers and 1 youtube video:
 
 - [Attention Is All You Need](https://arxiv.org/pdf/1706.03762.pdf)
 
@@ -177,7 +177,7 @@ To include URL's in the NeoGPT database, follow these steps:
    You can include URLs from various sources, not limited to YouTube videos.
 
 3. Run the builder script by executing the following command in your terminal or command prompt:
-    
+
 ```bash title="Terminal"
 python neogpt/builder.py
 ```
@@ -206,5 +206,5 @@ python neogpt/builder.py
 
 
 !!! tip "Tip"
-      
+
       You can add all the supported file formats to the `neogpt/documents` folder and run the builder script. The builder script will automatically detect the file format and process the content accordingly.

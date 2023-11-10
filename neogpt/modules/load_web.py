@@ -32,13 +32,16 @@ def process_url(url_path: str, recursive: bool) -> Document:
             else:
                 if recursive is True:
                     loader_class = URL_EXTENSION.get("recursive", None)
-                    loader = loader_class(url, extractor=lambda x: Soup(x, "html.parser").text)
+                    loader = loader_class(
+                        url, extractor=lambda x: Soup(x, "html.parser").text
+                    )
                 else:
                     loader_class = URL_EXTENSION.get("normal", None)
                     loader = loader_class(url)
-    
+
     result = loader.load()[0]
     return result
+
 
 def load_url_batch(urlpaths, recursive):
     """
@@ -57,5 +60,3 @@ def load_url_batch(urlpaths, recursive):
         futures = [exe.submit(partial_process_url, name) for name in urlpaths]
         data_list = [future.result() for future in futures]
     return (data_list, urlpaths)
-
-
