@@ -10,10 +10,20 @@ from neogpt.config import CHROMA_PERSIST_DIRECTORY, DEVICE_TYPE, FAISS_PERSIST_D
 from neogpt.manager import db_retriver
 
 if __name__ == "__main__":
+    log_format = "%(asctime)s - %(levelname)s - %(filename)s:%(lineno)s - %(message)s"
     logging.basicConfig(
-        format="%(asctime)s - %(levelname)s - %(filename)s:%(lineno)s - %(message)s",
+        format=log_format,
         level=logging.INFO,
     )
+
+    # logger instance
+    logger = logging.getLogger()
+
+    # Create console handler for default logging to console
+    console_handler = logging.StreamHandler()
+    console_handler.setFormatter(logging.Formatter(log_format))
+    logger.addHandler(console_handler)
+
     # Parse the arguments
     parser = argparse.ArgumentParser(description="NeoGPT CLI Interface")
     parser.add_argument(
@@ -66,8 +76,17 @@ if __name__ == "__main__":
         action="store_true",
         help="Start a UI server for NeoGPT",
     )
+    parser.add_argument(
+        '--log_file',
+        help="Specify the log file location (e.g. /path/to/logfile.log)",
+    )
     parser.add_argument('--version', action='version', version='You are using NeoGPT🤖 v0.1.0-alpha.')
     args = parser.parse_args()
+
+    if args.log_file:
+        file_handler = logging.FileHandler(args.log_file)
+        file_handler.setFormatter(logging.Formatter(log_format))
+        logger.addHandler(file_handler)
 
     if args.build:
         builder(vectorstore=args.db)
