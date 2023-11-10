@@ -71,7 +71,7 @@ Join our [Discord](https://discord.gg/qNqjsGuCTG) community to stay up to date w
 
 
 ## Contributing
-We welcome contributions to NeoGPT! If you have ideas for new features or improvements, please open an issue or submit a pull request. For more information, see our [contributing guide](https://github.com/neokd/NeoGPT/blob/main/docs/content/about/contributing.md).
+We welcome contributions to NeoGPT! If you have ideas for new features or improvements, please open an issue or submit a pull request. For more information, see our [contributing guide](https://neokd.github.io/NeoGPT/about/contributing/).
 
 
 ## License

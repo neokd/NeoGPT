@@ -15,7 +15,7 @@ if command -v python3 &>/dev/null; then
             conda activate neogpt-env
         fi
         pip install -r requirements.txt
-        python builder.py
+        python neogpt/builder.py
         python main.py
     else
         echo "Python version is less than 3.10. Please upgrade Python to version 3.10 or later."

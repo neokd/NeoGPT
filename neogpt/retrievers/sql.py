@@ -17,7 +17,7 @@ def sql_retriever(llm, persona):
     SQL retriever
     """
     logging.info(
-        f"{Fore.YELLOW}Warning: The SQL retriever takes a long time to load. Please be patient 🤖"
+        f"{Fore.YELLOW}Warning: The SQL retriever takes a long time to load. Please be patient 🤖 {Fore.RESET}"
     )
 
     # Find any .db file in source dir

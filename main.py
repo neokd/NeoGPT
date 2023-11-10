@@ -5,24 +5,16 @@ import sys
 
 from streamlit.web import cli as stcli
 
-from builder import builder
-from neogpt.config import CHROMA_PERSIST_DIRECTORY, DEVICE_TYPE, FAISS_PERSIST_DIRECTORY
+from neogpt.builder import builder
+from neogpt.config import (
+    CHROMA_PERSIST_DIRECTORY,
+    DEVICE_TYPE,
+    FAISS_PERSIST_DIRECTORY,
+    NEOGPT_LOG_FILE,
+)
 from neogpt.manager import db_retriver
 
 if __name__ == "__main__":
-    log_format = "%(asctime)s - %(levelname)s - %(filename)s:%(lineno)s - %(message)s"
-    logging.basicConfig(
-        format=log_format,
-        level=logging.INFO,
-    )
-
-    # logger instance
-    logger = logging.getLogger()
-
-    # Create console handler for default logging to console
-    console_handler = logging.StreamHandler()
-    console_handler.setFormatter(logging.Formatter(log_format))
-    logger.addHandler(console_handler)
 
     # Parse the arguments
     parser = argparse.ArgumentParser(description="NeoGPT CLI Interface")
@@ -77,25 +69,54 @@ if __name__ == "__main__":
         help="Start a UI server for NeoGPT",
     )
     parser.add_argument(
-        '--log_file',
-        help="Specify the log file location (e.g. /path/to/logfile.log)",
+        "--debug", 
+        action="store_true", 
+        help="Enable debugging"
     )
-    parser.add_argument('--version', action='version', version='You are using NeoGPT🤖 v0.1.0-alpha.')
+    parser.add_argument(
+        "--verbose", 
+        action="store_true", 
+        help="Enable verbose mode"
+    )
+    parser.add_argument(
+        "--log", 
+        action="store_true", 
+        help="Logs Builder output to builder.log"
+    )
+    parser.add_argument(
+        "--recursive", 
+        action="store_true", 
+        help="Recursively loads urls from builder.url file"
+    )
+    parser.add_argument(
+        "--version", 
+        action='version', 
+        version='You are using NeoGPT🤖 v0.1.0-alpha.'
+    )
     args = parser.parse_args()
 
-    if args.log_file:
-        file_handler = logging.FileHandler(args.log_file)
-        file_handler.setFormatter(logging.Formatter(log_format))
-        logger.addHandler(file_handler)
+    if args.debug:
+        log_level = logging.DEBUG
 
-    if args.build:
-        builder(vectorstore=args.db)
+    if args.verbose:
+        log_level = logging.INFO
 
+    if args.log:
+        log_level = logging.INFO
+        logging.basicConfig(
+            format="%(asctime)s - %(levelname)s - %(filename)s:%(lineno)s - %(message)s",
+            level=log_level,
+            filename=NEOGPT_LOG_FILE,
+        )
+    
     if not os.path.exists(FAISS_PERSIST_DIRECTORY):
         builder(vectorstore="FAISS")
 
     if not os.path.exists(CHROMA_PERSIST_DIRECTORY):
         builder(vectorstore="Chroma")
+        
+    if args.build:
+        builder(vectorstore=args.db, recursive=args.recursive, debug=args.debug, verbose=args.verbose)
 
     if args.ui:
         logging.info("Starting the UI server for NeoGPT 🤖")

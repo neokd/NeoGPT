@@ -34,7 +34,7 @@ python main.py --ui
 
 2. `--db`: You can also use `--db` flag to specify the database to use. Currently the supported databases are:
     - `Chroma` (default)
-    
+
     - `FAISS`
 ```bash title="Terminal"
 python main.py --db FAISS
@@ -66,7 +66,7 @@ python main.py --persona default
 4. `--retriever`: You can specify the retriever you want to use in the CLI. Currently the supported retrievers are:
     - Local Retriever (default)
 
-    - Web Research Retriever (Requires Google API Key refer [here](/advance/search/))
+    - Web Research Retriever (Requires Google API Key refer [here](/NeoGPT/advance/search/))
 
     - Hybrid Retriever (Ensemble Retriever)
 
@@ -83,7 +83,7 @@ python main.py --retriever local
         Documentation for the retrievers is still in progress. We will update the documentation once it is ready.
 
 5. `--build`: You can use `--build` flag to build the database. This will build the database using the files in `neogpt/documents` folder. 
-    Basically it will run the `builder.py` script. You can read more about the builder [here](/neogpt-docs/builder/).
+    Basically it will run the `builder.py` script. You can read more about the builder [here](/NeoGPT/builder/).
 ```bash title="Terminal"
 python main.py --build
 ```

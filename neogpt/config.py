@@ -9,6 +9,7 @@ from langchain.document_loaders import (
     CSVLoader,
     JSONLoader,
     PDFMinerLoader,
+    RecursiveUrlLoader,
     TextLoader,
     UnstructuredEmailLoader,
     UnstructuredEPubLoader,
@@ -18,8 +19,10 @@ from langchain.document_loaders import (
     UnstructuredPowerPointLoader,
     UnstructuredTSVLoader,
     UnstructuredWordDocumentLoader,
+    WebBaseLoader,
     YoutubeLoader,
 )
+from langchain.text_splitter import Language
 
 # Load Environment Variables
 load_dotenv()
@@ -107,18 +110,46 @@ DOCUMENT_EXTENSION = {
     ".doc": UnstructuredWordDocumentLoader,
     ".md": UnstructuredMarkdownLoader,
     ".json": JSONLoader,
-    ".py": TextLoader,
+    # ".py": TextLoader,
 }
 
 # List of URL patterns supported for ingest
 URL_EXTENSION = {
     ".youtube": YoutubeLoader,
+    "recursive": RecursiveUrlLoader,
+    "normal": WebBaseLoader,
 }
 
 # List of all Social Chat and their loaders
 SOCIAL_CHAT_EXTENSION = {
-    "whatsapp": WhatsAppChatLoader,
+    r"^(chat_|_chat|whatsapp_|whatsapp_chat|whatsapp_chat_|whatsapp_)" : WhatsAppChatLoader,
 }
+
+
+# List of all file extensions for programming languages and their parsers
+CODE_EXTENSION = {
+    '.cpp': Language.CPP,
+    '.go': Language.GO,
+    '.java': Language.JAVA,
+    '.kt': Language.KOTLIN,
+    '.js': Language.JS,
+    '.ts': Language.TS,
+    '.php': Language.PHP,
+    '.proto': Language.PROTO,
+    '.py': Language.PYTHON,
+    '.rst': Language.RST,
+    '.ruby': Language.RUBY,
+    '.rs': Language.RUST,
+    '.scala': Language.SCALA,
+    '.swift': Language.SWIFT,
+    '.markdown': Language.MARKDOWN,
+    '.latex': Language.LATEX,
+    '.html': Language.HTML,
+    '.sol': Language.SOL,
+    '.cs': Language.CSHARP,
+    '.cobol': Language.COBOL,
+}
+
 
 # Initial Query Cost and Total Cost
 QUERY_COST = 0
@@ -126,4 +157,7 @@ TOTAL_COST = 0
 
 # LOG CONFIG
 LOG_FOLDER = os.path.join(os.path.dirname(__file__), "logs")
-LOG_FILE = os.path.join(LOG_FOLDER, "builder.log")
+# BUILDER LOG
+BUILDER_LOG_FILE = os.path.join(LOG_FOLDER, "builder.log")
+# NEOGPT LOG
+NEOGPT_LOG_FILE =  os.path.join(LOG_FOLDER, "neogpt.log")

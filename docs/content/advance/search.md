@@ -1,4 +1,4 @@
-# __Seach :mag:__
+# __Search :mag:__
 
 ## Google API Key Configuration
 

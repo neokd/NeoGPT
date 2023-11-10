@@ -3,12 +3,13 @@ docs_dir: 'content'
 repo_url: https://github.com/neokd/NeoGPT
 repo_name: neokd/NeoGPT
 edit_uri: https://github.com/neokd/NeoGPT/tree/main/docs/content/
-
+site_url: https://neokd.github.io/NeoGPT/
 theme:
     name: material
 
     font: 
       text: Nunito
+ 
     icon:
       repo: fontawesome/brands/github
       previous: fontawesome/solid/angle-left
@@ -59,13 +60,17 @@ theme:
           name: Switch to light mode
         primary: black
         accent: teal
-        
+    
 nav:    
   - Home: index.md
   - Docs:
     - Installation: installation.md
     - Builder: builder.md
     - Run NeoGPT: neogpt.md
+    - Retrievers:
+        - Contextual compression: retrievers/context.md
+        - Stepback: retrievers/stepback.md
+        - SQL : retrievers/sql.md
     - Settings: 
         - Configure Search: advance/search.md
         - Configuration: advance/configuration.md
@@ -91,10 +96,15 @@ markdown_extensions:
       anchor_linenums: true
       line_spans: __span
       pygments_lang_class: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.smartsymbols
   - admonition
   - pymdownx.details
-  - pymdownx.superfences
+
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.magiclink
@@ -117,4 +127,3 @@ extra:
       link: https://discord.gg/qNqjsGuCTG
       name: Discord
   generator: false
-
