@@ -8,28 +8,28 @@
       
       
       
-        <link rel="canonical" href="https://neokd.github.io/NeoGPT/neogpt/">
+        <link rel="canonical" href="https://neokd.github.io/NeoGPT/retrievers/context/">
       
       
-        <link rel="prev" href="../builder/">
+        <link rel="prev" href="../../neogpt/">
       
       
-        <link rel="next" href="../retrievers/context/">
+        <link rel="next" href="../stepback/">
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.8">
     
     
       
-        <title>Run NeoGPT - NeoGPT 🤖</title>
+        <title>Contextual compression - NeoGPT 🤖</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.4b4a2bd9.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.4b4a2bd9.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.356b1318.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.356b1318.min.css">
       
       
   
@@ -89,9 +89,9 @@
       
     
     
-      <link rel="stylesheet" href="../stylesheets/custom.css">
+      <link rel="stylesheet" href="../../stylesheets/custom.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -120,7 +120,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#run-neogpt" class="md-skip">
+        <a href="#contextual-compressor-retriever" class="md-skip">
           Skip to content
         </a>
       
@@ -134,7 +134,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="NeoGPT 🤖" class="md-header__button md-logo" aria-label="NeoGPT 🤖" data-md-component="logo">
+    <a href="../.." title="NeoGPT 🤖" class="md-header__button md-logo" aria-label="NeoGPT 🤖" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 3v15h3V3H9m3 2 4 13 3-1-4-13-3 1M5 5v13h3V5H5M3 19v2h18v-2H3Z"/></svg>
@@ -154,7 +154,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Run NeoGPT
+              Contextual compression
             
           </span>
         </div>
@@ -265,7 +265,7 @@
   
   
     <li class="md-tabs__item">
-      <a href=".." class="md-tabs__link">
+      <a href="../.." class="md-tabs__link">
         
   
     
@@ -286,7 +286,7 @@
     
     
       <li class="md-tabs__item md-tabs__item--active">
-        <a href="../installation/" class="md-tabs__link">
+        <a href="../../installation/" class="md-tabs__link">
           
   
   Docs
@@ -304,7 +304,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../about/contributing/" class="md-tabs__link">
+        <a href="../../about/contributing/" class="md-tabs__link">
           
   
   About
@@ -337,7 +337,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="NeoGPT 🤖" class="md-nav__button md-logo" aria-label="NeoGPT 🤖" data-md-component="logo">
+    <a href="../.." title="NeoGPT 🤖" class="md-nav__button md-logo" aria-label="NeoGPT 🤖" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 3v15h3V3H9m3 2 4 13 3-1-4-13-3 1M5 5v13h3V5H5M3 19v2h18v-2H3Z"/></svg>
@@ -366,7 +366,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -426,7 +426,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../installation/" class="md-nav__link">
+      <a href="../../installation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -446,7 +446,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../builder/" class="md-nav__link">
+      <a href="../../builder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -459,6 +459,67 @@
   
 
               
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../neogpt/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Run NeoGPT
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+    
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Retrievers
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            Retrievers
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
             
               
                 
@@ -479,7 +540,7 @@
           
   
   <span class="md-ellipsis">
-    Run NeoGPT
+    Contextual compression
   </span>
   
 
@@ -490,7 +551,7 @@
         
   
   <span class="md-ellipsis">
-    Run NeoGPT
+    Contextual compression
   </span>
   
 
@@ -512,28 +573,8 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#cli-usage" class="md-nav__link">
-    CLI Usage
-  </a>
-  
-    <nav class="md-nav" aria-label="CLI Usage">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#cli-options" class="md-nav__link">
-    CLI Options
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#streamlit-ui" class="md-nav__link">
-    Streamlit UI
+  <a href="#description" class="md-nav__link">
+    Description
   </a>
   
 </li>
@@ -552,67 +593,8 @@
   
   
   
-    
-    
-    
-    
-    
-      
-      
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="">
-            
-  
-  <span class="md-ellipsis">
-    Retrievers
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_4">
-            <span class="md-nav__icon md-icon"></span>
-            Retrievers
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
     <li class="md-nav__item">
-      <a href="../retrievers/context/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Contextual compression
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../retrievers/stepback/" class="md-nav__link">
+      <a href="../stepback/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -632,7 +614,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../retrievers/sql/" class="md-nav__link">
+      <a href="../sql/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -699,7 +681,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../advance/search/" class="md-nav__link">
+      <a href="../../advance/search/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -719,7 +701,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../advance/configuration/" class="md-nav__link">
+      <a href="../../advance/configuration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -793,7 +775,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../about/contributing/" class="md-nav__link">
+      <a href="../../about/contributing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -813,7 +795,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../about/code_of_conduct/" class="md-nav__link">
+      <a href="../../about/code_of_conduct/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -833,7 +815,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../about/changelog/" class="md-nav__link">
+      <a href="../../about/changelog/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -881,28 +863,8 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#cli-usage" class="md-nav__link">
-    CLI Usage
-  </a>
-  
-    <nav class="md-nav" aria-label="CLI Usage">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#cli-options" class="md-nav__link">
-    CLI Options
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#streamlit-ui" class="md-nav__link">
-    Streamlit UI
+  <a href="#description" class="md-nav__link">
+    Description
   </a>
   
 </li>
@@ -922,7 +884,7 @@
                   
 
   
-    <a href="https://github.com/neokd/NeoGPT/tree/main/docs/content/neogpt.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/neokd/NeoGPT/tree/main/docs/content/retrievers/context.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
     </a>
@@ -930,123 +892,22 @@
   
 
 
-<h1 id="run-neogpt"><strong>Run NeoGPT</strong> ⚡️</h1>
-<h2 id="cli-usage">CLI Usage</h2>
-<p>Run the CLI to start using NeoGPT. The below command will run NeoGPT with default options.</p>
-<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>python<span class="w"> </span>main.py<span class="w"> </span>
-</span></code></pre></div>
-<div class="admonition info">
-<p class="admonition-title">Note</p>
-<p>On first run, NeoGPT will download the model from HuggingFace and build the database. This may take few minutes.</p>
-</div>
-<p>Once everything is set up, you will be greeted with the following message:</p>
-<p><img alt="NeoGPT CLI" src="../asset/cli.png" /></p>
-<p>There are various options available to run the CLI. You can use the <code>--help</code> flag to view the available commands and options.</p>
-<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>python<span class="w"> </span>main.py<span class="w"> </span>--help
-</span></code></pre></div>
-<h3 id="cli-options">CLI Options</h3>
-<ol>
-<li>
-<p><code>--ui</code>: You can use <code>--ui</code> flag to run the Streamlit UI.
-<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>python<span class="w"> </span>main.py<span class="w"> </span>--ui
-</span></code></pre></div></p>
-</li>
-<li>
-<p><code>--db</code>: You can also use <code>--db</code> flag to specify the database to use. Currently the supported databases are:</p>
-<ul>
-<li>
-<p><code>Chroma</code> (default)</p>
-</li>
-<li>
-<p><code>FAISS</code>
-<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>python<span class="w"> </span>main.py<span class="w"> </span>--db<span class="w"> </span>FAISS
-</span></code></pre></div></p>
-</li>
-</ul>
-</li>
-<li>
-<p><code>--persona</code>: You can also use <code>--persona</code> flag to specify the persona to use. Currently the supported personas are:</p>
-<ul>
-<li>
-<p><code>DEFAULT</code>: An helpful assistant that will help you with your queries. (default)</p>
-</li>
-<li>
-<p><code>RECRUITER</code>: An experienced recruiter who finds the best candidates. </p>
-</li>
-<li>
-<p><code>ACADEMICIAN</code>: Engages in in-depth research and presents findings. </p>
-</li>
-<li>
-<p><code>FRIEND</code>: Provides comfort and encouragement as a friend. </p>
-</li>
-<li>
-<p><code>ML_ENGINEER</code>: Explains complex ML concepts in an easy-to-understand manner.</p>
-</li>
-<li>
-<p><code>CEO</code>: Acts as the CEO, making strategic decisions. </p>
-</li>
-<li>
-<p><code>RESEARCHER</code>: Analyzes, synthesizes, and provides insights. 
-<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>python<span class="w"> </span>main.py<span class="w"> </span>--persona<span class="w"> </span>default
-</span></code></pre></div></p>
-</li>
-</ul>
-<div class="admonition info">
-<p class="admonition-title">Note</p>
-<p>Documentation for the personas is still in progress. We will update the documentation once it is ready.</p>
-</div>
-</li>
-<li>
-<p><code>--retriever</code>: You can specify the retriever you want to use in the CLI. Currently the supported retrievers are:</p>
-<ul>
-<li>
-<p>Local Retriever (default)</p>
-</li>
-<li>
-<p>Web Research Retriever (Requires Google API Key refer <a href="/NeoGPT/advance/search/">here</a>)</p>
-</li>
-<li>
-<p>Hybrid Retriever (Ensemble Retriever)</p>
-</li>
-<li>
-<p>SQL Retriever (Experimental)</p>
-</li>
-<li>
-<p>Context Compressor Retriever </p>
-</li>
-<li>
-<p>Stepback Prompting Retriever (RAG + DuckDuckGo Search + Stepback Prompting)
-<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>python<span class="w"> </span>main.py<span class="w"> </span>--retriever<span class="w"> </span><span class="nb">local</span>
-</span></code></pre></div></p>
-</li>
-</ul>
-<div class="admonition info">
-<p class="admonition-title">Note</p>
-<p>Documentation for the retrievers is still in progress. We will update the documentation once it is ready.</p>
-</div>
-</li>
-<li>
-<p><code>--build</code>: You can use <code>--build</code> flag to build the database. This will build the database using the files in <code>neogpt/documents</code> folder. 
-    Basically it will run the <code>builder.py</code> script. You can read more about the builder <a href="/NeoGPT/builder/">here</a>.
-<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>python<span class="w"> </span>main.py<span class="w"> </span>--build
-</span></code></pre></div></p>
-</li>
-<li>
-<p><code>--show_source</code>: You can use <code>--show_source</code> flag to show the source of the retrieved document. This will show the documents that are retrieved from the database and fed into the LLM
-<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>python<span class="w"> </span>main.py<span class="w"> </span>--show_source
-</span></code></pre></div></p>
-</li>
-</ol>
-<h2 id="streamlit-ui">Streamlit UI</h2>
-<p>You can also use the Streamlit UI to interact with NeoGPT. To run the Streamlit UI, execute the following command in your terminal or command prompt:</p>
-<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>python<span class="w"> </span>main.py<span class="w"> </span>--ui
-</span></code></pre></div>
-<p>This will start the Streamlit UI in your browser, if it doesn't open automatically, you can open it manually by going to <code>http://localhost:8501</code> in your browser.</p>
-<p><img alt="Streamlit UI NeoGPT" src="../asset/ui.png" /></p>
-<div class="admonition warning">
-<p class="admonition-title">Note</p>
-<p>The Streamlit UI is still in development. It only supports the <code>Local Retriever</code> for now.</p>
-</div>
+<h1 id="contextual-compressor-retriever"><strong>Contextual Compressor Retriever</strong></h1>
+<h2 id="description">Description</h2>
+<p>The Contextual Compression Retriever is a crucial component within NeoGPT, designed to enhance the efficiency of document retrieval. It optimizes the information presented to a Large Language Model (LLM) by compressing and filtering documents based on the context of a user's query. </p>
+<p>Initially, a Base Retriever fetches relevant documents from a storage system, and these, along with the user's query, are then processed by the LLM. Subsequently, a Document Compressor refines the LLM's output, shortening and filtering documents to create a set of contextually compressed documents. This streamlined information is then seamlessly integrated into the application, ensuring users receive concise and relevant responses aligned with the nuances of their original queries.</p>
+<p><pre class="mermaid"><code>graph TD
+  A[User Query] --&gt;|Query| B[Base Retriever]
+  B --&gt;|Retrieved Documents| C[LLM]
+  C --&gt;|User Query &amp; Retrieved Docs| D[Document Compressor]
+  D --&gt;|Compressed Documents| E[Answer]
+
+  D --&gt;|Query| F[Base Retriever]
+  F --&gt;|Retrieved Documents| G[Document Compressor]
+  G --&gt;|Compressed Documents| D
+</code></pre>
+<center><em>Figure 1: Illustration of Contextual Compressor Retriever in NeoGPT.</em></center></p>
+<p>The Contextual Compression Retriever offers notable advantages, enhancing system efficiency, improving the relevance of retrieved content, and optimizing the utilization of the LLM, making it a valuable asset in retrieval-based natural language processing.</p>
 
   <hr>
 <div class="md-source-file">
@@ -1057,7 +918,7 @@
       
         <br>
         Created:
-        <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">November 6, 2023</span>
+        <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">November 10, 2023</span>
       
     
   </small>
@@ -1091,7 +952,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../builder/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Builder">
+          <a href="../../neogpt/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Run NeoGPT">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg>
@@ -1101,20 +962,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Builder
+                Run NeoGPT
               </div>
             </div>
           </a>
         
         
           
-          <a href="../retrievers/context/" class="md-footer__link md-footer__link--next" aria-label="Next: Contextual compression">
+          <a href="../stepback/" class="md-footer__link md-footer__link--next" aria-label="Next: Stepback">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Contextual compression
+                Stepback
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -1167,10 +1028,10 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.sections", "search.share", "navigation.top", "search.suggest", "search.highlight", "search.share", "content.tabs.link", "content.code.annotation", "content.code.copy", "content.action.edit", "navigation.footer", "toc.follow"], "search": "../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections", "search.share", "navigation.top", "search.suggest", "search.highlight", "search.share", "content.tabs.link", "content.code.annotation", "content.code.copy", "content.action.edit", "navigation.footer", "toc.follow"], "search": "../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.81fa17fe.min.js"></script>
+      <script src="../../assets/javascripts/bundle.81fa17fe.min.js"></script>
       
     
   </body>

@@ -51,6 +51,14 @@ body[data-md-color-scheme="default"] table thead{
     color:white;
 }
 
+.mermaid{
+    text-align: center;
+    outline: 1px solid #ddd;
+    padding: 1rem;
+    border-radius: 12px;
+    margin: 1rem 0;
+    font-weight: 500;
+}
 
 /* body[data-md-color-scheme="default"] div .highlight > span {
     background-color: rgba(238,85,82, 0.9);
