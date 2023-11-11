@@ -59,6 +59,20 @@ body[data-md-color-scheme="default"] table thead{
     margin: 1rem 0;
     font-weight: 500;
 }
+/* 
+[data-md-toggle="search"]:not(:checked) ~ .md-header .md-search__form::after {
+    position: absolute;
+    top: .3rem;
+    right: .3rem;
+    display: block;
+    padding: .1rem ;
+    color: var(--md-default-bg-color);
+    font-weight: bold;
+    font-size: .8rem;
+    border: .05rem solid var(--md-default-bg-color--lighter);
+    border-radius: .1rem;
+    content: "S";
+  } */
 
 /* body[data-md-color-scheme="default"] div .highlight > span {
     background-color: rgba(238,85,82, 0.9);

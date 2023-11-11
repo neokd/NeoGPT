@@ -21,6 +21,14 @@ Before you begin, make sure you have the following prerequisites installed on yo
 
 You can install NeoGPT by following whichever of the following methods is most convenient for you:
 
+1. [Bash Script](#with-bash-script)
+
+2. [Poetry](#with-poetry)
+
+3. [pip](#with-pip)
+
+4. [conda](#with-conda)
+
 ### With bash script
 
 It is recommended to use the bash script to install NeoGPT. The bash script will automatically install all the required packages and set up the virtual environment for you. Followed by that it will build the database and run the CLI.
@@ -40,6 +48,29 @@ cd NeoGPT
 ```bash title="Terminal"
 bash ./install.sh
 ```
+
+### With poetry 
+
+1. Clone the repository using the following command
+```bash title="Terminal"
+git clone https://github.com/neokd/NeoGPT.git
+```
+
+2. Navigate to the root directory of the repository
+```bash title="Terminal"
+cd NeoGPT
+```
+
+3. Run the following command in your terminal or command prompt:
+```bash title="Terminal"
+poetry install
+```
+
+4. Run the following command in your terminal or command prompt:
+```bash title="Terminal"
+    poetry run python main.py
+```
+
 
 ### With pip
 

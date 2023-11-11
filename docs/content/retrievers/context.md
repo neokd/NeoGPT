@@ -20,3 +20,10 @@ graph TD
 <center>*Figure 1: Illustration of Contextual Compressor Retriever in NeoGPT.*</center>
 
 The Contextual Compression Retriever offers notable advantages, enhancing system efficiency, improving the relevance of retrieved content, and optimizing the utilization of the LLM, making it a valuable asset in retrieval-based natural language processing.
+
+## How to Use
+Run the following command to interact with the Contextual Compressor Retriever:
+
+```bash title="Terminal"
+python main.py --retriever compressor
+```

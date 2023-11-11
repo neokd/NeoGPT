@@ -67,10 +67,18 @@ nav:
     - Installation: installation.md
     - Builder: builder.md
     - Run NeoGPT: neogpt.md
+    - Models:
+        - llama.cpp : models/llamacpp.md
+        - Ollama: models/ollama.md
     - Retrievers:
+        - Local: retrievers/local.md
+        - Web: retrievers/web.md
+        - Hybrid: retrievers/hybrid.md
         - Contextual compression: retrievers/context.md
         - Stepback: retrievers/stepback.md
         - SQL : retrievers/sql.md
+    - Persona: 
+        - Persona & NeoGPT: persona/persona.md
     - Settings:
         - Configure Search: advance/search.md
         - Configuration: advance/configuration.md
@@ -81,6 +89,8 @@ nav:
 
 extra_css:
   - stylesheets/custom.css
+
+
 
 markdown_extensions:
   - tables

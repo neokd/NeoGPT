@@ -59,8 +59,7 @@ python main.py --db FAISS
 python main.py --persona default
 ```
 
-    !!! info "Note"
-        Documentation for the personas is still in progress. We will update the documentation once it is ready.
+To know more about personas, refer [here](https://neokd.github.io/NeoGPT/persona/persona/).
 
 
 4. `--retriever`: You can specify the retriever you want to use in the CLI. Currently the supported retrievers are:
@@ -79,8 +78,8 @@ python main.py --persona default
 python main.py --retriever local
 ```
 
-    !!! info "Note"
-        Documentation for the retrievers is still in progress. We will update the documentation once it is ready.
+You can read more about retrievers in the retriever [section](https://neokd.github.io/NeoGPT/retrievers/local/).
+
 
 5. `--build`: You can use `--build` flag to build the database. This will build the database using the files in `neogpt/documents` folder.
     Basically it will run the `builder.py` script. You can read more about the builder [here](/NeoGPT/builder/).
@@ -91,6 +90,44 @@ python main.py --build
 6. `--show_source`: You can use `--show_source` flag to show the source of the retrieved document. This will show the documents that are retrieved from the database and fed into the LLM
 ```bash title="Terminal"
 python main.py --show_source
+```
+
+7. `--model_type` : You can use `--model_type` flag to specify how you want to load the model. Currently the supported LLM's are:
+
+    - `LLamaCpp` (default)
+    - `Ollama`
+    - `HuggingFace`
+```bash title="Terminal"
+python main.py --model_type mistral
+```
+
+8. `--verbose`: You can use `--verbose` flag to enable verbose mode. This will print the logs to the terminal.
+```bash title="Terminal"
+python main.py --verbose
+```
+
+9. `--debug`: You can use `--debug` flag to enable debug mode. This will print the debug logs to the terminal.
+```bash title="Terminal"
+python main.py --debug
+```
+
+10. `--log`: You can use `--log` flag to log the output to a file. This will log the output to `logs/neogpt.log` file.
+```bash title="Terminal"
+python main.py --log
+```
+
+11. `--recursive`: You can use `--recursive` flag to extract the child pages of a URL (for non-YouTube URLs). The builder script uses `WebBaseLoader` by default, which extracts only the root or specified domain of the URL. To extract child pages, run the builder script with the `--recursive` flag:
+```bash title="Terminal"
+python main.py --recursive
+```
+
+!!! warning "Note"
+    Use `--recursive` with the `--build` flag to extract child pages of a URL.
+
+
+12. `--version`: You can use `--version` flag to view the version of NeoGPT.
+```bash title="Terminal"
+python main.py --version
 ```
 
 ## Streamlit UI
