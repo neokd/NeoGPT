@@ -2,62 +2,92 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://neokd.github.io/NeoGPT/</loc>
-         <lastmod>2023-11-10</lastmod>
+         <lastmod>2023-11-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://neokd.github.io/NeoGPT/builder/</loc>
-         <lastmod>2023-11-10</lastmod>
+         <lastmod>2023-11-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://neokd.github.io/NeoGPT/installation/</loc>
-         <lastmod>2023-11-10</lastmod>
+         <lastmod>2023-11-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://neokd.github.io/NeoGPT/neogpt/</loc>
-         <lastmod>2023-11-10</lastmod>
+         <lastmod>2023-11-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://neokd.github.io/NeoGPT/about/changelog/</loc>
-         <lastmod>2023-11-10</lastmod>
+         <lastmod>2023-11-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://neokd.github.io/NeoGPT/about/code_of_conduct/</loc>
-         <lastmod>2023-11-10</lastmod>
+         <lastmod>2023-11-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://neokd.github.io/NeoGPT/about/contributing/</loc>
-         <lastmod>2023-11-10</lastmod>
+         <lastmod>2023-11-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://neokd.github.io/NeoGPT/advance/configuration/</loc>
-         <lastmod>2023-11-10</lastmod>
+         <lastmod>2023-11-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://neokd.github.io/NeoGPT/advance/search/</loc>
-         <lastmod>2023-11-10</lastmod>
+         <lastmod>2023-11-11</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://neokd.github.io/NeoGPT/models/llamacpp/</loc>
+         <lastmod>2023-11-11</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://neokd.github.io/NeoGPT/models/ollama/</loc>
+         <lastmod>2023-11-11</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://neokd.github.io/NeoGPT/persona/persona/</loc>
+         <lastmod>2023-11-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://neokd.github.io/NeoGPT/retrievers/context/</loc>
-         <lastmod>2023-11-10</lastmod>
+         <lastmod>2023-11-11</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://neokd.github.io/NeoGPT/retrievers/hybrid/</loc>
+         <lastmod>2023-11-11</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://neokd.github.io/NeoGPT/retrievers/local/</loc>
+         <lastmod>2023-11-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://neokd.github.io/NeoGPT/retrievers/sql/</loc>
-         <lastmod>2023-11-10</lastmod>
+         <lastmod>2023-11-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://neokd.github.io/NeoGPT/retrievers/stepback/</loc>
-         <lastmod>2023-11-10</lastmod>
+         <lastmod>2023-11-11</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://neokd.github.io/NeoGPT/retrievers/web/</loc>
+         <lastmod>2023-11-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>
