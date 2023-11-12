@@ -65,7 +65,7 @@ To know more about personas, refer [here](https://neokd.github.io/NeoGPT/persona
 4. `--retriever`: You can specify the retriever you want to use in the CLI. Currently the supported retrievers are:
     - Local Retriever (default)
 
-    - Web Research Retriever (Requires Google API Key refer [here](/NeoGPT/advance/search/))
+    - Web Research Retriever (Requires Google API Key refer [here](https://neokd.github.io/NeoGPT/advance/search/))
 
     - Hybrid Retriever (Ensemble Retriever)
 
@@ -78,11 +78,11 @@ To know more about personas, refer [here](https://neokd.github.io/NeoGPT/persona
 python main.py --retriever local
 ```
 
-You can read more about retrievers in the retriever [section](https://neokd.github.io/NeoGPT/retrievers/local/).
+    You can read more about retrievers in the retriever [section](https://neokd.github.io/NeoGPT/retrievers/local/).
 
 
 5. `--build`: You can use `--build` flag to build the database. This will build the database using the files in `neogpt/documents` folder.
-    Basically it will run the `builder.py` script. You can read more about the builder [here](/NeoGPT/builder/).
+    Basically it will run the `builder.py` script. You can read more about the builder [here](https://neokd.github.io/NeoGPT/builder/).
 ```bash title="Terminal"
 python main.py --build
 ```
@@ -121,8 +121,8 @@ python main.py --log
 python main.py --recursive
 ```
 
-!!! warning "Note"
-    Use `--recursive` with the `--build` flag to extract child pages of a URL.
+    !!! warning "Note"
+        Use `--recursive` with the `--build` flag to extract child pages of a URL.
 
 
 12. `--version`: You can use `--version` flag to view the version of NeoGPT.

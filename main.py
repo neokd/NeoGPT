@@ -47,6 +47,11 @@ if __name__ == "__main__":
         help="Specify the persona (default, recruiter). It allows you to customize the persona i.e. how the chatbot should behave.",
     )
     parser.add_argument(
+        "--model_type",
+        choices=["mistral", "llama", "ollama", "hf"],
+        default="llama",
+    )
+    parser.add_argument(
         "--build", default=False, action="store_true", help="Run the builder"
     )
     parser.add_argument(
@@ -120,6 +125,7 @@ if __name__ == "__main__":
     else:
         db_retriver(
             device_type=args.device_type,
+            model_type=args.model_type,
             vectordb=args.db,
             retriever=args.retriever,
             persona=args.persona,

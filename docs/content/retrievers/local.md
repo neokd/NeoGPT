@@ -15,10 +15,15 @@ graph TD
 ## How to Use
 Run the following command to interact with the Local Retriever:
 
-```bash title="Terminal"
-python main.py 
-```
-or
-```bash title="Terminal"
-python main.py --retriever local
-```
+=== "Basic Command"
+    ```bash title="Terminal"
+    python main.py 
+    ```
+
+
+=== "Local Retriever"
+    ```bash title="Terminal"
+    python main.py --retriever local
+    ```
+
+

@@ -46,8 +46,8 @@ PINECONE_PERSIST_DIRECTORY = os.path.join(PARENT_DB_DIRECTORY, "pinecone")
 DEFAULT_MEMORY_KEY = 2
 
 # GGUF MODELS (Recommended , Default and Fast)
-MODEL_NAME = "TheBloke/Mistral-7B-Instruct-v0.1-GGUF"
-MODEL_FILE = "mistral-7b-instruct-v0.1.Q4_K_M.gguf"
+MODEL_NAME = os.getenv("MODEL_NAME", "TheBloke/Mistral-7B-Instruct-v0.1-GGUF")
+MODEL_FILE = os.getenv("MODEL_FILE", "mistral-7b-instruct-v0.1.Q4_K_M.gguf")
 
 # MISTRAL MODEL LITE
 # MODEL_NAME = "TheBloke/MistralLite-7B-GGUF"

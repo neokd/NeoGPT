@@ -17,17 +17,21 @@ By default, NeoGPT uses the `Mistral-7B instruct` model. In order to use other m
 
 Run the following command in your terminal or command prompt:
 
-```bash title="Terminal"
-export MODEL_NAME="example_model" && export  MODEL_FILE="example_model.gguf"
-```
+=== "Terminal"
+    ```bash title="Terminal"
+    export MODEL_NAME="example_model" && export  MODEL_FILE="example_model.gguf"
+    ```
+=== "Example"
+    ```bash title="Terminal"
+    export MODEL_NAME="TheBloke/Llama-2-7B-Chat-GGUF" && export  MODEL_FILE="llama-2-7b-chat.Q4_0.gguf"
+    ```
+    
+
+
 
 Make sure to replace `example_model` with the name of the model you want to use and `example_model.gguf` with the name of the model file.
 
-Example:
 
-```bash title="Terminal"
-export MODEL_NAME="TheBloke/Llama-2-7B-Chat-GGUF" && export  MODEL_FILE="llama-2-7b-chat.Q4_0.gguf"
-```
 
 
 

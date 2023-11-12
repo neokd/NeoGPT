@@ -114,7 +114,8 @@ markdown_extensions:
   - pymdownx.smartsymbols
   - admonition
   - pymdownx.details
-
+  - pymdownx.tabbed:
+      alternate_style: true
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.magiclink

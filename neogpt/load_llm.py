@@ -2,7 +2,7 @@ import logging
 
 from huggingface_hub import hf_hub_download
 from langchain.callbacks.manager import CallbackManager
-from langchain.llms import HuggingFacePipeline, LlamaCpp
+from langchain.llms import HuggingFacePipeline, LlamaCpp, Ollama
 
 from neogpt.callback_handler import (
     StreamingStdOutCallbackHandler,
@@ -22,6 +22,7 @@ from neogpt.config import (
 # Function to load the LLM
 def load_model(
     device_type: str = DEVICE_TYPE,
+    model_type: str = "mistral",
     model_id: str = MODEL_NAME,
     model_basename: str = MODEL_FILE,
     ui: bool = False,
@@ -37,17 +38,17 @@ def load_model(
         LOGGING (logging, optional): Logging. Defaults to logging.
     return:
         llm (LlamaCpp): Returns a LlamaCpp object (language model)
-        llm (GPTQ): Returns a GPTQ object (language model)
+        llm (Ollama): Returns a Ollama object (language model)
         llm (HuggingFacePipeline): Returns a HuggingFace Pipeline object (language model)
     """
-    if model_basename is not None and ".gguf" in model_basename.lower():
-        callback_manager = (
-            CallbackManager([StreamlitStreamingHandler()])
-            if ui
-            else CallbackManager(
-                [StreamingStdOutCallbackHandler(), TokenCallbackHandler()]
-            )
-        )
+    callback_manager = (
+        CallbackManager([StreamlitStreamingHandler()])
+        if ui
+        else CallbackManager([StreamingStdOutCallbackHandler(), TokenCallbackHandler()])
+    )
+    if (model_type == "mistral" or model_type == "llama") and (
+        model_basename is not None and ".gguf" in model_basename.lower()
+    ):
         try:
             # Download the model checkpoint from the Hugging Face Hub
             model_path = hf_hub_download(
@@ -78,7 +79,18 @@ def load_model(
         except Exception as e:
             LOGGING.info(f"Error {e}")
 
-    else:
+    elif model_type == "ollama":
+        print(model_id)
+        llm = Ollama(
+            base_url="http://localhost:11434",
+            model=model_id,
+            verbose=True,
+            callback_manager=callback_manager,
+        )
+        LOGGING.info(f"Loaded {model_id} locally")
+        return llm  # Returns a Ollama object (language model)
+
+    elif model_type == "hf":
         try:
             LOGGING.warning(
                 "🚨 You are using an large model. Please use a quantized model for better performance"
@@ -99,3 +111,5 @@ def load_model(
             return llm
         except Exception as e:
             LOGGING.info(f"Error {e}")
+    else:
+        LOGGING.warning("🚨 Please use a valid model type")

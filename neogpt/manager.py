@@ -18,6 +18,7 @@ from neogpt.vectorstore import ChromaStore, FAISSStore
 
 def db_retriver(
     device_type: str = DEVICE_TYPE,
+    model_type: str = "mistral",
     vectordb: str = "Chroma",
     retriever: str = "local",
     persona: str = "default",
@@ -55,7 +56,11 @@ def db_retriver(
 
     # Load the LLM model
     llm = load_model(
-        device_type, model_id=MODEL_NAME, model_basename=MODEL_FILE, LOGGING=logging
+        device_type,
+        model_type,
+        model_id=MODEL_NAME,
+        model_basename=MODEL_FILE,
+        LOGGING=logging,
     )
 
     # Prompt Builder Function
@@ -102,12 +107,8 @@ def db_retriver(
         if query == "/exit":
             LOGGING.info("Byee 👋.")
             break
-
-        res = (
-            chain.invoke({"question": query})
-            if retriever == "stepback"
-            else chain.invoke(query)
-        )
+            
+        res = chain.invoke({"question": query}) if retriever == "stepback" else chain.invoke(query)
         # res = chain.invoke({"question": query})
 
         if show_source:
