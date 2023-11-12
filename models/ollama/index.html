@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.7">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.8">
     
     
       
@@ -120,7 +120,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#ollama-neogpt" class="md-skip">
+        <a href="#neogpt-ollama" class="md-skip">
           Skip to content
         </a>
       
@@ -1120,7 +1120,7 @@
   
 
 
-<h1 id="ollama-neogpt"><strong>Ollama + NeoGPT</strong></h1>
+<h1 id="neogpt-ollama"><strong>NeoGPT + Ollama</strong></h1>
 <p><a href="https://ollama.ai/">Ollama</a> allows you to run LLM'S locally. It basically bundles model weights, configuration, and data into a single package, defined by a Modelfile.They have a wide range of models available for download. You can download the models from <a href="https://ollama.ai/library">here</a>. </p>
 <div class="admonition warning">
 <p class="admonition-title">Note</p>
@@ -1145,14 +1145,19 @@
 <p>Set the environment variable <code>MODEL_NAME</code> to the name of the model you want to use.</p>
 </li>
 </ul>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Command</label><label for="__tabbed_1_2">Example</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
 <div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">MODEL_NAME</span><span class="o">=</span><span class="s2">&quot;example_model&quot;</span>
 </span></code></pre></div>
-<p>Make sure to replace <code>example_model</code> with the name of the model you want to use. It will be the model you choose from <a href="https://ollama.ai/library">Ollama</a> Library.</p>
-<ul>
-<li>Run the using the following command in your terminal or command prompt:</li>
-</ul>
+</div>
+<div class="tabbed-block">
 <div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>python<span class="w"> </span>main.py<span class="w"> </span>--model_type<span class="w"> </span>ollama
 </span></code></pre></div>
+</div>
+</div>
+</div>
+<p>Make sure to replace <code>example_model</code> with the name of the model you want to use. It will be the model you choose from <a href="https://ollama.ai/library">Ollama</a> Library.</p>
 <h2 id="tested-models-q4">Tested Models (Q4)</h2>
 <table>
 <thead>
@@ -1181,7 +1186,7 @@
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">November 11, 2023</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">November 12, 2023</span>
       
         <br>
         Created:
@@ -1298,7 +1303,7 @@
     <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections", "search.share", "navigation.top", "search.suggest", "search.highlight", "search.share", "content.tabs.link", "content.code.annotation", "content.code.copy", "content.action.edit", "navigation.footer", "toc.follow"], "search": "../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.aecac24b.min.js"></script>
+      <script src="../../assets/javascripts/bundle.81fa17fe.min.js"></script>
       
     
   </body>

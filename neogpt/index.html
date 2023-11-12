@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.7">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.8">
     
     
       
@@ -1216,7 +1216,7 @@
 <p>Local Retriever (default)</p>
 </li>
 <li>
-<p>Web Research Retriever (Requires Google API Key refer <a href="/NeoGPT/advance/search/">here</a>)</p>
+<p>Web Research Retriever (Requires Google API Key refer <a href="https://neokd.github.io/NeoGPT/advance/search/">here</a>)</p>
 </li>
 <li>
 <p>Hybrid Retriever (Ensemble Retriever)</p>
@@ -1233,13 +1233,11 @@
 </span></code></pre></div></p>
 </li>
 </ul>
-</li>
-</ol>
 <p>You can read more about retrievers in the retriever <a href="https://neokd.github.io/NeoGPT/retrievers/local/">section</a>.</p>
-<ol>
+</li>
 <li>
 <p><code>--build</code>: You can use <code>--build</code> flag to build the database. This will build the database using the files in <code>neogpt/documents</code> folder.
-    Basically it will run the <code>builder.py</code> script. You can read more about the builder <a href="/NeoGPT/builder/">here</a>.
+    Basically it will run the <code>builder.py</code> script. You can read more about the builder <a href="https://neokd.github.io/NeoGPT/builder/">here</a>.
 <div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>python<span class="w"> </span>main.py<span class="w"> </span>--build
 </span></code></pre></div></p>
 </li>
@@ -1277,16 +1275,16 @@
 <p><code>--recursive</code>: You can use <code>--recursive</code> flag to extract the child pages of a URL (for non-YouTube URLs). The builder script uses <code>WebBaseLoader</code> by default, which extracts only the root or specified domain of the URL. To extract child pages, run the builder script with the <code>--recursive</code> flag:
 <div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>python<span class="w"> </span>main.py<span class="w"> </span>--recursive
 </span></code></pre></div></p>
-</li>
-</ol>
 <div class="admonition warning">
 <p class="admonition-title">Note</p>
 <p>Use <code>--recursive</code> with the <code>--build</code> flag to extract child pages of a URL.</p>
 </div>
-<ol>
-<li><code>--version</code>: You can use <code>--version</code> flag to view the version of NeoGPT.
+</li>
+<li>
+<p><code>--version</code>: You can use <code>--version</code> flag to view the version of NeoGPT.
 <div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>python<span class="w"> </span>main.py<span class="w"> </span>--version
-</span></code></pre></div></li>
+</span></code></pre></div></p>
+</li>
 </ol>
 <h2 id="streamlit-ui">Streamlit UI</h2>
 <p>You can also use the Streamlit UI to interact with NeoGPT. To run the Streamlit UI, execute the following command in your terminal or command prompt:</p>
@@ -1304,7 +1302,7 @@
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">November 10, 2023</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">November 12, 2023</span>
       
         <br>
         Created:
@@ -1421,7 +1419,7 @@
     <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.sections", "search.share", "navigation.top", "search.suggest", "search.highlight", "search.share", "content.tabs.link", "content.code.annotation", "content.code.copy", "content.action.edit", "navigation.footer", "toc.follow"], "search": "../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.aecac24b.min.js"></script>
+      <script src="../assets/javascripts/bundle.81fa17fe.min.js"></script>
       
     
   </body>
