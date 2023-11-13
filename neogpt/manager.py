@@ -1,9 +1,10 @@
 import logging
+import os
 from datetime import datetime
 
 from colorama import Fore
 
-from neogpt.config import DEVICE_TYPE, MODEL_FILE, MODEL_NAME
+from neogpt.config import DEVICE_TYPE, MODEL_FILE, MODEL_NAME, WORKSPACE_DIRECTORY
 from neogpt.load_llm import load_model
 from neogpt.retrievers import (
     context_compress,
@@ -23,6 +24,7 @@ def db_retriver(
     retriever: str = "local",
     persona: str = "default",
     show_source: bool = False,
+    write: str | None = None,
     LOGGING=logging,
 ):
     """
@@ -107,8 +109,12 @@ def db_retriver(
         if query == "/exit":
             LOGGING.info("Byee 👋.")
             break
-            
-        res = chain.invoke({"question": query}) if retriever == "stepback" else chain.invoke(query)
+
+        res = (
+            chain.invoke({"question": query})
+            if retriever == "stepback"
+            else chain.invoke(query)
+        )
         # res = chain.invoke({"question": query})
 
         if show_source:
@@ -124,5 +130,32 @@ def db_retriver(
             print(
                 "----------------------------------SOURCE DOCUMENTS---------------------------"
             )
+        # Writing the results to a file if write is specified. It can be used to write assignments, reports etc.
+        if write is not None:
+            if not os.path.exists(WORKSPACE_DIRECTORY):
+                os.makedirs(WORKSPACE_DIRECTORY)
+
+            base_filename = write
+            file_counter = 1
+
+            while os.path.exists(os.path.join(WORKSPACE_DIRECTORY, write)):
+                # If the file already exists, append a counter to the filename
+                write, extension = os.path.splitext(base_filename)
+                write = f"{write}_{file_counter}{extension}"
+                file_counter += 1
+
+            answer = res["result"]
+
+            with open(os.path.join(WORKSPACE_DIRECTORY, write), "w") as result:
+                result.writelines(answer)
+
+            print(
+                "\n"
+                + Fore.LIGHTYELLOW_EX
+                + f"Your work is written to {WORKSPACE_DIRECTORY}/{write}"
+                + Fore.RESET
+            )
+
+            break
 
         last_input_time = datetime.now()  # update the last_input_time to now

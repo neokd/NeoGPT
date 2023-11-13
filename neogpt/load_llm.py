@@ -80,15 +80,18 @@ def load_model(
             LOGGING.info(f"Error {e}")
 
     elif model_type == "ollama":
-        print(model_id)
-        llm = Ollama(
-            base_url="http://localhost:11434",
-            model=model_id,
-            verbose=True,
-            callback_manager=callback_manager,
-        )
-        LOGGING.info(f"Loaded {model_id} locally")
-        return llm  # Returns a Ollama object (language model)
+        try:
+            llm = Ollama(
+                base_url="http://localhost:11434",
+                model=model_id,
+                callback_manager=callback_manager,
+            )
+            LOGGING.info(f"Loaded {model_id} locally. ")
+            return llm  # Returns a Ollama object (language model)
+        except Exception as e:
+            LOGGING.warning(
+                "Unable to load Ollama model. Read https://neokd.github.io/NeoGPT/models/ollama/ to set the enviornment variable and load again "
+            )
 
     elif model_type == "hf":
         try:

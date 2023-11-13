@@ -52,6 +52,11 @@ if __name__ == "__main__":
         default="llama",
     )
     parser.add_argument(
+        "--write",
+        default=None,
+        help="Specify the file path for writing retrieval results.",
+    )
+    parser.add_argument(
         "--build", default=False, action="store_true", help="Run the builder"
     )
     parser.add_argument(
@@ -129,5 +134,7 @@ if __name__ == "__main__":
             vectordb=args.db,
             retriever=args.retriever,
             persona=args.persona,
+            show_source=args.show_source,
+            write=args.write,
             LOGGING=logging,
         )

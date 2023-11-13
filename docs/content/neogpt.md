@@ -120,12 +120,15 @@ python main.py --log
 ```bash title="Terminal"
 python main.py --recursive
 ```
-
     !!! warning "Note"
         Use `--recursive` with the `--build` flag to extract child pages of a URL.
 
+12. `--write` : You can use `--write` flag to write the output to a file. This will write the output to specified file. 
+```bash title="Terminal"
+python main.py --write output.txt
+```
 
-12. `--version`: You can use `--version` flag to view the version of NeoGPT.
+13. `--version`: You can use `--version` flag to view the version of NeoGPT.
 ```bash title="Terminal"
 python main.py --version
 ```

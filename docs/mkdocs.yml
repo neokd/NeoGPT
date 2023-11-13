@@ -82,7 +82,7 @@ nav:
     - Settings:
         - Configure Search: advance/search.md
         - Configuration: advance/configuration.md
-  - About:
+  - Developer's Guide:
       - Contributing: about/contributing.md
       - Code Of Conduct: about/code_of_conduct.md
       - Changelog: about/changelog.md
