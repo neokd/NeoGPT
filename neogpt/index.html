@@ -307,7 +307,7 @@
         <a href="../about/contributing/" class="md-tabs__link">
           
   
-  About
+  Developer's Guide
 
         </a>
       </li>
@@ -987,7 +987,7 @@
             
   
   <span class="md-ellipsis">
-    About
+    Developer's Guide
   </span>
   
 
@@ -997,7 +997,7 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
-            About
+            Developer's Guide
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1274,21 +1274,24 @@
 <li>
 <p><code>--recursive</code>: You can use <code>--recursive</code> flag to extract the child pages of a URL (for non-YouTube URLs). The builder script uses <code>WebBaseLoader</code> by default, which extracts only the root or specified domain of the URL. To extract child pages, run the builder script with the <code>--recursive</code> flag:
 <div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>python<span class="w"> </span>main.py<span class="w"> </span>--recursive
+</span></code></pre></div>
+    !!! warning "Note"
+        Use <code>--recursive</code> with the <code>--build</code> flag to extract child pages of a URL.</p>
+</li>
+<li>
+<p><code>--write</code> : You can use <code>--write</code> flag to write the output to a file. This will write the output to specified file. 
+<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>python<span class="w"> </span>main.py<span class="w"> </span>--write<span class="w"> </span>output.txt
 </span></code></pre></div></p>
-<div class="admonition warning">
-<p class="admonition-title">Note</p>
-<p>Use <code>--recursive</code> with the <code>--build</code> flag to extract child pages of a URL.</p>
-</div>
 </li>
 <li>
 <p><code>--version</code>: You can use <code>--version</code> flag to view the version of NeoGPT.
-<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>python<span class="w"> </span>main.py<span class="w"> </span>--version
+<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>python<span class="w"> </span>main.py<span class="w"> </span>--version
 </span></code></pre></div></p>
 </li>
 </ol>
 <h2 id="streamlit-ui">Streamlit UI</h2>
 <p>You can also use the Streamlit UI to interact with NeoGPT. To run the Streamlit UI, execute the following command in your terminal or command prompt:</p>
-<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>python<span class="w"> </span>main.py<span class="w"> </span>--ui
+<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>python<span class="w"> </span>main.py<span class="w"> </span>--ui
 </span></code></pre></div>
 <p>This will start the Streamlit UI in your browser, if it doesn't open automatically, you can open it manually by going to <code>http://localhost:8501</code> in your browser.</p>
 <p><img alt="Streamlit UI NeoGPT" src="../asset/ui.png" /></p>
