@@ -11,8 +11,7 @@ from neogpt.config import (
 )
 from neogpt.manager import db_retriver
 
-if __name__ == "__main__":
-    # Parse the arguments
+def main():
     parser = argparse.ArgumentParser(description="NeoGPT CLI Interface")
     parser.add_argument(
         "--device-type",
@@ -138,3 +137,8 @@ if __name__ == "__main__":
             write=args.write,
             LOGGING=logging,
         )
+
+
+if __name__ == "__main__":
+    # Parse the arguments
+    main()

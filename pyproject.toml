@@ -20,7 +20,7 @@ torch = "^2.1.0"
 duckduckgo-search = "^3.9.4"
 sentence-transformers = "^2.2.2"
 instructorembedding = "^1.0.1"
-llama-cpp-python = "^0.2.16"
+llama-cpp-python = "^0.2.18"
 google-api-python-client = "^2.107.0"
 faiss-cpu = "^1.7.4"
 chromadb = "0.4.15"
@@ -98,3 +98,6 @@ exclude = [
     "B024",
     "B027"
 ]
+
+[tool.poetry.scripts]
+neogpt = "main:main"

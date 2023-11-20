@@ -1827,12 +1827,12 @@ requests = ">=2,<3"
 
 [[package]]
 name = "llama-cpp-python"
-version = "0.2.16"
+version = "0.2.18"
 description = "Python bindings for the llama.cpp library"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "llama_cpp_python-0.2.16.tar.gz", hash = "sha256:107138d45b5e479fc89f416cd4c4301eae9a1ff46f104cfba22a4d0a61742735"},
+    {file = "llama_cpp_python-0.2.18.tar.gz", hash = "sha256:faf270a861f114cc2dd1acdfff2a394023c30a9d8af58b8c1d492b31078b8cf9"},
 ]
 
 [package.dependencies]
@@ -5292,4 +5292,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<=3.12"
-content-hash = "c1d35a6c88c568c9ee5e2a01e826ec73d22da6f0c2dca6b3f7d8fe209f5104b9"
+content-hash = "2bc4fc946733e032df89abd84fc9b8af2c3c320224e1629ad6c72e8f73df18d1"
