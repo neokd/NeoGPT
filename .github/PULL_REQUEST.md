@@ -1,4 +1,4 @@
-# How to Make a Pull Request for Hacktoberfest 2023
+# How to Make a Pull Request
 
 Follow these steps to contribute to Hacktoberfest by creating a pull request for the [neokd/NeoGPT](https://github.com/neokd/NeoGPT) repository:
 
@@ -29,7 +29,5 @@ Follow these steps to contribute to Hacktoberfest by creating a pull request for
 8. **Review and Merge**:
    - Wait for the project maintainers of [neokd/NeoGPT](https://github.com/neokd/NeoGPT) to review and possibly merge your pull request.
 
-9. **Repeat**:
-   - Participate in Hacktoberfest by creating more pull requests.
 
-This is a basic outline for creating a pull request for Hacktoberfest with the [neokd/NeoGPT](https://github.com/neokd/NeoGPT) repository. Be sure to provide specific details for your repository and the changes you are making.
+This is a basic outline for creating a pull request for [neokd/NeoGPT](https://github.com/neokd/NeoGPT) repository. Be sure to provide specific details for your repository and the changes you are making.

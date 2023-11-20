@@ -1,6 +1,6 @@
 # Contributing to NeoGPT
 
-Thank you for considering contributing to NeoGPT! We welcome contributions from the community to help improve and enhance our project. Please take a moment to review this document to understand how you can contribute effectively.
+We welcome contributions from the community to help improve and enhance our project. Please take a moment to review this document to understand how you can contribute effectively.
 
 ## Reporting Issues
 
@@ -23,13 +23,9 @@ Our team will review your PR, provide feedback, and merge it if it meets our gui
 
 Please follow the existing code style and formatting guidelines in the project to maintain consistency. If you are introducing new code, ensure that it adheres to the established style.
 
-## Testing
+<!-- ## Code of Conduct
 
-If your changes include new functionality or modifications, please write appropriate unit tests to ensure that the code works as expected. Run the existing tests to ensure that your changes do not introduce regressions.
-
-## Code of Conduct
-
-Before contributing to NeoGPT, please read and adhere to our [Code of Conduct](CODE_OF_CONDUCT.md). We expect all contributors and community members to treat each other with respect and create a welcoming and inclusive environment.
+Before contributing to NeoGPT, please read and adhere to our [Code of Conduct](CODE_OF_CONDUCT.md). We expect all contributors and community members to treat each other with respect and create a welcoming and inclusive environment. -->
 
 ## Getting Help
 

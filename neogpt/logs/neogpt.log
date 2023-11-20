@@ -1,0 +1,6 @@
+2023-11-10 11:53:09,158 - INFO - SentenceTransformer.py:66 - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L12-v2
+2023-11-10 11:53:09,569 - INFO - manager.py:46 - Loaded Chroma DB Successfully
+2023-11-10 11:53:09,897 - INFO - load_llm.py:75 - Loaded TheBloke/Mistral-7B-Instruct-v0.1-GGUF locally
+2023-11-10 11:53:09,898 - INFO - local.py:29 - Loaded Local Retriever Successfully 🔍
+2023-11-10 11:53:09,898 - INFO - manager.py:83 - Note: The stats are based on OpenAI's pricing model. The cost is calculated based on the number of tokens generated. You don't have to pay anything to use the chatbot. The cost is only for reference.
+2023-11-10 11:53:45,115 - INFO - manager.py:109 - Byee 👋.

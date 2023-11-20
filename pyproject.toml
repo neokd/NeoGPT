@@ -1,0 +1,100 @@
+[tool.poetry]
+name = "neogpt"
+version = "0.1.0-alpha"
+description = "NeoGPT: Chat effortlessly with Documents, YouTube Videos,Code, and Social Media Chats. Your go-to for quick and smart interactions! 🤖💬"
+authors = ["Neokd"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.10,<=3.12"
+pdfminer-six = "20221105"
+colorama = "0.4.6"
+langchain = "^0.0.333"
+langchain-experimental = "^0.0.39"
+youtube-transcript-api = "^0.6.1"
+pytube = "^15.0.0"
+streamlit = "^1.28.1"
+unstructured = "^0.10.29"
+torch = "^2.1.0"
+duckduckgo-search = "^3.9.4"
+sentence-transformers = "^2.2.2"
+instructorembedding = "^1.0.1"
+llama-cpp-python = "^0.2.16"
+google-api-python-client = "^2.107.0"
+faiss-cpu = "^1.7.4"
+chromadb = "0.4.15"
+ruff = "^0.1.5"
+
+
+[tool.poetry.group.docs.dependencies]
+mkdocs-material = "^9.4.8"
+mkdocs = "^1.5.3"
+mkdocs-git-revision-date-localized-plugin = "^1.2.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+
+target-version = 'py311'
+
+[tool.ruff.lint]
+select = [
+    "E", # pycodestyle
+    "W", # pycodestyle
+    "F", # Pyflakes
+    "B", # flake8-bugbear
+    "C4", # flake8-comprehensions
+    "I", # isort
+    "SIM", # flake8-simplify
+    "TCH", # flake8-type-checking
+    "TID", # flake8-tidy-imports
+    "Q", # flake8-quotes
+    "UP", # pyupgrade
+    "PT", # flake8-pytest-style
+    "RUF", # Ruff-specific rules
+]
+
+ignore = [
+    "E501", # "Line too long"
+    "PT011", # "pytest.raises() should specify expected exception"
+    "SIM102", # "Use a single `if` statement instead of nested `if` statements"
+    "D100",
+    "D101",
+    "D102",
+    "D103",
+    "D104",
+    "D105",
+    "D106",
+    "D107",
+    "F401",
+    "F841",
+    "B024",
+    "B027"
+]
+
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff.format]
+quote-style = "double"
+
+exclude = [
+    "E501", # "Line too long"
+    "PT011", # "pytest.raises() should specify expected exception"
+    "SIM102", # "Use a single `if` statement instead of nested `if` statements"
+    "D100",
+    "D101",
+    "D102",
+    "D103",
+    "D104",
+    "D105",
+    "D106",
+    "D107",
+    "F401",
+    "F841",
+    "B024",
+    "B027"
+]

@@ -1,24 +1,29 @@
-import os 
+import os
+
 import torch
-from dotenv import load_dotenv
-from colorama import init
 from chromadb.config import Settings
+from colorama import init
+from dotenv import load_dotenv
+from langchain.chat_loaders.whatsapp import WhatsAppChatLoader
 from langchain.document_loaders import (
-    PDFMinerLoader, 
-    TextLoader,
-    UnstructuredHTMLLoader,
-    UnstructuredTSVLoader,
     CSVLoader,
+    JSONLoader,
+    PDFMinerLoader,
+    RecursiveUrlLoader,
+    TextLoader,
     UnstructuredEmailLoader,
     UnstructuredEPubLoader,
     UnstructuredExcelLoader,
-    UnstructuredPowerPointLoader,
-    UnstructuredWordDocumentLoader,
+    UnstructuredHTMLLoader,
     UnstructuredMarkdownLoader,
-    JSONLoader,
+    UnstructuredPowerPointLoader,
+    UnstructuredTSVLoader,
+    UnstructuredWordDocumentLoader,
+    WebBaseLoader,
     YoutubeLoader,
 )
-from langchain.chat_loaders.whatsapp import WhatsAppChatLoader
+from langchain.text_splitter import Language
+
 # Load Environment Variables
 load_dotenv()
 # Initialize Colorama
@@ -35,16 +40,18 @@ CHROMA_PERSIST_DIRECTORY = os.path.join(PARENT_DB_DIRECTORY, "chroma")
 # FAISS DB DIRECTORY
 FAISS_PERSIST_DIRECTORY = os.path.join(PARENT_DB_DIRECTORY, "faiss")
 # PINECONE DB DIRECTORY
-PINECONE_PERSIST_DIRECTORY = os.path.join(PARENT_DB_DIRECTORY,"pinecone")
+PINECONE_PERSIST_DIRECTORY = os.path.join(PARENT_DB_DIRECTORY, "pinecone")
+# WORKSPACE DIRECTORY
+WORKSPACE_DIRECTORY = os.path.join(os.path.dirname(__file__), "workspace")
 
-# DEFAULT MEMORY KEY FOR CONVERSATION MEMORY (DEFAULT IS 2) 
+# DEFAULT MEMORY KEY FOR CONVERSATION MEMORY (DEFAULT IS 2)
 DEFAULT_MEMORY_KEY = 2
 
 # GGUF MODELS (Recommended , Default and Fast)
-MODEL_NAME = "TheBloke/Mistral-7B-Instruct-v0.1-GGUF"
-MODEL_FILE = "mistral-7b-instruct-v0.1.Q4_K_M.gguf"
+MODEL_NAME = os.getenv("MODEL_NAME", "TheBloke/Mistral-7B-Instruct-v0.1-GGUF")
+MODEL_FILE = os.getenv("MODEL_FILE", "mistral-7b-instruct-v0.1.Q4_K_M.gguf")
 
-# MISTRAL MODEL LITE 
+# MISTRAL MODEL LITE
 # MODEL_NAME = "TheBloke/MistralLite-7B-GGUF"
 # MODEL_FILE = "mistrallite.Q4_K_M.gguf"
 
@@ -59,10 +66,10 @@ MODEL_FILE = "mistral-7b-instruct-v0.1.Q4_K_M.gguf"
 # DEFAULT EMBEDDING MODEL
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L12-v2"
 # EMBEDDING MODEL CONFIG
-INGEST_THREADS = 8 or os.cpu_count()
+INGEST_THREADS = 8
 
 # MODEL CONFIG
-MAX_TOKEN_LENGTH = 8192 # 8192 is the max for Mistral-7B
+MAX_TOKEN_LENGTH = 8192  # 8192 is the max for Mistral-7B
 N_GPU_LAYERS = 40
 
 # PYTORCH DEVICE COMPATIBILITY
@@ -74,50 +81,72 @@ else:
     DEVICE_TYPE = "cpu"
 
 # CHROMA DB SETTINGS
-CHROMA_SETTINGS = Settings(
-    anonymized_telemetry=False,
-    is_persistent=True,
-)
+CHROMA_SETTINGS = Settings(anonymized_telemetry=False, is_persistent=True)
 
 # PINECONE SETTINGS
 EMBEDDING_DIMENSION = ""
 INDEX_NAME = ""
 
 # Reserved File Names
-RESERVED_FILE_NAMES = [
-    "builder.url",
-]
+RESERVED_FILE_NAMES = ["builder.url"]
 
-# List of file supported for ingest 
+# List of file supported for ingest
 DOCUMENT_EXTENSION = {
-    '.pdf': PDFMinerLoader,
-    '.txt': TextLoader,
-    '.csv' :CSVLoader,
-    '.html' :UnstructuredHTMLLoader, 
-    '.tsv' :UnstructuredTSVLoader,
-    '.eml' :UnstructuredEmailLoader,
-    '.epub' :UnstructuredEPubLoader,
-    '.xls' :UnstructuredExcelLoader,
-    '.xlsx' :UnstructuredExcelLoader,
-    '.pptx' :UnstructuredPowerPointLoader,
-    '.ppt' :UnstructuredPowerPointLoader,
-    '.docx' :UnstructuredWordDocumentLoader,
-    '.doc' :UnstructuredWordDocumentLoader,
-    '.md' :UnstructuredMarkdownLoader,
-    '.json' :JSONLoader,
-    '.py' : TextLoader,
-
+    ".pdf": PDFMinerLoader,
+    ".txt": TextLoader,
+    ".csv": CSVLoader,
+    ".html": UnstructuredHTMLLoader,
+    ".tsv": UnstructuredTSVLoader,
+    ".eml": UnstructuredEmailLoader,
+    ".epub": UnstructuredEPubLoader,
+    ".xls": UnstructuredExcelLoader,
+    ".xlsx": UnstructuredExcelLoader,
+    ".pptx": UnstructuredPowerPointLoader,
+    ".ppt": UnstructuredPowerPointLoader,
+    ".docx": UnstructuredWordDocumentLoader,
+    ".doc": UnstructuredWordDocumentLoader,
+    ".md": UnstructuredMarkdownLoader,
+    ".json": JSONLoader,
+    # ".py": TextLoader,
 }
 
 # List of URL patterns supported for ingest
 URL_EXTENSION = {
-    '.youtube' :YoutubeLoader,
+    ".youtube": YoutubeLoader,
+    "recursive": RecursiveUrlLoader,
+    "normal": WebBaseLoader,
 }
 
 # List of all Social Chat and their loaders
 SOCIAL_CHAT_EXTENSION = {
-    'whatsapp' :WhatsAppChatLoader,
+    r"^(chat_|_chat|whatsapp_|whatsapp_chat|whatsapp_chat_|whatsapp_)": WhatsAppChatLoader
 }
+
+
+# List of all file extensions for programming languages and their parsers
+CODE_EXTENSION = {
+    ".cpp": Language.CPP,
+    ".go": Language.GO,
+    ".java": Language.JAVA,
+    ".kt": Language.KOTLIN,
+    ".js": Language.JS,
+    ".ts": Language.TS,
+    ".php": Language.PHP,
+    ".proto": Language.PROTO,
+    ".py": Language.PYTHON,
+    ".rst": Language.RST,
+    ".ruby": Language.RUBY,
+    ".rs": Language.RUST,
+    ".scala": Language.SCALA,
+    ".swift": Language.SWIFT,
+    ".markdown": Language.MARKDOWN,
+    ".latex": Language.LATEX,
+    ".html": Language.HTML,
+    ".sol": Language.SOL,
+    ".cs": Language.CSHARP,
+    ".cobol": Language.COBOL,
+}
+
 
 # Initial Query Cost and Total Cost
 QUERY_COST = 0
@@ -125,4 +154,7 @@ TOTAL_COST = 0
 
 # LOG CONFIG
 LOG_FOLDER = os.path.join(os.path.dirname(__file__), "logs")
-LOG_FILE = os.path.join(LOG_FOLDER, "builder.log")
+# BUILDER LOG
+BUILDER_LOG_FILE = os.path.join(LOG_FOLDER, "builder.log")
+# NEOGPT LOG
+NEOGPT_LOG_FILE = os.path.join(LOG_FOLDER, "neogpt.log")

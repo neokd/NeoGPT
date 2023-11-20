@@ -1,0 +1,87 @@
+/* custom.css */
+h1 {
+    font-size: 48px !important;
+    /* font-weight: bold  !important; */
+}
+h2 {
+    font-size: 36px !important;
+}
+h3 {
+    font-size: 30px !important;
+}
+p {
+    font-size: 20px  ;
+}
+code{
+    font-size: 18px !important;
+}
+/* ul , li, ol {
+    font-size: 28px !important;
+} */
+.md-typeset .admonition,
+.md-typeset details {
+  border-width: 0;
+  border-left-width: 4px;
+}
+
+
+body[data-md-color-scheme="slate"] h1 {
+    color: white;
+}
+body[data-md-color-scheme="default"] h1 {
+    color: black;
+}
+
+button[data-md-component="top"]:hover{
+    background-color:#009485 !important ;
+}
+
+body[data-md-color-scheme="slate"] nav    .md-nav__link--active {
+    color: #5fd4c8 !important;
+}
+
+body[data-md-color-scheme="slate"] table thead{
+    background-color: black!important;
+    font-size: 0.7rem !important;
+}
+
+body[data-md-color-scheme="default"] table thead{
+    background-color: black!important;
+    font-size: 0.7rem !important;
+    color:white;
+}
+
+.mermaid{
+    text-align: center;
+    outline: 1px solid #ddd;
+    padding: 1rem;
+    border-radius: 12px;
+    margin: 1rem 0;
+    font-weight: 500;
+}
+/* 
+[data-md-toggle="search"]:not(:checked) ~ .md-header .md-search__form::after {
+    position: absolute;
+    top: .3rem;
+    right: .3rem;
+    display: block;
+    padding: .1rem ;
+    color: var(--md-default-bg-color);
+    font-weight: bold;
+    font-size: .8rem;
+    border: .05rem solid var(--md-default-bg-color--lighter);
+    border-radius: .1rem;
+    content: "S";
+  } */
+
+/* body[data-md-color-scheme="default"] div .highlight > span {
+    background-color: rgba(238,85,82, 0.9);
+    font-weight: bolder ;
+    color: white;
+}
+
+
+body[data-md-color-scheme="slate"] div .highlight > span  {
+    background-color: black;
+    font-weight: bolder ;
+} */
