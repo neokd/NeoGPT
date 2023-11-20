@@ -102,6 +102,7 @@ def run_ui():
     st.warning(
         "**NeoGPT** may generate inaccurate responses about people, places, or facts."
     )
+    st.warning("**Note:** The bot stops interacting if no prompt is given within 5mins from latest prompt, all your history will be deleted once you refresh the page. ")
 
     last_input_time = datetime.now()
 
