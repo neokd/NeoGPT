@@ -1,3 +1,4 @@
+from datetime import date, datetime, timedelta
 import logging
 
 import streamlit as st
@@ -101,12 +102,27 @@ def run_ui():
     st.warning(
         "**NeoGPT** may generate inaccurate responses about people, places, or facts."
     )
+    st.warning("**Note:** The bot stops interacting if no prompt is given within 5mins from latest prompt, all your history will be deleted once you refresh the page. ")
+
+    last_input_time = datetime.now()
+
+    if "last_input_time" in st.session_state:
+        last_input_time = st.session_state.last_input_time
+
     # Display chat message from history on app rerun
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
 
+    # Check if one minute has passed since the last input
+    if datetime.now() - last_input_time > timedelta(minutes=5):
+        st.warning("You have not given any input for 5 minute. Input closed.")
+        return
+
     prompt = st.chat_input("Hey! how can I help you?")
+
+    # Update the last input time
+    st.session_state.last_input_time = datetime.now()
 
     # React to user input
     if prompt:
@@ -119,9 +135,8 @@ def run_ui():
         # Display assistant response in chat message container
         with st.chat_message("assistant"):
             st.markdown(response)
-        # # Add assistant response to chat history
+        # Add assistant response to chat history
         st.session_state.messages.append({"role": "assistant", "content": response})
-
 
 if __name__ == "__main__":
     # run this file
