@@ -8,6 +8,7 @@ from neogpt.config import DEVICE_TYPE, MODEL_FILE, MODEL_NAME
 from neogpt.load_llm import load_model
 from neogpt.prompts.prompt import get_prompt
 from neogpt.vectorstore.chroma import ChromaStore
+from neogpt.vectorstore.faiss import FAISSStore
 
 st.set_page_config(page_title="NeoGPT", page_icon="🤖")
 
@@ -25,7 +26,7 @@ persona_list = [
 @st.cache_resource(show_spinner=True)
 def create_chain(persona):
     with st.spinner(text="Loading the model"):
-        db = ChromaStore()
+        db = FAISSStore().load_local()
         logging.info("Loaded Chroma DB Successfully.")
         # st.chat_message(f"Loaded Chroma DB Successfully.")
         retriever = db.as_retriever()
@@ -62,7 +63,7 @@ def run_ui():
         st.markdown(f"Model: **{MODEL_NAME}**")
         st.markdown(f"Device: **{DEVICE_TYPE}**")
         st.markdown("Retriever: **Local Retrieval**")
-        st.markdown("Database: **Chroma DB**")
+        st.markdown("Database: **FAISS DB**")
         st.session_state.persona = st.selectbox(
             "Persona",
             options=persona_list,
@@ -98,11 +99,12 @@ def run_ui():
             "2. What do you know about HuggingGPT?\n"
             "3. What is MemGPT?\n"
         )
+        st.warning("**Note:** The bot stops interacting if no prompt is given within 5mins from latest prompt, all your history will be deleted once you refresh the page. ")
         st.session_state.messages = []
     st.warning(
         "**NeoGPT** may generate inaccurate responses about people, places, or facts."
     )
-    st.warning("**Note:** The bot stops interacting if no prompt is given within 5mins from latest prompt, all your history will be deleted once you refresh the page. ")
+    
 
     last_input_time = datetime.now()
 

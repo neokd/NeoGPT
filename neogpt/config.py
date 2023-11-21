@@ -69,7 +69,7 @@ EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L12-v2"
 INGEST_THREADS = 8
 
 # MODEL CONFIG
-MAX_TOKEN_LENGTH = 16384  # 8192 is the max for Mistral-7B
+MAX_TOKEN_LENGTH = 8192  # 8192 is the max for Mistral-7B
 N_GPU_LAYERS = 40
 
 # PYTORCH DEVICE COMPATIBILITY

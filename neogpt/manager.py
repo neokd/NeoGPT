@@ -20,7 +20,7 @@ from neogpt.vectorstore import ChromaStore, FAISSStore
 def db_retriver(
     device_type: str = DEVICE_TYPE,
     model_type: str = "mistral",
-    vectordb: str = "Chroma",
+    vectordb: str = "FAISS",
     retriever: str = "local",
     persona: str = "default",
     show_source: bool = False,
@@ -42,8 +42,10 @@ def db_retriver(
     match vectordb:
         case "Chroma":
             # Load the Chroma DB with the embedding model
-            db = ChromaStore()
-            LOGGING.info("Loaded Chroma DB Successfully")
+            logging.warn("Chroma DB is temporarily disabled. Please use FAISS DB.")
+            exit()
+            # db = ChromaStore()
+            # LOGGING.info("Loaded Chroma DB Successfully")
         case "FAISS":
             # Load the FAISS DB with the embedding model
             db = FAISSStore() if retriever == "hybrid" else FAISSStore().load_local()
