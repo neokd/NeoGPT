@@ -11,6 +11,7 @@ from neogpt.config import (
 )
 from neogpt.manager import db_retriver
 
+
 def main():
     parser = argparse.ArgumentParser(description="NeoGPT CLI Interface")
     parser.add_argument(

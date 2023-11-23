@@ -1,5 +1,5 @@
-from datetime import date, datetime, timedelta
 import logging
+from datetime import date, datetime, timedelta
 
 import streamlit as st
 from langchain.chains import RetrievalQA
@@ -99,12 +99,13 @@ def run_ui():
             "2. What do you know about HuggingGPT?\n"
             "3. What is MemGPT?\n"
         )
-        st.warning("**Note:** The bot stops interacting if no prompt is given within 5mins from latest prompt, all your history will be deleted once you refresh the page. ")
+        st.warning(
+            "**Note:** The bot stops interacting if no prompt is given within 5mins from latest prompt, all your history will be deleted once you refresh the page. "
+        )
         st.session_state.messages = []
     st.warning(
         "**NeoGPT** may generate inaccurate responses about people, places, or facts."
     )
-    
 
     last_input_time = datetime.now()
 
@@ -139,6 +140,7 @@ def run_ui():
             st.markdown(response)
         # Add assistant response to chat history
         st.session_state.messages.append({"role": "assistant", "content": response})
+
 
 if __name__ == "__main__":
     # run this file
