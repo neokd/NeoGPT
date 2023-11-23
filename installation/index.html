@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.8">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.10">
     
     
       
@@ -26,7 +26,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.4b4a2bd9.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.fad675c6.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.356b1318.min.css">
@@ -473,14 +473,18 @@
       
         <li class="md-nav__item">
   <a href="#pre-requisites" class="md-nav__link">
-    Pre-requisites
+    <span class="md-ellipsis">
+      Pre-requisites
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#installation-steps" class="md-nav__link">
-    Installation Steps
+    <span class="md-ellipsis">
+      Installation Steps
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="Installation Steps">
@@ -488,28 +492,45 @@
         
           <li class="md-nav__item">
   <a href="#with-bash-script" class="md-nav__link">
-    With bash script
+    <span class="md-ellipsis">
+      With bash script
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#with-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      With docker
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#with-poetry" class="md-nav__link">
-    With poetry
+    <span class="md-ellipsis">
+      With poetry
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#with-pip" class="md-nav__link">
-    With pip
+    <span class="md-ellipsis">
+      With pip
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#with-conda" class="md-nav__link">
-    With conda
+    <span class="md-ellipsis">
+      With conda
+    </span>
   </a>
   
 </li>
@@ -521,7 +542,9 @@
       
         <li class="md-nav__item">
   <a href="#llamacpp" class="md-nav__link">
-    LLamaCpp
+    <span class="md-ellipsis">
+      LLamaCpp
+    </span>
   </a>
   
 </li>
@@ -1124,14 +1147,18 @@
       
         <li class="md-nav__item">
   <a href="#pre-requisites" class="md-nav__link">
-    Pre-requisites
+    <span class="md-ellipsis">
+      Pre-requisites
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#installation-steps" class="md-nav__link">
-    Installation Steps
+    <span class="md-ellipsis">
+      Installation Steps
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="Installation Steps">
@@ -1139,28 +1166,45 @@
         
           <li class="md-nav__item">
   <a href="#with-bash-script" class="md-nav__link">
-    With bash script
+    <span class="md-ellipsis">
+      With bash script
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#with-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      With docker
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#with-poetry" class="md-nav__link">
-    With poetry
+    <span class="md-ellipsis">
+      With poetry
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#with-pip" class="md-nav__link">
-    With pip
+    <span class="md-ellipsis">
+      With pip
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#with-conda" class="md-nav__link">
-    With conda
+    <span class="md-ellipsis">
+      With conda
+    </span>
   </a>
   
 </li>
@@ -1172,7 +1216,9 @@
       
         <li class="md-nav__item">
   <a href="#llamacpp" class="md-nav__link">
-    LLamaCpp
+    <span class="md-ellipsis">
+      LLamaCpp
+    </span>
   </a>
   
 </li>
@@ -1222,6 +1268,9 @@
 <p><a href="#with-bash-script">Bash Script</a></p>
 </li>
 <li>
+<p><a href="#with-docker">Docker</a></p>
+</li>
+<li>
 <p><a href="#with-poetry">Poetry</a></p>
 </li>
 <li>
@@ -1253,7 +1302,15 @@
 </span></code></pre></div></p>
 </li>
 </ol>
-<h3 id="with-poetry">With poetry</h3>
+<div class="admonition warning">
+<p class="admonition-title">Note</p>
+<p>The script will not create any virtual environment. It will use the default python environment. If you want to use a virtual environment, you can create one and activate it before running the script.</p>
+</div>
+<h3 id="with-docker">With docker</h3>
+<div class="admonition info">
+<p class="admonition-title">Docker</p>
+<p>You need to have docker installed on your system to use this method. You can install docker by following the instructions <a href="https://docs.docker.com/get-docker/">here</a>.</p>
+</div>
 <ol>
 <li>
 <p>Clone the repository using the following command
@@ -1267,45 +1324,45 @@
 </li>
 <li>
 <p>Run the following command in your terminal or command prompt:
-<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>poetry<span class="w"> </span>install
+<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>--build
 </span></code></pre></div></p>
 </li>
 <li>
 <p>Run the following command in your terminal or command prompt:
-<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="w">    </span>poetry<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>main.py
+<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up
 </span></code></pre></div></p>
 </li>
 </ol>
-<h3 id="with-pip">With pip</h3>
+<h3 id="with-poetry">With poetry</h3>
+<div class="admonition info">
+<p class="admonition-title">Poetry</p>
+<p>You need to have poetry installed on your system to use this method. You can install poetry by running the following command in your terminal or command prompt:
+<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>pip<span class="w"> </span>install<span class="w"> </span>poetry
+</span></code></pre></div></p>
+</div>
 <ol>
 <li>
 <p>Clone the repository using the following command
-<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/neokd/NeoGPT.git
+<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/neokd/NeoGPT.git
 </span></code></pre></div></p>
 </li>
 <li>
 <p>Navigate to the root directory of the repository
-<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nb">cd</span><span class="w"> </span>NeoGPT
+<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nb">cd</span><span class="w"> </span>NeoGPT
 </span></code></pre></div></p>
 </li>
 <li>
-<p>Set up a virtual environment and activate it</p>
-<p>For Windows:
-<div class="language-powershell highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>    <span class="n">python</span> <span class="n">-m</span> <span class="n">venv</span> <span class="n">neogpt-env</span>
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>    <span class="n">neogpt-env</span><span class="p">\</span><span class="n">Scripts</span><span class="p">\</span><span class="n">activate</span>
-</span></code></pre></div>
-For Linux/MacOS:</p>
-<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="w">    </span>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>neogpt-env
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">    </span><span class="nb">source</span><span class="w"> </span>neogpt-env/bin/activate
-</span></code></pre></div>
+<p>Run the following command in your terminal or command prompt:
+<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>poetry<span class="w"> </span>install
+</span></code></pre></div></p>
 </li>
 <li>
-<p>Install the required packages
-<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+<p>Run the following command in your terminal or command prompt:
+<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="w">    </span>poetry<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>main.py
 </span></code></pre></div></p>
 </li>
 </ol>
-<h3 id="with-conda">With conda</h3>
+<h3 id="with-pip">With pip</h3>
 <ol>
 <li>
 <p>Clone the repository using the following command
@@ -1318,14 +1375,43 @@ For Linux/MacOS:</p>
 </span></code></pre></div></p>
 </li>
 <li>
+<p>Set up a virtual environment and activate it</p>
+<p>For Windows:
+<div class="language-powershell highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>    <span class="n">python</span> <span class="n">-m</span> <span class="n">venv</span> <span class="n">neogpt-env</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>    <span class="n">neogpt-env</span><span class="p">\</span><span class="n">Scripts</span><span class="p">\</span><span class="n">activate</span>
+</span></code></pre></div>
+For Linux/MacOS:</p>
+<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="w">    </span>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>neogpt-env
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">    </span><span class="nb">source</span><span class="w"> </span>neogpt-env/bin/activate
+</span></code></pre></div>
+</li>
+<li>
+<p>Install the required packages
+<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+</span></code></pre></div></p>
+</li>
+</ol>
+<h3 id="with-conda">With conda</h3>
+<ol>
+<li>
+<p>Clone the repository using the following command
+<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/neokd/NeoGPT.git
+</span></code></pre></div></p>
+</li>
+<li>
+<p>Navigate to the root directory of the repository
+<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="nb">cd</span><span class="w"> </span>NeoGPT
+</span></code></pre></div></p>
+</li>
+<li>
 <p>Set up a virtual environment and activate it
-<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>neogpt-env<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.10
-</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>conda<span class="w"> </span>activate<span class="w"> </span>neogpt-env
+<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>neogpt-env<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.10
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>conda<span class="w"> </span>activate<span class="w"> </span>neogpt-env
 </span></code></pre></div></p>
 </li>
 <li>
 <p>Install the required packages
-<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
 </span></code></pre></div></p>
 </li>
 </ol>
@@ -1333,10 +1419,10 @@ For Linux/MacOS:</p>
 <p>NeoGPT used llama-cpp-python to load the LLM models.</p>
 <p>If you want to use BLAS or Metal with llama-cpp you can set appropriate flags:</p>
 <p>for BLAS:</p>
-<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="nv">CMAKE_ARGS</span><span class="o">=</span><span class="s2">&quot;-DLLAMA_CUBLAS=on&quot;</span><span class="w"> </span><span class="nv">FORCE_CMAKE</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>llama-cpp-python<span class="o">==</span><span class="m">0</span>.2.11
+<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="nv">CMAKE_ARGS</span><span class="o">=</span><span class="s2">&quot;-DLLAMA_CUBLAS=on&quot;</span><span class="w"> </span><span class="nv">FORCE_CMAKE</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>llama-cpp-python<span class="o">==</span><span class="m">0</span>.2.11
 </span></code></pre></div>
 <p>for Metal (macOS only):</p>
-<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="nv">CMAKE_ARGS</span><span class="o">=</span><span class="s2">&quot;-DLLAMA_METAL=on&quot;</span><span class="w">  </span><span class="nv">FORCE_CMAKE</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>llama-cpp-python<span class="o">==</span><span class="m">0</span>.2.11<span class="w"> </span>--no-cache-dir
+<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="nv">CMAKE_ARGS</span><span class="o">=</span><span class="s2">&quot;-DLLAMA_METAL=on&quot;</span><span class="w">  </span><span class="nv">FORCE_CMAKE</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>llama-cpp-python<span class="o">==</span><span class="m">0</span>.2.11<span class="w"> </span>--no-cache-dir
 </span></code></pre></div>
 
   <hr>
@@ -1461,7 +1547,7 @@ For Linux/MacOS:</p>
     <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.sections", "search.share", "navigation.top", "search.suggest", "search.highlight", "search.share", "content.tabs.link", "content.code.annotation", "content.code.copy", "content.action.edit", "navigation.footer", "toc.follow"], "search": "../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.81fa17fe.min.js"></script>
+      <script src="../assets/javascripts/bundle.6c14ae12.min.js"></script>
       
     
   </body>
