@@ -1,0 +1,17 @@
+pdfminer-six==20221105
+colorama==0.4.6
+langchain==0.0.339
+langchain-experimental==0.0.42
+youtube-transcript-api==0.6.1
+pytube==15.0.0
+streamlit==1.28.2
+unstructured==0.11.0
+torch==2.1.1
+duckduckgo-search==3.9.6
+sentence-transformers==2.2.2
+instructorembedding==1.0.1
+llama-cpp-python==0.2.18
+google-api-python-client==2.108.0
+faiss-cpu==1.7.4
+chromadb==0.4.15
+ruff==0.1.6
