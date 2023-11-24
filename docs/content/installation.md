@@ -23,15 +23,18 @@ You can install NeoGPT by following whichever of the following methods is most c
 
 1. [Bash Script](#with-bash-script)
 
-2. [Poetry](#with-poetry)
+2. [Docker](#with-docker)
 
-3. [pip](#with-pip)
+3. [Poetry](#with-poetry)
 
-4. [conda](#with-conda)
+4. [pip](#with-pip)
+
+5. [conda](#with-conda)
 
 ### With bash script
 
 It is recommended to use the bash script to install NeoGPT. The bash script will automatically install all the required packages and set up the virtual environment for you. Followed by that it will build the database and run the CLI.
+
 !!! tip "Recommended"
 
 1. Clone the repository using the following command
@@ -49,7 +52,45 @@ cd NeoGPT
 bash ./install.sh
 ```
 
+!!! warning "Note"
+    The script will not create any virtual environment. It will use the default python environment. If you want to use a virtual environment, you can create one and activate it before running the script.
+
+### With docker
+
+
+!!! info "Docker"
+    You need to have docker installed on your system to use this method. You can install docker by following the instructions [here](https://docs.docker.com/get-docker/).
+
+1. Clone the repository using the following command
+```bash title="Terminal"
+git clone https://github.com/neokd/NeoGPT.git
+```
+
+2. Navigate to the root directory of the repository
+```bash title="Terminal"
+cd NeoGPT
+```
+
+3. Run the following command in your terminal or command prompt:
+```bash title="Terminal"
+docker compose up --build
+```
+
+4. Run the following command in your terminal or command prompt:
+```bash title="Terminal"
+docker compose up
+```
+
+5. You can now access the UI at http://localhost:8501
+
+
 ### With poetry 
+
+!!! info "Poetry"
+    You need to have poetry installed on your system to use this method. You can install poetry by running the following command in your terminal or command prompt:
+    ```bash title="Terminal"
+    pip install poetry
+    ```
 
 1. Clone the repository using the following command
 ```bash title="Terminal"

@@ -1,63 +1,55 @@
-# Use the latest Python image as the base image
-FROM python:3.11
+# syntax=docker/dockerfile:1
 
-# Set the working directory inside the container
-WORKDIR /app-neo
+# Comments are provided throughout this file to help you get started.
+# If you need more help, visit the Dockerfile reference guide at
+# https://docs.docker.com/engine/reference/builder/
 
-# Copy the current directory contents into the container at /app
-COPY . /app-neo/
+ARG PYTHON_VERSION=3.11
+FROM python:${PYTHON_VERSION}-slim as base
 
-#Run the dependency installation script as well as builder script to build the database
-RUN pip install -r dev-requirement.txt &&  python builder.py
+# Install the C++ compiler.
+RUN apt-get update && \
+    apt-get install -y gcc-11 g++-11 && \
+    update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 60 --slave /usr/bin/g++ g++ /usr/bin/g++-11
 
-# Specify the command to run on container startup
-CMD [ "python" ,"main.py"]
+# Prevents Python from writing pyc files.
+ENV PYTHONDONTWRITEBYTECODE=1
 
-#---------------------------------------------------------#
+# Keeps Python from buffering stdout and stderr to avoid situations where
+# the application crashes without emitting any logs due to buffering.
+ENV PYTHONUNBUFFERED=1
 
-# Documentation for running the application on containers:
+WORKDIR /app
 
-#---------------------------------------------------------#
+# Create a non-privileged user that the app will run under.
+# See https://docs.docker.com/go/dockerfile-user-best-practices/
+ARG UID=10001
+RUN adduser \
+    --disabled-password \
+    --gecos "" \
+    --home "/nonexistent" \
+    --shell "/sbin/nologin" \
+    --no-create-home \
+    --uid "${UID}" \
+    appuser
 
-#---------------------------------------------------------#
-## Build the Docker Image :
+# Download dependencies as a separate step to take advantage of Docker's caching.
+# Leverage a cache mount to /root/.cache/pip to speed up subsequent builds.
+# Leverage a bind mount to requirements.txt to avoid having to copy them into
+# into this layer.
+RUN --mount=type=cache,target=/root/.cache/pip \
+    --mount=type=bind,source=requirements.txt,target=requirements.txt \
+    pip install --upgrade pip && \
+    python -m pip install -r requirements.txt
 
-# Run the following command in the directory containing the Dockerfile to build the Docker image.
+# Switch to the non-privileged user to run the application.
+USER appuser
 
-#> git clone https://github.comneokd/neogpt
-#> cd neopgpt
-#! READ docs/builder.md regarding instructions to build database
-# Without proper adherence,image might show unexpected failure at build times.
-#> docker build -t neogpt .
+# Copy the source code into the container.
+COPY . .
 
-#---------------------------------------------------------#
+# Expose the port that the application listens on.
+EXPOSE 8501
 
-## Run the Docker Container:
-
-#After the image is built, you can run a container based on that image:
-
-#> docker run --name neogpt_container -d neopgpt-image
-
-# This spins up a new container in detached mode running your new NeoGPT Application!
-
-#---------------------------------------------------------#
-
-## Interacting with NeoGPT running in container :
-
-#> docker exec -it neogpt_container/bin/bash
-
-# After executing this command, you will be inside the container's shell and can run commands as if you were working directly within the container. This can be useful for debugging, troubleshooting, or running commands that need to be executed within the container's environment.
-
-#---------------------------------------------------------#
-
-## Manage Docker Containers and Images:
-
-# You can manage your Docker containers and images using various commands such as docker ps, docker stop, docker rm, and docker rmi. These commands help you view running containers, stop containers, remove containers, and remove images, respectively.For more info,read docs at https://docs.docker.com/reference/
-
-#---------------------------------------------------------#
-
-## Push Docker Image to a Registry:
-
-# If you want to make your Docker image available to others or deploy it to a remote server, you can push it to a Docker image registry. Popular options include Docker Hub.
-
-##END
+# Run the application.
+CMD python main.py --ui
