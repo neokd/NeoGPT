@@ -5,10 +5,7 @@ import sys
 from streamlit.web import cli as stcli
 
 from neogpt.builder import builder
-from neogpt.config import (
-    DEVICE_TYPE,
-    NEOGPT_LOG_FILE,
-)
+from neogpt.config import DEVICE_TYPE, NEOGPT_LOG_FILE 
 from neogpt.manager import db_retriver
 
 
@@ -54,7 +51,9 @@ def main():
     parser.add_argument(
         "--write",
         default=None,
-        help="Specify the file path for writing retrieval results.",
+        help="Specify the file path for writing retrieval results. If not provided, 'notes.md' will be used as the default file name.",
+        nargs="?",
+        const="notes.md", 
     )
     parser.add_argument(
         "--build", default=False, action="store_true", help="Run the builder"

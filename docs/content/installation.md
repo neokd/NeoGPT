@@ -57,6 +57,7 @@ bash ./install.sh
 
 ### With docker
 
+
 !!! info "Docker"
     You need to have docker installed on your system to use this method. You can install docker by following the instructions [here](https://docs.docker.com/get-docker/).
 
@@ -79,6 +80,8 @@ docker compose up --build
 ```bash title="Terminal"
 docker compose up
 ```
+
+5. You can now access the UI at http://localhost:8501
 
 
 ### With poetry 
