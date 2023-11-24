@@ -20,7 +20,7 @@ def main():
     parser.add_argument(
         "--db",
         choices=["Chroma", "FAISS"],
-        default="FAISS",
+        default="Chroma",
         help="Specify the vectorstore (Chroma, FAISS)",
     )
     parser.add_argument(

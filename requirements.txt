@@ -13,5 +13,5 @@ instructorembedding==1.0.1
 llama-cpp-python==0.2.18
 google-api-python-client==2.108.0
 faiss-cpu==1.7.4
-chromadb==0.4.15
+chromadb==0.4.13
 ruff==0.1.6
