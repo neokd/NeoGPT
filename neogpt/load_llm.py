@@ -50,6 +50,7 @@ def load_model(
         model_basename is not None and ".gguf" in model_basename.lower()
     ):
         try:
+            LOGGING.info("Using LlamaCpp to load the model")
             # Download the model checkpoint from the Hugging Face Hub
             model_path = hf_hub_download(
                 repo_id=model_id,
@@ -81,6 +82,7 @@ def load_model(
 
     elif model_type == "ollama":
         try:
+            LOGGING.info("Using Ollama to load the model")
             llm = Ollama(
                 base_url="http://localhost:11434",
                 model=model_id,

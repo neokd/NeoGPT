@@ -2,7 +2,11 @@
     The Purpose of this file is to provide a wrapper around the PINECONE from langchain
 """
 
-from config import (
+from langchain.embeddings import HuggingFaceInstructEmbeddings
+from langchain.schema.document import Document
+from pinecone import Pinecone
+
+from neogpt.config import (
     DEVICE_TYPE,
     EMBEDDING_DIMENSION,
     EMBEDDING_MODEL,
@@ -10,10 +14,6 @@ from config import (
     MODEL_DIRECTORY,
     PINECONE_PERSIST_DIRECTORY,
 )
-from langchain.embeddings import HuggingFaceInstructEmbeddings
-from langchain.schema.document import Document
-from pinecone import Pinecone
-
 from vectorstore.base import VectorStore
 
 

@@ -1,9 +1,9 @@
 import logging
 import os
 from datetime import datetime
-
+import re
 from colorama import Fore
-
+from langchain.tools import ShellTool
 from neogpt.config import DEVICE_TYPE, MODEL_FILE, MODEL_NAME, WORKSPACE_DIRECTORY
 from neogpt.load_llm import load_model
 from neogpt.retrievers import (
@@ -88,6 +88,7 @@ def db_retriver(
     )
 
     print(Fore.LIGHTYELLOW_EX + "\nNeoGPT 🤖 is ready to chat. Type '/exit' to exit.")
+    # print(Fore.LIGHTYELLOW_EX + "Read the docs at "+ Fore.WHITE + "https://neokd.github.io/NeoGPT/")
     if persona != "default":
         print(
             "NeoGPT 🤖 is in "
@@ -96,6 +97,14 @@ def db_retriver(
             + Fore.LIGHTYELLOW_EX
             + " mode."
         )
+
+    if persona == "shell":
+        print(Fore.LIGHTYELLOW_EX + "\nYou are using NeoGPT 🤖 as a shell. It may generate commands that can be harmful to your system. Use it at your own risk. ⚠️" + Fore.RESET)
+        execute = input(Fore.LIGHTCYAN_EX + "Do you want to execute the commands? (Y/N): ").upper()
+        if execute == 'Y':
+            print(Fore.LIGHTYELLOW_EX + "NeoGPT 🤖 will execute the commands in your default shell." + Fore.RESET)
+        else:
+            print(Fore.LIGHTYELLOW_EX + "You can copy the commands and execute them manually." + Fore.RESET)
 
     #  Main Loop with timer
     last_input_time = datetime.now()
@@ -159,5 +168,10 @@ def db_retriver(
             )
 
             break
+        
+        if persona == 'shell' and execute == 'Y':
+            os.environ["TOKENIZERS_PARALLELISM"] = "false"
+            command = re.sub(r'```bash|```', '', res["result"])
+            os.system(command)
 
         last_input_time = datetime.now()  # update the last_input_time to now

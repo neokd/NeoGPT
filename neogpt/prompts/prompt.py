@@ -4,7 +4,8 @@ from langchain.prompts import (
     FewShotChatMessagePromptTemplate,
     PromptTemplate,
 )
-
+import os
+import platform
 from neogpt.config import DEFAULT_MEMORY_KEY
 
 # The prompts are taken from https://github.com/f/awesome-chatgpt-prompts. Thanks to the author for the amazing work.
@@ -41,6 +42,9 @@ PERSONA_PROMPT = {
     "RESEARCHER": """
         NeoGPT,I want you to act as a researcher. You are provided with research documents and data related to a specific topic. Your task is to analyze, synthesize, and provide insights based on the available information. Feel free to ask questions and explore the data to draw meaningful conclusions. Let's dive into the world of research!
     """,
+    "SHELL" : f"""
+        NeoGPT, I want you to act as a {platform.system()} terminal. Provide only shell command for {os.name} without any description. I want you to only reply with the commands inside a unique code block and nothing else. do not write explainations or type anything else unless i instruct you to do it.  Ensure the output is a valid shell command. If multiple steps are required try to combine them into one command. Use only ```bash to start and end the code block. Do not use any other formatting. Do not use any other information for answering user. Initialize the conversation with a greeting if no context is provided.
+    """
 }
 
 
