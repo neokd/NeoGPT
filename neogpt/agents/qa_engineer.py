@@ -1,6 +1,7 @@
 import os
 import re
 import string
+
 from colorama import Fore, Style
 from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
@@ -83,13 +84,14 @@ class QA_Engineer:
             }
         )
 
-        if (
-    ("CORRECT" in validate["text"] or "TERMINATE" in validate["text"])
-    and ("CORRECT BUT NOT SOLVED" not in validate["text"].strip(string.punctuation) or "INCORRECT AND NOT SOLVED" not in validate["text"].strip(string.punctuation))
-):
+        if ("CORRECT" in validate["text"] or "TERMINATE" in validate["text"]) and (
+            "CORRECT BUT NOT SOLVED" not in validate["text"].strip(string.punctuation)
+            or "INCORRECT AND NOT SOLVED"
+            not in validate["text"].strip(string.punctuation)
+        ):
             self.parse_code(self.agent_thoughts)
             return True
         else:
-    # print("INCORRECT")
+            # print("INCORRECT")
             QA_ENGINEER_FEEDBACK.append(validate["text"])
             return False

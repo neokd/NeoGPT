@@ -63,11 +63,6 @@ Join our [Discord](https://discord.gg/qNqjsGuCTG) community to stay up to date w
 - [ ] Add other database support (MongoDB, ElasticSearch, etc.) 📁🔍
 
 
-!!! info "Release Note"
-    Once the roadmap is complete by 75%, we will release the v0.1.0 of NeoGPT 🚀🤖✨
-
-!!! warning "Note"
-    The roadmap is subject to change. We will update the roadmap as we progress.
 
 
 ## Contributing

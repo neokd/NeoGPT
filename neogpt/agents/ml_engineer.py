@@ -17,7 +17,7 @@ class ML_Engineer:
     def think(self, query):
         global CURRENT_WORKING_AGENT, AGENT_THOUGHTS, QA_ENGINEER_FEEDBACK
         CURRENT_WORKING_AGENT.append(str(self.role))
-        print(QA_ENGINEER_FEEDBACK)
+        # print(QA_ENGINEER_FEEDBACK)
         template = (
             "[INST]"
             + self.user_prefix

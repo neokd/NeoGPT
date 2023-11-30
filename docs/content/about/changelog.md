@@ -6,21 +6,22 @@ This page lists the highlights, bug fixes and known issues for each release of N
 
 ## v0.1.0-beta 🕵️‍♂️🚀
 
-__Release Date:__ 30th November 2023
+__Release Date:__ 1st December 2023
 
 Features:
 
-- __Agent based chatbot 🤖__ : 2 New agents are added (ML Engineer, QA Engineer).
+- __Agent based chatbot 🤖__ : Introducing two new agents: ML Engineer and QA Engineer. These specialized agents enhance NeoGPT's capabilities, providing expertise in machine learning and quality assurance. Use agents to solve problems, answer questions, and more.
 
-- __Writing Assistant 📝__ : NeoGPT can now help you write your documents and assignments with `--write` flag.
 
-- __Shell Mode 🐚__ : NeoGPT can now be used as a shell by passing the `--persona shell` flag.
+- __Writing Assistant 📝__ : NeoGPT now supports a writing assistant feature. Use the `--write` flag to leverage NeoGPT in crafting documents and assignments, making writing tasks more efficient.
 
-- __Docker Support 🐳__ : NeoGPT can now be run in a docker container.
+- __Shell Mode 🐚__ : NeoGPT can now function as a shell. Activate shell mode by passing the `--persona shell` flag, allowing users to interact with NeoGPT in a shell environment.
 
-- __Ollama Support 🧠__ : NeoGPT can now be used with Ollama.
+- __Docker Support 🐳__ : NeoGPT is now dockerized, providing users with the flexibility to run NeoGPT within a Docker container for simplified deployment.
 
-- __Timer for User Input in UI ⏱__ :  Timed user input for ui mode by @savyez in [#105](https://github.com/neokd/NeoGPT/pull/105)
+- __Ollama Support 🧠__ : NeoGPT seamlessly integrates with Ollama, expanding its compatibility and collaborative capabilities.
+
+- __Timer for User Input in UI ⏱️__ :  Timed user input for ui mode by @savyez in [#105](https://github.com/neokd/NeoGPT/pull/105)
 
 
 Bug Fixes:

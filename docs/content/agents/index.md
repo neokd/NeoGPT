@@ -57,4 +57,3 @@ Run the below command to see the agents in action.
 
 7. __Collaborative Iteration__: Steps 3 to 5 are iteratively performed, facilitating collaboration until a satisfactory solution is achieved or attempts are exhausted.
 
-

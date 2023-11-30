@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "neogpt"
-version = "0.1.0-alpha"
+version = "0.1.0-beta"
 description = "NeoGPT: Chat effortlessly with Documents, YouTube Videos,Code, and Social Media Chats. Your go-to for quick and smart interactions! 🤖💬"
 authors = ["Neokd"]
 license = "MIT"
