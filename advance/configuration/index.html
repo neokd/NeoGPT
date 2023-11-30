@@ -793,6 +793,93 @@
 
               
             
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../persona/shell/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Shell Persona
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_7" id="__nav_2_7_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Agents
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_7">
+            <span class="md-nav__icon md-icon"></span>
+            Agents
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agents/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Agents & NeoGPT
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -821,10 +908,10 @@
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_8" checked>
         
           
-          <label class="md-nav__link" for="__nav_2_7" id="__nav_2_7_label" tabindex="">
+          <label class="md-nav__link" for="__nav_2_8" id="__nav_2_8_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -835,8 +922,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_7_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_2_7">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_8_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_8">
             <span class="md-nav__icon md-icon"></span>
             Settings
           </label>
@@ -989,6 +1076,15 @@
   <a href="#logging" class="md-nav__link">
     <span class="md-ellipsis">
       Logging
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      Agent
     </span>
   </a>
   
@@ -1231,6 +1327,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      Agent
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1384,9 +1489,26 @@
   Default: <code>logs/builder.log</code></p>
 </li>
 </ul>
+<h2 id="agent">Agent</h2>
+<ul>
+<li>
+<p><strong>Agent Name:</strong> The name of the agent.
+  Default: <code>NeoGPT</code></p>
+</li>
+<li>
+<p><strong>Agent Thoughts:</strong> List of agent thoughts.
+  Default: <code>[]</code> (empty list)</p>
+</li>
+<li>
+<p><strong>QA feedback:</strong> List of QA feedback.
+  Default: <code>[]</code> (empty list)</p>
+</li>
+</ul>
 <div class="admonition info">
-<p class="admonition-title">Release Note</p>
-<p>You cannot change config directly from the CLI or UI. We will add support for that in the future releases.</p>
+<p class="admonition-title">Update Note</p>
+<p>You can update the configurations by using <code>export</code> command. For example, to update the <code>MODEL_NAME</code> configuration, you can use the following command:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="w">  </span><span class="nb">export</span><span class="w"> </span><span class="nv">MODEL_NAME</span><span class="o">=</span><span class="s2">&quot;TheBloke/Mistral-7B-Instruct-v0.1-GGUF&quot;</span>
+</span></code></pre></div>
 </div>
 
   <hr>
@@ -1394,7 +1516,7 @@
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">November 10, 2023</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">November 30, 2023</span>
       
         <br>
         Created:

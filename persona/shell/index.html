@@ -8,26 +8,28 @@
       
       
       
-        <link rel="canonical" href="https://neokd.github.io/NeoGPT/">
+        <link rel="canonical" href="https://neokd.github.io/NeoGPT/persona/shell/">
       
       
+        <link rel="prev" href="../persona/">
       
-        <link rel="next" href="installation/">
+      
+        <link rel="next" href="../../agents/">
       
       
-      <link rel="icon" href="assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.10">
     
     
       
-        <title>Home - NeoGPT 🤖</title>
+        <title>Shell Persona - NeoGPT 🤖</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.fad675c6.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.fad675c6.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.356b1318.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.356b1318.min.css">
       
       
   
@@ -87,9 +89,9 @@
       
     
     
-      <link rel="stylesheet" href="stylesheets/custom.css">
+      <link rel="stylesheet" href="../../stylesheets/custom.css">
     
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -118,7 +120,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#neogpt" class="md-skip">
+        <a href="#executing-shell-commands-with-neogpt" class="md-skip">
           Skip to content
         </a>
       
@@ -132,7 +134,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="NeoGPT 🤖" class="md-header__button md-logo" aria-label="NeoGPT 🤖" data-md-component="logo">
+    <a href="../.." title="NeoGPT 🤖" class="md-header__button md-logo" aria-label="NeoGPT 🤖" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 3v15h3V3H9m3 2 4 13 3-1-4-13-3 1M5 5v13h3V5H5M3 19v2h18v-2H3Z"/></svg>
@@ -152,7 +154,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Home
+              Shell Persona
             
           </span>
         </div>
@@ -261,11 +263,9 @@
         
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="." class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
         
   
     
@@ -280,11 +280,13 @@
         
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="installation/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../installation/" class="md-tabs__link">
           
   
   Docs
@@ -302,7 +304,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="about/contributing/" class="md-tabs__link">
+        <a href="../../about/contributing/" class="md-tabs__link">
           
   
   Developer's Guide
@@ -324,9 +326,7 @@
           
             
               
-                
-              
-              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -337,7 +337,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="NeoGPT 🤖" class="md-nav__button md-logo" aria-label="NeoGPT 🤖" data-md-component="logo">
+    <a href="../.." title="NeoGPT 🤖" class="md-nav__button md-logo" aria-label="NeoGPT 🤖" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 3v15h3V3H9m3 2 4 13 3-1-4-13-3 1M5 5v13h3V5H5M3 19v2h18v-2H3Z"/></svg>
@@ -364,29 +364,9 @@
       
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Home
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="." class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -395,71 +375,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#welcome-to-neogpt" class="md-nav__link">
-    <span class="md-ellipsis">
-      Welcome to NeoGPT! 📚🤖✨
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#key-features" class="md-nav__link">
-    <span class="md-ellipsis">
-      Key Features
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#project-roadmap" class="md-nav__link">
-    <span class="md-ellipsis">
-      Project Roadmap
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#contributing" class="md-nav__link">
-    <span class="md-ellipsis">
-      Contributing
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#license" class="md-nav__link">
-    <span class="md-ellipsis">
-      License
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -468,6 +383,8 @@
       
   
   
+    
+  
   
     
     
@@ -477,12 +394,12 @@
       
       
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
           
           <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
@@ -496,7 +413,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             Docs
@@ -509,7 +426,7 @@
   
   
     <li class="md-nav__item">
-      <a href="installation/" class="md-nav__link">
+      <a href="../../installation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -529,7 +446,7 @@
   
   
     <li class="md-nav__item">
-      <a href="builder/" class="md-nav__link">
+      <a href="../../builder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -549,7 +466,7 @@
   
   
     <li class="md-nav__item">
-      <a href="neogpt/" class="md-nav__link">
+      <a href="../../neogpt/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -608,7 +525,7 @@
   
   
     <li class="md-nav__item">
-      <a href="models/llamacpp/" class="md-nav__link">
+      <a href="../../models/llamacpp/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -628,7 +545,7 @@
   
   
     <li class="md-nav__item">
-      <a href="models/ollama/" class="md-nav__link">
+      <a href="../../models/ollama/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -695,7 +612,7 @@
   
   
     <li class="md-nav__item">
-      <a href="retrievers/local/" class="md-nav__link">
+      <a href="../../retrievers/local/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -715,7 +632,7 @@
   
   
     <li class="md-nav__item">
-      <a href="retrievers/web/" class="md-nav__link">
+      <a href="../../retrievers/web/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -735,7 +652,7 @@
   
   
     <li class="md-nav__item">
-      <a href="retrievers/hybrid/" class="md-nav__link">
+      <a href="../../retrievers/hybrid/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -755,7 +672,7 @@
   
   
     <li class="md-nav__item">
-      <a href="retrievers/context/" class="md-nav__link">
+      <a href="../../retrievers/context/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -775,7 +692,7 @@
   
   
     <li class="md-nav__item">
-      <a href="retrievers/stepback/" class="md-nav__link">
+      <a href="../../retrievers/stepback/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -795,7 +712,7 @@
   
   
     <li class="md-nav__item">
-      <a href="retrievers/sql/" class="md-nav__link">
+      <a href="../../retrievers/sql/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -821,6 +738,8 @@
                 
   
   
+    
+  
   
     
     
@@ -830,12 +749,12 @@
       
       
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" checked>
         
           
           <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="">
@@ -849,7 +768,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2_6">
             <span class="md-nav__icon md-icon"></span>
             Persona
@@ -862,7 +781,7 @@
   
   
     <li class="md-nav__item">
-      <a href="persona/persona/" class="md-nav__link">
+      <a href="../persona/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -880,9 +799,29 @@
                 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="persona/shell/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Shell Persona
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -891,6 +830,95 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#warning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Warning
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Steps
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Steps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-persona-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Persona Selection
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-user-input" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: User Input
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-execution-confirmation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Execution Confirmation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -949,7 +977,7 @@
   
   
     <li class="md-nav__item">
-      <a href="agents/" class="md-nav__link">
+      <a href="../../agents/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1016,7 +1044,7 @@
   
   
     <li class="md-nav__item">
-      <a href="advance/search/" class="md-nav__link">
+      <a href="../../advance/search/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1036,7 +1064,7 @@
   
   
     <li class="md-nav__item">
-      <a href="advance/configuration/" class="md-nav__link">
+      <a href="../../advance/configuration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1110,7 +1138,7 @@
   
   
     <li class="md-nav__item">
-      <a href="about/contributing/" class="md-nav__link">
+      <a href="../../about/contributing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1130,7 +1158,7 @@
   
   
     <li class="md-nav__item">
-      <a href="about/code_of_conduct/" class="md-nav__link">
+      <a href="../../about/code_of_conduct/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1150,7 +1178,7 @@
   
   
     <li class="md-nav__item">
-      <a href="about/changelog/" class="md-nav__link">
+      <a href="../../about/changelog/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1179,8 +1207,6 @@
             
             
               
-                
-              
               <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
@@ -1200,47 +1226,71 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#welcome-to-neogpt" class="md-nav__link">
+  <a href="#introduction" class="md-nav__link">
     <span class="md-ellipsis">
-      Welcome to NeoGPT! 📚🤖✨
+      Introduction
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#key-features" class="md-nav__link">
+  <a href="#warning" class="md-nav__link">
     <span class="md-ellipsis">
-      Key Features
+      Warning
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#project-roadmap" class="md-nav__link">
+  <a href="#steps" class="md-nav__link">
     <span class="md-ellipsis">
-      Project Roadmap
+      Steps
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Steps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-persona-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Persona Selection
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#contributing" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#step-2-user-input" class="md-nav__link">
     <span class="md-ellipsis">
-      Contributing
+      Step 2: User Input
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#license" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#step-3-execution-confirmation" class="md-nav__link">
     <span class="md-ellipsis">
-      License
+      Step 3: Execution Confirmation
     </span>
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1259,7 +1309,7 @@
                   
 
   
-    <a href="https://github.com/neokd/NeoGPT/tree/main/docs/content/index.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/neokd/NeoGPT/tree/main/docs/content/persona/shell.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
     </a>
@@ -1267,84 +1317,30 @@
   
 
 
-<h1 id="neogpt"><strong>NeoGPT</strong></h1>
-<h2 id="welcome-to-neogpt"><strong>Welcome to NeoGPT!</strong> 📚🤖✨</h2>
-<p>Welcome to NeoGPT, your open-source, locally-run Language Model (LLM) 📚, revolutionizing the way you interact with documents, YouTube videos, and more.</p>
-<p>Tired of tedious encounters with lengthy documents and endless YouTube videos? NeoGPT is here to transform your experience into one that's seamless, intelligent, and effortlessly conversational. Whether you're a professional, developer, researcher, or an enthusiastic learner, NeoGPT is your trusted companion, unlocking a new era of interactions with local files and online content. Say hello to NeoGPT, where intelligent conversations meet your world of information.</p>
-<p><img alt="NeoGPT Gif" src="https://github.com/neokd/NeoGPT/assets/71772185/82d5c63d-81b5-4b45-95d4-53641016bfdc" /></p>
-<p>Join our <a href="https://discord.gg/qNqjsGuCTG">Discord</a> community to stay up to date with the latest developments and to share your feedback.</p>
-<h2 id="key-features">Key Features</h2>
-<ul>
-<li>
-<p><strong>Local Execution:</strong> Enjoy NeoGPT's services on your local system, ensuring data privacy and security.</p>
-</li>
-<li>
-<p><strong>YouTube Videos:</strong> It supports YouTube videos, allowing you to interact with your favorite videos in a whole new way.</p>
-</li>
-<li>
-<p><strong>User-Friendly:</strong> Command-line interface (CLI) is designed to be user-friendly and accessible to users with varying technical expertise.</p>
-</li>
-</ul>
-<h2 id="project-roadmap">Project Roadmap</h2>
-<ul class="task-list">
-<li class="task-list-item">
-<p><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> RAG (Question Answering with local files) 📂</p>
-</li>
-<li class="task-list-item">
-<p><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Chat with Youtube Videos 🎥</p>
-</li>
-<li class="task-list-item">
-<p><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Web Based RAG (Search on Web and local files) 🌐📂</p>
-</li>
-<li class="task-list-item">
-<p><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Hybrid RAG (Keyword based and Semmantic Search) 🕵️‍♂️📂</p>
-</li>
-<li class="task-list-item">
-<p><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> FAISS Support 📊</p>
-</li>
-<li class="task-list-item">
-<p><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Chromadb Support 🎵</p>
-</li>
-<li class="task-list-item">
-<p><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Build a user-friendly CLI ⌨️</p>
-</li>
-<li class="task-list-item">
-<p><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Upgrade Builder to support multiple file types including URLs 📦🌐</p>
-</li>
-<li class="task-list-item">
-<p><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> User Interface 💻 (Streamlit)</p>
-</li>
-<li class="task-list-item">
-<p><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Chat with SQL DB 🤖</p>
-</li>
-<li class="task-list-item">
-<p><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Support for other search engines (DuckDuckGo) 🔍</p>
-</li>
-<li class="task-list-item">
-<p><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Add support for other LLM types (Ollama) 🧠</p>
-</li>
-<li class="task-list-item">
-<p><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Docker Support 🐳</p>
-</li>
-<li class="task-list-item">
-<p><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Better Documentation 📖</p>
-</li>
-<li class="task-list-item">
-<p><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Agent based chatbot 🤖</p>
-</li>
-<li class="task-list-item">
-<p><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Add other database support (MongoDB, ElasticSearch, etc.) 📁🔍</p>
-</li>
-</ul>
-<h2 id="contributing">Contributing</h2>
-<p>We welcome contributions to NeoGPT! If you have ideas for new features or improvements, please open an issue or submit a pull request. For more information, see our <a href="https://neokd.github.io/NeoGPT/about/contributing/">contributing guide</a>.</p>
-<h2 id="license">License</h2>
-<p>This project is licensed under the MIT License - see the <a href="https://github.com/neokd/NeoGPT/blob/main/LICENSE">LICENSE</a> file for details.</p>
+<h1 id="executing-shell-commands-with-neogpt"><strong>Executing Shell Commands with NeoGPT 🤖</strong></h1>
+<h2 id="introduction">Introduction</h2>
+<p>NeoGPT 🤖 has a special persona known as "shell," which allows it to generate shell commands based on user input. It's important to note that these commands have the potential to make changes to your system, and you should use them at your own risk.</p>
+<h2 id="warning">Warning</h2>
+<p>When using NeoGPT 🤖 in the "shell" persona, be cautious, as it may generate commands that can be harmful to your system. Always review the generated commands before executing them. The following steps guide you through the process of executing or manually reviewing commands.</p>
+<h2 id="steps">Steps</h2>
 <div class="admonition warning">
-<p class="admonition-title">Feedback Note</p>
-<p><strong>NeoGPT is continuously evolving. Your feedback shapes its future. We're excited about the future of NeoGPT and appreciate your support on this journey! 🚀🤖✨</strong></p>
+<p class="admonition-title">Warning</p>
+<p>When using NeoGPT 🤖 in the "shell" persona, be cautious, as it may generate commands that can be harmful to your system. Always review the generated commands before executing them. The following steps guide you through the process of executing or manually reviewing commands.</p>
 </div>
-<!-- **Note: NeoGPT is continuously evolving. Your feedback shapes its future.** -->
+<h3 id="step-1-persona-selection">Step 1: Persona Selection</h3>
+<p>If you choose the "shell" persona, NeoGPT 🤖 will inform you about the potential risks and ask whether you want to execute the generated commands.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>You<span class="w"> </span>are<span class="w"> </span>using<span class="w"> </span>NeoGPT<span class="w"> </span>🤖<span class="w"> </span>as<span class="w"> </span>a<span class="w"> </span>shell.<span class="w"> </span>It<span class="w"> </span>may<span class="w"> </span>generate<span class="w"> </span>commands<span class="w"> </span>that<span class="w"> </span>can<span class="w"> </span>be<span class="w"> </span>harmful<span class="w"> </span>to<span class="w"> </span>your<span class="w"> </span>system.<span class="w"> </span>Use<span class="w"> </span>it<span class="w"> </span>at<span class="w"> </span>your<span class="w"> </span>own<span class="w"> </span>risk.<span class="w"> </span>⚠️
+</span></code></pre></div>
+<h3 id="step-2-user-input">Step 2: User Input</h3>
+<p>You will be prompted to decide whether you want to execute the generated commands.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Do<span class="w"> </span>you<span class="w"> </span>want<span class="w"> </span>to<span class="w"> </span>execute<span class="w"> </span>the<span class="w"> </span>commands?<span class="w"> </span><span class="o">(</span>Y/N<span class="o">)</span>:<span class="w"> </span>
+</span></code></pre></div>
+<h3 id="step-3-execution-confirmation">Step 3: Execution Confirmation</h3>
+<p>If you choose to execute the commands, NeoGPT 🤖 will inform you that it will execute the commands in your default shell.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>NeoGPT<span class="w"> </span>🤖<span class="w"> </span>will<span class="w"> </span>execute<span class="w"> </span>the<span class="w"> </span>commands<span class="w"> </span><span class="k">in</span><span class="w"> </span>your<span class="w"> </span>default<span class="w"> </span>shell.
+</span></code></pre></div>
+<h3 id="conclusion">Conclusion</h3>
+<p>Using NeoGPT 🤖 in the "shell" persona can be a powerful tool, but it comes with risks. Always exercise caution, review the generated commands, and ensure they align with your intentions.</p>
 
   <hr>
 <div class="md-source-file">
@@ -1355,15 +1351,13 @@
       
         <br>
         Created:
-        <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">November 6, 2023</span>
+        <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">November 30, 2023</span>
       
     
   </small>
 </div>
 
 
-
-  
 
 
 
@@ -1388,19 +1382,33 @@
   
     
       
-        
-      
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../persona/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Persona &amp; NeoGPT">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Persona & NeoGPT
+              </div>
+            </div>
+          </a>
         
         
           
-          <a href="installation/" class="md-footer__link md-footer__link--next" aria-label="Next: Installation">
+          <a href="../../agents/" class="md-footer__link md-footer__link--next" aria-label="Next: Agents &amp; NeoGPT">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Installation
+                Agents & NeoGPT
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -1453,10 +1461,10 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.tabs", "navigation.sections", "search.share", "navigation.top", "search.suggest", "search.highlight", "search.share", "content.tabs.link", "content.code.annotation", "content.code.copy", "content.action.edit", "navigation.footer", "toc.follow"], "search": "assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections", "search.share", "navigation.top", "search.suggest", "search.highlight", "search.share", "content.tabs.link", "content.code.annotation", "content.code.copy", "content.action.edit", "navigation.footer", "toc.follow"], "search": "../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="assets/javascripts/bundle.6c14ae12.min.js"></script>
+      <script src="../../assets/javascripts/bundle.6c14ae12.min.js"></script>
       
     
   </body>
