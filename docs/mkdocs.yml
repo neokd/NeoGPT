@@ -79,6 +79,9 @@ nav:
         - SQL : retrievers/sql.md
     - Persona: 
         - Persona & NeoGPT: persona/persona.md
+        - Shell Persona: persona/shell.md
+    - Agents: 
+        - Agents & NeoGPT: agents/index.md
     - Settings:
         - Configure Search: advance/search.md
         - Configuration: advance/configuration.md

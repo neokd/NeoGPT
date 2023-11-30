@@ -18,6 +18,7 @@ The following personas are currently available:
 - `ML_ENGINEER`: Explains complex ML concepts in an easy-to-understand manner.
 - `CEO`: Acts as the CEO, making strategic decisions.
 - `RESEARCHER`: Analyzes, synthesizes, and provides insights.
+- `SHELL`: Executes shell commands.
 
 
 ### Default Persona
@@ -83,6 +84,16 @@ For data exploration and analysis, NeoGPT becomes a researcher. Dive into the wo
 ```bash title="Terminal"
 python main.py --persona researcher
 ```
+
+### Shell Persona
+
+NeoGPT's shell persona is a powerful tool for executing shell commands. It can be used to perform a variety of tasks, such as installing software, managing files, and more. However, it is important to note that this persona can be dangerous if used incorrectly. Always review the generated commands before executing them.
+
+```bash title="Terminal"
+python main.py --persona shell
+```
+
+Refer to the [Executing Shell Commands with NeoGPT 🤖](/NeoGPT/persona/shell) section for more information.
 
 
 ### Conclusion

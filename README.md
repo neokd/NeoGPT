@@ -103,11 +103,11 @@ Join our [Discord](https://discord.gg/qNqjsGuCTG) community to stay up to date w
 - ✓ User Interface 💻 (Streamlit)
 - ✓ Chat with SQL DB 🤖
 - ✓ Support for other search engines (DuckDuckGo) 🔍
-- ☐ Add support for other LLM types (Ollama) 🧠
+- ✓ Add support for other LLM types (Ollama) 🧠
 - ☐ Add other database support (MongoDB, ElasticSearch, etc.) 📁🔍
-- ☐ Docker Support 🐳
-- ☐ Better Documentation 📖
-- ☐ Agent based chatbot 🤖
+- ✓ Docker Support 🐳
+- ✓ Better Documentation 📖
+- ✓ Agent based chatbot 🤖
 
 ## Features
 

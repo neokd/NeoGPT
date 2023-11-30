@@ -193,3 +193,10 @@ NEOGPT_LOG_FILE = os.path.join(LOG_FOLDER, "neogpt.log")
 
 #     with open("settings/settings.yaml", "w") as file:
 #         yaml.dump(config, file,sort_keys=False)
+
+
+# AGENT CONFIG
+PROJECT_COST = 0
+AGENT_THOUGHTS = []
+QA_ENGINEER_FEEDBACK = ""
+CURRENT_WORKING_AGENT = ["NeoGPT"]

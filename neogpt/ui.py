@@ -4,6 +4,7 @@ from datetime import date, datetime, timedelta
 import streamlit as st
 from langchain.chains import RetrievalQA
 
+from neogpt.callback_handler import StreamingStdOutCallbackHandler
 from neogpt.config import DEVICE_TYPE, MODEL_FILE, MODEL_NAME
 from neogpt.load_llm import load_model
 from neogpt.prompts.prompt import get_prompt
@@ -35,7 +36,7 @@ def create_chain(persona):
             DEVICE_TYPE,
             model_id=MODEL_NAME,
             model_basename=MODEL_FILE,
-            ui=True,
+            callback_manager=[StreamingStdOutCallbackHandler()],
             LOGGING=logging,
         )
         # Prompt Builder Function

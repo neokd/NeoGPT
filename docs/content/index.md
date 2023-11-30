@@ -52,15 +52,15 @@ Join our [Discord](https://discord.gg/qNqjsGuCTG) community to stay up to date w
 
 - [x] Support for other search engines (DuckDuckGo) 🔍
 
-- [ ] Add support for other LLM types (Ollama) 🧠
+- [x] Add support for other LLM types (Ollama) 🧠
+
+- [x] Docker Support 🐳
+
+- [x] Better Documentation 📖
+
+- [x] Agent based chatbot 🤖
 
 - [ ] Add other database support (MongoDB, ElasticSearch, etc.) 📁🔍
-
-- [ ] Docker Support 🐳
-
-- [ ] Better Documentation 📖
-
-- [ ] Agent based chatbot 🤖
 
 
 !!! info "Release Note"

@@ -6,7 +6,7 @@ from streamlit.web import cli as stcli
 
 from neogpt.builder import builder
 from neogpt.config import DEVICE_TYPE, NEOGPT_LOG_FILE
-from neogpt.manager import db_retriver
+from neogpt.manager import db_retriver, hire
 
 
 def main():
@@ -39,7 +39,7 @@ def main():
             "ml_engineer",
             "ceo",
             "researcher",
-            "shell"
+            "shell",
         ],
         default="default",
         help="Specify the persona (default, recruiter). It allows you to customize the persona i.e. how the chatbot should behave.",
@@ -92,13 +92,22 @@ def main():
         action="version",
         version="You are using NeoGPT🤖 v0.1.0-alpha.",
     )
+    parser.add_argument("--task", type=str, help="Task to be performed by the Agent")
+    parser.add_argument(
+        "--tries",
+        type=int,
+        default=5,
+        help="Number of retries if the Agent fails to perform the task",
+    )
+
     args = parser.parse_args()
 
     if args.debug:
         log_level = logging.DEBUG
-
-    if args.verbose:
+    elif args.verbose:
         log_level = logging.INFO
+    else:
+        log_level = logging.WARNING
 
     if args.log:
         log_level = logging.INFO
@@ -106,6 +115,11 @@ def main():
             format="%(asctime)s - %(levelname)s - %(filename)s:%(lineno)s - %(message)s",
             level=log_level,
             filename=NEOGPT_LOG_FILE,
+        )
+    else:
+        logging.basicConfig(
+            format="%(asctime)s - %(levelname)s - %(filename)s:%(lineno)s - %(message)s",
+            level=log_level,
         )
 
     # if not os.path.exists(FAISS_PERSIST_DIRECTORY):
@@ -127,6 +141,15 @@ def main():
         logging.info("Note: The UI server only supports local retriever and Chroma DB")
         sys.argv = ["streamlit", "run", "neogpt/ui.py"]
         sys.exit(stcli.main())
+
+    elif args.task is not None:
+        print()
+        hire(
+            task=args.task,
+            tries=args.tries,
+            LOGGING=logging,
+        )
+
     else:
         db_retriver(
             device_type=args.device_type,
