@@ -106,6 +106,22 @@ Supported URL patterns for ingestion.
 - **Log File:** The log file name.
   Default: `logs/builder.log`
 
+## Agent
 
-!!! info "Release Note"
-    You cannot change config directly from the CLI or UI. We will add support for that in the future releases.
+- **Agent Name:** The name of the agent.
+  Default: `NeoGPT`
+
+- **Agent Thoughts:** List of agent thoughts.
+  Default: `[]` (empty list)
+
+- **QA feedback:** List of QA feedback.
+  Default: `[]` (empty list)
+
+
+
+!!! info "Update Note"
+    You can update the configurations by using `export` command. For example, to update the `MODEL_NAME` configuration, you can use the following command:
+
+    ```bash
+      export MODEL_NAME="TheBloke/Mistral-7B-Instruct-v0.1-GGUF"
+    ```

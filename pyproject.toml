@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "neogpt"
-version = "0.1.0-alpha"
+version = "0.1.0-beta"
 description = "NeoGPT: Chat effortlessly with Documents, YouTube Videos,Code, and Social Media Chats. Your go-to for quick and smart interactions! 🤖💬"
 authors = ["Neokd"]
 license = "MIT"
@@ -23,7 +23,7 @@ instructorembedding = "^1.0.1"
 llama-cpp-python = "^0.2.18"
 google-api-python-client = "^2.108.0"
 faiss-cpu = "^1.7.4"
-chromadb = "0.4.13"
+chromadb = "^0.4.18"
 ruff = "^0.1.6"
 
 
@@ -35,6 +35,8 @@ mkdocs-git-revision-date-localized-plugin = "^1.2.1"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+exclude = ["neogpt/models/**"]
+
 
 [tool.ruff]
 
@@ -100,4 +102,4 @@ exclude = [
 ]
 
 [tool.poetry.scripts]
-neogpt = "main:main"
+neogpt = "neogpt.main:main"

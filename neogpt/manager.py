@@ -1,10 +1,25 @@
 import logging
 import os
+import re
 from datetime import datetime
 
 from colorama import Fore
 
-from neogpt.config import DEVICE_TYPE, MODEL_FILE, MODEL_NAME, WORKSPACE_DIRECTORY
+from neogpt.agents import ML_Engineer, QA_Engineer
+from neogpt.callback_handler import (
+    AgentCallbackHandler,
+    StreamingStdOutCallbackHandler,
+    TokenCallbackHandler,
+    final_cost,
+)
+from neogpt.config import (
+    DEVICE_TYPE,
+    MODEL_FILE,
+    MODEL_NAME,
+    QUERY_COST,
+    TOTAL_COST,
+    WORKSPACE_DIRECTORY,
+)
 from neogpt.load_llm import load_model
 from neogpt.retrievers import (
     context_compress,
@@ -88,6 +103,7 @@ def db_retriver(
     )
 
     print(Fore.LIGHTYELLOW_EX + "\nNeoGPT 🤖 is ready to chat. Type '/exit' to exit.")
+    # print(Fore.LIGHTYELLOW_EX + "Read the docs at "+ Fore.WHITE + "https://neokd.github.io/NeoGPT/")
     if persona != "default":
         print(
             "NeoGPT 🤖 is in "
@@ -96,6 +112,28 @@ def db_retriver(
             + Fore.LIGHTYELLOW_EX
             + " mode."
         )
+
+    if persona == "shell":
+        print(
+            Fore.LIGHTYELLOW_EX
+            + "\nYou are using NeoGPT 🤖 as a shell. It may generate commands that can be harmful to your system. Use it at your own risk. ⚠️"
+            + Fore.RESET
+        )
+        execute = input(
+            Fore.LIGHTCYAN_EX + "Do you want to execute the commands? (Y/N): "
+        ).upper()
+        if execute == "Y":
+            print(
+                Fore.LIGHTYELLOW_EX
+                + "NeoGPT 🤖 will execute the commands in your default shell."
+                + Fore.RESET
+            )
+        else:
+            print(
+                Fore.LIGHTYELLOW_EX
+                + "You can copy the commands and execute them manually."
+                + Fore.RESET
+            )
 
     #  Main Loop with timer
     last_input_time = datetime.now()
@@ -109,6 +147,7 @@ def db_retriver(
         query = input(Fore.LIGHTCYAN_EX + "\nEnter your query 🙋‍♂️: ")
 
         if query == "/exit":
+            print(f"Total chat session cost: {final_cost()} INR")
             LOGGING.info("Byee 👋.")
             break
 
@@ -160,4 +199,40 @@ def db_retriver(
 
             break
 
+        if persona == "shell" and execute == "Y":
+            os.environ["TOKENIZERS_PARALLELISM"] = "false"
+            command = re.sub(r"```bash|```", "", res["result"])
+            os.system(command)
+
         last_input_time = datetime.now()  # update the last_input_time to now
+
+
+def hire(task: str = "", tries: int = 5, LOGGING=logging):
+    global TOTAL_COST
+    llm = load_model(
+        device_type=DEVICE_TYPE,
+        model_type="mistral",
+        model_id=MODEL_NAME,
+        model_basename=MODEL_FILE,
+        callback_manager=[AgentCallbackHandler()],
+        LOGGING=LOGGING,
+    )
+    start = datetime.now()
+    ml_agent = ML_Engineer(llm)
+    qa_agent = QA_Engineer(llm)
+
+    for i in range(tries):
+        # print(TOTAL_COST)
+        ml_results = ml_agent.think(task)
+        if qa_agent.analyse(ml_results):
+            print("\nQA Engineer approved the code. Program terminated.")
+            break
+
+        print(f"\nRemaining attempts: {tries - i}. Trying again...\n")
+
+    else:
+        print("\nOut of attempts. Program terminated.")
+
+    end = datetime.now()
+    print(f"Time taken: {round(((end - start).total_seconds() / 60),4)} minutes")
+    print(f"The total cost of the project is {round(final_cost(),4)} INR")

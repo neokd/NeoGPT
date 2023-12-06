@@ -1,7 +1,7 @@
 # NeoGPT 🚀
 
 > [!NOTE]
-> Docs update faster than the README.md. Please refer to the docs for the latest updates. Click [here](https://neokd.github.io/NeoGPT/) to view the docs.
+> Looking for the documentation? Check out the [docs](https://neokd.github.io/NeoGPT/).
 
 Say goodbye to boring interactions with documents and YouTube videos. NeoGPT is your trusted companion to chat with local documents and lengthy YouTube videos effortlessly. Perfect for professionals, developers, researchers, and enthusiasts.
 
@@ -16,13 +16,10 @@ Join our [Discord](https://discord.gg/qNqjsGuCTG) community to stay up to date w
 
 # Table of Contents
 - [Getting Started](#getting-started)
-- [Supported Retriever](#supported-retriever)
-- [Project Roadmap](#project-roadmap)
 - [Features](#features)
-- [Persona](#persona)
+- [Project Roadmap](#project-roadmap)
 - [Contributing](#contributing)
 - [License](#license)
-- [Discord](#discord)
 
 ## Getting Started
 
@@ -33,29 +30,12 @@ Join our [Discord](https://discord.gg/qNqjsGuCTG) community to stay up to date w
    cd NeoGPT
    pip install -r requirements.txt
     ```
-    Alternatively, using conda:
-
-   ```
-   git clone https://github.com/neokd/NeoGPT.git
-
-   cd NeoGPT
-
-   # Create a new Conda environment and specify the python version, for example, 'neogpt-env'
-   conda create --name neogpt-env python=3.10
-
-   # Activate the Conda environment
-   conda activate neogpt-env
-
-   # Now install the requirements using pip
-   pip install -r requirements.txt
-   ```
-
 2. **Building Database** Currently NeoGPT supports local files and Youtube videos. To build the database add your local files to the documents directory and URL in the `builder.url` file. Then run the builder script.
 
     ```python
-        python neogpt/builder.py
+        python main.py --build
     ```
-    This will create a database file in the `db` folder. You can also specify the database to use `--db` flag.
+    This will create a database file in the `neogpt/db` folder. You can also specify the database to use by using `--db` flag.
     Supported databases are:
     - `Chroma` (default)
     - `FAISS`
@@ -83,59 +63,67 @@ Join our [Discord](https://discord.gg/qNqjsGuCTG) community to stay up to date w
         mkdocs serve
     ```
 
-## Supported Retriever
-- Local Retriever
-- Web Retriever
-- Hybrid Retriever (Ensemble Retriever)
-- SQL Retriever (Experimental)
-- Context Compressor Retriever
-- Stepback Prompting + RAG + DuckDuckGo Search
-
-## Project Roadmap
-- ✓ RAG (Question Answering with local files) 📂
-- ✓ Chat with Youtube Videos 🎥
-- ✓ Web Based RAG (Search on Web and local files) 🌐📂
-- ✓ Hybrid RAG (Keyword based and Semmantic Search) 🕵️‍♂️📂
-- ✓ FAISS Support 📊
-- ✓ Chromadb Support 🎵
-- ✓ Build a user-friendly CLI ⌨️
-- ✓ Upgrade Builder to support multiple file types including URLs 📦🌐
-- ✓ User Interface 💻 (Streamlit)
-- ✓ Chat with SQL DB 🤖
-- ✓ Support for other search engines (DuckDuckGo) 🔍
-- ☐ Add support for other LLM types (Ollama) 🧠
-- ☐ Add other database support (MongoDB, ElasticSearch, etc.) 📁🔍
-- ☐ Docker Support 🐳
-- ☐ Better Documentation 📖
-- ☐ Agent based chatbot 🤖
-
 ## Features
 
-- **Task Automation:** NeoGPT can automate a wide range of tasks, from text generation to data analysis, making it a versatile tool for various domains.
+Sure, here are the top 4 features from the provided content:
 
-- **Local Execution:** NeoGPT runs entirely on your local system, ensuring data privacy and security.
+- **Hybrid RAG (Keyword based and Semantic Search) 🕵️‍♂️📂:**
+   NeoGPT supports a Hybrid Retriever that combines both keyword-based and semantic search functionalities. This allows users to perform more nuanced and context-aware searches, enhancing the accuracy and relevance of retrieved information.
 
-- **User-Friendly Interface:** NeoGPT is designed with a user-friendly command-line interface (CLI) that makes it accessible to users with varying levels of technical expertise.
+- **Docker Support 🐳:**
+   NeoGPT is designed to be Docker-compatible, providing users with the flexibility and convenience of containerization. This ensures easy deployment and compatibility across various environments, streamlining the setup process for users.
 
-- **Extensible:** You can easily extend NeoGPT's functionality by adding custom plugins or scripts.
+- **User Interface 💻 (Streamlit):**
+   The inclusion of a user-friendly command-line interface (CLI) along with a Streamlit-based User Interface (UI) enhances the accessibility of NeoGPT. This dual-interface approach caters to users with different technical backgrounds, making interactions more seamless.
 
-- **Persona** You can add various persona to NeoGPT to make it more human like.
+- **Agent-based Chatbot 🤖:**
+   NeoGPT introduces an agent-based chatbot system, allowing users to interact with specialized agents tailored for different purposes. This feature enhances the versatility of NeoGPT, enabling it to cater to a wide range of user needs and use cases.
 
+## Project Roadmap
 
-## Persona
+- ☐ **OpenAI LLM Integration:** Enable users to interact with systems that cannot run local models by integrating OpenAI LLM. 🌐
 
-The persona feature allows you to customize NeoGPT's responses based on your preferences. You can choose from a variety of personas, each with its own unique characteristics. For example, if you want NeoGPT to be more friendly, you can choose the FRIEND persona. If you want NeoGPT to be more professional, you can choose the RECRUITER persona. You can also create your own persona by editing `neogpt/prompts/prompt.py` file. The following personas are currently available:
+- ☐ **Integration with togetherAI:** Integrate togetherAI services for enhanced user experience and functionality. 🤝
 
+- ☐ **HuggingFace Model Loading Improvement:** Optimize loading of full models from HuggingFace for better performance. 🚀
 
-| Persona     | Description                                          |
-|-------------|------------------------------------------------------|
-| DEFAULT     | A helpful assistant with extensive knowledge.       |
-| RECRUITER   | An experienced recruiter who finds the best candidates. |
-| ACADEMICIAN | Engages in in-depth research and presents findings.  |
-| FRIEND      | Provides comfort and encouragement as a friend.     |
-| ML_ENGINEER | Explains complex ML concepts in an easy-to-understand manner. |
-| CEO         | Acts as the CEO, making strategic decisions.        |
-| RESEARCHER  | Analyzes, synthesizes, and provides insights.       |
+- ☐ **Image Loading and Storage:** Allow users to load images (base64) to the NeoGPT builder and store them. 🖼️
+
+- ☐ **SQL Database Direct Support:** Integrate direct support for SQL databases in the NeoGPT builder for efficient data management.
+ 💽
+
+- ☐ **HuggingFace Datasets Support:** Add functionality to load datasets directly from HuggingFace into the NeoGPT builder. 📊
+
+- ☐ **URL Loading Support:** Support loading data from various URLs like HackerNews, Notion DB, etc. 🌐
+
+- ☐ **Social Chats Integration:** Enable loading of data from various social chat platforms (Telegram, Slack, Discord). 💬
+
+- ☐ **Streamlit UI Enhancement:** Improve Streamlit UI with direct integration with `manager.py` for a seamless user experience. 🎨
+
+- ☐ **Agent Variety Expansion:** Introduce more agents with various purposes to cater to diverse NeoGPT user needs. 🤖
+
+- ☐ **Agent Visualization in UI:** Implement visual representation of active agents in the NeoGPT UI with prompts for user clarity. 
+👀
+
+- ☐ **Agent Tools and Skills:** Equip NeoGPT agents with tools and skills (Google search, Python REPL) to enhance capabilities. 🛠️
+
+- ☐ **Chat Session Retention:** Store NeoGPT chat sessions in a database to allow users access to past conversations. 🗂️
+
+- ☐ **Voice Support:** Implement voice support using Speech Recognition and Text-to-Speech for NeoGPT user interactions. 🗣️
+
+- ☐ **Documentation Improvement:** Enhance documentation for better understanding, including examples , diagrams, and more. 📖
+
+- ☐ **Writing Assistant Enhancement:** Improve the NeoGPT writing assistant to allow users to write to various file types. ✍️
+
+- ☐ **Text-to-Handwriting in Writing Assistant:** Add the capability for the NeoGPT writing assistant to convert text to handwriting. ✒️
+
+- ☐ **Prompt Improvement:** Implement better prompts for improved results, including Hyper Prompting for task-based prompt input. 🚀
+
+- ☐ **Builder in UI - Retrieved Chunks:** Allow live uploading of files and rebuild the database in the background and allow users to view chunks or documents that were used to generate an answer. 👷
+
+- ☐ **Only LLM Mode:** Add Only LLM mode in CLI and UI allowing users to ignore vector db and chat only with the LLM. 🦾
+
+- ☐ **Autonomous Agent:** Implementing a group of agents that can collaborate to solve a problem. 🤖
 
 
 ## Contributing

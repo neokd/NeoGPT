@@ -25,7 +25,7 @@ def load_model(
     model_type: str = "mistral",
     model_id: str = MODEL_NAME,
     model_basename: str = MODEL_FILE,
-    ui: bool = False,
+    callback_manager: list = None,
     LOGGING=logging,
 ):
     """
@@ -41,15 +41,19 @@ def load_model(
         llm (Ollama): Returns a Ollama object (language model)
         llm (HuggingFacePipeline): Returns a HuggingFace Pipeline object (language model)
     """
+
+    callbacks = [StreamingStdOutCallbackHandler(), TokenCallbackHandler()]
     callback_manager = (
-        CallbackManager([StreamlitStreamingHandler()])
-        if ui
-        else CallbackManager([StreamingStdOutCallbackHandler(), TokenCallbackHandler()])
+        CallbackManager(callback_manager)
+        if callback_manager is not None
+        else CallbackManager(callbacks)
     )
+
     if (model_type == "mistral" or model_type == "llama") and (
         model_basename is not None and ".gguf" in model_basename.lower()
     ):
         try:
+            LOGGING.info("Using LlamaCpp to load the model")
             # Download the model checkpoint from the Hugging Face Hub
             model_path = hf_hub_download(
                 repo_id=model_id,
@@ -81,6 +85,7 @@ def load_model(
 
     elif model_type == "ollama":
         try:
+            LOGGING.info("Using Ollama to load the model")
             llm = Ollama(
                 base_url="http://localhost:11434",
                 model=model_id,

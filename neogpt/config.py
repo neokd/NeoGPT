@@ -158,3 +158,45 @@ LOG_FOLDER = os.path.join(os.path.dirname(__file__), "logs")
 BUILDER_LOG_FILE = os.path.join(LOG_FOLDER, "builder.log")
 # NEOGPT LOG
 NEOGPT_LOG_FILE = os.path.join(LOG_FOLDER, "neogpt.log")
+
+
+# # Export Config
+
+# def export_config():
+#     config = {
+#         "neogpt" : {
+#             "VERSION": "0.1.0-alpha",
+#             "ENV": "development",
+#             "PERSONA": "default",
+#             "UI" : False,
+#             "MODEL_TYPE": "mistral",
+#             "EXPORT_DATE": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+
+#         },
+#         "model" : {
+#             "MODEL_NAME": MODEL_NAME,
+#             "MODEL_FILE": MODEL_FILE,
+#             "EMBEDDING_MODEL": EMBEDDING_MODEL,
+#         },
+#         "database" : {
+#             "PARENT_DB_DIRECTORY": os.path.basename(PARENT_DB_DIRECTORY),
+#         },
+#         "directories" : {
+#             "SOURCE_DIR": os.path.basename(SOURCE_DIR),
+#             "WORKSPACE_DIRECTORY": os.path.basename(WORKSPACE_DIRECTORY),
+#         },
+#         "memory" : {
+#             "DEFAULT_MEMORY_KEY": DEFAULT_MEMORY_KEY,
+#         },
+
+#     }
+
+#     with open("settings/settings.yaml", "w") as file:
+#         yaml.dump(config, file,sort_keys=False)
+
+
+# AGENT CONFIG
+PROJECT_COST = 0
+AGENT_THOUGHTS = []
+QA_ENGINEER_FEEDBACK = ""
+CURRENT_WORKING_AGENT = ["NeoGPT"]

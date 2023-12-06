@@ -3,7 +3,10 @@ from datetime import date, datetime, timedelta
 
 import streamlit as st
 from langchain.chains import RetrievalQA
+import os
+import subprocess
 
+from neogpt.callback_handler import StreamingStdOutCallbackHandler
 from neogpt.config import DEVICE_TYPE, MODEL_FILE, MODEL_NAME
 from neogpt.load_llm import load_model
 from neogpt.prompts.prompt import get_prompt
@@ -35,7 +38,7 @@ def create_chain(persona):
             DEVICE_TYPE,
             model_id=MODEL_NAME,
             model_basename=MODEL_FILE,
-            ui=True,
+            callback_manager=[StreamingStdOutCallbackHandler()],
             LOGGING=logging,
         )
         # Prompt Builder Function
@@ -64,6 +67,17 @@ def run_ui():
         st.markdown(f"Device: **{DEVICE_TYPE}**")
         st.markdown("Retriever: **Local Retrieval**")
         st.markdown("Database: **FAISS DB**")
+        uploads = st.file_uploader("File Upload", accept_multiple_files=True, help= "Upload files to be placed in your document folder")
+        # Place the uploaded files in dir
+        if uploads:
+            destination_folder = "neogpt/documents"
+            for upload in uploads:
+                file_name = upload.name
+                destinatiopn_path = os.path.join(destination_folder, file_name)
+                with open(destinatiopn_path, "wb") as f:
+                    f.write(upload.getvalue())
+            # Run the build process once files are detected
+            subprocess.run(["python", "main.py", "--build"])
         st.session_state.persona = st.selectbox(
             "Persona",
             options=persona_list,
