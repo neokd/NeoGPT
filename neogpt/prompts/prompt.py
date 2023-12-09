@@ -1,7 +1,7 @@
 import os
 import platform
 
-from langchain.memory import ConversationBufferWindowMemory
+from langchain.memory import ConversationBufferWindowMemory, ConversationBufferMemory
 from langchain.prompts import (
     ChatPromptTemplate,
     FewShotChatMessagePromptTemplate,
@@ -76,7 +76,8 @@ def get_prompt(
     )
 
     try:
-        SYSTEM_PROMPT = PERSONA_PROMPT.get(persona.upper(), PERSONA_PROMPT["DEFAULT"])
+        SYSTEM_PROMPT = PERSONA_PROMPT.get(
+            persona.upper(), PERSONA_PROMPT["DEFAULT"])
     except Exception as e:
         print("Warning: Persona not found, using default persona." + str(e))
 
@@ -175,6 +176,20 @@ def stepback_prompt(
         template=INSTRUCTION_TEMLATE,
     )
 
+    return prompt, memory
+
+
+def conversation_prompt(
+        memory_key: int = DEFAULT_MEMORY_KEY,
+):
+    template = """You are a chatbot having a conversation with a human.
+    {chat_history}
+    Human: {human_input}
+    Chatbot:"""
+    prompt = PromptTemplate(
+    input_variables=["chat_history", "human_input"], template=template)
+    memory = ConversationBufferWindowMemory(
+        k=memory_key, return_messages=True, input_key="human_input", memory_key="chat_history")
     return prompt, memory
 
 

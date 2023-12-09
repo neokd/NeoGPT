@@ -2,7 +2,7 @@ import logging
 from datetime import date, datetime, timedelta
 
 import streamlit as st
-from langchain.chains import RetrievalQA
+from langchain.chains import RetrievalQA,ConversationChain
 import os
 import subprocess
 
@@ -24,7 +24,6 @@ persona_list = [
     "ceo",
     "researcher",
 ]
-
 
 @st.cache_resource(show_spinner=True)
 def create_chain(persona):
@@ -50,6 +49,7 @@ def create_chain(persona):
             chain_type="stuff",
             chain_type_kwargs={"prompt": prompt, "memory": memory},
         )
+        
 
 
 def run_ui():
@@ -148,7 +148,8 @@ def run_ui():
         # Add user message to chat history
         st.session_state.messages.append({"role": "user", "content": prompt})
 
-        response = chain(prompt, return_only_outputs=True)["result"]
+        # response = chain(prompt, return_only_outputs=True)["result"]
+        response=chain.run(prompt)
         # Display assistant response in chat message container
         with st.chat_message("assistant"):
             st.markdown(response)

@@ -7,6 +7,7 @@ from streamlit.web import cli as stcli
 from neogpt.builder import builder
 from neogpt.config import DEVICE_TYPE, NEOGPT_LOG_FILE
 from neogpt.manager import db_retriver, hire
+from neogpt.chat import chat_mode
 
 
 def main():
@@ -99,9 +100,10 @@ def main():
         default=5,
         help="Number of retries if the Agent fails to perform the task",
     )
+    parser.add_argument("--mode",default="llm_only",choices=['llm_only','db'],help="Specify the mode of query")
 
     args = parser.parse_args()
-
+    CHAT_MODE=args.mode
     if args.debug:
         log_level = logging.DEBUG
     elif args.verbose:
@@ -149,7 +151,15 @@ def main():
             tries=args.tries,
             LOGGING=logging,
         )
-
+    elif args.mode=="llm_only":
+        chat_mode(
+            device_type=args.device_type,
+            model_type=args.model_type,
+            persona=args.persona,
+            show_source=args.show_source,
+            write=args.write,
+            LOGGING=logging
+        )
     else:
         db_retriver(
             device_type=args.device_type,
