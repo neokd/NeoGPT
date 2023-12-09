@@ -178,6 +178,20 @@ def stepback_prompt(
     return prompt, memory
 
 
+def conversation_prompt(
+        memory_key: int = DEFAULT_MEMORY_KEY,
+):
+    template = """You are a chatbot having a conversation with a human.
+    {chat_history}
+    Human: {human_input}
+    Chatbot:"""
+    prompt = PromptTemplate(
+    input_variables=["chat_history", "human_input"], template=template)
+    memory = ConversationBufferWindowMemory(
+        k=memory_key, return_messages=True, input_key="human_input", memory_key="chat_history")
+    return prompt, memory
+
+
 ML_ENGINEER_PROMPT = """
 You are a helpful Machine Learning Engineer. You are helping a user to solve a problem.
 Solve tasks using your coding and language skills.
