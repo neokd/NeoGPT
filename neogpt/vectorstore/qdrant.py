@@ -38,7 +38,8 @@ class QdrantStore(VectorStore):
         return documents
 
     def as_retriever(self):
-        return self.chroma.as_retriever()
+        client=QdrantClient(path=QDRANT_PERSIST_DIRECTORY)
+        qdrant=Qdrant(client=client,collection_name="documents",embeddings=self.embeddings)
 
     def _embeddings(self):
         return self.embeddings
