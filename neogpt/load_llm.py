@@ -1,4 +1,16 @@
+from http import client
+import os
 import logging
+
+#for OpenAI integration
+from dotenv import load_dotenv
+from langchain.chat_models import ChatOpenAI
+from langchain.prompts.chat import (
+    ChatPromptTemplate,
+    HumanMessagePromptTemplate,
+    SystemMessagePromptTemplate,
+)
+from langchain.schema import HumanMessage, SystemMessage
 
 from huggingface_hub import hf_hub_download
 from langchain.callbacks.manager import CallbackManager
@@ -17,6 +29,10 @@ from neogpt.config import (
     MODEL_NAME,
     N_GPU_LAYERS,
 )
+
+# API key authentication for OpenAI model usage
+load_dotenv()
+API_KEY =  os.environ.get("API_KEY")
 
 
 # Function to load the LLM
@@ -119,5 +135,26 @@ def load_model(
             return llm
         except Exception as e:
             LOGGING.info(f"Error {e}")
+
+
+    elif model_type == "openai":
+        try:
+            chat = ChatOpenAI(temperature=0, openai_api_key= API_KEY)
+            template = (
+                        "You are a helpful assistant that answers {query} asked by user.")
+            system_message_prompt = SystemMessagePromptTemplate.from_template(template)
+            human_template = "{query}"
+            human_message_prompt = HumanMessagePromptTemplate.from_template(human_template)
+            chat_prompt = ChatPromptTemplate.from_messages(
+                            [system_message_prompt, human_message_prompt])
+            chat(
+                chat_prompt.format_prompt(
+                query = input("enter your query: ") 
+                ).to_messages())
+            print(chat)
+            return chat
+        except Exception as e:
+            LOGGING.info(f"Error {e}")
+        
     else:
         LOGGING.warning("🚨 Please use a valid model type")
