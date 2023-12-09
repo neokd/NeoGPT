@@ -7,12 +7,12 @@ import os
 import subprocess
 
 from neogpt.callback_handler import StreamingStdOutCallbackHandler
-from neogpt.config import DEVICE_TYPE, MODEL_FILE, MODEL_NAME
+from neogpt.config import DEVICE_TYPE, MODEL_FILE, MODEL_NAME, SOURCE_DIR
 from neogpt.load_llm import load_model
 from neogpt.prompts.prompt import get_prompt
 from neogpt.vectorstore.chroma import ChromaStore
 from neogpt.vectorstore.faiss import FAISSStore
-
+from neogpt.builder import builder
 st.set_page_config(page_title="NeoGPT", page_icon="🤖")
 
 persona_list = [
@@ -70,14 +70,13 @@ def run_ui():
         uploads = st.file_uploader("File Upload", accept_multiple_files=True, help= "Upload files to be placed in your document folder")
         # Place the uploaded files in dir
         if uploads:
-            destination_folder = "neogpt/documents"
             for upload in uploads:
                 file_name = upload.name
-                destinatiopn_path = os.path.join(destination_folder, file_name)
+                destinatiopn_path = os.path.join(SOURCE_DIR, file_name)
                 with open(destinatiopn_path, "wb") as f:
                     f.write(upload.getvalue())
             # Run the build process once files are detected
-            subprocess.run(["python", "main.py", "--build"])
+            builder()
         st.session_state.persona = st.selectbox(
             "Persona",
             options=persona_list,
