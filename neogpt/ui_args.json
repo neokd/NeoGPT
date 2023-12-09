@@ -1,0 +1,1 @@
+{"DB": "FAISS", "RETRIEVER": "web", "PERSONA": "friend", "MODEL_TYPE": "hf", "WRITE": null, "BUILD": false, "SHOW_SOURCE": false, "MODE": "db"}

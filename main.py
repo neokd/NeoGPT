@@ -1,9 +1,11 @@
 import argparse
 import logging
 import sys
+import json
 
 from streamlit.web import cli as stcli
 
+from neogpt.config import UI_ARGS_PATH
 from neogpt.builder import builder
 from neogpt.config import DEVICE_TYPE, NEOGPT_LOG_FILE
 from neogpt.manager import db_retriver, hire
@@ -93,17 +95,30 @@ def main():
         action="version",
         version="You are using NeoGPT🤖 v0.1.0-alpha.",
     )
-    parser.add_argument("--task", type=str, help="Task to be performed by the Agent")
+    parser.add_argument("--task", type=str,
+                        help="Task to be performed by the Agent")
     parser.add_argument(
         "--tries",
         type=int,
         default=5,
         help="Number of retries if the Agent fails to perform the task",
     )
-    parser.add_argument("--mode",default="llm_only",choices=['llm_only','db'],help="Specify the mode of query")
+    parser.add_argument("--mode", default="llm_only",
+                        choices=['llm_only', 'db'], help="Specify the mode of query")
 
     args = parser.parse_args()
-    CHAT_MODE=args.mode
+
+    ui_args = {
+        "DB": args.db,
+        "RETRIEVER": args.retriever,
+        "PERSONA": args.persona,
+        "MODEL_TYPE": args.model_type,
+        "WRITE": args.write,
+        "BUILD": args.build,
+        "SHOW_SOURCE": args.show_source,
+        "MODE": args.mode
+        }
+    
     if args.debug:
         log_level = logging.DEBUG
     elif args.verbose:
@@ -140,7 +155,11 @@ def main():
 
     if args.ui:
         logging.info("Starting the UI server for NeoGPT 🤖")
-        logging.info("Note: The UI server only supports local retriever and Chroma DB")
+        logging.info(
+            "Note: The UI server only supports local retriever and Chroma DB")
+        # write the args in ui_args.json file to read from
+        with open(UI_ARGS_PATH,"w") as file:
+            json.dump(ui_args,file)
         sys.argv = ["streamlit", "run", "neogpt/ui.py"]
         sys.exit(stcli.main())
 
@@ -151,7 +170,7 @@ def main():
             tries=args.tries,
             LOGGING=logging,
         )
-    elif args.mode=="llm_only":
+    elif args.mode == "llm_only":
         chat_mode(
             device_type=args.device_type,
             model_type=args.model_type,

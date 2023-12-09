@@ -39,10 +39,14 @@ PARENT_DB_DIRECTORY = os.path.join(os.path.dirname(__file__), "db")
 CHROMA_PERSIST_DIRECTORY = os.path.join(PARENT_DB_DIRECTORY, "chroma")
 # FAISS DB DIRECTORY
 FAISS_PERSIST_DIRECTORY = os.path.join(PARENT_DB_DIRECTORY, "faiss")
+# QDRANT PERSIST DIRECTORY
+QDRANT_PERSIST_DIRECTORY = os.path.join(PARENT_DB_DIRECTORY, "qdrant")
 # PINECONE DB DIRECTORY
 PINECONE_PERSIST_DIRECTORY = os.path.join(PARENT_DB_DIRECTORY, "pinecone")
 # WORKSPACE DIRECTORY
 WORKSPACE_DIRECTORY = os.path.join(os.path.dirname(__file__), "workspace")
+# ARGUMENTS FILE PATH FOR ui.py
+UI_ARGS_PATH=os.path.join(os.path.dirname(__file__),"ui_args.json")
 
 # DEFAULT MEMORY KEY FOR CONVERSATION MEMORY (DEFAULT IS 2)
 DEFAULT_MEMORY_KEY = 2

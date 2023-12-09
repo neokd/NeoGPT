@@ -1,8 +1,10 @@
 import logging
 from datetime import date, datetime, timedelta
+import json
 
+from neogpt.config import UI_ARGS_PATH
 import streamlit as st
-from langchain.chains import RetrievalQA,ConversationChain
+from langchain.chains import RetrievalQA
 import os
 import subprocess
 
@@ -24,6 +26,10 @@ persona_list = [
     "ceo",
     "researcher",
 ]
+
+with open(UI_ARGS_PATH,'r') as file:
+    config_data=json.load(file)
+
 
 @st.cache_resource(show_spinner=True)
 def create_chain(persona):

@@ -1,17 +1,17 @@
 # --- Under Development ---
 """
-    The Purpose of this file is to provide a wrapper around the ChromaDB
+    The Purpose of this file is to provide a wrapper around the QdrantDB
     to provide a simple interface for storing and retrieving documents
     from the database.
 """
 
 from langchain.embeddings import HuggingFaceInstructEmbeddings
 from langchain.schema.document import Document
-from langchain.vectorstores import Chroma
+from langchain.vectorstores import Qdrant
+from qdrant_client import QdrantClient
 
 from neogpt.config import (
-    CHROMA_PERSIST_DIRECTORY,
-    CHROMA_SETTINGS,
+    QDRANT_PERSIST_DIRECTORY,
     DEVICE_TYPE,
     EMBEDDING_MODEL,
     MODEL_DIRECTORY,
@@ -19,9 +19,9 @@ from neogpt.config import (
 from neogpt.vectorstore.base import VectorStore
 
 
-class ChromaStore(VectorStore):
+class QdrantStore(VectorStore):
     """
-    The ChromaStore class provides a wrapper around the ChromaDB
+    The QdrantStore class provides a wrapper around the QdrantDB
     to provide a simple interface for storing and retrieving documents
     from the database.
     """
@@ -32,26 +32,13 @@ class ChromaStore(VectorStore):
             model_kwargs={"device": DEVICE_TYPE},
             cache_folder=MODEL_DIRECTORY,
         )
-        self.chroma = Chroma(
-            persist_directory=CHROMA_PERSIST_DIRECTORY,
-            client_settings=CHROMA_SETTINGS,
-            embedding_function=self.embeddings,
-        )
 
     def from_documents(self, documents: list[Document]) -> Document:
-        self.chroma.from_documents(
-            documents=documents,
-            embedding=self.embeddings,
-            persist_directory=CHROMA_PERSIST_DIRECTORY,
-            client_settings=CHROMA_SETTINGS,
-        )
+        qdrant=Qdrant.from_documents(documents,self.embeddings,path=QDRANT_PERSIST_DIRECTORY,collection_name="documents")
         return documents
 
     def as_retriever(self):
         return self.chroma.as_retriever()
-
-    def get(self):
-        return self.chroma.get()
 
     def _embeddings(self):
         return self.embeddings
