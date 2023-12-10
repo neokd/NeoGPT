@@ -137,6 +137,7 @@ def main():
             debug=args.debug,
             verbose=args.verbose,
         )
+    
     if args.ui:
         logging.info("Starting the UI server for NeoGPT 🤖")
         logging.info("Note: The UI server only supports local retriever and Chroma DB")
