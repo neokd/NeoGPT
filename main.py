@@ -46,7 +46,7 @@ def main():
     )
     parser.add_argument(
         "--model_type",
-        choices=["mistral", "llama", "ollama", "hf"],
+        choices=["mistral", "llama", "ollama", "hf","openai"],
         default="llama",
     )
     parser.add_argument(

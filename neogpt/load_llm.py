@@ -1,8 +1,12 @@
 import logging
 
+import os
+from dotenv import load_dotenv
+
 from huggingface_hub import hf_hub_download
 from langchain.callbacks.manager import CallbackManager
 from langchain.llms import HuggingFacePipeline, LlamaCpp, Ollama
+from langchain.llms import OpenAI
 
 from neogpt.callback_handler import (
     StreamingStdOutCallbackHandler,
@@ -17,6 +21,13 @@ from neogpt.config import (
     MODEL_NAME,
     N_GPU_LAYERS,
 )
+
+
+load_dotenv()
+try:
+    OPENAI_API_KEY=os.environ.get("OPENAI_API_KEY")
+except Exception as e:
+    logging.info(e)
 
 
 # Function to load the LLM
@@ -116,6 +127,17 @@ def load_model(
                 model_kwargs=kwargs,
             )
             LOGGING.info(f"Loaded {model_id} successfully")
+            return llm
+        except Exception as e:
+            LOGGING.info(f"Error {e}")
+    elif model_type=="openai":
+        try:
+            LOGGING.warning(
+                "🚨 You are using openai"
+            )
+            
+            llm = OpenAI(api_key=OPENAI_API_KEY)
+            LOGGING.info(f"Loaded openai successfully")
             return llm
         except Exception as e:
             LOGGING.info(f"Error {e}")
