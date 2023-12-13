@@ -1,4 +1,7 @@
 import os
+import yaml
+import toml
+from datetime import datetime
 
 import torch
 from chromadb.config import Settings
@@ -160,39 +163,60 @@ BUILDER_LOG_FILE = os.path.join(LOG_FOLDER, "builder.log")
 NEOGPT_LOG_FILE = os.path.join(LOG_FOLDER, "neogpt.log")
 
 
-# # Export Config
 
-# def export_config():
-#     config = {
-#         "neogpt" : {
-#             "VERSION": "0.1.0-alpha",
-#             "ENV": "development",
-#             "PERSONA": "default",
-#             "UI" : False,
-#             "MODEL_TYPE": "mistral",
-#             "EXPORT_DATE": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+# Extract version info from TOML 
+def read_pyproject_toml(file_path):
+    with open(file_path, 'r') as toml_file:
+        toml_data = toml.load(toml_file)
 
-#         },
-#         "model" : {
-#             "MODEL_NAME": MODEL_NAME,
-#             "MODEL_FILE": MODEL_FILE,
-#             "EMBEDDING_MODEL": EMBEDDING_MODEL,
-#         },
-#         "database" : {
-#             "PARENT_DB_DIRECTORY": os.path.basename(PARENT_DB_DIRECTORY),
-#         },
-#         "directories" : {
-#             "SOURCE_DIR": os.path.basename(SOURCE_DIR),
-#             "WORKSPACE_DIRECTORY": os.path.basename(WORKSPACE_DIRECTORY),
-#         },
-#         "memory" : {
-#             "DEFAULT_MEMORY_KEY": DEFAULT_MEMORY_KEY,
-#         },
+    poetry_section = toml_data.get('tool', {}).get('poetry', {})
+    
+    # Extracting information
+    version = poetry_section.get('version', '')
+    # authors = poetry_section.get('authors', [])
+    # license_info = poetry_section.get('license', '')
 
-#     }
+    return {
+        'version': version,
+    }
 
-#     with open("settings/settings.yaml", "w") as file:
-#         yaml.dump(config, file,sort_keys=False)
+
+# Export Configuration partially implemented
+def export_config():
+    toml_path = "./pyproject.toml"
+    toml_info = read_pyproject_toml(toml_path)
+    config = {
+        "neogpt" : {
+            "VERSION": toml_info['version'],
+            "ENV": "development",
+            "PERSONA": "default",
+            "UI" : False,
+            "MODEL_TYPE": "mistral",
+            "EXPORT_DATE": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+
+        },
+        "model" : {
+            "MODEL_NAME": MODEL_NAME,
+            "MODEL_FILE": MODEL_FILE,
+            "EMBEDDING_MODEL": EMBEDDING_MODEL,
+        },
+        "database" : {
+            "PARENT_DB_DIRECTORY": os.path.basename(PARENT_DB_DIRECTORY),
+        },
+        "directories" : {
+            "SOURCE_DIR": os.path.basename(SOURCE_DIR),
+            "WORKSPACE_DIRECTORY": os.path.basename(WORKSPACE_DIRECTORY),
+        },
+        "memory" : {
+            "DEFAULT_MEMORY_KEY": DEFAULT_MEMORY_KEY,
+        },
+
+    }
+    # Ensure the directory exists
+    os.makedirs("settings", exist_ok=True)
+
+    with open("settings/settings.yml", "w") as file:
+        yaml.dump(config, file,sort_keys=False)
 
 
 # AGENT CONFIG
