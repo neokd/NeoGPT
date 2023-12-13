@@ -1,11 +1,12 @@
 import argparse
 import logging
 import sys
+import json
 
 from streamlit.web import cli as stcli
 
 from neogpt.builder import builder
-from neogpt.config import DEVICE_TYPE, NEOGPT_LOG_FILE
+from neogpt.config import DEVICE_TYPE, NEOGPT_LOG_FILE,UI_ARGS_PATH
 from neogpt.manager import db_retriver, hire
 from neogpt.chat import chat_mode
 
@@ -103,6 +104,24 @@ def main():
 
     args = parser.parse_args()
 
+    UI_ARGS={
+        "DEVICE_TYPE":args.device_type,
+        "DB":args.db,
+        "RETRIEVER":args.retriever,
+        "PERSONA":args.persona,
+        "MODEL_TYPE":args.model_type,
+        "WRITE":args.write,
+        "BUILD":args.build,
+        "SHOW_SOURCE":args.show_source,
+        "DEBUG":args.debug,
+        "VERBOSE":args.verbose,
+        "LOG":args.log,
+        "RECURSIVE":args.recursive,
+        "VERSION":args.version,
+        "TRIES":args.tries,
+        "MODE":args.mode
+        }
+
     if args.debug:
         log_level = logging.DEBUG
     elif args.verbose:
@@ -138,6 +157,8 @@ def main():
         )
 
     if args.ui:
+        with open(UI_ARGS_PATH,'w') as file:
+            json.dump(UI_ARGS,file)
         logging.info("Starting the UI server for NeoGPT 🤖")
         logging.info("Note: The UI server only supports local retriever and Chroma DB")
         sys.argv = ["streamlit", "run", "neogpt/ui.py"]
