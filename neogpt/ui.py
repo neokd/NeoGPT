@@ -4,16 +4,23 @@ from datetime import date, datetime, timedelta
 import streamlit as st
 from langchain.chains import RetrievalQA
 import os
-import subprocess
 
-from neogpt.callback_handler import StreamingStdOutCallbackHandler
-from neogpt.config import DEVICE_TYPE, MODEL_FILE, MODEL_NAME, SOURCE_DIR
+import json
+
+from neogpt.config import MODEL_FILE, MODEL_NAME, SOURCE_DIR,UI_ARGS_PATH
 from neogpt.load_llm import load_model
 from neogpt.prompts.prompt import get_prompt
 from neogpt.vectorstore.chroma import ChromaStore
 from neogpt.vectorstore.faiss import FAISSStore
 from neogpt.builder import builder
+from neogpt.prompts.prompt import conversation_prompt
+from langchain.chains import LLMChain
 st.set_page_config(page_title="NeoGPT", page_icon="🤖")
+
+#load parsed arguements from the file
+with open(UI_ARGS_PATH,'r') as file:
+    UI_ARGS=json.load(file)
+
 
 persona_list = [
     "default",
@@ -24,49 +31,70 @@ persona_list = [
     "ceo",
     "researcher",
 ]
+device_type_list=["cpu", "mps", "cuda"]
+db_list=["Chroma", "FAISS"]
+retriever_list=["local", "web", "hybrid", "stepback", "sql", "compress"]
+model_type_list=["mistral", "llama", "ollama", "hf"]
+mode_list=['llm_only','db']
 
 
 @st.cache_resource(show_spinner=True)
-def create_chain(persona):
+def create_chain(mode,device_type,db,model_type,persona):
     with st.spinner(text="Loading the model"):
-        db = FAISSStore().load_local()
-        logging.info("Loaded Chroma DB Successfully.")
-        # st.chat_message(f"Loaded Chroma DB Successfully.")
-        retriever = db.as_retriever()
-        # Load the LLM model
         llm = load_model(
-            DEVICE_TYPE,
-            model_id=MODEL_NAME,
-            model_basename=MODEL_FILE,
-            callback_manager=[StreamingStdOutCallbackHandler()],
-            LOGGING=logging,
-        )
-        # Prompt Builder Function
-        prompt, memory = get_prompt(persona=persona)
-        # Create a retrieval-based question-answering system using the LLM model and the Vector DB
-        return RetrievalQA.from_chain_type(
-            llm=llm,
-            retriever=retriever,
-            chain_type="stuff",
-            chain_type_kwargs={"prompt": prompt, "memory": memory},
-        )
+        device_type,
+        model_type,
+        model_id=MODEL_NAME,
+        model_basename=MODEL_FILE,
+        LOGGING=logging, )
+        if mode=="llm_only":
+            prompt,memory=conversation_prompt()
+            conversation=LLMChain(prompt=prompt,llm=llm,verbose=False,memory=memory)
+            return conversation
+        else:
+            match db:
+                case 'Chroma':
+                    DB=ChromaStore()
+                case "FAISS":
+                    DB=FAISSStore().load_local()
+            
+            
+            # Prompt Builder Function
+            prompt, memory = get_prompt(persona=persona)
+            # Create a retrieval-based question-answering system using the LLM model and the Vector DB
+            return RetrievalQA.from_chain_type(
+                llm=llm,
+                retriever=DB.as_retriever(),
+                chain_type="stuff",
+                chain_type_kwargs={"prompt": prompt, "memory": memory},
+            )
+            # return chain
 
 
 def run_ui():
-    persona = st.session_state.persona if "persona" in st.session_state else "default"
-    chain = create_chain(persona)
-
     with st.sidebar:
         st.markdown("# NeoGPT 🤖")
         st.markdown(
             "NeoGPT is an open-source, locally-run Language Model (LLM) 📚 which allows you to chat with documents, YouTube videos,etc. "
         )
         st.divider()
-        st.markdown("## Default Configurations:")
-        st.markdown(f"Model: **{MODEL_NAME}**")
-        st.markdown(f"Device: **{DEVICE_TYPE}**")
-        st.markdown("Retriever: **Local Retrieval**")
-        st.markdown("Database: **FAISS DB**")
+        st.session_state.mode=st.selectbox(label="MODE",options=mode_list,index=mode_list.index(UI_ARGS['MODE']))
+        st.session_state.device_type=st.selectbox(label="DEVICE TYPE",options=device_type_list,index=device_type_list.index(UI_ARGS['DEVICE_TYPE']))
+        st.session_state.db=st.selectbox(label="DB",options=db_list,index=db_list.index(UI_ARGS['DB']))
+        st.session_state.model_type=st.selectbox(label="MODEL TYPE",options=model_type_list,index=model_type_list.index(UI_ARGS['MODEL_TYPE']))
+        st.session_state.persona = st.selectbox(
+            "Persona",
+            options=persona_list,
+            on_change=lambda: st.session_state.pop("messages", None),
+        )
+        
+        st.write(f"TRIES: {UI_ARGS['TRIES']}")
+
+        chain = create_chain(st.session_state.mode,
+                             st.session_state.device_type,
+                             st.session_state.db,
+                             st.session_state.model_type,
+                             st.session_state.persona)
         uploads = st.file_uploader("File Upload", accept_multiple_files=True, help= "Upload files to be placed in your document folder")
         # Place the uploaded files in dir
         if uploads:
@@ -77,11 +105,7 @@ def run_ui():
                     f.write(upload.getvalue())
             # Run the build process once files are detected
             builder()
-        st.session_state.persona = st.selectbox(
-            "Persona",
-            options=persona_list,
-            on_change=lambda: st.session_state.pop("messages", None),
-        )
+        
         st.divider()
         st.markdown("### Feedback and Contact")
         st.warning(
@@ -94,10 +118,6 @@ def run_ui():
         )
 
     st.title("NeoGPT🤖")
-
-    if st.session_state.persona != persona:
-        persona = st.session_state.persona
-        chain = create_chain(persona)
 
     if "messages" not in st.session_state:
         project_info = st.empty()
@@ -146,13 +166,25 @@ def run_ui():
             st.markdown(prompt)
         # Add user message to chat history
         st.session_state.messages.append({"role": "user", "content": prompt})
-
-        response = chain(prompt, return_only_outputs=True)["result"]
-        # Display assistant response in chat message container
-        with st.chat_message("assistant"):
-            st.markdown(response)
-        # Add assistant response to chat history
-        st.session_state.messages.append({"role": "assistant", "content": response})
+        if st.session_state.mode=="llm_only":
+            res = (
+                    chain.predict(human_input=prompt)
+        )
+            # Display assistant response in chat message container
+            with st.chat_message("assistant"):
+                st.markdown(res)
+            # Add assistant response to chat history
+            st.session_state.messages.append({"role": "assistant", "content": res})
+        else:
+            response = chain(prompt, return_only_outputs=True)["result"]
+            # res = (
+            #     chain.invoke({"question": prompt})
+            # )
+            # Display assistant response in chat message container
+            with st.chat_message("assistant"):
+                st.markdown(response)
+            # Add assistant response to chat history
+            st.session_state.messages.append({"role": "assistant", "content": response})
 
 
 if __name__ == "__main__":
