@@ -44,6 +44,7 @@ def create_chain(mode,device_type,db,model_type,persona):
         llm = load_model(
         device_type,
         model_type,
+            model_type="ollama",
         model_id=MODEL_NAME,
         model_basename=MODEL_FILE,
         LOGGING=logging, )
