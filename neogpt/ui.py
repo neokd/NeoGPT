@@ -15,6 +15,7 @@ from neogpt.vectorstore.faiss import FAISSStore
 from neogpt.builder import builder
 from neogpt.prompts.prompt import conversation_prompt
 from langchain.chains import LLMChain
+from neogpt.callback_handler import StreamlitStreamingHandler
 st.set_page_config(page_title="NeoGPT", page_icon="🤖")
 
 #load parsed arguements from the file
@@ -44,10 +45,11 @@ def create_chain(mode,device_type,db,model_type,persona):
         llm = load_model(
         device_type,
         model_type,
-            model_type="ollama",
         model_id=MODEL_NAME,
         model_basename=MODEL_FILE,
-        LOGGING=logging, )
+        LOGGING=logging,
+        callback_manager=[StreamlitStreamingHandler()],
+          )
         if mode=="llm_only":
             prompt,memory=conversation_prompt()
             conversation=LLMChain(prompt=prompt,llm=llm,verbose=False,memory=memory)
@@ -169,7 +171,7 @@ def run_ui():
         st.session_state.messages.append({"role": "user", "content": prompt})
         if st.session_state.mode=="llm_only":
             res = (
-                    chain.predict(human_input=prompt)
+                    chain.invoke(prompt)['text']
         )
             # Display assistant response in chat message container
             with st.chat_message("assistant"):
