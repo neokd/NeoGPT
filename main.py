@@ -20,9 +20,9 @@ def main():
     )
     parser.add_argument(
         "--db",
-        choices=["Chroma", "FAISS"],
+        choices=["Chroma", "FAISS","qdrant"],
         default="Chroma",
-        help="Specify the vectorstore (Chroma, FAISS)",
+        help="Specify the vectorstore (Chroma, FAISS, qdrant)",
     )
     parser.add_argument(
         "--retriever",
@@ -148,6 +148,7 @@ def main():
     # if not os.path.exists(CHROMA_PERSIST_DIRECTORY):
     #     builder(vectorstore="Chroma")
 
+
     if args.build:
         builder(
             vectorstore=args.db,
@@ -155,7 +156,7 @@ def main():
             debug=args.debug,
             verbose=args.verbose,
         )
-
+    
     if args.ui:
         with open(UI_ARGS_PATH,'w') as file:
             json.dump(UI_ARGS,file)

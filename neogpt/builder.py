@@ -5,6 +5,8 @@ import re
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from functools import partial  # Import partial
 
+import time
+
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from tqdm import tqdm
 
@@ -24,6 +26,7 @@ from neogpt.modules import (
     load_url_batch,
 )
 from neogpt.vectorstore import ChromaStore, FAISSStore
+from neogpt.vectorstore.qdrant import QdrantStore
 
 
 def build_documents(SOURCE_DIR: str = SOURCE_DIR, recursive: bool = False):
@@ -140,6 +143,12 @@ def builder(
             logging.info("Using FAISS for vectorstore")
             db = FAISSStore().from_documents(documents=texts)
             logging.info("Loaded Documents to FAISS DB Successfully")
+        case "qdrant":
+            logging.info("Using Qdrant for vectorstore")
+            print("using Qdrant")
+            db =QdrantStore().from_documents(documents=texts)
+            time.sleep(5)
+            logging.info("Loaded Documents to Qdrant DB Successfully")
     if db:
         logging.info("Builder👷🏻‍♀️ has built your VectorDB successfully!")
     else:
@@ -166,9 +175,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="NeoGPT CLI Interface")
     parser.add_argument(
         "--db",
-        choices=["Chroma", "FAISS"],
+        choices=["Chroma", "FAISS","qdrant"],
         default="Chroma",
-        help="Specify the vectorstore (Chroma, FAISS)",
+        help="Specify the vectorstore (Chroma, FAISS,qdrant)",
     )
     parser.add_argument("--debug", action="store_true", help="Enable debugging")
     parser.add_argument("--verbose", action="store_true", help="Enable verbose mode")

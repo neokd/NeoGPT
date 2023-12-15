@@ -30,6 +30,7 @@ from neogpt.retrievers import (
     web_research,
 )
 from neogpt.vectorstore import ChromaStore, FAISSStore
+from neogpt.vectorstore.qdrant import QdrantStore
 
 
 def db_retriver(
@@ -65,6 +66,9 @@ def db_retriver(
             # Load the FAISS DB with the embedding model
             db = FAISSStore() if retriever == "hybrid" else FAISSStore().load_local()
             LOGGING.info("Loaded FAISS DB Successfully")
+        case "qdrant":
+            db=QdrantStore()
+            LOGGING.info("Loaded Qdrant DB Successfully")
         # case "Pinecone":
         # Initialize Pinecone client
         # Load the Pinecone DB with the embedding model

@@ -103,19 +103,19 @@ def chat_mode(
         )
         # res = chain.invoke({"question": query})
 
-        if show_source:
-            answer, docs = res["result"], res["source_documents"]
-            print("Question: " + Fore.LIGHTGREEN_EX + query)
-            print("Answer: " + Fore.LIGHTGREEN_EX + answer)
-            print(
-                "----------------------------------SOURCE DOCUMENTS---------------------------"
-            )
-            for document in docs:
-                # print("\n> " + document.metadata["source"] + ":")
-                print(document)
-            print(
-                "----------------------------------SOURCE DOCUMENTS---------------------------"
-            )
+        # if show_source:
+        #     answer, docs = res["result"], res["source_documents"]
+        #     print("Question: " + Fore.LIGHTGREEN_EX + query)
+        #     print("Answer: " + Fore.LIGHTGREEN_EX + answer)
+        #     print(
+        #         "----------------------------------SOURCE DOCUMENTS---------------------------"
+        #     )
+        #     for document in docs:
+        #         # print("\n> " + document.metadata["source"] + ":")
+        #         print(document)
+        #     print(
+        #         "----------------------------------SOURCE DOCUMENTS---------------------------"
+        #     )
         # Writing the results to a file if write is specified. It can be used to write assignments, reports etc.
         if write is not None:
             if not os.path.exists(WORKSPACE_DIRECTORY):
