@@ -157,8 +157,8 @@ def main():
         )
 
     if args.ui:
-        with open(UI_ARGS_PATH,'w') as file:
-            json.dump(UI_ARGS,file)
+        # with open(UI_ARGS_PATH,'w') as file:
+        #     json.dump(UI_ARGS,file)
         logging.info("Starting the UI server for NeoGPT 🤖")
         logging.info("Note: The UI server only supports local retriever and Chroma DB")
         sys.argv = ["streamlit", "run", "neogpt/ui.py"]
