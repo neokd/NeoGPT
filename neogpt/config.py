@@ -1,4 +1,5 @@
 import os
+import sys
 import yaml
 import toml
 from datetime import datetime
@@ -183,9 +184,8 @@ def read_pyproject_toml(file_path):
         'version': version,
     }
 
-
 # Export Configuration partially implemented
-def export_config():
+def export_config(config_filename):
     toml_path = "./pyproject.toml"
     toml_info = read_pyproject_toml(toml_path)
     config = {
@@ -217,8 +217,35 @@ def export_config():
     }
     # Ensure the directory exists
     os.makedirs("settings", exist_ok=True)
+    while True:
+        
+        # Validate config filename format
+        if "." in os.path.basename(config_filename):
+            # Remove existing suffix and replace with .yml suffix
+            if not config_filename.endswith(".yml"):
+                config_filename = os.path.splitext(config_filename)[0] + ".yml"
+                print(f"Config file must be saved in YAML file format, saving as {config_filename}")
 
-    with open("settings/settings.yml", "w") as file:
+        # Add .yml suffix if there is no suffix         
+        else:
+            config_filename += ".yml"
+            print(f"Config file must be saved in YAML file format, saving as {config_filename}")
+
+        filepath = f"./neogpt/settings/{config_filename}"
+        if os.path.exists(filepath):
+            response = input(f"A file with the name '{config_filename}' already exists.\nEnter a new filename OR press enter to overwrite current config file OR type 'exit' to cancel export: ")
+            if response.lower() == 'exit':
+                
+                print("Export cancelled ")
+                sys.exit()  # Exit the loop and end the program
+            elif response.strip() == '':
+                break  # Exit the loop to overwrite the current filename
+            else:
+                config_filename = response.lower() 
+                continue  # Continue to the beginning of the loop to validate new filename
+        else:
+            break  # Exit the loop if the filename is unique
+    with open(filepath, "w") as file:
         yaml.dump(config, file,sort_keys=False)
 
 
