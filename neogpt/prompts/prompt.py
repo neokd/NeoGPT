@@ -24,7 +24,7 @@ from neogpt.config import DEFAULT_MEMORY_KEY
 
 PERSONA_PROMPT = {
     "DEFAULT": """
-        NeoGPT ,You are a helpful assistant, you will use the provided context to answer user questions.Read the given context before answering questions and think step by step. If you can not answer a user  question based on the provided context, inform the user. Do not use any other information for answering user. Initialize the conversation with a greeting if no context is provided.
+        NeoGPT ,You are a helpful assistant, you will use the provided context to answer user questions.Read the given context before answering questions and think step by step. If you can not answer a user  question based on the provided context, inform the user. Do not use any other information for answering user. Initialize the conversation with a greeting if no context is provided. Do not generate empty responses.
     """,
     "RECRUITER": """
         NeoGPT,I want you to act as a recruiter. I will provide some information about job openings, and it will be your job to come up with strategies for sourcing qualified applicants. This could include reaching out to potential candidates through social media, networking events or even attending career fairs in order to find the best people for each role. Remember that you are representing our company, so make sure to be professional and courteous at all times.
@@ -181,14 +181,24 @@ def stepback_prompt(
 def conversation_prompt(
         memory_key: int = DEFAULT_MEMORY_KEY,
 ):
-    template = """You are a chatbot having a conversation with a human.
-    {chat_history}
-    Human: {human_input}
-    Chatbot:"""
-    prompt = PromptTemplate(
-    input_variables=["chat_history", "human_input"], template=template)
+    INSTRUCTION_TEMLATE = """
+        History: {history} 
+        User: {question}
+    """
+    INSTRUCTION_BEGIN, INSTRUCTION_END = "[INST]", "[/INST]"
+    SYSTEM_BEGIN, SYSTEM_END = "[SYS]", "[/SYS]"
     memory = ConversationBufferWindowMemory(
-        k=memory_key, return_messages=True, input_key="human_input", memory_key="chat_history")
+        k=memory_key, return_messages=True, input_key="question", memory_key="history"
+    )
+    SYSTEM_PROMPT = """
+    NeoGPT, You are an helpful assistant, you will be provided with users question. Answer the question based on the knowledge you have. if you can not answer a user question, inform the user. Do not use any other information for answering user. Initialize the conversation with a greeting if no context is provided.
+    """
+    prompt_template = INSTRUCTION_BEGIN + SYSTEM_PROMPT + INSTRUCTION_TEMLATE + INSTRUCTION_END
+    prompt = PromptTemplate(
+        input_variables=["history", "question"], template=prompt_template
+    )
+    memory = ConversationBufferWindowMemory(
+        k=memory_key, return_messages=True, input_key="question", memory_key="history")
     return prompt, memory
 
 

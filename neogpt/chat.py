@@ -99,7 +99,7 @@ def chat_mode(
             break
 
         res = (
-            conversation.predict(human_input=query)
+            conversation.invoke({"question": query})
         )
         # res = chain.invoke({"question": query})
 
