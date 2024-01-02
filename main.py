@@ -6,7 +6,7 @@ import json
 from streamlit.web import cli as stcli
 
 from neogpt.builder import builder
-from neogpt.config import DEVICE_TYPE, NEOGPT_LOG_FILE,UI_ARGS_PATH
+from neogpt.config import DEVICE_TYPE, NEOGPT_LOG_FILE,UI_ARGS_PATH, export_config
 from neogpt.manager import db_retriver, hire
 from neogpt.chat import chat_mode
 
@@ -101,9 +101,23 @@ def main():
         help="Number of retries if the Agent fails to perform the task",
     )
     parser.add_argument("--mode", default="llm_only", choices=['llm_only', 'db'], help="Specify the mode of query")
-
+    
+    # Adding the --export switch with an optional YAML filename parameter
+    parser.add_argument(
+        "--export", 
+        nargs="?",
+        const="settings.yml", 
+        help="Export configuration settings to a YAML file in ./neogpt/settings directory (default: settings.yml)"
+    )
+    
     args = parser.parse_args()
-
+    
+        # Check if --export switch is received
+    if args.export:
+        config_filename = args.export
+        export_config(config_filename)
+        sys.exit()  # Exit the script after exporting configuration    
+        
     UI_ARGS={
         "DEVICE_TYPE":args.device_type,
         "DB":args.db,
