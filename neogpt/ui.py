@@ -4,24 +4,16 @@ from datetime import date, datetime, timedelta
 import streamlit as st
 from langchain.chains import RetrievalQA
 import os
+import subprocess
 
-import json
-
-from neogpt.config import MODEL_FILE, MODEL_NAME, SOURCE_DIR,UI_ARGS_PATH
+from neogpt.callback_handler import StreamlitStreamingHandler
+from neogpt.config import DEVICE_TYPE, MODEL_FILE, MODEL_NAME, SOURCE_DIR
 from neogpt.load_llm import load_model
 from neogpt.prompts.prompt import get_prompt
 from neogpt.vectorstore.chroma import ChromaStore
 from neogpt.vectorstore.faiss import FAISSStore
 from neogpt.builder import builder
-from neogpt.prompts.prompt import conversation_prompt
-from langchain.chains import LLMChain
-from neogpt.callback_handler import StreamlitStreamingHandler
 st.set_page_config(page_title="NeoGPT", page_icon="🤖")
-
-#load parsed arguements from the file
-with open(UI_ARGS_PATH,'r') as file:
-    UI_ARGS=json.load(file)
-
 
 persona_list = [
     "default",
@@ -32,115 +24,102 @@ persona_list = [
     "ceo",
     "researcher",
 ]
-device_type_list=["cpu", "mps", "cuda"]
-db_list=["Chroma", "FAISS"]
-retriever_list=["local", "web", "hybrid", "stepback", "sql", "compress"]
-model_type_list=["mistral", "llama", "ollama", "hf"]
-mode_list=['llm_only','db']
 
 
 @st.cache_resource(show_spinner=True)
-def create_chain(mode,device_type,db,model_type,persona):
+def create_chain(persona):
     with st.spinner(text="Loading the model"):
+        db = FAISSStore().load_local()
+        logging.info("Loaded Chroma DB Successfully.")
+        # st.chat_message(f"Loaded Chroma DB Successfully.")
+        retriever = db.as_retriever()
+        # Load the LLM model
         llm = load_model(
-        device_type,
-        model_type,
-        model_id=MODEL_NAME,
-        model_basename=MODEL_FILE,
-        LOGGING=logging,
-        callback_manager=[StreamlitStreamingHandler()],
-          )
-        if mode=="llm_only":
-            prompt,memory=conversation_prompt()
-            conversation=LLMChain(prompt=prompt,llm=llm,verbose=False,memory=memory)
-            return conversation
-        else:
-            match db:
-                case 'Chroma':
-                    DB=ChromaStore()
-                case "FAISS":
-                    DB=FAISSStore().load_local()
-            
-            
-            # Prompt Builder Function
-            prompt, memory = get_prompt(persona=persona)
-            # Create a retrieval-based question-answering system using the LLM model and the Vector DB
-            return RetrievalQA.from_chain_type(
-                llm=llm,
-                retriever=DB.as_retriever(),
-                chain_type="stuff",
-                chain_type_kwargs={"prompt": prompt, "memory": memory},
-            )
-            # return chain
+            DEVICE_TYPE,
+            model_id=MODEL_NAME,
+            model_basename=MODEL_FILE,
+            callback_manager=[StreamlitStreamingHandler()],
+            LOGGING=logging,
+        )
+        # Prompt Builder Function
+        prompt, memory = get_prompt(persona=persona)
+        # Create a retrieval-based question-answering system using the LLM model and the Vector DB
+        return RetrievalQA.from_chain_type(
+            llm=llm,
+            retriever=retriever,
+            chain_type="stuff",
+            chain_type_kwargs={"prompt": prompt, "memory": memory},
+        )
 
 
 def run_ui():
-    with st.sidebar:
-        st.markdown("# NeoGPT 🤖")
-        st.markdown(
-            "NeoGPT is an open-source, locally-run Language Model (LLM) 📚 which allows you to chat with documents, YouTube videos,etc. "
-        )
-        st.divider()
-        st.session_state.mode=st.selectbox(label="MODE",options=mode_list,index=mode_list.index(UI_ARGS['MODE']))
-        st.session_state.device_type=st.selectbox(label="DEVICE TYPE",options=device_type_list,index=device_type_list.index(UI_ARGS['DEVICE_TYPE']))
-        st.session_state.db=st.selectbox(label="DB",options=db_list,index=db_list.index(UI_ARGS['DB']))
-        st.session_state.model_type=st.selectbox(label="MODEL TYPE",options=model_type_list,index=model_type_list.index(UI_ARGS['MODEL_TYPE']))
-        st.session_state.persona = st.selectbox(
-            "Persona",
-            options=persona_list,
-            on_change=lambda: st.session_state.pop("messages", None),
-        )
-        
-        st.write(f"TRIES: {UI_ARGS['TRIES']}")
+    persona = st.session_state.persona if "persona" in st.session_state else "default"
+    chain = create_chain(persona)
 
-        chain = create_chain(st.session_state.mode,
-                             st.session_state.device_type,
-                             st.session_state.db,
-                             st.session_state.model_type,
-                             st.session_state.persona)
+    with st.sidebar:
+        st.markdown("# RS BOT 🤖")
+        # st.markdown(
+        #     "NeoGPT is an open-source, locally-run Language Model (LLM) 📚 which allows you to chat with documents, YouTube videos,etc. "
+        # )
+        st.divider()
+        st.markdown("## Default Configurations:")
+        st.markdown(f"Model: **{MODEL_NAME}**")
+        st.markdown(f"Device: **{DEVICE_TYPE}**")
+        st.markdown("Retriever: **Local Retrieval**")
+        st.markdown("Database: **Chroma DB**")
         uploads = st.file_uploader("File Upload", accept_multiple_files=True, help= "Upload files to be placed in your document folder")
         # Place the uploaded files in dir
         if uploads:
-            for upload in uploads:
-                file_name = upload.name
-                destinatiopn_path = os.path.join(SOURCE_DIR, file_name)
-                with open(destinatiopn_path, "wb") as f:
-                    f.write(upload.getvalue())
+        # Check if the build process has already been executed
+            if "build_executed" not in st.session_state:
+                for upload in uploads:
+                    file_name = upload.name
+                    destinatiopn_path = os.path.join(SOURCE_DIR, file_name)
+                    with open(destinatiopn_path, "wb") as f:
+                        f.write(upload.getvalue())
+
             # Run the build process once files are detected
-            builder()
-        
-        st.divider()
-        st.markdown("### Feedback and Contact")
-        st.warning(
-            "Feedback? Please open an issue on [GitHub issues page](https://github.com/neokd/NeoGPT/issues/new)"
+                builder()
+
+            # Set the flag to indicate that the build process has been executed
+            st.session_state.build_executed = True
+            
+        st.session_state.persona = st.selectbox(
+            "Custom Instructions",
+            options=persona_list,
+            on_change=lambda: st.session_state.pop("messages", None),
         )
+        # st.divider()
+        # st.markdown("### Feedback and Contact")
+        # st.warning(
+        #     "Feedback? Please open an issue on [GitHub issues page](https://github.com/neokd/NeoGPT/issues/new)"
+        # )
         st.divider()
         st.button(
             "Clear Chat History",
             on_click=lambda: st.session_state.pop("messages", None),
         )
 
-    st.title("NeoGPT🤖")
+    st.title("RS BOT🤖")
+
+    if st.session_state.persona != persona:
+        persona = st.session_state.persona
+        chain = create_chain(persona)
 
     if "messages" not in st.session_state:
         project_info = st.empty()
         project_info.markdown(
-            "Welcome to NeoGPT, your open-source, locally-run Language Model (LLM). You can chat with documents, YouTube videos, and more! Try it out by typing a message below.\n\n"
+            "Welcome to RS BOT, your locally-run Language Model (LLM). You can chat with documents, YouTube videos, and more! Try it out by typing a message below.\n\n"
             "### Currently, the database is built using 2 papers:\n"
             "- [Attention Is All You Need](https://arxiv.org/pdf/1706.03762.pdf)\n"
             "- [HuggingGPT](https://arxiv.org/pdf/2303.17580.pdf)\n\n"
-            "- [22 AI News EXPLAINED!!!](https://www.youtube.com/watch?v=BPknz-hCnec)\n"
-            "### Example Sample Commands:\n"
-            "1. Summarize the paper Attention Is All You Need\n"
-            "2. What do you know about HuggingGPT?\n"
-            "3. What is MemGPT?\n"
         )
         st.warning(
             "**Note:** The bot stops interacting if no prompt is given within 5mins from latest prompt, all your history will be deleted once you refresh the page. "
         )
         st.session_state.messages = []
     st.warning(
-        "**NeoGPT** may generate inaccurate responses about people, places, or facts."
+        "**RS BOT** may generate inaccurate responses about people, places, or facts."
     )
 
     last_input_time = datetime.now()
@@ -169,25 +148,13 @@ def run_ui():
             st.markdown(prompt)
         # Add user message to chat history
         st.session_state.messages.append({"role": "user", "content": prompt})
-        if st.session_state.mode=="llm_only":
-            res = (
-                    chain.invoke(prompt)['text']
-        )
-            # Display assistant response in chat message container
-            with st.chat_message("assistant"):
-                st.markdown(res)
-            # Add assistant response to chat history
-            st.session_state.messages.append({"role": "assistant", "content": res})
-        else:
-            response = chain(prompt, return_only_outputs=True)["result"]
-            # res = (
-            #     chain.invoke({"question": prompt})
-            # )
-            # Display assistant response in chat message container
-            with st.chat_message("assistant"):
-                st.markdown(response)
-            # Add assistant response to chat history
-            st.session_state.messages.append({"role": "assistant", "content": response})
+
+        response = chain(prompt, return_only_outputs=True)["result"]
+        # Display assistant response in chat message container
+        with st.chat_message("assistant"):
+            st.markdown(response)
+        # Add assistant response to chat history
+        st.session_state.messages.append({"role": "assistant", "content": response})
 
 
 if __name__ == "__main__":
