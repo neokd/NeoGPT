@@ -44,8 +44,8 @@ PINECONE_PERSIST_DIRECTORY = os.path.join(PARENT_DB_DIRECTORY, "pinecone")
 # WORKSPACE DIRECTORY
 WORKSPACE_DIRECTORY = os.path.join(os.path.dirname(__file__), "workspace")
 
-#path of json file to pass the commandline arguments to ui
-UI_ARGS_PATH=os.path.join(os.path.dirname(__file__), "ui_args.json")
+# path of json file to pass the commandline arguments to ui
+UI_ARGS_PATH = os.path.join(os.path.dirname(__file__), "ui_args.json")
 
 # DEFAULT MEMORY KEY FOR CONVERSATION MEMORY (DEFAULT IS 2)
 DEFAULT_MEMORY_KEY = 2

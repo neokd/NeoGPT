@@ -1,16 +1,16 @@
 import logging
-
 import os
-from dotenv import load_dotenv
 
+from dotenv import load_dotenv
 from huggingface_hub import hf_hub_download
 from langchain.callbacks.manager import CallbackManager
+from langchain.chat_models.openai import ChatOpenAI
 from langchain.llms import HuggingFacePipeline, LlamaCpp, Ollama
-from langchain.llms import OpenAI
 
 from neogpt.callback_handler import (
     StreamingStdOutCallbackHandler,
     StreamlitStreamingHandler,
+    StreamOpenAICallbackHandler,
     TokenCallbackHandler,
 )
 from neogpt.config import (
@@ -22,10 +22,9 @@ from neogpt.config import (
     N_GPU_LAYERS,
 )
 
-
 load_dotenv()
 try:
-    OPENAI_API_KEY=os.environ.get("OPENAI_API_KEY")
+    OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 except Exception as e:
     logging.info(e)
 
@@ -130,14 +129,18 @@ def load_model(
             return llm
         except Exception as e:
             LOGGING.info(f"Error {e}")
-    elif model_type=="openai":
+    elif model_type == "openai":
         try:
-            LOGGING.warning(
-                "🚨 You are using openai"
+            LOGGING.warning("🚨 You are using openai")
+            os.environ["TOKENIZERS_PARALLELISM"] = "false"
+            llm = ChatOpenAI(
+                api_key=OPENAI_API_KEY,
+                callback_manager=CallbackManager(
+                    [StreamOpenAICallbackHandler(), TokenCallbackHandler()]
+                ),
+                streaming=True,
             )
-            
-            llm = OpenAI(api_key=OPENAI_API_KEY)
-            LOGGING.info(f"Loaded openai successfully")
+            LOGGING.info("Loaded openai successfully")
             return llm
         except Exception as e:
             LOGGING.info(f"Error {e}")

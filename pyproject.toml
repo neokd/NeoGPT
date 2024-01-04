@@ -15,7 +15,7 @@ langchain-experimental = "^0.0.42"
 youtube-transcript-api = "^0.6.1"
 pytube = "^15.0.0"
 streamlit = "^1.28.2"
-unstructured = "^0.11.0"
+unstructured = {extras = ["all-docs"], version = "^0.11.8"}
 torch = "^2.1.1"
 duckduckgo-search = "^3.9.6"
 sentence-transformers = "^2.2.2"

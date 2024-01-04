@@ -1,1 +1,0 @@
-{"DEVICE_TYPE": "mps", "DB": "Chroma", "RETRIEVER": "local", "PERSONA": "default", "MODEL_TYPE": "llama", "WRITE": null, "BUILD": false, "SHOW_SOURCE": false, "DEBUG": false, "VERBOSE": false, "LOG": false, "RECURSIVE": false, "VERSION": false, "TRIES": 5, "MODE": "llm_only"}

@@ -68,8 +68,9 @@ nav:
     - Builder: builder.md
     - Run NeoGPT: neogpt.md
     - Models:
-        - llama.cpp : models/llamacpp.md
+        - Llama.cpp : models/llamacpp.md
         - Ollama: models/ollama.md
+        - OpenAI: models/openai.md
     - Retrievers:
         - Local: retrievers/local.md
         - Web: retrievers/web.md
