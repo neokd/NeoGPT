@@ -157,7 +157,6 @@ def db_retriver(
             else chain.invoke(query)
         )
         # res = chain.invoke({"question": query})
-        print(res)
         if show_source:
             answer, docs = res["result"], res["source_documents"]
             print("Question: " + Fore.LIGHTGREEN_EX + query)
