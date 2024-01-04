@@ -91,6 +91,11 @@ def get_prompt(
                 + INSTRUCTION_END
             )
 
+        case "llama":
+            prompt_template = (
+                INSTRUCTION_BEGIN + SYSTEM_BEGIN + SYSTEM_PROMPT + SYSTEM_END + INSTRUCTION_TEMLATE + INSTRUCTION_END
+            )
+
     prompt = PromptTemplate(
         input_variables=["history", "context", "question"], template=prompt_template
     )

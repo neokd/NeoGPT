@@ -90,7 +90,7 @@ def run_ui():
                     destinatiopn_path = os.path.join(SOURCE_DIR, file_name)
                     with open(destinatiopn_path, "wb") as f:
                         f.write(upload.getvalue())
-                
+
             # Run the build process once files are detected
             build_button = st.button("Build")
             if build_button:

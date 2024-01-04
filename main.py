@@ -103,7 +103,7 @@ def main():
     )
     parser.add_argument(
         "--mode",
-        default="llm",
+        default="db",
         choices=["llm", "db"],
         help="Specify the mode of query",
     )

@@ -54,9 +54,9 @@ DEFAULT_MEMORY_KEY = 2
 MODEL_NAME = os.getenv("MODEL_NAME", "TheBloke/Mistral-7B-Instruct-v0.1-GGUF")
 MODEL_FILE = os.getenv("MODEL_FILE", "mistral-7b-instruct-v0.1.Q4_K_M.gguf")
 
-# MISTRAL MODEL LITE
-# MODEL_NAME = "TheBloke/MistralLite-7B-GGUF"
-# MODEL_FILE = "mistrallite.Q4_K_M.gguf"
+# OpenHathi Hindi Model (Testing)
+# MODEL_NAME = "sarvamai/OpenHathi-7B-Hi-v0.1-Base"
+# MODEL_FILE = "OpenHathi-7B-Hi-v0.1-Base-q4_1.gguf"
 
 # GPTQ MODELS (Quantized Models)
 # MODEL_NAME = "TheBloke/Tinyllama-2-1b-miniguanaco-GPTQ"
