@@ -91,6 +91,11 @@ def get_prompt(
                 + INSTRUCTION_END
             )
 
+        case "llama":
+            prompt_template = (
+                INSTRUCTION_BEGIN + SYSTEM_BEGIN + SYSTEM_PROMPT + SYSTEM_END + INSTRUCTION_TEMLATE + INSTRUCTION_END
+            )
+
     prompt = PromptTemplate(
         input_variables=["history", "context", "question"], template=prompt_template
     )
@@ -179,10 +184,10 @@ def stepback_prompt(
 
 
 def conversation_prompt(
-        memory_key: int = DEFAULT_MEMORY_KEY,
+    memory_key: int = DEFAULT_MEMORY_KEY,
 ):
     INSTRUCTION_TEMLATE = """
-        History: {history} 
+        History: {history}
         User: {question}
     """
     INSTRUCTION_BEGIN, INSTRUCTION_END = "[INST]", "[/INST]"
@@ -193,12 +198,15 @@ def conversation_prompt(
     SYSTEM_PROMPT = """
     NeoGPT, You are an helpful assistant, you will be provided with users question. Answer the question based on the knowledge you have. if you can not answer a user question, inform the user. Do not use any other information for answering user. Initialize the conversation with a greeting if no context is provided.
     """
-    prompt_template = INSTRUCTION_BEGIN + SYSTEM_PROMPT + INSTRUCTION_TEMLATE + INSTRUCTION_END
+    prompt_template = (
+        INSTRUCTION_BEGIN + SYSTEM_PROMPT + INSTRUCTION_TEMLATE + INSTRUCTION_END
+    )
     prompt = PromptTemplate(
         input_variables=["history", "question"], template=prompt_template
     )
     memory = ConversationBufferWindowMemory(
-        k=memory_key, return_messages=True, input_key="question", memory_key="history")
+        k=memory_key, return_messages=True, input_key="question", memory_key="history"
+    )
     return prompt, memory
 
 

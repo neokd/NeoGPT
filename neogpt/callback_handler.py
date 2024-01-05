@@ -195,6 +195,24 @@ class AgentCallbackHandler(BaseCallbackHandler):
         # print(Fore.WHITE + f"Total cost: {TOTAL_COST} INR")
 
 
+class StreamOpenAICallbackHandler(BaseCallbackHandler):
+    def on_llm_start(
+        self, serialized: dict[str, Any], prompts: list[str], **kwargs: Any
+    ) -> None:
+        # Start a new line for a clean display
+        sys.stdout.write("\n")
+
+        sys.stdout.write(Fore.BLUE + "NeoGPT 🤖: " + Fore.RESET)
+
+    def on_llm_new_token(self, token: str, **kwargs: Any) -> None:
+        sys.stdout.write(Fore.WHITE + token)
+        sys.stdout.flush()
+
+    def on_llm_end(self, response: LLMResult, **kwargs: Any) -> None:
+        """Run when LLM ends running."""
+        sys.stdout.write("\n")
+
+
 def final_cost():
     global PROJECT_COST
     PROJECT_COST += TOTAL_COST

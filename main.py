@@ -1,14 +1,16 @@
 import argparse
+import json
 import logging
 import sys
-import json
 
 from streamlit.web import cli as stcli
 
 from neogpt.builder import builder
+
 from neogpt.config import DEVICE_TYPE, NEOGPT_LOG_FILE,UI_ARGS_PATH, export_config
 from neogpt.manager import db_retriver, hire
 from neogpt.chat import chat_mode
+
 
 def main():
     parser = argparse.ArgumentParser(description="NeoGPT CLI Interface")
@@ -47,7 +49,7 @@ def main():
     )
     parser.add_argument(
         "--model_type",
-        choices=["mistral", "llama", "ollama", "hf","openai"],
+        choices=["mistral", "llama", "ollama", "hf", "openai"],
         default="llama",
     )
     parser.add_argument(
@@ -100,7 +102,6 @@ def main():
         default=5,
         help="Number of retries if the Agent fails to perform the task",
     )
-    parser.add_argument("--mode", default="llm_only", choices=['llm_only', 'db'], help="Specify the mode of query")
     
     # Adding the --export switch with an optional YAML filename parameter
     parser.add_argument(
@@ -109,32 +110,21 @@ def main():
         const="settings.yml", 
         help="Export configuration settings to a YAML file in ./neogpt/settings directory (default: settings.yml)"
     )
-    
+          
+    parser.add_argument(
+        "--mode",
+        default="db",
+        choices=["llm", "db"],
+        help="Specify the mode of query",
+    )
+
     args = parser.parse_args()
     
-        # Check if --export switch is received
+    # Check if --export switch is received
     if args.export:
         config_filename = args.export
         export_config(config_filename)
         sys.exit()  # Exit the script after exporting configuration    
-        
-    UI_ARGS={
-        "DEVICE_TYPE":args.device_type,
-        "DB":args.db,
-        "RETRIEVER":args.retriever,
-        "PERSONA":args.persona,
-        "MODEL_TYPE":args.model_type,
-        "WRITE":args.write,
-        "BUILD":args.build,
-        "SHOW_SOURCE":args.show_source,
-        "DEBUG":args.debug,
-        "VERBOSE":args.verbose,
-        "LOG":args.log,
-        "RECURSIVE":args.recursive,
-        "VERSION":args.version,
-        "TRIES":args.tries,
-        "MODE":args.mode
-        }
 
     if args.debug:
         log_level = logging.DEBUG
@@ -171,8 +161,8 @@ def main():
         )
 
     if args.ui:
-        with open(UI_ARGS_PATH,'w') as file:
-            json.dump(UI_ARGS,file)
+        # with open(UI_ARGS_PATH,'w') as file:
+        #     json.dump(UI_ARGS,file)
         logging.info("Starting the UI server for NeoGPT 🤖")
         logging.info("Note: The UI server only supports local retriever and Chroma DB")
         sys.argv = ["streamlit", "run", "neogpt/ui.py"]
@@ -185,14 +175,14 @@ def main():
             tries=args.tries,
             LOGGING=logging,
         )
-    elif args.mode == "llm_only":
+    elif args.mode == "llm":
         chat_mode(
             device_type=args.device_type,
             model_type=args.model_type,
             persona=args.persona,
             show_source=args.show_source,
             write=args.write,
-            LOGGING=logging
+            LOGGING=logging,
         )
     else:
         db_retriver(

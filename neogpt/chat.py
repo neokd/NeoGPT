@@ -4,10 +4,9 @@ import re
 from datetime import datetime
 
 from colorama import Fore
-
 from langchain.chains import LLMChain
 from langchain.memory import ConversationBufferMemory
-from neogpt.prompts.prompt import conversation_prompt
+
 from neogpt.agents import ML_Engineer, QA_Engineer
 from neogpt.callback_handler import (
     AgentCallbackHandler,
@@ -22,6 +21,7 @@ from neogpt.config import (
     WORKSPACE_DIRECTORY,
 )
 from neogpt.load_llm import load_model
+from neogpt.prompts.prompt import conversation_prompt
 
 
 def chat_mode(
@@ -32,7 +32,6 @@ def chat_mode(
     write: str | None = None,
     LOGGING=logging,
 ):
-    
     # Load the LLM model
     llm = load_model(
         device_type,
@@ -42,8 +41,8 @@ def chat_mode(
         LOGGING=logging,
     )
 
-    prompt,memory=conversation_prompt()
-    conversation=LLMChain(prompt=prompt,llm=llm,verbose=False,memory=memory)
+    prompt, memory = conversation_prompt()
+    conversation = LLMChain(prompt=prompt, llm=llm, verbose=False, memory=memory)
     # Main loop
     LOGGING.info(
         "Note: The stats are based on OpenAI's pricing model. The cost is calculated based on the number of tokens generated. You don't have to pay anything to use the chatbot. The cost is only for reference."
@@ -98,9 +97,7 @@ def chat_mode(
             LOGGING.info("Byee 👋.")
             break
 
-        res = (
-            conversation.invoke({"question": query})
-        )
+        res = conversation.invoke({"question": query})
         # res = chain.invoke({"question": query})
 
         if show_source:

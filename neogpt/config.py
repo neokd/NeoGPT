@@ -48,8 +48,8 @@ PINECONE_PERSIST_DIRECTORY = os.path.join(PARENT_DB_DIRECTORY, "pinecone")
 # WORKSPACE DIRECTORY
 WORKSPACE_DIRECTORY = os.path.join(os.path.dirname(__file__), "workspace")
 
-#path of json file to pass the commandline arguments to ui
-UI_ARGS_PATH=os.path.join(os.path.dirname(__file__), "ui_args.json")
+# path of json file to pass the commandline arguments to ui
+UI_ARGS_PATH = os.path.join(os.path.dirname(__file__), "ui_args.json")
 
 # DEFAULT MEMORY KEY FOR CONVERSATION MEMORY (DEFAULT IS 2)
 DEFAULT_MEMORY_KEY = 2
@@ -58,9 +58,9 @@ DEFAULT_MEMORY_KEY = 2
 MODEL_NAME = os.getenv("MODEL_NAME", "TheBloke/Mistral-7B-Instruct-v0.1-GGUF")
 MODEL_FILE = os.getenv("MODEL_FILE", "mistral-7b-instruct-v0.1.Q4_K_M.gguf")
 
-# MISTRAL MODEL LITE
-# MODEL_NAME = "TheBloke/MistralLite-7B-GGUF"
-# MODEL_FILE = "mistrallite.Q4_K_M.gguf"
+# OpenHathi Hindi Model (Testing)
+# MODEL_NAME = "sarvamai/OpenHathi-7B-Hi-v0.1-Base"
+# MODEL_FILE = "OpenHathi-7B-Hi-v0.1-Base-q4_1.gguf"
 
 # GPTQ MODELS (Quantized Models)
 # MODEL_NAME = "TheBloke/Tinyllama-2-1b-miniguanaco-GPTQ"
