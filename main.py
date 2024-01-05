@@ -6,9 +6,10 @@ import sys
 from streamlit.web import cli as stcli
 
 from neogpt.builder import builder
-from neogpt.chat import chat_mode
-from neogpt.config import DEVICE_TYPE, NEOGPT_LOG_FILE, UI_ARGS_PATH
+
+from neogpt.config import DEVICE_TYPE, NEOGPT_LOG_FILE,UI_ARGS_PATH, export_config
 from neogpt.manager import db_retriver, hire
+from neogpt.chat import chat_mode
 
 
 def main():
@@ -101,6 +102,15 @@ def main():
         default=5,
         help="Number of retries if the Agent fails to perform the task",
     )
+    
+    # Adding the --export switch with an optional YAML filename parameter
+    parser.add_argument(
+        "--export", 
+        nargs="?",
+        const="settings.yml", 
+        help="Export configuration settings to a YAML file in ./neogpt/settings directory (default: settings.yml)"
+    )
+          
     parser.add_argument(
         "--mode",
         default="db",
@@ -109,6 +119,12 @@ def main():
     )
 
     args = parser.parse_args()
+    
+    # Check if --export switch is received
+    if args.export:
+        config_filename = args.export
+        export_config(config_filename)
+        sys.exit()  # Exit the script after exporting configuration    
 
     if args.debug:
         log_level = logging.DEBUG

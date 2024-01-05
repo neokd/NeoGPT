@@ -1,4 +1,8 @@
 import os
+import sys
+import yaml
+import toml
+from datetime import datetime
 
 import torch
 from chromadb.config import Settings
@@ -163,39 +167,86 @@ BUILDER_LOG_FILE = os.path.join(LOG_FOLDER, "builder.log")
 NEOGPT_LOG_FILE = os.path.join(LOG_FOLDER, "neogpt.log")
 
 
-# # Export Config
 
-# def export_config():
-#     config = {
-#         "neogpt" : {
-#             "VERSION": "0.1.0-alpha",
-#             "ENV": "development",
-#             "PERSONA": "default",
-#             "UI" : False,
-#             "MODEL_TYPE": "mistral",
-#             "EXPORT_DATE": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+# Extract version info from TOML 
+def read_pyproject_toml(file_path):
+    with open(file_path, 'r') as toml_file:
+        toml_data = toml.load(toml_file)
 
-#         },
-#         "model" : {
-#             "MODEL_NAME": MODEL_NAME,
-#             "MODEL_FILE": MODEL_FILE,
-#             "EMBEDDING_MODEL": EMBEDDING_MODEL,
-#         },
-#         "database" : {
-#             "PARENT_DB_DIRECTORY": os.path.basename(PARENT_DB_DIRECTORY),
-#         },
-#         "directories" : {
-#             "SOURCE_DIR": os.path.basename(SOURCE_DIR),
-#             "WORKSPACE_DIRECTORY": os.path.basename(WORKSPACE_DIRECTORY),
-#         },
-#         "memory" : {
-#             "DEFAULT_MEMORY_KEY": DEFAULT_MEMORY_KEY,
-#         },
+    poetry_section = toml_data.get('tool', {}).get('poetry', {})
+    
+    # Extracting information
+    version = poetry_section.get('version', '')
+    # authors = poetry_section.get('authors', [])
+    # license_info = poetry_section.get('license', '')
 
-#     }
+    return {
+        'version': version,
+    }
 
-#     with open("settings/settings.yaml", "w") as file:
-#         yaml.dump(config, file,sort_keys=False)
+# Export Configuration partially implemented
+def export_config(config_filename):
+    toml_path = "./pyproject.toml"
+    toml_info = read_pyproject_toml(toml_path)
+    config = {
+        "neogpt" : {
+            "VERSION": toml_info['version'],
+            "ENV": "development",
+            "PERSONA": "default",
+            "UI" : False,
+            "MODEL_TYPE": "mistral",
+            "EXPORT_DATE": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+
+        },
+        "model" : {
+            "MODEL_NAME": MODEL_NAME,
+            "MODEL_FILE": MODEL_FILE,
+            "EMBEDDING_MODEL": EMBEDDING_MODEL,
+        },
+        "database" : {
+            "PARENT_DB_DIRECTORY": os.path.basename(PARENT_DB_DIRECTORY),
+        },
+        "directories" : {
+            "SOURCE_DIR": os.path.basename(SOURCE_DIR),
+            "WORKSPACE_DIRECTORY": os.path.basename(WORKSPACE_DIRECTORY),
+        },
+        "memory" : {
+            "DEFAULT_MEMORY_KEY": DEFAULT_MEMORY_KEY,
+        },
+
+    }
+    # Ensure the directory exists
+    os.makedirs("settings", exist_ok=True)
+    while True:
+        
+        # Validate config filename format
+        if "." in os.path.basename(config_filename):
+            # Remove existing suffix and replace with .yml suffix
+            if not config_filename.endswith(".yml"):
+                config_filename = os.path.splitext(config_filename)[0] + ".yml"
+                print(f"Config file must be saved in YAML file format, saving as {config_filename}")
+
+        # Add .yml suffix if there is no suffix         
+        else:
+            config_filename += ".yml"
+            print(f"Config file must be saved in YAML file format, saving as {config_filename}")
+
+        filepath = f"./neogpt/settings/{config_filename}"
+        if os.path.exists(filepath):
+            response = input(f"A file with the name '{config_filename}' already exists.\nEnter a new filename OR press enter to overwrite current config file OR type 'exit' to cancel export: ")
+            if response.lower() == 'exit':
+                
+                print("Export cancelled ")
+                sys.exit()  # Exit the loop and end the program
+            elif response.strip() == '':
+                break  # Exit the loop to overwrite the current filename
+            else:
+                config_filename = response.lower() 
+                continue  # Continue to the beginning of the loop to validate new filename
+        else:
+            break  # Exit the loop if the filename is unique
+    with open(filepath, "w") as file:
+        yaml.dump(config, file,sort_keys=False)
 
 
 # AGENT CONFIG
