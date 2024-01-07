@@ -2,14 +2,15 @@ import argparse
 import json
 import logging
 import sys
+import warnings
 
+from langchain_core._api.deprecation import LangChainDeprecationWarning
 from streamlit.web import cli as stcli
 
 from neogpt.builder import builder
-
-from neogpt.config import DEVICE_TYPE, NEOGPT_LOG_FILE,UI_ARGS_PATH, export_config
-from neogpt.manager import db_retriver, hire
 from neogpt.chat import chat_mode
+from neogpt.config import DEVICE_TYPE, NEOGPT_LOG_FILE, export_config, import_config
+from neogpt.manager import db_retriver, hire
 
 
 def main():
@@ -93,7 +94,7 @@ def main():
         "--version",
         default=False,
         action="version",
-        version="You are using NeoGPT🤖 v0.1.0-alpha.",
+        version="You are using NeoGPT🤖 v0.1.0-beta.",
     )
     parser.add_argument("--task", type=str, help="Task to be performed by the Agent")
     parser.add_argument(
@@ -102,15 +103,23 @@ def main():
         default=5,
         help="Number of retries if the Agent fails to perform the task",
     )
-    
+
+    # Adding the --import switch with a YAML filename parameter
+    parser.add_argument(
+        "--import-config",
+        nargs="?",
+        const="settings.yaml",
+        help="Import configuration settings from a YAML file (default: settings.yaml)",
+    )
+
     # Adding the --export switch with an optional YAML filename parameter
     parser.add_argument(
-        "--export", 
+        "--export-config",
         nargs="?",
-        const="settings.yml", 
-        help="Export configuration settings to a YAML file in ./neogpt/settings directory (default: settings.yml)"
+        const="settings.yaml",
+        help="Export configuration settings to a YAML file in ./neogpt/settings directory (default: settings.yaml)",
     )
-          
+
     parser.add_argument(
         "--mode",
         default="db",
@@ -119,12 +128,18 @@ def main():
     )
 
     args = parser.parse_args()
-    
+
+    # Check if --import switch is received
+    if args.import_config:
+        config_filename = args.import_config
+        import_config(config_filename)
+        sys.exit()
+
     # Check if --export switch is received
-    if args.export:
-        config_filename = args.export
+    if args.export_config:
+        config_filename = args.export_config
         export_config(config_filename)
-        sys.exit()  # Exit the script after exporting configuration    
+        sys.exit()  # Exit the script after exporting configuration
 
     if args.debug:
         log_level = logging.DEBUG
@@ -195,6 +210,9 @@ def main():
             write=args.write,
             LOGGING=logging,
         )
+    # Supress Langchain Deprecation Warnings
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore", category=LangChainDeprecationWarning)
 
 
 if __name__ == "__main__":

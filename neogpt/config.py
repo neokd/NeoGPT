@@ -1,15 +1,16 @@
 import os
 import sys
-import yaml
-import toml
 from datetime import datetime
 
+import toml
 import torch
+import yaml
 from chromadb.config import Settings
-from colorama import init
+from colorama import Fore, init
 from dotenv import load_dotenv
 from langchain.chat_loaders.whatsapp import WhatsAppChatLoader
-from langchain.document_loaders import (
+from langchain.text_splitter import Language
+from langchain_community.document_loaders import (
     CSVLoader,
     JSONLoader,
     PDFMinerLoader,
@@ -26,7 +27,6 @@ from langchain.document_loaders import (
     WebBaseLoader,
     YoutubeLoader,
 )
-from langchain.text_splitter import Language
 
 # Load Environment Variables
 load_dotenv()
@@ -47,9 +47,6 @@ FAISS_PERSIST_DIRECTORY = os.path.join(PARENT_DB_DIRECTORY, "faiss")
 PINECONE_PERSIST_DIRECTORY = os.path.join(PARENT_DB_DIRECTORY, "pinecone")
 # WORKSPACE DIRECTORY
 WORKSPACE_DIRECTORY = os.path.join(os.path.dirname(__file__), "workspace")
-
-# path of json file to pass the commandline arguments to ui
-UI_ARGS_PATH = os.path.join(os.path.dirname(__file__), "ui_args.json")
 
 # DEFAULT MEMORY KEY FOR CONVERSATION MEMORY (DEFAULT IS 2)
 DEFAULT_MEMORY_KEY = 2
@@ -78,6 +75,7 @@ INGEST_THREADS = 8
 # MODEL CONFIG
 MAX_TOKEN_LENGTH = 8192  # 8192 is the max for Mistral-7B
 N_GPU_LAYERS = 40
+MODEL_TYPE = "mistral"
 
 # PYTORCH DEVICE COMPATIBILITY
 if torch.cuda.is_available():
@@ -166,91 +164,154 @@ BUILDER_LOG_FILE = os.path.join(LOG_FOLDER, "builder.log")
 # NEOGPT LOG
 NEOGPT_LOG_FILE = os.path.join(LOG_FOLDER, "neogpt.log")
 
-
-
-# Extract version info from TOML 
-def read_pyproject_toml(file_path):
-    with open(file_path, 'r') as toml_file:
-        toml_data = toml.load(toml_file)
-
-    poetry_section = toml_data.get('tool', {}).get('poetry', {})
-    
-    # Extracting information
-    version = poetry_section.get('version', '')
-    # authors = poetry_section.get('authors', [])
-    # license_info = poetry_section.get('license', '')
-
-    return {
-        'version': version,
-    }
-
-# Export Configuration partially implemented
-def export_config(config_filename):
-    toml_path = "./pyproject.toml"
-    toml_info = read_pyproject_toml(toml_path)
-    config = {
-        "neogpt" : {
-            "VERSION": toml_info['version'],
-            "ENV": "development",
-            "PERSONA": "default",
-            "UI" : False,
-            "MODEL_TYPE": "mistral",
-            "EXPORT_DATE": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-
-        },
-        "model" : {
-            "MODEL_NAME": MODEL_NAME,
-            "MODEL_FILE": MODEL_FILE,
-            "EMBEDDING_MODEL": EMBEDDING_MODEL,
-        },
-        "database" : {
-            "PARENT_DB_DIRECTORY": os.path.basename(PARENT_DB_DIRECTORY),
-        },
-        "directories" : {
-            "SOURCE_DIR": os.path.basename(SOURCE_DIR),
-            "WORKSPACE_DIRECTORY": os.path.basename(WORKSPACE_DIRECTORY),
-        },
-        "memory" : {
-            "DEFAULT_MEMORY_KEY": DEFAULT_MEMORY_KEY,
-        },
-
-    }
-    # Ensure the directory exists
-    os.makedirs("settings", exist_ok=True)
-    while True:
-        
-        # Validate config filename format
-        if "." in os.path.basename(config_filename):
-            # Remove existing suffix and replace with .yml suffix
-            if not config_filename.endswith(".yml"):
-                config_filename = os.path.splitext(config_filename)[0] + ".yml"
-                print(f"Config file must be saved in YAML file format, saving as {config_filename}")
-
-        # Add .yml suffix if there is no suffix         
-        else:
-            config_filename += ".yml"
-            print(f"Config file must be saved in YAML file format, saving as {config_filename}")
-
-        filepath = f"./neogpt/settings/{config_filename}"
-        if os.path.exists(filepath):
-            response = input(f"A file with the name '{config_filename}' already exists.\nEnter a new filename OR press enter to overwrite current config file OR type 'exit' to cancel export: ")
-            if response.lower() == 'exit':
-                
-                print("Export cancelled ")
-                sys.exit()  # Exit the loop and end the program
-            elif response.strip() == '':
-                break  # Exit the loop to overwrite the current filename
-            else:
-                config_filename = response.lower() 
-                continue  # Continue to the beginning of the loop to validate new filename
-        else:
-            break  # Exit the loop if the filename is unique
-    with open(filepath, "w") as file:
-        yaml.dump(config, file,sort_keys=False)
-
-
 # AGENT CONFIG
 PROJECT_COST = 0
 AGENT_THOUGHTS = []
 QA_ENGINEER_FEEDBACK = ""
 CURRENT_WORKING_AGENT = ["NeoGPT"]
+
+
+def import_config(config_filename):
+    # This function overwrites the default configuration with the configuration from the config file
+    global \
+        MODEL_NAME, \
+        MODEL_FILE, \
+        EMBEDDING_MODEL, \
+        INGEST_THREADS, \
+        MAX_TOKEN_LENGTH, \
+        N_GPU_LAYERS, \
+        DEFAULT_MEMORY_KEY, \
+        LOG_FOLDER, \
+        SOURCE_DIR, \
+        WORKSPACE_DIRECTORY, \
+        MODEL_DIRECTORY, \
+        PARENT_DB_DIRECTORY, \
+        CHROMA_PERSIST_DIRECTORY, \
+        FAISS_PERSIST_DIRECTORY, \
+        PINECONE_PERSIST_DIRECTORY, \
+        MODEL_TYPE
+
+    with open(config_filename) as stream:
+        try:
+            config = yaml.safe_load(stream)
+        except yaml.YAMLError as exc:
+            print(exc)
+    # MODEL CONFIG
+    MODEL_NAME = config["model"]["MODEL_NAME"]
+    MODEL_FILE = config["model"]["MODEL_FILE"]
+    EMBEDDING_MODEL = config["model"]["EMBEDDING_MODEL"]
+    INGEST_THREADS = config["model"]["INGEST_THREADS"]
+    MAX_TOKEN_LENGTH = config["model"]["MAX_TOKEN_LENGTH"]
+    N_GPU_LAYERS = config["model"]["N_GPU_LAYERS"]
+
+    # MODEL TYPE (mistral, openai, hf)
+    MODEL_TYPE = config["neogpt"]["MODEL_TYPE"]
+
+    # DEFAULT MEMORY KEY FOR CONVERSATION MEMORY (DEFAULT IS 2)
+    DEFAULT_MEMORY_KEY = config["memory"]["DEFAULT_MEMORY_KEY"]
+
+    LOG_FOLDER = config["logs"]["LOG_FOLDER"]
+    BUILDER_LOG_FILE = config["logs"]["BUILDER_LOG_FILE"]
+    NEOGPT_LOG_FILE = config["logs"]["NEOGPT_LOG_FILE"]
+
+    # Directories
+    SOURCE_DIR = config["directories"]["SOURCE_DIR"]
+    WORKSPACE_DIRECTORY = config["directories"]["WORKSPACE_DIRECTORY"]
+    MODEL_DIRECTORY = config["directories"]["MODEL_DIRECTORY"]
+    # Database Directories
+    PARENT_DB_DIRECTORY = config["database"]["PARENT_DB_DIRECTORY"]
+
+
+# Extract version info from TOML
+def read_pyproject_toml(file_path):
+    with open(file_path) as toml_file:
+        toml_data = toml.load(toml_file)
+
+    poetry_section = toml_data.get("tool", {}).get("poetry", {})
+
+    # Extracting information
+    version = poetry_section.get("version", "")
+    authors = poetry_section.get("authors", [])
+    license_info = poetry_section.get("license", "")
+
+    return {
+        "version": version,
+        "authors": authors,
+        "license": license_info,
+    }
+
+
+# Export Configuration
+def export_config(config_filename):
+    toml_path = "./pyproject.toml"
+    toml_info = read_pyproject_toml(toml_path)
+    config = {
+        "neogpt": {
+            "VERSION": toml_info["version"],
+            "ENV": "development",
+            "PERSONA": "default",
+            "UI": False,
+            "MODEL_TYPE": "mistral",
+            "EXPORT_DATE": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "LICENSE": toml_info["license"],
+        },
+        "model": {
+            "MODEL_NAME": MODEL_NAME,
+            "MODEL_FILE": MODEL_FILE,
+            "EMBEDDING_MODEL": EMBEDDING_MODEL,
+            "INGEST_THREADS": INGEST_THREADS,
+            "MAX_TOKEN_LENGTH": MAX_TOKEN_LENGTH,
+            "N_GPU_LAYERS": N_GPU_LAYERS,
+        },
+        "database": {
+            "PARENT_DB_DIRECTORY": os.path.basename(PARENT_DB_DIRECTORY),
+        },
+        "directories": {
+            "SOURCE_DIR": os.path.basename(SOURCE_DIR),
+            "WORKSPACE_DIRECTORY": os.path.basename(WORKSPACE_DIRECTORY),
+            "MODEL_DIRECTORY": os.path.basename(MODEL_DIRECTORY),
+        },
+        "memory": {
+            "DEFAULT_MEMORY_KEY": DEFAULT_MEMORY_KEY,
+        },
+        "logs": {
+            "LOG_FOLDER": os.path.basename(LOG_FOLDER),
+        },
+    }
+    # Ensure the directory exists
+    os.makedirs("settings", exist_ok=True)
+    while True:
+        # Validate config filename format
+        if "." in os.path.basename(config_filename):
+            # Remove existing suffix and replace with .yml suffix
+            if not config_filename.endswith(".yaml"):
+                config_filename = os.path.splitext(config_filename)[0] + ".yaml"
+                print(
+                    f"Config file must be saved in YAML file format, saving as {config_filename}"
+                )
+
+        # Add .yml suffix if there is no suffix
+        else:
+            config_filename += ".yaml"
+            print(
+                f"Config file must be saved in YAML file format, saving as {config_filename}"
+            )
+
+        filepath = os.path.join(os.path.dirname(__file__), "settings", config_filename)
+
+        if os.path.exists(filepath):
+            response = input(
+                f"A file with the name '{config_filename}' already exists.\nEnter a new filename OR press enter to overwrite current config file OR type 'exit' to cancel export: "
+            )
+            if response.lower() == "exit":
+                print("Export cancelled ")
+                sys.exit()  # Exit the loop and end the program
+            elif response.strip() == "":
+                break  # Exit the loop to overwrite the current filename
+            else:
+                config_filename = response.lower()
+                continue  # Continue to the beginning of the loop to validate new filename
+        else:
+            break  # Exit the loop if the filename is unique
+    with open(filepath, "w") as file:
+        yaml.dump(config, file, sort_keys=False)

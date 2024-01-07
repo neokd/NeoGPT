@@ -4,8 +4,8 @@ import os
 from dotenv import load_dotenv
 from huggingface_hub import hf_hub_download
 from langchain.callbacks.manager import CallbackManager
-from langchain.chat_models.openai import ChatOpenAI
-from langchain.llms import HuggingFacePipeline, LlamaCpp, Ollama
+from langchain_openai.chat_models import ChatOpenAI
+from langchain_community.llms import HuggingFacePipeline, LlamaCpp, Ollama
 
 from neogpt.callback_handler import (
     StreamingStdOutCallbackHandler,
@@ -19,6 +19,7 @@ from neogpt.config import (
     MODEL_DIRECTORY,
     MODEL_FILE,
     MODEL_NAME,
+    MODEL_TYPE,
     N_GPU_LAYERS,
 )
 
@@ -32,7 +33,7 @@ except Exception as e:
 # Function to load the LLM
 def load_model(
     device_type: str = DEVICE_TYPE,
-    model_type: str = "mistral",
+    model_type: str = MODEL_TYPE,
     model_id: str = MODEL_NAME,
     model_basename: str = MODEL_FILE,
     callback_manager: list = None,
@@ -122,8 +123,9 @@ def load_model(
             llm = HuggingFacePipeline.from_model_id(
                 model_id=MODEL_NAME,
                 task="text-generation",
-                # device=0,
+                device=N_GPU_LAYERS if device_type.lower() == "cuda" else -1,
                 model_kwargs=kwargs,
+                callback_manager=callback_manager,
             )
             LOGGING.info(f"Loaded {model_id} successfully")
             return llm

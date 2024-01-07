@@ -16,6 +16,7 @@ from neogpt.config import (
     DEVICE_TYPE,
     MODEL_FILE,
     MODEL_NAME,
+    MODEL_TYPE,
     QUERY_COST,
     TOTAL_COST,
     WORKSPACE_DIRECTORY,
@@ -26,7 +27,7 @@ from neogpt.prompts.prompt import conversation_prompt
 
 def chat_mode(
     device_type: str = DEVICE_TYPE,
-    model_type: str = "mistral",
+    model_type: str = MODEL_TYPE,
     persona: str = "default",
     show_source: bool = False,
     write: str | None = None,

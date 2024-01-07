@@ -66,7 +66,9 @@ Join our [Discord](https://discord.gg/qNqjsGuCTG) community to stay up to date w
 
 ### Work in Progress
 
-- [ ] **OpenAI LLM Integration:** Enable users to interact with systems that cannot run local models by integrating OpenAI LLM. 🌐
+- [x] **OpenAI LLM Integration:** Enable users to interact with systems that cannot run local models by integrating OpenAI LLM. 🌐
+
+- [x] **Only LLM Mode:** Add Only LLM mode in CLI and UI allowing users to ignore vector db and chat only with the LLM. 🦾
 
 - [ ] **Integration with togetherAI:** Integrate togetherAI services for enhanced user experience and functionality. 🤝
 
@@ -106,7 +108,6 @@ Join our [Discord](https://discord.gg/qNqjsGuCTG) community to stay up to date w
 
 - [ ] **Builder in UI - Retrieved Chunks:** Allow live uploading of files and rebuild the database in the background and allow users to view chunks or documents that were used to generate an answer. 👷
 
-- [ ] **Only LLM Mode:** Add Only LLM mode in CLI and UI allowing users to ignore vector db and chat only with the LLM. 🦾
 
 - [ ] **Autonomous Agent:** Implementing a group of agents that can collaborate to solve a problem. 🤖
 

@@ -17,7 +17,7 @@ from neogpt.config import (
     SOCIAL_CHAT_EXTENSION,
     SOURCE_DIR,
 )
-from neogpt.modules import (
+from neogpt.builder_helpers import (
     load_chat_batch,
     load_code_batch,
     load_document_batch,

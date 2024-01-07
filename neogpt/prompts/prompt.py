@@ -93,7 +93,12 @@ def get_prompt(
 
         case "llama":
             prompt_template = (
-                INSTRUCTION_BEGIN + SYSTEM_BEGIN + SYSTEM_PROMPT + SYSTEM_END + INSTRUCTION_TEMLATE + INSTRUCTION_END
+                INSTRUCTION_BEGIN
+                + SYSTEM_BEGIN
+                + SYSTEM_PROMPT
+                + SYSTEM_END
+                + INSTRUCTION_TEMLATE
+                + INSTRUCTION_END
             )
 
     prompt = PromptTemplate(

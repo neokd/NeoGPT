@@ -3,7 +3,7 @@ import os
 
 from langchain.chains import RetrievalQA
 from langchain.retrievers.web_research import WebResearchRetriever
-from langchain.utilities import GoogleSearchAPIWrapper
+from langchain_community.utilities import GoogleSearchAPIWrapper
 
 from neogpt.prompts.prompt import get_prompt
 

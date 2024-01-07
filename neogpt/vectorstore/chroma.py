@@ -5,9 +5,9 @@
     from the database.
 """
 
-from langchain.embeddings import HuggingFaceInstructEmbeddings
 from langchain.schema.document import Document
-from langchain.vectorstores import Chroma
+from langchain_community.embeddings import HuggingFaceInstructEmbeddings
+from langchain_community.vectorstores.chroma import Chroma
 
 from neogpt.config import (
     CHROMA_PERSIST_DIRECTORY,

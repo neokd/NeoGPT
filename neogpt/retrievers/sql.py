@@ -7,7 +7,7 @@ import logging
 import os
 
 from colorama import Fore
-from langchain.utilities import SQLDatabase
+from langchain_community.utilities.sql_database import SQLDatabase
 from langchain_experimental.sql import SQLDatabaseChain
 
 from neogpt.config import SOURCE_DIR

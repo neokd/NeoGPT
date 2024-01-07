@@ -2,7 +2,7 @@ import logging
 
 from langchain.schema.output_parser import StrOutputParser
 from langchain.schema.runnable import RunnableLambda
-from langchain.utilities import DuckDuckGoSearchAPIWrapper
+from langchain_community.utilities.duckduckgo_search import DuckDuckGoSearchAPIWrapper
 
 from neogpt.prompts.prompt import few_shot_prompt, stepback_prompt
 

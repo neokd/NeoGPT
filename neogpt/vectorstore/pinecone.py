@@ -2,8 +2,8 @@
     The Purpose of this file is to provide a wrapper around the PINECONE from langchain
 """
 
-from langchain.embeddings import HuggingFaceInstructEmbeddings
 from langchain.schema.document import Document
+from langchain_community.embeddings import HuggingFaceInstructEmbeddings
 from pinecone import Pinecone
 
 from neogpt.config import (

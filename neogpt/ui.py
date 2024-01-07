@@ -6,7 +6,7 @@ from datetime import date, datetime, timedelta
 import streamlit as st
 from langchain.chains import RetrievalQA
 
-from neogpt.builder import builder
+from neogpt.builder_helpers import builder
 from neogpt.callback_handler import StreamlitStreamingHandler
 from neogpt.config import DEVICE_TYPE, MODEL_FILE, MODEL_NAME, SOURCE_DIR
 from neogpt.load_llm import load_model

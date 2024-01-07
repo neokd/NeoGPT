@@ -135,15 +135,7 @@ def db_retriver(
                 + Fore.RESET
             )
 
-    #  Main Loop with timer
-    last_input_time = datetime.now()
     while True:
-        time_difference = (datetime.now() - last_input_time).total_seconds()
-        # Check if 1.5 minute have passed since the last input
-        if time_difference > 90:
-            print("\n \nNo input received for 1.5 minute! Exiting the program.")
-            break
-
         query = input(Fore.LIGHTCYAN_EX + "\nEnter your query 🙋‍♂️: ")
 
         if query == "/exit":
@@ -202,8 +194,6 @@ def db_retriver(
             os.environ["TOKENIZERS_PARALLELISM"] = "false"
             command = re.sub(r"```bash|```", "", res["result"])
             os.system(command)
-
-        last_input_time = datetime.now()  # update the last_input_time to now
 
 
 def hire(task: str = "", tries: int = 5, LOGGING=logging):
