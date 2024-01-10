@@ -191,35 +191,47 @@ def import_config(config_filename):
         PINECONE_PERSIST_DIRECTORY, \
         MODEL_TYPE
 
-    with open(config_filename) as stream:
-        try:
-            config = yaml.safe_load(stream)
-        except yaml.YAMLError as exc:
-            print(exc)
-    # MODEL CONFIG
-    MODEL_NAME = config["model"]["MODEL_NAME"]
-    MODEL_FILE = config["model"]["MODEL_FILE"]
-    EMBEDDING_MODEL = config["model"]["EMBEDDING_MODEL"]
-    INGEST_THREADS = config["model"]["INGEST_THREADS"]
-    MAX_TOKEN_LENGTH = config["model"]["MAX_TOKEN_LENGTH"]
-    N_GPU_LAYERS = config["model"]["N_GPU_LAYERS"]
+    filepath = os.path.join(os.path.dirname(__file__), "settings", config_filename)
+    try:
+        if os.path.exists(filepath):
+            print (f"Importing {filepath}...")
+            with open(filepath) as stream:
+                try:
+                    config = yaml.safe_load(stream)
+                except yaml.YAMLError as exc:
+                    print(exc)
+            # MODEL CONFIG
+            MODEL_NAME = config["model"]["MODEL_NAME"]
+            MODEL_FILE = config["model"]["MODEL_FILE"]
+        EMBEDDING_MODEL = config["model"]["EMBEDDING_MODEL"]
+        INGEST_THREADS = config["model"]["INGEST_THREADS"]
+        MAX_TOKEN_LENGTH = config["model"]["MAX_TOKEN_LENGTH"]
+        N_GPU_LAYERS = config["model"]["N_GPU_LAYERS"]
 
-    # MODEL TYPE (mistral, openai, hf)
-    MODEL_TYPE = config["neogpt"]["MODEL_TYPE"]
+        # MODEL TYPE (mistral, openai, hf)
+        MODEL_TYPE = config["neogpt"]["MODEL_TYPE"]
 
-    # DEFAULT MEMORY KEY FOR CONVERSATION MEMORY (DEFAULT IS 2)
-    DEFAULT_MEMORY_KEY = config["memory"]["DEFAULT_MEMORY_KEY"]
+        # DEFAULT MEMORY KEY FOR CONVERSATION MEMORY (DEFAULT IS 2)
+        DEFAULT_MEMORY_KEY = config["memory"]["DEFAULT_MEMORY_KEY"]
 
-    LOG_FOLDER = config["logs"]["LOG_FOLDER"]
-    BUILDER_LOG_FILE = config["logs"]["BUILDER_LOG_FILE"]
-    NEOGPT_LOG_FILE = config["logs"]["NEOGPT_LOG_FILE"]
+        LOG_FOLDER = config["logs"]["LOG_FOLDER"]
+        BUILDER_LOG_FILE = config["logs"]["BUILDER_LOG_FILE"]
+        NEOGPT_LOG_FILE = config["logs"]["NEOGPT_LOG_FILE"]
 
-    # Directories
-    SOURCE_DIR = config["directories"]["SOURCE_DIR"]
-    WORKSPACE_DIRECTORY = config["directories"]["WORKSPACE_DIRECTORY"]
-    MODEL_DIRECTORY = config["directories"]["MODEL_DIRECTORY"]
-    # Database Directories
-    PARENT_DB_DIRECTORY = config["database"]["PARENT_DB_DIRECTORY"]
+        # Directories
+        SOURCE_DIR = config["directories"]["SOURCE_DIR"]
+        WORKSPACE_DIRECTORY = config["directories"]["WORKSPACE_DIRECTORY"]
+        MODEL_DIRECTORY = config["directories"]["MODEL_DIRECTORY"]
+        # Database Directories
+        PARENT_DB_DIRECTORY = config["database"]["PARENT_DB_DIRECTORY"]
+        
+        print (f"Importing {filepath} configurations complete")
+        
+        else:
+            print(f"{filepath} does not exist")
+            
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
 
 # Extract version info from TOML
@@ -313,5 +325,8 @@ def export_config(config_filename):
                 continue  # Continue to the beginning of the loop to validate new filename
         else:
             break  # Exit the loop if the filename is unique
+            
+    print (f"Exporting {filepath}...")
     with open(filepath, "w") as file:
         yaml.dump(config, file, sort_keys=False)
+        print (f"Configuration export complete")
