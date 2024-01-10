@@ -326,7 +326,11 @@ def export_config(config_filename):
         else:
             break  # Exit the loop if the filename is unique
             
-    print (f"Exporting {filepath}...")
-    with open(filepath, "w") as file:
-        yaml.dump(config, file, sort_keys=False)
-        print (f"Configuration export complete")
+    try:
+        print (f"Exporting {filepath}...")
+        with open(filepath, "w") as file:
+            yaml.dump(config, file, sort_keys=False)
+            print (f"Configuration export complete")
+
+    except Exception as e:
+        print(f"An error occurred during export: {e}")
