@@ -191,22 +191,28 @@ def import_config(config_filename):
         PINECONE_PERSIST_DIRECTORY, \
         MODEL_TYPE
 
-    filepath = os.path.join(os.path.dirname(__file__), "settings", config_filename)
+
+    SETTINGS_DIR = os.path.join(os.path.dirname(__file__), "settings")
+
+    # if user provided a file name then use that
+    # Check is absolute path or not
     try:
-        if os.path.exists(filepath):
-            print (f"Importing {filepath}...")
-            with open(filepath) as stream:
-                try:
-                    config = yaml.safe_load(stream)
-                except yaml.YAMLError as exc:
-                    print(exc)
-            # MODEL CONFIG
-            MODEL_NAME = config["model"]["MODEL_NAME"]
-            MODEL_FILE = config["model"]["MODEL_FILE"]
+        if not os.path.isabs(config_filename):
+            config_filename = os.path.join(SETTINGS_DIR, config_filename)
+
+        with open(config_filename) as stream:
+            try:
+                config = yaml.safe_load(stream)
+            except yaml.YAMLError as exc:
+                print(exc)
+        # MODEL CONFIG
+        MODEL_NAME = config["model"]["MODEL_NAME"]
+        MODEL_FILE = config["model"]["MODEL_FILE"]
         EMBEDDING_MODEL = config["model"]["EMBEDDING_MODEL"]
         INGEST_THREADS = config["model"]["INGEST_THREADS"]
         MAX_TOKEN_LENGTH = config["model"]["MAX_TOKEN_LENGTH"]
         N_GPU_LAYERS = config["model"]["N_GPU_LAYERS"]
+
 
         # MODEL TYPE (mistral, openai, hf)
         MODEL_TYPE = config["neogpt"]["MODEL_TYPE"]
@@ -214,9 +220,9 @@ def import_config(config_filename):
         # DEFAULT MEMORY KEY FOR CONVERSATION MEMORY (DEFAULT IS 2)
         DEFAULT_MEMORY_KEY = config["memory"]["DEFAULT_MEMORY_KEY"]
 
+
         LOG_FOLDER = config["logs"]["LOG_FOLDER"]
-        BUILDER_LOG_FILE = config["logs"]["BUILDER_LOG_FILE"]
-        NEOGPT_LOG_FILE = config["logs"]["NEOGPT_LOG_FILE"]
+
 
         # Directories
         SOURCE_DIR = config["directories"]["SOURCE_DIR"]
@@ -225,13 +231,16 @@ def import_config(config_filename):
         # Database Directories
         PARENT_DB_DIRECTORY = config["database"]["PARENT_DB_DIRECTORY"]
         
-        print (f"Importing {filepath} configurations complete")
         
-        else:
-            print(f"{filepath} does not exist")
             
     except Exception as e:
         print(f"An error occurred: {e}")
+
+    return {
+        "PERSONA": config["neogpt"]["PERSONA"],
+        "UI": config["neogpt"]["UI"],
+        "VERSION": config["neogpt"]["VERSION"],
+    }
 
 
 # Extract version info from TOML
@@ -291,7 +300,7 @@ def export_config(config_filename):
         },
     }
     # Ensure the directory exists
-    os.makedirs("settings", exist_ok=True)
+    # os.makedirs("settings", exist_ok=True)
     while True:
         # Validate config filename format
         if "." in os.path.basename(config_filename):
