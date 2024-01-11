@@ -1,9 +1,11 @@
 import logging
 import os
 import re
+import warnings
 from datetime import datetime
 
 from colorama import Fore
+from langchain_core._api.deprecation import LangChainDeprecationWarning
 
 from neogpt.agents import ML_Engineer, QA_Engineer
 from neogpt.callback_handler import (
@@ -16,6 +18,7 @@ from neogpt.config import (
     DEVICE_TYPE,
     MODEL_FILE,
     MODEL_NAME,
+    MODEL_TYPE,
     QUERY_COST,
     TOTAL_COST,
     WORKSPACE_DIRECTORY,
@@ -34,7 +37,7 @@ from neogpt.vectorstore import ChromaStore, FAISSStore
 
 def db_retriver(
     device_type: str = DEVICE_TYPE,
-    model_type: str = "mistral",
+    model_type: str = MODEL_TYPE,
     vectordb: str = "Chroma",
     retriever: str = "local",
     persona: str = "default",
@@ -47,13 +50,21 @@ def db_retriver(
     Description: The function sets up the retrieval-based question-answering system.
     Args:
         device_type (str, optional): Device type (cpu, mps, cuda). Defaults to DEVICE_TYPE.
+        model_type (str, optional): Model type (mistral, llama, ollama, hf, openai). Defaults to MODEL_TYPE.
         vectordb (str, optional): Vectorstore (Chroma, FAISS). Defaults to "Chroma".
         retriever (str, optional): Retriever (local, web, hybrid). Defaults to "local".
         persona (str, optional): Persona (default, recruiter). Defaults to "default".
+        show_source (bool, optional): Show source documents. Defaults to False.
+        write (str | None, optional): Write the results to a file. Defaults to None.
         LOGGING (logging, optional): Logging. Defaults to logging.
     return:
         None
     """
+    # with warnings.catch_warnings():
+
+    # Ignore LangChainDeprecationWarning: The function `__call__` was deprecated in LangChain 0.1.0 and will be removed in 0.2.0. Use invoke instead.
+    warnings.filterwarnings("ignore", category=LangChainDeprecationWarning)
+
     match vectordb:
         case "Chroma":
             # Load the Chroma DB with the embedding model
@@ -200,7 +211,7 @@ def hire(task: str = "", tries: int = 5, LOGGING=logging):
     global TOTAL_COST
     llm = load_model(
         device_type=DEVICE_TYPE,
-        model_type="mistral",
+        model_type=MODEL_TYPE,
         model_id=MODEL_NAME,
         model_basename=MODEL_FILE,
         callback_manager=[AgentCallbackHandler()],

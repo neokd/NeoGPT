@@ -1,5 +1,3 @@
-
-
 neogpt:
   VERSION: 0.1.0-beta
   ENV: development
@@ -9,8 +7,8 @@ neogpt:
   EXPORT_DATE: '2024-01-07 15:06:23'
   LICENSE: MIT
 model:
-  MODEL_NAME: TheBloke/Mistral-7B-Instruct-v0.1-GGUF
-  MODEL_FILE: mistral-7b-instruct-v0.1.Q4_K_M.gguf
+  MODEL_NAME: TinyLlama/TinyLlama-1.1B-Chat-v0.6
+  MODEL_FILE: None
   EMBEDDING_MODEL: sentence-transformers/all-MiniLM-L12-v2
   INGEST_THREADS: 8
   MAX_TOKEN_LENGTH: 8192

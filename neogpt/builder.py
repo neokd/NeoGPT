@@ -8,6 +8,12 @@ from functools import partial  # Import partial
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from tqdm import tqdm
 
+from neogpt.builder_helpers import (
+    load_chat_batch,
+    load_code_batch,
+    load_document_batch,
+    load_url_batch,
+)
 from neogpt.config import (
     BUILDER_LOG_FILE,
     DEVICE_TYPE,
@@ -16,12 +22,6 @@ from neogpt.config import (
     RESERVED_FILE_NAMES,
     SOCIAL_CHAT_EXTENSION,
     SOURCE_DIR,
-)
-from neogpt.builder_helpers import (
-    load_chat_batch,
-    load_code_batch,
-    load_document_batch,
-    load_url_batch,
 )
 from neogpt.vectorstore import ChromaStore, FAISSStore
 

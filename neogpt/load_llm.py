@@ -4,8 +4,8 @@ import os
 from dotenv import load_dotenv
 from huggingface_hub import hf_hub_download
 from langchain.callbacks.manager import CallbackManager
-from langchain_openai.chat_models import ChatOpenAI
 from langchain_community.llms import HuggingFacePipeline, LlamaCpp, Ollama
+from langchain_openai.chat_models import ChatOpenAI
 
 from neogpt.callback_handler import (
     StreamingStdOutCallbackHandler,
@@ -44,13 +44,16 @@ def load_model(
     Description: The function loads the LLM model (LLamaCpp, GPTQ, HuggingFacePipeline)
     Args:
         device_type (str, optional): Device type (cpu, mps, cuda). Defaults to DEVICE_TYPE.
+        model_type (str, optional): Model type (mistral, llama, ollama, hf, openai). Defaults to MODEL_TYPE.
         model_id (str, optional): Model ID. Defaults to MODEL_NAME.
         model_basename (str, optional): Model basename. Defaults to MODEL_FILE.
+        callback_manager (list, optional): Callback manager. Defaults to None.
         LOGGING (logging, optional): Logging. Defaults to logging.
     return:
         llm (LlamaCpp): Returns a LlamaCpp object (language model)
         llm (Ollama): Returns a Ollama object (language model)
         llm (HuggingFacePipeline): Returns a HuggingFace Pipeline object (language model)
+        llm (ChatOpenAI): Returns a OpenAI object (language model)
     """
 
     callbacks = [StreamingStdOutCallbackHandler(), TokenCallbackHandler()]

@@ -132,8 +132,13 @@ def main():
     # Check if --import switch is received
     if args.import_config:
         config_filename = args.import_config
-        import_config(config_filename)
-        sys.exit()
+        overwrite = import_config(config_filename)
+    else:
+        overwrite = {
+            'PERSONA': None,
+            'UI': False,
+        }
+        # sys.exit()
 
     # Check if --export switch is received
     if args.export_config:
@@ -175,9 +180,7 @@ def main():
             verbose=args.verbose,
         )
 
-    if args.ui:
-        # with open(UI_ARGS_PATH,'w') as file:
-        #     json.dump(UI_ARGS,file)
+    if args.ui or (overwrite and overwrite['UI']):
         logging.info("Starting the UI server for NeoGPT 🤖")
         logging.info("Note: The UI server only supports local retriever and Chroma DB")
         sys.argv = ["streamlit", "run", "neogpt/ui.py"]
@@ -194,7 +197,7 @@ def main():
         chat_mode(
             device_type=args.device_type,
             model_type=args.model_type,
-            persona=args.persona,
+            persona=args.persona if overwrite['PERSONA'] is None else overwrite['PERSONA'],
             show_source=args.show_source,
             write=args.write,
             LOGGING=logging,
@@ -205,14 +208,14 @@ def main():
             model_type=args.model_type,
             vectordb=args.db,
             retriever=args.retriever,
-            persona=args.persona,
+            persona=args.persona if overwrite['PERSONA'] is None else overwrite['PERSONA'],
             show_source=args.show_source,
             write=args.write,
             LOGGING=logging,
         )
     # Supress Langchain Deprecation Warnings
-    with warnings.catch_warnings():
-        warnings.filterwarnings("ignore", category=LangChainDeprecationWarning)
+
+    warnings.filterwarnings("ignore", category=LangChainDeprecationWarning)
 
 
 if __name__ == "__main__":

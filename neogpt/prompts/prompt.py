@@ -8,7 +8,7 @@ from langchain.prompts import (
     PromptTemplate,
 )
 
-from neogpt.config import DEFAULT_MEMORY_KEY
+from neogpt.config import DEFAULT_MEMORY_KEY, MODEL_TYPE
 
 # The prompts are taken from https://github.com/f/awesome-chatgpt-prompts. Thanks to the author for the amazing work.
 
@@ -51,7 +51,7 @@ PERSONA_PROMPT = {
 
 
 def get_prompt(
-    model_type: str = "mistral",
+    model_type: str = MODEL_TYPE,
     persona: str = "default",
     memory_key: int = DEFAULT_MEMORY_KEY,
 ):
