@@ -194,12 +194,10 @@ def import_config(config_filename):
 
     SETTINGS_DIR = os.path.join(os.path.dirname(__file__), "settings")
 
-    # if user provided a file name then use that
-    # Check is absolute path or not
     try:
         if not os.path.isabs(config_filename):
             config_filename = os.path.join(SETTINGS_DIR, config_filename)
-
+        print(Fore.LIGHTBLUE_EX + f"\nUsing configuration file: {config_filename}" + Fore.RESET)
         with open(config_filename) as stream:
             try:
                 config = yaml.safe_load(stream)
@@ -212,27 +210,17 @@ def import_config(config_filename):
         INGEST_THREADS = config["model"]["INGEST_THREADS"]
         MAX_TOKEN_LENGTH = config["model"]["MAX_TOKEN_LENGTH"]
         N_GPU_LAYERS = config["model"]["N_GPU_LAYERS"]
-
-
         # MODEL TYPE (mistral, openai, hf)
         MODEL_TYPE = config["neogpt"]["MODEL_TYPE"]
-
         # DEFAULT MEMORY KEY FOR CONVERSATION MEMORY (DEFAULT IS 2)
         DEFAULT_MEMORY_KEY = config["memory"]["DEFAULT_MEMORY_KEY"]
-
-
         LOG_FOLDER = config["logs"]["LOG_FOLDER"]
-
-
         # Directories
         SOURCE_DIR = config["directories"]["SOURCE_DIR"]
         WORKSPACE_DIRECTORY = config["directories"]["WORKSPACE_DIRECTORY"]
         MODEL_DIRECTORY = config["directories"]["MODEL_DIRECTORY"]
         # Database Directories
         PARENT_DB_DIRECTORY = config["database"]["PARENT_DB_DIRECTORY"]
-        
-        
-            
     except Exception as e:
         print(f"An error occurred: {e}")
 
@@ -240,6 +228,7 @@ def import_config(config_filename):
         "PERSONA": config["neogpt"]["PERSONA"],
         "UI": config["neogpt"]["UI"],
         "VERSION": config["neogpt"]["VERSION"],
+        "MODEL_TYPE": config["neogpt"]["MODEL_TYPE"],
     }
 
 
@@ -322,7 +311,7 @@ def export_config(config_filename):
 
         if os.path.exists(filepath):
             response = input(
-                f"A file with the name '{config_filename}' already exists.\nEnter a new filename OR press enter to overwrite current config file OR type 'exit' to cancel export: "
+                f"\nA file with the name '{ Fore.LIGHTYELLOW_EX + config_filename + Fore.RESET}' already exists.\n\nEnter a new filename OR press enter to overwrite current config file OR type 'exit' to cancel export: "
             )
             if response.lower() == "exit":
                 print("Export cancelled ")
@@ -336,10 +325,9 @@ def export_config(config_filename):
             break  # Exit the loop if the filename is unique
             
     try:
-        print (f"Exporting {filepath}...")
         with open(filepath, "w") as file:
             yaml.dump(config, file, sort_keys=False)
-            print (f"Configuration export complete")
+            print (f"\nConfiguration exported to {Fore.LIGHTYELLOW_EX + filepath + Fore.RESET}")
 
     except Exception as e:
         print(f"An error occurred during export: {e}")

@@ -196,7 +196,7 @@ def main():
     elif args.mode == "llm":
         chat_mode(
             device_type=args.device_type,
-            model_type=args.model_type,
+            model_type=args.model_type if overwrite['MODEL_TYPE'] is None else overwrite['MODEL_TYPE'],
             persona=args.persona if overwrite['PERSONA'] is None else overwrite['PERSONA'],
             show_source=args.show_source,
             write=args.write,
@@ -205,7 +205,7 @@ def main():
     else:
         db_retriver(
             device_type=args.device_type,
-            model_type=args.model_type,
+            model_type=args.model_type if overwrite['MODEL_TYPE'] is None else overwrite['MODEL_TYPE'],
             vectordb=args.db,
             retriever=args.retriever,
             persona=args.persona if overwrite['PERSONA'] is None else overwrite['PERSONA'],

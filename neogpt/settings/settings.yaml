@@ -3,12 +3,12 @@ neogpt:
   ENV: development
   PERSONA: default
   UI: false
-  MODEL_TYPE: mistral
-  EXPORT_DATE: '2024-01-07 15:06:23'
+  MODEL_TYPE: hf
+  EXPORT_DATE: '2024-01-11 13:44:02'
   LICENSE: MIT
 model:
-  MODEL_NAME: TinyLlama/TinyLlama-1.1B-Chat-v0.6
-  MODEL_FILE: None
+  MODEL_NAME: TheBloke/Mistral-7B-Instruct-v0.1-GGUF
+  MODEL_FILE: mistral-7b-instruct-v0.1.Q4_K_M.gguf
   EMBEDDING_MODEL: sentence-transformers/all-MiniLM-L12-v2
   INGEST_THREADS: 8
   MAX_TOKEN_LENGTH: 8192
@@ -23,5 +23,3 @@ memory:
   DEFAULT_MEMORY_KEY: 2
 logs:
   LOG_FOLDER: logs
-  BUILDER_LOG_FILE: builder.log
-  NEOGPT_LOG_FILE: neogpt.log
