@@ -37,6 +37,7 @@ def load_model(
     model_id: str = MODEL_NAME,
     model_basename: str = MODEL_FILE,
     callback_manager: list = None,
+    show_stats: bool = False,
     LOGGING=logging,
 ):
     """
@@ -56,7 +57,13 @@ def load_model(
         llm (ChatOpenAI): Returns a OpenAI object (language model)
     """
 
-    callbacks = [StreamingStdOutCallbackHandler(), TokenCallbackHandler()]
+    callbacks = [StreamingStdOutCallbackHandler()]
+    if show_stats:
+        callbacks.append(TokenCallbackHandler())
+
+    if model_type == "openai":
+        callbacks.append(StreamOpenAICallbackHandler())
+        
     callback_manager = (
         CallbackManager(callback_manager)
         if callback_manager is not None

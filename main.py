@@ -10,7 +10,7 @@ from streamlit.web import cli as stcli
 from neogpt.builder import builder
 from neogpt.chat import chat_mode
 from neogpt.config import DEVICE_TYPE, NEOGPT_LOG_FILE, export_config, import_config
-from neogpt.manager import db_retriver, hire
+from neogpt.manager import hire, manager
 
 
 def main():
@@ -64,7 +64,7 @@ def main():
         "--build", default=False, action="store_true", help="Run the builder"
     )
     parser.add_argument(
-        "--show_source",
+        "--show-source",
         default=False,
         action="store_true",
         help="The source documents are displayed if the show_sources flag is set to True.",
@@ -77,6 +77,16 @@ def main():
     )
     parser.add_argument(
         "--verbose", default=False, action="store_true", help="Enable verbose mode"
+    )
+    parser.add_argument(
+        "--shell",
+        action="store_true",
+        help="Gives shell access to NeoGPT and allows to run commands",
+    )
+    parser.add_argument(
+        "--stats",
+        action="store_true",
+        help="Shows token and cost statistics for the queries",
     )
     parser.add_argument(
         "--log",
@@ -135,8 +145,9 @@ def main():
         overwrite = import_config(config_filename)
     else:
         overwrite = {
-            'PERSONA': None,
-            'UI': False,
+            "PERSONA": args.persona,
+            "UI": args.ui,
+            "MODEL_TYPE": args.model_type,
         }
         # sys.exit()
 
@@ -180,14 +191,13 @@ def main():
             verbose=args.verbose,
         )
 
-    if args.ui or (overwrite and overwrite['UI']):
+    if args.ui or (overwrite and overwrite["UI"]):
         logging.info("Starting the UI server for NeoGPT 🤖")
         logging.info("Note: The UI server only supports local retriever and Chroma DB")
         sys.argv = ["streamlit", "run", "neogpt/ui.py"]
         sys.exit(stcli.main())
 
     elif args.task is not None:
-        print()
         hire(
             task=args.task,
             tries=args.tries,
@@ -196,21 +206,30 @@ def main():
     elif args.mode == "llm":
         chat_mode(
             device_type=args.device_type,
-            model_type=args.model_type if overwrite['MODEL_TYPE'] is None else overwrite['MODEL_TYPE'],
-            persona=args.persona if overwrite['PERSONA'] is None else overwrite['PERSONA'],
+            model_type=args.model_type
+            if overwrite["MODEL_TYPE"] is None
+            else overwrite["MODEL_TYPE"],
+            persona=args.persona
+            if overwrite["PERSONA"] is None
+            else overwrite["PERSONA"],
             show_source=args.show_source,
             write=args.write,
             LOGGING=logging,
         )
     else:
-        db_retriver(
+        manager(
             device_type=args.device_type,
-            model_type=args.model_type if overwrite['MODEL_TYPE'] is None else overwrite['MODEL_TYPE'],
+            model_type=args.model_type if overwrite["MODEL_TYPE"] is None
+            else overwrite["MODEL_TYPE"],
             vectordb=args.db,
             retriever=args.retriever,
-            persona=args.persona if overwrite['PERSONA'] is None else overwrite['PERSONA'],
+            persona=args.persona
+            if overwrite["PERSONA"] is None
+            else overwrite["PERSONA"],
             show_source=args.show_source,
             write=args.write,
+            shell=args.shell,
+            show_stats=args.stats,
             LOGGING=logging,
         )
     # Supress Langchain Deprecation Warnings

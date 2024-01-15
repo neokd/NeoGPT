@@ -191,13 +191,16 @@ def import_config(config_filename):
         PINECONE_PERSIST_DIRECTORY, \
         MODEL_TYPE
 
-
     SETTINGS_DIR = os.path.join(os.path.dirname(__file__), "settings")
 
     try:
         if not os.path.isabs(config_filename):
             config_filename = os.path.join(SETTINGS_DIR, config_filename)
-        print(Fore.LIGHTBLUE_EX + f"\nUsing configuration file: {config_filename}" + Fore.RESET)
+        print(
+            Fore.LIGHTBLUE_EX
+            + f"\nUsing configuration file: {config_filename}"
+            + Fore.RESET
+        )
         with open(config_filename) as stream:
             try:
                 config = yaml.safe_load(stream)
@@ -323,11 +326,13 @@ def export_config(config_filename):
                 continue  # Continue to the beginning of the loop to validate new filename
         else:
             break  # Exit the loop if the filename is unique
-            
+
     try:
         with open(filepath, "w") as file:
             yaml.dump(config, file, sort_keys=False)
-            print (f"\nConfiguration exported to {Fore.LIGHTYELLOW_EX + filepath + Fore.RESET}")
+            print(
+                f"\nConfiguration exported to {Fore.LIGHTYELLOW_EX + filepath + Fore.RESET}"
+            )
 
     except Exception as e:
         print(f"An error occurred during export: {e}")

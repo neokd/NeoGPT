@@ -1,3 +1,4 @@
+import re
 import sys
 import threading
 import time
@@ -8,24 +9,30 @@ import streamlit as st
 from colorama import Fore
 from langchain.callbacks.base import BaseCallbackHandler
 from langchain.schema.output import LLMResult
+from rich.console import Console
 
 from neogpt.config import CURRENT_WORKING_AGENT, PROJECT_COST, QUERY_COST, TOTAL_COST
+from neogpt.utils.formatter import MessageFormatter
 
 
 class StreamingStdOutCallbackHandler(BaseCallbackHandler):
+    """
+    The StreamingStdOutCallbackHandler class is a custom callback handler class for streaming the output to the terminal.
+    """
+
     def __init__(self):
         super().__init__()
         self.loading_thread = None
         self.streaming = False
         self.thinking_animation_thread = None
-        self.neo_gpt_printed = False
+        self.is_code_block = False
+        self.console = Console()
 
     def on_llm_start(
         self, serialized: dict[str, Any], prompts: list[str], **kwargs: Any
     ) -> None:
         # Start a new line for a clean display
-        sys.stdout.write("\n")
-
+        self.message_block_instance = MessageFormatter()
         # Start a thread for the "NeoGPT 🤖 is thinking..." message
         self.thinking_animation_thread = threading.Thread(
             target=self.thinking_animation
@@ -35,36 +42,28 @@ class StreamingStdOutCallbackHandler(BaseCallbackHandler):
     def on_llm_new_token(self, token: str, **kwargs: Any) -> None:
         # Stop the thinking animation thread when a new token is generated
         self.streaming = True
-
-        if self.thinking_animation_thread and self.thinking_animation_thread.is_alive():
-            self.thinking_animation_thread.join()  # Wait for the thread to finish
-
-        if not self.neo_gpt_printed:
-            sys.stdout.write(Fore.BLUE + "\nNeoGPT 🤖:")
-            self.neo_gpt_printed = True
-
-        # Display the generated token in a friendly way
-        sys.stdout.write(Fore.WHITE + token)
-        sys.stdout.flush()
+        self.message_block_instance.message += token
+        self.message_block_instance.refresh()
 
     def thinking_animation(self):
-        thinking_message = "NeoGPT 🤖 is thinking..."
-        loading_chars = "/-\\"
-        animation_idx = 0
-
-        sys.stdout.write(Fore.BLUE + thinking_message)
-
-        while not self.streaming:
-            sys.stdout.write(loading_chars[animation_idx])
-            sys.stdout.flush()
-            time.sleep(0.1)
-            sys.stdout.write("\b")  # Move the cursor back to overwrite the animation
-            animation_idx = (animation_idx + 1) % len(loading_chars)
+        # Loading animation when question is asked
+        sys.stdout.write("\n")
+        with self.console.status(
+            "NeoGPT 🤖 is thinking...",
+            spinner="bouncingBar",
+            spinner_style="bold cyan",
+            speed=0.5,
+        ) as status:
+            while not self.streaming:
+                time.sleep(0.1)
+                status.update()
+                self.console.print("\r", end="")
 
     def on_llm_end(self, response: LLMResult, **kwargs: Any) -> None:
         """Run when LLM ends running."""
-        self.neo_gpt_printed = False
         self.streaming = False
+        self.is_code_block = False
+        self.message_block_instance.end()
 
 
 # Define a custom callback handler class for token collection
@@ -98,7 +97,7 @@ class TokenCallbackHandler(BaseCallbackHandler):
             TOTAL_COST + QUERY_COST, 5
         )  # Accumulate the cost, rounded to 5 decimal places
         total_tokens = len(self._tokens)
-        print(Fore.WHITE + f"\n\nTotal tokens generated: {total_tokens}")
+        print(Fore.WHITE + f"\nTotal tokens generated: {total_tokens}")
         print(Fore.WHITE + f"Query cost: {QUERY_COST} INR")
         print(Fore.WHITE + f"Total cost: {TOTAL_COST} INR")
 

@@ -4,8 +4,10 @@ import re
 import warnings
 from datetime import datetime
 
-from colorama import Fore
 from langchain_core._api.deprecation import LangChainDeprecationWarning
+from rich.console import Console
+from rich.panel import Panel
+from rich.prompt import Prompt
 
 from neogpt.agents import ML_Engineer, QA_Engineer
 from neogpt.callback_handler import (
@@ -34,66 +36,46 @@ from neogpt.retrievers import (
 )
 from neogpt.vectorstore import ChromaStore, FAISSStore
 
+# Create a console instance
+console = Console()
 
-def db_retriver(
-    device_type: str = DEVICE_TYPE,
-    model_type: str = MODEL_TYPE,
+# Define a shorthand for console.print using a lambda function
+cprint = lambda *args, **kwargs: console.print(*args, **kwargs)
+
+
+def db_retriever(
     vectordb: str = "Chroma",
     retriever: str = "local",
     persona: str = "default",
-    show_source: bool = False,
-    write: str | None = None,
+    show_stats: bool = False,
     LOGGING=logging,
 ):
-    """
-    Fn: db_retriver
-    Description: The function sets up the retrieval-based question-answering system.
-    Args:
-        device_type (str, optional): Device type (cpu, mps, cuda). Defaults to DEVICE_TYPE.
-        model_type (str, optional): Model type (mistral, llama, ollama, hf, openai). Defaults to MODEL_TYPE.
-        vectordb (str, optional): Vectorstore (Chroma, FAISS). Defaults to "Chroma".
-        retriever (str, optional): Retriever (local, web, hybrid). Defaults to "local".
-        persona (str, optional): Persona (default, recruiter). Defaults to "default".
-        show_source (bool, optional): Show source documents. Defaults to False.
-        write (str | None, optional): Write the results to a file. Defaults to None.
-        LOGGING (logging, optional): Logging. Defaults to logging.
-    return:
-        None
-    """
-    # with warnings.catch_warnings():
-
-    # Ignore LangChainDeprecationWarning: The function `__call__` was deprecated in LangChain 0.1.0 and will be removed in 0.2.0. Use invoke instead.
     warnings.filterwarnings("ignore", category=LangChainDeprecationWarning)
 
     match vectordb:
         case "Chroma":
-            # Load the Chroma DB with the embedding model
-            # logging.warn("Chroma DB is temporarily disabled. Please use FAISS DB.")
-            # exit()
             db = ChromaStore()
             LOGGING.info("Loaded Chroma DB Successfully")
         case "FAISS":
-            # Load the FAISS DB with the embedding model
             db = FAISSStore() if retriever == "hybrid" else FAISSStore().load_local()
             LOGGING.info("Loaded FAISS DB Successfully")
-        # case "Pinecone":
-        # Initialize Pinecone client
-        # Load the Pinecone DB with the embedding model
-        # pinecone_api_key = "your_api_key"
-        # pinecone_environment = "your_environment_name"
-        # db= Pinecone(api_key=pinecone_api_key, environment=pinecone_environment)
-        # LOGGING.info(f"Initialized Pinecone DB Successfully")
 
-    # Load the LLM model
     llm = load_model(
-        device_type,
-        model_type,
+        device_type=DEVICE_TYPE,
+        model_type=MODEL_TYPE,
         model_id=MODEL_NAME,
         model_basename=MODEL_FILE,
+        show_stats=show_stats,
         LOGGING=logging,
     )
 
-    # Prompt Builder Function
+    cprint(f"\nModel set to [bold magenta]{MODEL_NAME}[/bold magenta].")
+
+    if persona != "default":
+        cprint(
+            "NeoGPT 🤖 is in [bold magenta]" + persona + "[/bold magenta] mode.",
+        )
+
     match retriever:
         case "local":
             chain = local_retriever(db, llm, persona)
@@ -108,49 +90,16 @@ def db_retriver(
         case "sql":
             chain = sql_retriever(llm, persona)
 
-    # Main loop
-    LOGGING.info(
-        "Note: The stats are based on OpenAI's pricing model. The cost is calculated based on the number of tokens generated. You don't have to pay anything to use the chatbot. The cost is only for reference."
-    )
+    return chain
 
-    print(Fore.LIGHTYELLOW_EX + "\nNeoGPT 🤖 is ready to chat. Type '/exit' to exit.")
-    # print(Fore.LIGHTYELLOW_EX + "Read the docs at "+ Fore.WHITE + "https://neokd.github.io/NeoGPT/")
-    if persona != "default":
-        print(
-            "NeoGPT 🤖 is in "
-            + Fore.LIGHTMAGENTA_EX
-            + persona
-            + Fore.LIGHTYELLOW_EX
-            + " mode."
-        )
 
-    if persona == "shell":
-        print(
-            Fore.LIGHTYELLOW_EX
-            + "\nYou are using NeoGPT 🤖 as a shell. It may generate commands that can be harmful to your system. Use it at your own risk. ⚠️"
-            + Fore.RESET
-        )
-        execute = input(
-            Fore.LIGHTCYAN_EX + "Do you want to execute the commands? (Y/N): "
-        ).upper()
-        if execute == "Y":
-            print(
-                Fore.LIGHTYELLOW_EX
-                + "NeoGPT 🤖 will execute the commands in your default shell."
-                + Fore.RESET
-            )
-        else:
-            print(
-                Fore.LIGHTYELLOW_EX
-                + "You can copy the commands and execute them manually."
-                + Fore.RESET
-            )
-
+def chat(chain, show_source, retriever, LOGGING):
+    # Run the chat loop
     while True:
-        query = input(Fore.LIGHTCYAN_EX + "\nEnter your query 🙋‍♂️: ")
-
+        query = Prompt.ask("[bold cyan]\nYou 🙋‍♂️: [/bold cyan]")
+        # print(chain.combine_documents_chain.memory.chat_memory)
         if query == "/exit":
-            print(f"Total chat session cost: {final_cost()} INR")
+            cprint(f"\nTotal chat session cost: {final_cost()} INR")
             LOGGING.info("Byee 👋.")
             break
 
@@ -159,52 +108,16 @@ def db_retriver(
             if retriever == "stepback"
             else chain.invoke(query)
         )
-        # res = chain.invoke({"question": query})
+
         if show_source:
             answer, docs = res["result"], res["source_documents"]
-            print("Question: " + Fore.LIGHTGREEN_EX + query)
-            print("Answer: " + Fore.LIGHTGREEN_EX + answer)
-            print(
-                "----------------------------------SOURCE DOCUMENTS---------------------------"
+            separator_line = "-" * int(
+                (console.width - len("SOURCE DOCUMENTS") - 5) / 2
             )
+            cprint(f"{separator_line} SOURCE DOCUMENTS {separator_line}")
             for document in docs:
-                # print("\n> " + document.metadata["source"] + ":")
-                print(document)
-            print(
-                "----------------------------------SOURCE DOCUMENTS---------------------------"
-            )
-        # Writing the results to a file if write is specified. It can be used to write assignments, reports etc.
-        if write is not None:
-            if not os.path.exists(WORKSPACE_DIRECTORY):
-                os.makedirs(WORKSPACE_DIRECTORY)
-
-            base_filename = write
-            file_counter = 1
-
-            while os.path.exists(os.path.join(WORKSPACE_DIRECTORY, write)):
-                # If the file already exists, append a counter to the filename
-                write, extension = os.path.splitext(base_filename)
-                write = f"{write}_{file_counter}{extension}"
-                file_counter += 1
-
-            answer = res["result"]
-
-            with open(os.path.join(WORKSPACE_DIRECTORY, write), "w") as result:
-                result.writelines(answer)
-
-            print(
-                "\n"
-                + Fore.LIGHTYELLOW_EX
-                + f"Your work is written to {WORKSPACE_DIRECTORY}/{write}"
-                + Fore.RESET
-            )
-
-            break
-
-        if persona == "shell" and execute == "Y":
-            os.environ["TOKENIZERS_PARALLELISM"] = "false"
-            command = re.sub(r"```bash|```", "", res["result"])
-            os.system(command)
+                cprint(document)
+            cprint(f"{separator_line} SOURCE DOCUMENTS {separator_line}")
 
 
 def hire(task: str = "", tries: int = 5, LOGGING=logging):
@@ -236,3 +149,30 @@ def hire(task: str = "", tries: int = 5, LOGGING=logging):
     end = datetime.now()
     print(f"Time taken: {round(((end - start).total_seconds() / 60),4)} minutes")
     print(f"The total cost of the project is {round(final_cost(),4)} INR")
+
+
+def shell_():
+    raise NotImplementedError("Shell mode is not implemented yet")
+
+
+def manager(
+    device_type: str = DEVICE_TYPE,
+    model_type: str = MODEL_TYPE,
+    vectordb: str = "Chroma",
+    retriever: str = "local",
+    persona: str = "default",
+    show_source: bool = False,
+    write: str = None,
+    shell: bool = False,
+    show_stats: bool = False,
+    LOGGING=logging,
+):
+    """
+    The manager function is the main function that runs NeoGPT.
+    """
+    chain = db_retriever(vectordb, retriever, persona, show_stats, LOGGING)
+
+    if shell:
+        shell_()
+    else:
+        chat(chain, show_source, retriever, LOGGING)

@@ -3,8 +3,8 @@ neogpt:
   ENV: development
   PERSONA: default
   UI: false
-  MODEL_TYPE: hf
-  EXPORT_DATE: '2024-01-11 13:44:02'
+  MODEL_TYPE: mistral
+  EXPORT_DATE: '2024-01-15 11:47:04'
   LICENSE: MIT
 model:
   MODEL_NAME: TheBloke/Mistral-7B-Instruct-v0.1-GGUF
