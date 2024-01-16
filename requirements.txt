@@ -15,5 +15,5 @@ rank-bm25==0.2.2
 html2text==2020.1.16
 openai==1.6.1
 langchain-experimental==0.0.42
-langchain-community==0.0.9
+langchain-community==0.0.13
 langchain-openai==0.0.2

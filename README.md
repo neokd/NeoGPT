@@ -46,20 +46,20 @@ Join our [Discord](https://discord.gg/qNqjsGuCTG) community to stay up to date w
 
 
 3. **Run NeoGPT:** Run the CLI to start using NeoGPT. Requires `Python v3.10`. You can use the `--help` flag to view the available commands and options.
-    ```python
+    ```bash
         python main.py
     ```
     You can also use `--ui` flag to run the Streamlit UI.
-    ```python
+    ```bash
         python main.py --ui
     ```
 
 4. **Project Documentation:**
     To view the project documentation, run the following command in your terminal or command prompt (Development ⚠️)
-    ```python
+    ```bash
         cd docs
-        pip install -r requirements.txt
-        mkdocs serve
+        npm i mintlify
+        mintlify dev
     ```
 
 ## Features

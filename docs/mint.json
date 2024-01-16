@@ -1,0 +1,47 @@
+{
+  "$schema": "https://mintlify.com/schema.json",
+  "name": "Starter Kit",
+  "logo": {
+    "dark": "/assets/logo/NeoGPT__-removebg-preview.png",
+    "light": "/logo/light.svg"
+  },
+  "favicon": "/favicon.svg",
+  "colors": {
+    "primary": "#AB1CFC",
+    "light": "#C854FF",
+    "dark": "#9015D9",
+    "background": {
+      "dark": "#000100"
+      
+    },
+    "anchors": {
+      "from": "#7C34FF",
+      "to": "#FE9195"
+    }
+  },
+  "topbarCtaButton": {
+    "name": "Github",
+    "url": "https://github.com/neokd/NeoGPT"
+  },
+
+  "anchors": [
+    {
+      "name": "Discord",
+      "icon": "discord",
+      "url": "https://discord.gg/qNqjsGuCTG"
+    }
+  ],
+  "navigation": [
+    {
+      "group": "Get Started",
+      "pages": [
+        "introduction",
+        "installation"
+      ]
+    }
+  ],
+  "footerSocials": {
+    "discord": "https://discord.gg/qNqjsGuCTG",
+    "github": "https://github.com/neokd/NeoGPT"
+  }
+}
