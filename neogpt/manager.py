@@ -6,7 +6,6 @@ from datetime import datetime
 
 from langchain_core._api.deprecation import LangChainDeprecationWarning
 from rich.console import Console
-from rich.panel import Panel
 from rich.prompt import Prompt
 
 from neogpt.agents import ML_Engineer, QA_Engineer
@@ -44,6 +43,8 @@ cprint = lambda *args, **kwargs: console.print(*args, **kwargs)
 
 
 def db_retriever(
+    device_type: str = DEVICE_TYPE, 
+    model_type: str = MODEL_TYPE,
     vectordb: str = "Chroma",
     retriever: str = "local",
     persona: str = "default",
@@ -61,8 +62,8 @@ def db_retriever(
             LOGGING.info("Loaded FAISS DB Successfully")
 
     llm = load_model(
-        device_type=DEVICE_TYPE,
-        model_type=MODEL_TYPE,
+        device_type=device_type,
+        model_type=model_type,
         model_id=MODEL_NAME,
         model_basename=MODEL_FILE,
         show_stats=show_stats,
@@ -95,6 +96,9 @@ def db_retriever(
 
 def chat(chain, show_source, retriever, LOGGING):
     # Run the chat loop
+    cprint(
+       "[bright_yellow]NeoGPT 🤖 is ready to chat with you. Type /exit to quit.[/bright_yellow]"
+    )
     while True:
         query = Prompt.ask("[bold cyan]\nYou 🙋‍♂️: [/bold cyan]")
         # print(chain.combine_documents_chain.memory.chat_memory)
@@ -128,6 +132,7 @@ def hire(task: str = "", tries: int = 5, LOGGING=logging):
         model_id=MODEL_NAME,
         model_basename=MODEL_FILE,
         callback_manager=[AgentCallbackHandler()],
+        show_stats=False,
         LOGGING=LOGGING,
     )
     start = datetime.now()
@@ -170,7 +175,7 @@ def manager(
     """
     The manager function is the main function that runs NeoGPT.
     """
-    chain = db_retriever(vectordb, retriever, persona, show_stats, LOGGING)
+    chain = db_retriever(device_type, model_type, vectordb, retriever, persona, show_stats, LOGGING)
 
     if shell:
         shell_()

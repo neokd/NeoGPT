@@ -8,6 +8,10 @@ hide:
 # __NeoGPT__
 
 
+!!! warning "Deprecation"
+    **This version of documentation is deprecated and will be removed soon. New documentation is under developement and will be available soon.**
+
+
 ## __Welcome to NeoGPT!__ 📚🤖✨
 
 

@@ -25,7 +25,6 @@ class StreamingStdOutCallbackHandler(BaseCallbackHandler):
         self.loading_thread = None
         self.streaming = False
         self.thinking_animation_thread = None
-        self.is_code_block = False
         self.console = Console()
 
     def on_llm_start(
@@ -62,7 +61,6 @@ class StreamingStdOutCallbackHandler(BaseCallbackHandler):
     def on_llm_end(self, response: LLMResult, **kwargs: Any) -> None:
         """Run when LLM ends running."""
         self.streaming = False
-        self.is_code_block = False
         self.message_block_instance.end()
 
 
@@ -135,13 +133,13 @@ class AgentCallbackHandler(BaseCallbackHandler):
         self.thinking_animation_thread = None
         self.agent_printed = False
         self.current_working_agent = CURRENT_WORKING_AGENT
+        self.console = Console()
 
     def on_llm_start(
         self, serialized: dict[str, Any], prompts: list[str], **kwargs: Any
     ) -> None:
         # Start a new line for a clean display
-        # sys.stdout.write("\n")
-
+        self.message_block_instance = MessageFormatter()
         # Start a thread for the "NeoGPT 🤖 is thinking..." message
         self.thinking_animation_thread = threading.Thread(
             target=self.thinking_animation
@@ -149,39 +147,31 @@ class AgentCallbackHandler(BaseCallbackHandler):
         self.thinking_animation_thread.start()
 
     def on_llm_new_token(self, token: str, **kwargs: Any) -> None:
-        self._tokens.append(token)
         # Stop the thinking animation thread when a new token is generated
         self.streaming = True
-
-        if self.thinking_animation_thread and self.thinking_animation_thread.is_alive():
-            self.thinking_animation_thread.join()  # Wait for the thread to finish
-
-        if not self.agent_printed:
-            sys.stdout.write(Fore.BLUE + f"\n{self.current_working_agent[-1]}:")
-            self.agent_printed = True
-
-        # Display the generated token in a friendly way
-        sys.stdout.write(Fore.WHITE + token)
-        sys.stdout.flush()
+        self.message_block_instance.message += token
+        self.message_block_instance.refresh()
 
     def thinking_animation(self):
-        thinking_message = f"\n{self.current_working_agent[-1]} is thinking..."
-        loading_chars = "/-\\"
-        animation_idx = 0
+        # Loading animation when question is asked
+        sys.stdout.write("\n")
+        with self.console.status(
+            f"{self.current_working_agent[-1]} is thinking...",
+            spinner="bouncingBar",
+            spinner_style="bold cyan",
+            speed=0.5,
+        ) as status:
+            while not self.streaming:
+                time.sleep(0.1)
+                status.update()
+                self.console.print("\r", end="")
 
-        sys.stdout.write(Fore.BLUE + thinking_message)
-
-        while not self.streaming:
-            sys.stdout.write(loading_chars[animation_idx])
-            sys.stdout.flush()
-            time.sleep(0.1)
-            sys.stdout.write("\b")  # Move the cursor back to overwrite the animation
-            animation_idx = (animation_idx + 1) % len(loading_chars)
 
     def on_llm_end(self, response: LLMResult, **kwargs: Any) -> None:
         """Run when LLM ends running."""
         self.agent_printed = False
         self.streaming = False
+        self.message_block_instance.end()
         global TOTAL_COST, QUERY_COST  # Use the global variables
         # Cost are based on OpenAI's pricing model
         QUERY_COST = round(
