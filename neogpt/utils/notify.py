@@ -15,6 +15,7 @@ async def notify(title, message, timeout=10):
     n = await notifier.send(title=title, message=message)
     await asyncio.sleep(timeout)  
     await notifier.clear(n)  
+    
 
 ## test 
 ## asyncio.run(notify('test', 'this is a test notification'))
