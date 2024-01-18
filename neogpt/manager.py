@@ -70,7 +70,7 @@ def db_retriever(
         LOGGING=logging,
     )
 
-    cprint(f"\nModel set to [bold magenta]{MODEL_NAME}[/bold magenta].")
+    cprint(f"\nUsing [bold magenta]{model_type.capitalize()}[/bold magenta] model.")
 
     if persona != "default":
         cprint(
@@ -97,13 +97,13 @@ def db_retriever(
 def chat(chain, show_source, retriever, LOGGING):
     # Run the chat loop
     cprint(
-       "[bright_yellow]NeoGPT 🤖 is ready to chat with you. Type /exit to quit.[/bright_yellow]"
+       "\n[bright_yellow]NeoGPT 🤖 is ready to chat. Type /exit to quit.[/bright_yellow]"
     )
     while True:
-        query = Prompt.ask("[bold cyan]\nYou 🙋‍♂️: [/bold cyan]")
+        query = Prompt.ask("[bold cyan]\nYou 🙋‍♂️ [/bold cyan]")
         # print(chain.combine_documents_chain.memory.chat_memory)
         if query == "/exit":
-            cprint(f"\nTotal chat session cost: {final_cost()} INR")
+            # cprint(f"\nTotal chat session cost: {final_cost()} INR")
             LOGGING.info("Byee 👋.")
             break
 

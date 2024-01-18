@@ -55,8 +55,8 @@ def load_model(
         llm (Ollama): Returns a Ollama object (language model)
         llm (HuggingFacePipeline): Returns a HuggingFace Pipeline object (language model)
         llm (ChatOpenAI): Returns a OpenAI object (language model)
+        llm (ChatOpenAI): Returns a model from LMStudio
     """
-
     callbacks = [StreamingStdOutCallbackHandler()]
     if show_stats:
         callbacks.append(TokenCallbackHandler())
@@ -146,6 +146,7 @@ def load_model(
             LOGGING.warning("🚨 You are using openai")
             os.environ["TOKENIZERS_PARALLELISM"] = "false"
             llm = ChatOpenAI(
+                model=model_id,
                 api_key=OPENAI_API_KEY,
                 callback_manager=CallbackManager(
                     [StreamOpenAICallbackHandler(), TokenCallbackHandler()]
@@ -156,5 +157,19 @@ def load_model(
             return llm
         except Exception as e:
             LOGGING.info(f"Error {e}")
+
+    elif model_type == "lmstudio":
+        try:
+            os.environ["TOKENIZERS_PARALLELISM"] = "false"
+            llm = ChatOpenAI(
+                model="local",
+                base_url="http://localhost:1234/v1",
+                streaming=True,
+                callback_manager=callback_manager,
+            )
+            return llm
+        except Exception as e:
+            LOGGING.info(f"Error {e}")
+
     else:
         LOGGING.warning("🚨 Please use a valid model type")
