@@ -47,7 +47,7 @@ if [ "$continue_installation" == "y" ]; then
 
     # Example: Cloning a repository
     echo -e "${YELLOW}Cloning the NeoGPT repository...${NC}"
-    # git clone https://github.com/neokd/NeoGPT.git
+    git clone https://github.com/neokd/NeoGPT.git
     cd NeoGPT
 
     # Display a menu for installation options
@@ -61,14 +61,16 @@ if [ "$continue_installation" == "y" ]; then
         case $install_choice in
             1)
                 echo -e "${YELLOW}Installing dependencies using pip...${NC}"
-                # Check if pyenv is installed
-                if command -v pyenv &>/dev/null; then
-    # create a 
-
+                # Check if pip installed
+                if python -m venv &>/dev/null; then
+                    # Create a virtual environment
+                    python -m venv neogpt-venv
+                    # Activate the virtual environment
+                    source neogpt-venv/bin/activate
                     # Install dependencies using pip
                     pip install -e .
                 else
-                    echo -e "${RED}pyenv is not installed. Please install pyenv to proceed.${NC}"
+                    echo -e "${RED}venv module is not available. Please install Python with venv support.${NC}"
                     pip install virtualenv
                     continue
                 fi
