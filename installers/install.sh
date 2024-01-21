@@ -50,51 +50,9 @@ if [ "$continue_installation" == "y" ]; then
     git clone https://github.com/neokd/NeoGPT.git
     cd NeoGPT
 
-    # Display a menu for installation options
-    while true; do
-        echo -e "How would you like to install dependencies?"
-        echo -e "1. Using pip"
-        echo -e "2. Using conda"
-        read -p "Enter the number of your choice (1/2): " install_choice
-
-        # Add installation steps based on user's choice
-        case $install_choice in
-            1)
-                echo -e "${YELLOW}Installing dependencies using pip...${NC}"
-                # Check if pip installed
-                if pip &>/dev/null; then
-                    # Create a virtual environment
-                    python -m venv neogpt-venv
-                    # Activate the virtual environment
-                    source neogpt-venv/bin/activate
-                    # Install dependencies using pip
-                    pip install -e .
-                else
-                    echo -e "${RED}venv module is not available. Please install Python with venv support.${NC}"
-                    pip install virtualenv
-                    continue
-                fi
-                ;;
-            2)
-                echo -e "${YELLOW}Installing dependencies using conda...${NC}"
-                # Check if conda is installed
-                if command -v conda &>/dev/null; then
-                    conda create --name neogpt-env python=3.10
-                    conda activate neogpt-env
-                    pip install -e .
-                else
-                    echo -e "${RED}conda is not installed. Please install conda to proceed.${NC}"
-                    continue
-                fi
-                ;;
-            *)
-                echo -e "${RED}Invalid choice. Please select a valid option.${NC}"
-                continue
-                ;;
-        esac
-        # If the installation is successful, break out of the loop
-        break
-    done
+    # Install dependencies using pip
+    echo -e "${YELLOW}Installing dependencies using pip...${NC}"
+    pip install -e .
 
     # Display a completion message
     echo -e "${GREEN}Installation completed successfully!${NC}"
@@ -102,7 +60,6 @@ if [ "$continue_installation" == "y" ]; then
     echo -e "${NC}Run the following command to start NeoGPT:${NC}"
     echo -e "${YELLOW}python main.py --build${NC}"
     echo -e "${NC} Refer docs at https://neokd.github.io/NeoGPT/ for more details.${NC}"
-
 
 else
     echo -e "${YELLOW}Alright! If you change your mind, I'm here to help.${NC}"
