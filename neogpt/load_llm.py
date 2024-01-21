@@ -70,7 +70,7 @@ def load_model(
         else CallbackManager(callbacks)
     )
 
-    if (model_type == "mistral" or model_type == "llama") and (
+    if (model_type == "llamacpp") and (
         model_basename is not None and ".gguf" in model_basename.lower()
     ):
         try:
@@ -146,7 +146,6 @@ def load_model(
             LOGGING.warning("🚨 You are using openai")
             os.environ["TOKENIZERS_PARALLELISM"] = "false"
             llm = ChatOpenAI(
-                model=model_id,
                 api_key=OPENAI_API_KEY,
                 callback_manager=CallbackManager(
                     [StreamOpenAICallbackHandler(), TokenCallbackHandler()]

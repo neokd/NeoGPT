@@ -50,8 +50,8 @@ def main():
     )
     parser.add_argument(
         "--model_type",
-        choices=["mistral", "llama", "ollama", "hf", "openai","lmstudio"],
-        default="mistral",
+        choices=["llamacpp", "ollama", "hf", "openai","lmstudio"],
+        default="llamacpp",
     )
     parser.add_argument(
         "--write",

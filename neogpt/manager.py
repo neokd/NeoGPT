@@ -34,7 +34,7 @@ from neogpt.retrievers import (
     web_research,
 )
 from neogpt.vectorstore import ChromaStore, FAISSStore
-
+from neogpt.utils import read_file, magic_commands
 # Create a console instance
 console = Console()
 
@@ -70,7 +70,7 @@ def db_retriever(
         LOGGING=logging,
     )
 
-    cprint(f"\nUsing [bold magenta]{model_type.capitalize()}[/bold magenta] model.")
+    cprint(f"\nUsing [bold magenta]{model_type.capitalize()}[/bold magenta] to load [bold magenta]{MODEL_NAME}[/bold magenta].")
 
     if persona != "default":
         cprint(
@@ -93,7 +93,6 @@ def db_retriever(
 
     return chain
 
-
 def chat(chain, show_source, retriever, LOGGING):
     # Run the chat loop
     cprint(
@@ -102,10 +101,21 @@ def chat(chain, show_source, retriever, LOGGING):
     while True:
         query = Prompt.ask("[bold cyan]\nYou 🙋‍♂️ [/bold cyan]")
         # print(chain.combine_documents_chain.memory.chat_memory)
-        if query == "/exit":
-            # cprint(f"\nTotal chat session cost: {final_cost()} INR")
-            LOGGING.info("Byee 👋.")
-            break
+        
+        # Matching for file paths
+        regex = re.compile(r"'([^']+)'")
+        if regex.search(query):
+            query = read_file(query)
+
+
+        # Matching for magic commands
+        if query.startswith("/"):
+            if magic_commands(query,chain) == False:
+                break
+            else:
+                magic_commands(query,chain)
+                continue
+            
 
         res = (
             chain.invoke({"question": query})

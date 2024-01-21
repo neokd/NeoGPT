@@ -3,7 +3,7 @@ import os
 
 from langchain.chains import RetrievalQA
 from langchain.retrievers.web_research import WebResearchRetriever
-from langchain_community.utilities import GoogleSearchAPIWrapper
+from langchain_community.utilities.google_search import GoogleSearchAPIWrapper
 
 from neogpt.prompts.prompt import get_prompt
 
@@ -29,7 +29,6 @@ def web_research(db, llm, persona="default"):
 
     try:
         prompt, memory = get_prompt(persona=persona)
-
         retriever = WebResearchRetriever.from_llm(
             vectorstore=db, llm=llm, search=GoogleSearchAPIWrapper()
         )
