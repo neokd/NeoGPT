@@ -26,6 +26,11 @@
 
   "anchors": [
     {
+      "name": "Github",
+      "icon": "github",
+      "url": "https://github.com/neokd/NeoGPT"
+    },
+    {
       "name": "Discord",
       "icon": "discord",
       "url": "https://discord.gg/qNqjsGuCTG"
@@ -38,8 +43,32 @@
         "introduction",
         "installation"
       ]
+    },
+    {
+      "group": "Language Models",
+      "pages": [
+        "language-models/introduction",
+        {
+          "group": "Local Models",
+          "pages": [
+            "language-models/local-models/llamacpp",
+            "language-models/local-models/ollama",
+            "language-models/local-models/huggingface",
+            "language-models/local-models/lmstudio"
+          ]
+        },
+        {
+          "group" : "Hosted Models",
+          "pages" : [
+            "language-models/hosted-models/openai"
+          ]
+        }
+      ]
     }
   ],
+  "feedback": {
+    "suggestEdit": true
+  },
   "footerSocials": {
     "discord": "https://discord.gg/qNqjsGuCTG",
     "github": "https://github.com/neokd/NeoGPT"
