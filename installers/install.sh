@@ -62,7 +62,7 @@ if [ "$continue_installation" == "y" ]; then
             1)
                 echo -e "${YELLOW}Installing dependencies using pip...${NC}"
                 # Check if pip installed
-                if python -m venv &>/dev/null; then
+                if pip &>/dev/null; then
                     # Create a virtual environment
                     python -m venv neogpt-venv
                     # Activate the virtual environment
