@@ -1,18 +1,23 @@
-# NeoGPT 🚀
+<div align="center">
+  <img src="https://github.com/neokd/NeoGPT/assets/71772185/82d5c63d-81b5-4b45-95d4-53641016bfdc" alt="NeoGPT Gif" width="500"/>
+  <h1>NeoGPT 🚀</h1>
 
-> [!NOTE]
-> Looking for the documentation? Check out the [docs](https://neokd.github.io/NeoGPT/).
+  [![GitHub license](https://img.shields.io/github/license/neokd/NeoGPT)](https://github.com/neokd/NeoGPT/blob/main/LICENSE)
+  [![GitHub issues](https://img.shields.io/github/issues/neokd/NeoGPT)](https://github.com/neokd/NeoGPT/issues)
+  [![GitHub stars](https://img.shields.io/github/stars/neokd/NeoGPT)](https://github.com/neokd/NeoGPT/stargazers)
+  [![GitHub forks](https://img.shields.io/github/forks/neokd/NeoGPT)](https://github.com/neokd/NeoGPT/network)
 
-Say goodbye to boring interactions with documents and YouTube videos. NeoGPT is your trusted companion to chat with local documents and lengthy YouTube videos effortlessly. Perfect for professionals, developers, researchers, and enthusiasts.
+  > **Note:** Looking for the documentation? Check out the [official documentation](https://neokd.github.io/NeoGPT/).
+</div>
 
-![NeoGPT Gif](https://github.com/neokd/NeoGPT/assets/71772185/82d5c63d-81b5-4b45-95d4-53641016bfdc)
+# Overview
+
+Bid farewell to mundane engagements with documents and YouTube videos. NeoGPT emerges as your reliable companion, facilitating seamless and engaging conversations with both local documents and extensive YouTube content. Tailored to meet the needs of professionals, developers, researchers, and enthusiasts,  NeoGPT is designed to elevate your experience and streamline your interactions with diverse content sources. Experience a new dimension of productivity and engagement with NeoGPT, your go-to tool for navigating the world of information with ease and sophistication.🚀
 
 
-<br/>
 
-Note: NeoGPT is continuously evolving. Your feedback shapes its future.
+NeoGPT is continuously evolving, and your feedback shapes its future. Join our [Discord community](https://discord.gg/qNqjsGuCTG) to stay up to date with the latest developments.
 
-Join our [Discord](https://discord.gg/qNqjsGuCTG) community to stay up to date with the latest developments.
 
 # Table of Contents
 - [Getting Started](#getting-started)
@@ -24,17 +29,19 @@ Join our [Discord](https://discord.gg/qNqjsGuCTG) community to stay up to date w
 
 1. **Installation:** Clone this repository and install the necessary dependencies.
 
-   ```
-   git clone https://github.com/neokd/NeoGPT.git
-   cd NeoGPT
-   pip install -r requirements.txt
-    ```
-2. **Building Database** Currently NeoGPT supports local files and Youtube videos. To build the database add your local files to the documents directory and URL in the `builder.url` file. Then run the builder script.
 
-    ```python
-        python main.py --build
-    ```
-    This will create a database file in the `neogpt/db` folder. You can also specify the database to use by using `--db` flag.
+ ```
+  git clone https://github.com/neokd/NeoGPT.git
+  cd NeoGPT
+  pip install -r requirements.txt
+   ```
+
+2. **Building Database:** NeoGPT supports local files and YouTube videos. To build the database, add your local files to the `documents` directory and specify the YouTube video URL in the `builder.url` file. Then, run the builder script:
+```
+  python main.py --build
+```
+
+ This will create a database file in the `neogpt/db` folder. You can also specify the database to use by using `--db` flag.
     Supported databases are:
     - `Chroma` (default)
     - `FAISS`
@@ -85,3 +92,67 @@ We welcome contributions to NeoGPT! If you have ideas for new features or improv
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details. Let's innovate together! 🤖✨
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+   
