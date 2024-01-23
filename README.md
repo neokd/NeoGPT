@@ -31,17 +31,17 @@ NeoGPT is continuously evolving, and your feedback shapes its future. Join our [
 
 
  ```
-  git clone https://github.com/neokd/NeoGPT.git
-  cd NeoGPT
-  pip install -r requirements.txt
+      git clone https://github.com/neokd/NeoGPT.git
+      cd NeoGPT
+      pip install -r requirements.txt
    ```
 
-2. **Building Database:** NeoGPT supports local files and YouTube videos. To build the database, add your local files to the `documents` directory and specify the YouTube video URL in the `builder.url` file. Then, run the builder script:
-```
-  python main.py --build
-```
+2. **Building Database** Currently NeoGPT supports local files and Youtube videos. To build the database add your local files to the documents directory and URL in the `builder.url` file. Then run the builder script.
 
- This will create a database file in the `neogpt/db` folder. You can also specify the database to use by using `--db` flag.
+    ```python
+       python main.py --build
+    ```
+    This will create a database file in the `neogpt/db` folder. You can also specify the database to use by using `--db` flag.
     Supported databases are:
     - `Chroma` (default)
     - `FAISS`
@@ -68,10 +68,10 @@ NeoGPT is continuously evolving, and your feedback shapes its future. Join our [
         npm i mintlify
         mintlify dev
     ```
+    
 
 ## Features
 
-Sure, here are the top 4 features from the provided content:
 
 - **Hybrid RAG (Keyword based and Semantic Search) 🕵️‍♂️📂:**
    NeoGPT supports a Hybrid Retriever that combines both keyword-based and semantic search functionalities. This allows users to perform more nuanced and context-aware searches, enhancing the accuracy and relevance of retrieved information.
