@@ -164,6 +164,7 @@ python-pptx==0.6.23
 pytube==15.0.0
 pytz==2023.3.post1
 PyYAML==6.0.1
+psutil==5.9.8
 pyyaml_env_tag==0.1
 rank-bm25==0.2.2
 rapidfuzz==3.6.1
