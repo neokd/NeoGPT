@@ -1,0 +1,347 @@
+---
+title: All Settings
+description: "This page list all the available settings and configuration options for NeoGPT"
+---
+
+# Language Model
+
+
+
+### Model Type
+
+Specifies which language model to use. Check out the [models](/language-models/introduction) page for more information.
+
+<CodeGroup>
+
+```bash Terminal
+python main.py --model-type llamacpp
+```
+
+```python config.py
+MODEL_TYPE = "llamacpp"
+```
+
+```yaml settings.yaml
+MODEL_TYPE: llamacpp
+```
+
+</CodeGroup>
+
+
+
+### Device Type
+
+Specifies which device type to use when running the model. 
+The available options are `mps`, `cuda`, and `cpu`.
+
+
+<CodeGroup>
+
+```bash Terminal
+python main.py --device-type mps  # [mps,cuda,cpu]
+```
+
+```python config.py
+DEVICE_TYPE = "mps"        # [mps,cuda,cpu]
+```
+
+```yaml settings.yaml
+MODEL_TYPE: mps
+```
+
+</CodeGroup>
+
+
+### Track Token Usage
+
+Displays the number of tokens generated per query and displays cost for query and total cost for the session. This is useful for debugging and optimizing the model.
+
+<Note>
+The pricing calculation is derived from the OpenAI API pricing model, which can be accessed [here](https://openai.com/pricing). The cost is specifically computed using the `gpt-3.5-turbo` model. It's important to note that offline models do not incur charges.
+</Note>
+
+
+
+<CodeGroup>
+
+```bash Terminal
+python main.py --stats
+```
+
+</CodeGroup>
+
+
+# Vector Store
+
+
+### Build Vector Store
+
+Builds the vector store based on the documents in the `documents` folder and saves it to the `db/*` folder
+
+<CodeGroup>
+
+```bash Terminal
+python main.py --build  
+```
+
+</CodeGroup>
+
+
+### Load Recursive URLs
+
+Recursively loads all the URLs in the `builder.url` file and saves them to the vector store. Used to extract child URLs from a parent URL. 
+
+<Info>
+Always run with `--build` flag to save the data to vector store.
+</Info>
+
+<Accordion title="Website URL Structure">
+```bash Example
+- https://www.example.com
+  └─ https://www.example.com/child1
+     └─ https://www.example.com/child1/child1
+  └─ https://www.example.com/child2
+```
+</Accordion>
+
+
+<CodeGroup>
+```bash Terminal
+python main.py --build --recursive
+```
+</CodeGroup>
+
+
+### Vector Store Type (Common Setting)
+
+
+NeoGPT provides support for two vector stores:
+
+- ChromaDB
+- FAISS
+
+<CodeGroup>
+
+```bash Terminal
+python main.py --db Chroma
+```
+
+</CodeGroup>
+
+You can also specify the vector store type when building the vector store:
+
+<CodeGroup>
+
+```bash Terminal
+python main.py --build --db Chroma
+```
+
+</CodeGroup>
+
+
+# RAG
+
+### Retriever Type
+
+Specifies which retriever to use when querying the vector store.
+The available options are:
+- `local`
+- `web` works only with `FAISS` vector store.
+- `hybrid`
+- `stepback`
+- `sql` 
+- `compress`.
+
+<CodeGroup>
+
+```bash Terminal
+python main.py --retriever local
+```
+
+</CodeGroup>
+
+### Show Source documents
+
+Displays the source documents for the retrieved results.
+
+<CodeGroup>
+
+```bash Terminal
+python main.py --show-source
+```
+
+</CodeGroup>
+
+
+### Mode
+
+To disable the retriever and use the language model only, we can use mode
+
+<CodeGroup>
+
+```bash Terminal
+python main.py --mode llm
+```
+
+</CodeGroup>
+
+### Persona
+
+Persona is a feature that allows you to make NeoGPT behave in a certain way. For example, you can make NeoGPT behave like a researcher, Ml engineer, or a student.
+
+The available personas are:
+- `default`
+- `recruiter`
+- `academician`
+- `friend`
+- `ml_engineer`
+- `ceo`
+- `researcher`
+
+<CodeGroup>
+
+```bash Terminal
+python main.py --persona ml_engineer
+```
+
+</CodeGroup>
+
+
+### UI for RAG
+
+<Info>
+Not all the CLI feature are available in the UI.
+</Info>
+
+NeoGPT provides a UI for RAG. To use the UI, run the following command:
+
+<CodeGroup>
+
+```bash Terminal
+python main.py --ui
+```
+
+</CodeGroup>
+
+# Agents
+
+<Warning>
+Agents are currently in early stages of development. Facing issues? Please report them on our [GitHub](https://github.com/neokd/NeoGPT/issues) page.
+</Warning>
+
+### Task 
+
+Specify the task you want the agents to perform. 
+
+<CodeGroup>
+
+```bash Terminal
+python main.py --task "The task you want the agent to perform"
+```
+</CodeGroup>
+
+
+### Tries
+
+Specify the number of tries the agent can repeat to complete the task if it fails. **Default** is 5.
+
+<CodeGroup>
+
+```bash Terminal
+python main.py --tries 10
+```
+
+</CodeGroup>
+
+<Info>
+Use it only with `--task` flag.
+</Info>
+
+# Misc Settings
+
+### Import configuration from YAML file
+
+We can import the configuration from a YAML file. This is useful when you want to run NeoGPT with a specific configuration and allows user to easily switch between different configurations.
+
+**Default** configuration file is `settings.yaml` in the `settings` directory.
+
+<CodeGroup>
+
+```bash Default
+python main.py --import-config 
+```
+
+```bash Custom Config
+python main.py --import-config config1.yaml
+```
+
+</CodeGroup>
+
+### Export configuration to YAML file
+
+Exports the current configuration to a YAML file. This is useful when you want to save the current configuration to a file. 
+
+By default, the configuration is exported to `settings.yaml` in the `settings` directory. 
+
+<CodeGroup>
+
+```bash Default
+python main.py --export-config
+```
+
+```bash Custom Config
+python main.py --export-config config1.yaml
+```
+
+</CodeGroup>
+
+### Debug
+
+Displays debug information.
+
+<CodeGroup>
+
+```bash Terminal
+python main.py --debug
+```
+
+</CodeGroup>
+
+### Verbose
+
+To display verbose information when running NeoGPT
+
+<CodeGroup>
+
+```bash Terminal
+python main.py --verbose
+```
+
+</CodeGroup>
+
+
+
+### Log to File
+
+Writes the output to `neogpt/logs/neogpt.log` file. when running NeoGPT and when building the vector store writes the output to `neogpt/logs/builder.log` file.
+
+<CodeGroup>
+
+```bash Terminal
+python main.py --log
+```
+
+</CodeGroup>
+
+
+### Version
+
+Displays the current version of NeoGPT.
+
+<CodeGroup>
+
+```bash Terminal
+python main.py --version
+```
+
+</CodeGroup>

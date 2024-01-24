@@ -36,14 +36,12 @@ def create_chain(persona):
         retriever = db.as_retriever()
         # Load the LLM model
         llm = load_model(
-            DEVICE_TYPE,
-            model_id=MODEL_NAME,
-            model_basename=MODEL_FILE,
+            model_type="llamacpp",
             callback_manager=[StreamlitStreamingHandler()],
-            LOGGING=logging,
         )
         # Prompt Builder Function
         prompt, memory = get_prompt(persona=persona)
+
         # Create a retrieval-based question-answering system using the LLM model and the Vector DB
         return RetrievalQA.from_chain_type(
             llm=llm,

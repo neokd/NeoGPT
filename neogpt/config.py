@@ -264,7 +264,7 @@ def export_config(config_filename):
             "ENV": "development",
             "PERSONA": "default",
             "UI": False,
-            "MODEL_TYPE": "mistral",
+            "MODEL_TYPE": MODEL_TYPE,
             "EXPORT_DATE": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "LICENSE": toml_info["license"],
         },

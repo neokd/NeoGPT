@@ -49,7 +49,7 @@ def main():
         help="Specify the persona (default, recruiter). It allows you to customize the persona i.e. how the chatbot should behave.",
     )
     parser.add_argument(
-        "--model_type",
+        "--model-type",
         choices=["llamacpp", "ollama", "hf", "openai","lmstudio"],
         default="llamacpp",
     )

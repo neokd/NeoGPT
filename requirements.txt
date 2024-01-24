@@ -227,4 +227,3 @@ XlsxWriter==3.1.9
 yarl==1.9.4
 youtube-transcript-api==0.6.2
 zipp==3.17.0
-

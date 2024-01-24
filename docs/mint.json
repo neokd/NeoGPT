@@ -11,7 +11,7 @@
     "light": "#C854FF",
     "dark": "#9015D9",
     "background": {
-      "dark": "#000100"
+      "dark": "#000408"
       
     },
     "anchors": {
@@ -45,6 +45,12 @@
       ]
     },
     {
+      "group": "Guides",
+      "pages" : [
+        "guides/quick-start"
+      ]
+    },
+    {
       "group": "Language Models",
       "pages": [
         "language-models/introduction",
@@ -64,7 +70,15 @@
           ]
         }
       ]
-    }
+    },
+  
+      {
+        "group" : "Settings",
+        "pages" : [
+          "settings/settings"
+        ]
+      }
+
   ],
   "feedback": {
     "suggestEdit": true
