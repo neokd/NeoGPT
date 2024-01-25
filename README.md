@@ -36,6 +36,21 @@ NeoGPT is continuously evolving, and your feedback shapes its future. Join our [
       pip install -r requirements.txt
    ```
 
+    Alternatively, using conda:
+   ```
+   git clone https://github.com/neokd/NeoGPT.git
+   cd NeoGPT
+   
+   # Create a new Conda environment and specify the python version, for example, 'neogpt-env'
+   conda create --name neogpt-env python=3.10
+
+   # Activate the Conda environment
+   conda activate neogpt-env
+
+   # Now install the requirements using pip
+   pip install -r requirements.txt
+    ```
+
 2. **Building Database** Currently NeoGPT supports local files and Youtube videos. To build the database add your local files to the documents directory and URL in the `builder.url` file. Then run the builder script.
 
     ```python
