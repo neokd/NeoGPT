@@ -66,7 +66,8 @@
         {
           "group" : "Hosted Models",
           "pages" : [
-            "language-models/hosted-models/openai"
+            "language-models/hosted-models/openai",
+            "language-models/hosted-models/togetherai"
           ]
         }
       ]
