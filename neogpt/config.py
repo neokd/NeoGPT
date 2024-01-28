@@ -1,12 +1,12 @@
 import os
 import sys
+import warnings
 from datetime import datetime
 
 import toml
 import torch
 import yaml
 from chromadb.config import Settings
-from colorama import Fore, init
 from dotenv import load_dotenv
 from langchain.chat_loaders.whatsapp import WhatsAppChatLoader
 from langchain.text_splitter import Language
@@ -30,8 +30,11 @@ from langchain_community.document_loaders import (
 
 # Load Environment Variables
 load_dotenv()
-# Initialize Colorama
-init()
+
+# Supress Warnings
+warnings.filterwarnings(
+    "ignore", category=UserWarning, message="TypedStorage is deprecated"
+)
 
 # Source Directory for Documents to Ingest
 SOURCE_DIR = os.path.join(os.path.dirname(__file__), "documents")
@@ -52,8 +55,8 @@ WORKSPACE_DIRECTORY = os.path.join(os.path.dirname(__file__), "workspace")
 DEFAULT_MEMORY_KEY = 2
 
 # GGUF MODELS (Recommended , Default and Fast)
-MODEL_NAME = os.getenv("MODEL_NAME", "TheBloke/Mistral-7B-Instruct-v0.1-GGUF")
-MODEL_FILE = os.getenv("MODEL_FILE", "mistral-7b-instruct-v0.1.Q4_K_M.gguf")
+MODEL_NAME = os.getenv("MODEL_NAME", "TheBloke/Mistral-7B-Instruct-v0.2-GGUF")
+MODEL_FILE = os.getenv("MODEL_FILE", "mistral-7b-instruct-v0.2.Q4_K_M.gguf")
 
 # OpenHathi Hindi Model (Testing)
 # MODEL_NAME = "sarvamai/OpenHathi-7B-Hi-v0.1-Base"
@@ -75,7 +78,7 @@ INGEST_THREADS = 8
 # MODEL CONFIG
 MAX_TOKEN_LENGTH = 8192  # 8192 is the max for Mistral-7B
 N_GPU_LAYERS = 40
-MODEL_TYPE = "mistral"
+MODEL_TYPE = os.environ.get("MODEL_TYPE", "llamacpp")
 
 # PYTORCH DEVICE COMPATIBILITY
 if torch.cuda.is_available():
@@ -196,11 +199,7 @@ def import_config(config_filename):
     try:
         if not os.path.isabs(config_filename):
             config_filename = os.path.join(SETTINGS_DIR, config_filename)
-        print(
-            Fore.LIGHTBLUE_EX
-            + f"\nUsing configuration file: {config_filename}"
-            + Fore.RESET
-        )
+        print(f"\nUsing configuration file: {config_filename}")
         with open(config_filename) as stream:
             try:
                 config = yaml.safe_load(stream)
@@ -314,7 +313,7 @@ def export_config(config_filename):
 
         if os.path.exists(filepath):
             response = input(
-                f"\nA file with the name '{ Fore.LIGHTYELLOW_EX + config_filename + Fore.RESET}' already exists.\n\nEnter a new filename OR press enter to overwrite current config file OR type 'exit' to cancel export: "
+                f"\nA file with the name '{  config_filename }' already exists.\n\nEnter a new filename OR press enter to overwrite current config file OR type 'exit' to cancel export: "
             )
             if response.lower() == "exit":
                 print("Export cancelled ")
@@ -330,9 +329,7 @@ def export_config(config_filename):
     try:
         with open(filepath, "w") as file:
             yaml.dump(config, file, sort_keys=False)
-            print(
-                f"\nConfiguration exported to {Fore.LIGHTYELLOW_EX + filepath + Fore.RESET}"
-            )
+            print(f"\nConfiguration exported to {filepath}")
 
     except Exception as e:
         print(f"An error occurred during export: {e}")

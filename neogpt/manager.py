@@ -33,17 +33,20 @@ from neogpt.retrievers import (
     stepback,
     web_research,
 )
+from neogpt.utils import get_username, magic_commands, read_file, writing_assistant
 from neogpt.vectorstore import ChromaStore, FAISSStore
-from neogpt.utils import read_file, magic_commands
+
 # Create a console instance
 console = Console()
 
+
 # Define a shorthand for console.print using a lambda function
-cprint = lambda *args, **kwargs: console.print(*args, **kwargs)
+def cprint(*args, **kwargs):
+    return console.print(*args, **kwargs)
 
 
 def db_retriever(
-    device_type: str = DEVICE_TYPE, 
+    device_type: str = DEVICE_TYPE,
     model_type: str = MODEL_TYPE,
     vectordb: str = "Chroma",
     retriever: str = "local",
@@ -61,16 +64,22 @@ def db_retriever(
             db = FAISSStore() if retriever == "hybrid" else FAISSStore().load_local()
             LOGGING.info("Loaded FAISS DB Successfully")
 
+    model_name = (
+        os.getenv("MODEL_NAME") if os.getenv("MODEL_NAME") is not None else MODEL_NAME
+    )
+
     llm = load_model(
         device_type=device_type,
         model_type=model_type,
-        model_id=MODEL_NAME,
+        model_id=model_name,
         model_basename=MODEL_FILE,
         show_stats=show_stats,
         LOGGING=logging,
     )
 
-    cprint(f"\nUsing [bold magenta]{model_type.capitalize()}[/bold magenta] to load [bold magenta]{MODEL_NAME}[/bold magenta].")
+    cprint(
+        f"\nUsing [bold magenta]{model_type.capitalize()}[/bold magenta] to load [bold magenta]{model_name}[/bold magenta]."
+    )
 
     if persona != "default":
         cprint(
@@ -93,30 +102,28 @@ def db_retriever(
 
     return chain
 
+
 def chat(chain, show_source, retriever, LOGGING):
     # Run the chat loop
     cprint(
-       "\n[bright_yellow]NeoGPT 🤖 is ready to chat. Type /exit to quit.[/bright_yellow]"
+        "\n[bright_yellow]NeoGPT 🤖 is ready to chat. Type /exit to quit.[/bright_yellow]"
     )
     while True:
-        query = Prompt.ask("[bold cyan]\nYou 🙋‍♂️ [/bold cyan]")
+        query = Prompt.ask(f"[bold cyan]\n{get_username()} 🙎‍♂️ [/bold cyan]")
         # print(chain.combine_documents_chain.memory.chat_memory)
-        
-        # Matching for file paths
-        regex = re.compile(r"'([^']+)'")
-        if regex.search(query):
-            query = read_file(query)
-
 
         # Matching for magic commands
         if query.startswith("/"):
-            if magic_commands(query,chain) == False:
+            if magic_commands(query, chain) is False:
                 break
             else:
-                magic_commands(query,chain)
+                magic_commands(query, chain)
                 continue
-            
 
+        regex = re.compile(r"([^']+)")
+        if regex.search(query):
+            query = read_file(query)
+        print(query)
         res = (
             chain.invoke({"question": query})
             if retriever == "stepback"
@@ -167,7 +174,9 @@ def hire(task: str = "", tries: int = 5, LOGGING=logging):
 
 
 def shell_():
-    raise NotImplementedError("Shell mode is not implemented yet")
+    cprint(
+        "\n[bright_yellow]NeoGPT 🤖 is ready to chat. Type /exit to quit.[/bright_yellow]"
+    )
 
 
 def manager(
@@ -177,7 +186,7 @@ def manager(
     retriever: str = "local",
     persona: str = "default",
     show_source: bool = False,
-    write: str = None,
+    write: str | None = None,
     shell: bool = False,
     show_stats: bool = False,
     LOGGING=logging,
@@ -185,7 +194,9 @@ def manager(
     """
     The manager function is the main function that runs NeoGPT.
     """
-    chain = db_retriever(device_type, model_type, vectordb, retriever, persona, show_stats, LOGGING)
+    chain = db_retriever(
+        device_type, model_type, vectordb, retriever, persona, show_stats, LOGGING
+    )
 
     if shell:
         shell_()

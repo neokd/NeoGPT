@@ -6,7 +6,6 @@ from typing import Any
 from uuid import UUID
 
 import streamlit as st
-from colorama import Fore
 from langchain.callbacks.base import BaseCallbackHandler
 from langchain.schema.output import LLMResult
 from rich.console import Console
@@ -74,6 +73,7 @@ class TokenCallbackHandler(BaseCallbackHandler):
     def __init__(self):
         super().__init__()
         self._tokens = []
+        self.console = Console()
 
     def on_llm_new_token(self, token: str, **kwargs: Any) -> None:
         self._tokens.append(token)
@@ -95,9 +95,9 @@ class TokenCallbackHandler(BaseCallbackHandler):
             TOTAL_COST + QUERY_COST, 5
         )  # Accumulate the cost, rounded to 5 decimal places
         total_tokens = len(self._tokens)
-        print(Fore.WHITE + f"\nTotal tokens generated: {total_tokens}")
-        print(Fore.WHITE + f"Query cost: {QUERY_COST} INR")
-        print(Fore.WHITE + f"Total cost: {TOTAL_COST} INR")
+        self.console.print(f"\nTotal tokens generated: {total_tokens}")
+        self.console.print(f"Query cost: {QUERY_COST} INR")
+        self.console.print(f"Total cost: {TOTAL_COST} INR")
 
 
 class StreamlitStreamingHandler(StreamingStdOutCallbackHandler):
@@ -166,7 +166,6 @@ class AgentCallbackHandler(BaseCallbackHandler):
                 status.update()
                 self.console.print("\r", end="")
 
-
     def on_llm_end(self, response: LLMResult, **kwargs: Any) -> None:
         """Run when LLM ends running."""
         self.agent_printed = False
@@ -182,24 +181,6 @@ class AgentCallbackHandler(BaseCallbackHandler):
         )  # Accumulate the cost, rounded to 5 decimal places
         final_cost()
         # print(Fore.WHITE + f"Total cost: {TOTAL_COST} INR")
-
-
-class StreamOpenAICallbackHandler(BaseCallbackHandler):
-    def on_llm_start(
-        self, serialized: dict[str, Any], prompts: list[str], **kwargs: Any
-    ) -> None:
-        # Start a new line for a clean display
-        sys.stdout.write("\n")
-
-        sys.stdout.write(Fore.BLUE + "NeoGPT 🤖: " + Fore.RESET)
-
-    def on_llm_new_token(self, token: str, **kwargs: Any) -> None:
-        sys.stdout.write(Fore.WHITE + token)
-        sys.stdout.flush()
-
-    def on_llm_end(self, response: LLMResult, **kwargs: Any) -> None:
-        """Run when LLM ends running."""
-        sys.stdout.write("\n")
 
 
 def final_cost():

@@ -3,15 +3,12 @@ import os
 import re
 from datetime import datetime
 
-from colorama import Fore
 from langchain.chains import LLMChain
 from langchain.memory import ConversationBufferMemory
+from rich.console import Console
 
 from neogpt.agents import ML_Engineer, QA_Engineer
-from neogpt.callback_handler import (
-    AgentCallbackHandler,
-    final_cost,
-)
+from neogpt.callback_handler import AgentCallbackHandler, final_cost
 from neogpt.config import (
     DEVICE_TYPE,
     MODEL_FILE,
@@ -23,6 +20,14 @@ from neogpt.config import (
 )
 from neogpt.load_llm import load_model
 from neogpt.prompts.prompt import conversation_prompt
+
+# Create a global console instance
+console = Console()
+
+
+# Define a shorthand for console.print using a lambda function
+def cprint(*args, **kwargs):
+    return console.print(*args, **kwargs)
 
 
 def chat_mode(
@@ -44,76 +49,58 @@ def chat_mode(
 
     prompt, memory = conversation_prompt()
     conversation = LLMChain(prompt=prompt, llm=llm, verbose=False, memory=memory)
+
     # Main loop
     LOGGING.info(
         "Note: The stats are based on OpenAI's pricing model. The cost is calculated based on the number of tokens generated. You don't have to pay anything to use the chatbot. The cost is only for reference."
     )
 
-    print(Fore.LIGHTYELLOW_EX + "\nNeoGPT 🤖 is ready to chat. Type '/exit' to exit.")
-    # print(Fore.LIGHTYELLOW_EX + "Read the docs at "+ Fore.WHITE + "https://neokd.github.io/NeoGPT/")
+    cprint("\nNeoGPT 🤖 is ready to chat. Type '/exit' to exit.")
+
     if persona != "default":
-        print(
-            "NeoGPT 🤖 is in "
-            + Fore.LIGHTMAGENTA_EX
-            + persona
-            + Fore.LIGHTYELLOW_EX
-            + " mode."
-        )
+        cprint(f"NeoGPT 🤖 is in {persona} mode.")
 
     if persona == "shell":
-        print(
-            Fore.LIGHTYELLOW_EX
-            + "\nYou are using NeoGPT 🤖 as a shell. It may generate commands that can be harmful to your system. Use it at your own risk. ⚠️"
-            + Fore.RESET
+        cprint(
+            "\nYou are using NeoGPT 🤖 as a shell. It may generate commands that can be harmful to your system. Use it at your own risk. ⚠️"
         )
-        execute = input(
-            Fore.LIGHTCYAN_EX + "Do you want to execute the commands? (Y/N): "
-        ).upper()
+        execute = input("Do you want to execute the commands? (Y/N): ").upper()
         if execute == "Y":
-            print(
-                Fore.LIGHTYELLOW_EX
-                + "NeoGPT 🤖 will execute the commands in your default shell."
-                + Fore.RESET
-            )
+            cprint("NeoGPT 🤖 will execute the commands in your default shell.")
         else:
-            print(
-                Fore.LIGHTYELLOW_EX
-                + "You can copy the commands and execute them manually."
-                + Fore.RESET
-            )
+            cprint("You can copy the commands and execute them manually.")
 
-    #  Main Loop with timer
+    # Main Loop with timer
     last_input_time = datetime.now()
     while True:
         time_difference = (datetime.now() - last_input_time).total_seconds()
         # Check if 1.5 minute have passed since the last input
         if time_difference > 90:
-            print("\n \nNo input received for 1.5 minute! Exiting the program.")
+            cprint("\n \nNo input received for 1.5 minute! Exiting the program.")
             break
 
-        query = input(Fore.LIGHTCYAN_EX + "\nEnter your query 🙋‍♂️: ")
+        query = input("\nEnter your query 🙋‍♂️: ")
 
         if query == "/exit":
-            print(f"Total chat session cost: {final_cost()} INR")
+            cprint(f"Total chat session cost: {final_cost()} INR")
             LOGGING.info("Byee 👋.")
             break
 
         res = conversation.invoke({"question": query})
-        # res = chain.invoke({"question": query})
 
         if show_source:
             answer, docs = res["result"], res["source_documents"]
-            print("Question: " + Fore.LIGHTGREEN_EX + query)
-            print("Answer: " + Fore.LIGHTGREEN_EX + answer)
-            print(
+            cprint("Question: [green]" + query + "[/green]")
+            cprint("Answer: [green]" + answer + "[/green]")
+            cprint(
                 "----------------------------------SOURCE DOCUMENTS---------------------------"
             )
             for document in docs:
-                # print("\n> " + document.metadata["source"] + ":")
-                print(document)
-            print(
+                cprint(document)
+            cprint(
                 "----------------------------------SOURCE DOCUMENTS---------------------------"
             )
+
         # Writing the results to a file if write is specified. It can be used to write assignments, reports etc.
         if write is not None:
             if not os.path.exists(WORKSPACE_DIRECTORY):
@@ -133,11 +120,8 @@ def chat_mode(
             with open(os.path.join(WORKSPACE_DIRECTORY, write), "w") as result:
                 result.writelines(answer)
 
-            print(
-                "\n"
-                + Fore.LIGHTYELLOW_EX
-                + f"Your work is written to {WORKSPACE_DIRECTORY}/{write}"
-                + Fore.RESET
+            cprint(
+                "\n[lightyellow]Your work is written to {WORKSPACE_DIRECTORY}/{write}[/reset]"
             )
 
             break

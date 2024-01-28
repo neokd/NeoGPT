@@ -1,3 +1,8 @@
 pre{
     font-size: 16px;
 }
+
+
+li,ul,ol {
+    font-size: 16px;
+}

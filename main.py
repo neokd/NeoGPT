@@ -1,6 +1,7 @@
 import argparse
 import json
 import logging
+import os
 import sys
 import warnings
 
@@ -9,7 +10,13 @@ from streamlit.web import cli as stcli
 
 from neogpt.builder import builder
 from neogpt.chat import chat_mode
-from neogpt.config import DEVICE_TYPE, NEOGPT_LOG_FILE, export_config, import_config
+from neogpt.config import (
+    DEVICE_TYPE,
+    MODEL_NAME,
+    NEOGPT_LOG_FILE,
+    export_config,
+    import_config,
+)
 from neogpt.manager import hire, manager
 
 
@@ -50,7 +57,7 @@ def main():
     )
     parser.add_argument(
         "--model-type",
-        choices=["llamacpp", "ollama", "hf", "openai","lmstudio"],
+        choices=["llamacpp", "ollama", "hf", "openai", "lmstudio"],
         default="llamacpp",
     )
     parser.add_argument(
@@ -137,6 +144,17 @@ def main():
         help="Specify the mode of query",
     )
 
+    parser.add_argument(
+        "--model",
+        default="llamacpp",
+        help="Specify the model dynamically and overwrite the config settings",
+    )
+
+    parser.add_argument(
+        "-y",
+        help="Shell mode. Allows to run commands",
+    )
+
     args = parser.parse_args()
 
     # Check if --import switch is received
@@ -177,12 +195,18 @@ def main():
             level=log_level,
         )
 
+    if args.model:
+        model = args.model.split("/", 1)
+        overwrite["MODEL_TYPE"] = model[0]
+
+        if len(model) >= 2:
+            os.environ["MODEL_NAME"] = model[1]
+
     # if not os.path.exists(FAISS_PERSIST_DIRECTORY):
     #     builder(vectorstore="FAISS")
 
     # if not os.path.exists(CHROMA_PERSIST_DIRECTORY):
     #     builder(vectorstore="Chroma")
-
     if args.build:
         builder(
             vectorstore=args.db,
@@ -219,7 +243,8 @@ def main():
     else:
         manager(
             device_type=args.device_type,
-            model_type=args.model_type if overwrite["MODEL_TYPE"] is None
+            model_type=args.model_type
+            if overwrite["MODEL_TYPE"] is None
             else overwrite["MODEL_TYPE"],
             vectordb=args.db,
             retriever=args.retriever,

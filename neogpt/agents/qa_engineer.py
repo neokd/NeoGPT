@@ -2,9 +2,9 @@ import os
 import re
 import string
 
-from colorama import Fore, Style
 from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
+from rich import print
 
 from neogpt.config import (
     AGENT_THOUGHTS,
@@ -12,7 +12,7 @@ from neogpt.config import (
     QA_ENGINEER_FEEDBACK,
     WORKSPACE_DIRECTORY,
 )
-from neogpt.prompts.prompt import QA_ENGINEER_PROMPT
+from neogpt.prompts.agent_prompt import QA_ENGINEER_PROMPT
 
 
 class QA_Engineer:
@@ -56,9 +56,7 @@ class QA_Engineer:
                 f.write(python_code)
             print(
                 "\n"
-                + Fore.LIGHTYELLOW_EX
-                + f"Your task is been writtern to {WORKSPACE_DIRECTORY}/{filename}"
-                + Fore.RESET
+                + f"[bright_yellow]Your task is been writtern to {WORKSPACE_DIRECTORY}/{filename} [/bright_yellow]"
             )
 
         return code

@@ -5,6 +5,17 @@ description: "This page list all the available settings and configuration option
 
 # Language Model
 
+### Model Selection
+
+Specifies which language model to use. NeoGPT uses `langchain` under the hood to provide support for various language models.
+
+<CodeGroup>
+
+```bash Terminal
+python main.py --model ollama/<model-name>
+```
+
+</CodeGroup>
 
 
 ### Model Type
@@ -17,16 +28,20 @@ Specifies which language model to use. Check out the [models](/language-models/i
 python main.py --model-type llamacpp
 ```
 
-```python config.py
-MODEL_TYPE = "llamacpp"
-```
-
-```yaml settings.yaml
-MODEL_TYPE: llamacpp
-```
-
 </CodeGroup>
 
+
+Requires exporting `MODEL_NAME` for other models other than for `llamacpp`.
+<CodeGroup>
+
+```bash MacOS/Linux
+export MODEL_NAME="Your_Model_Name"
+```
+
+```bash Windows
+set MODEL_NAME=Your_Model_Name 
+```
+</CodeGroup>
 
 
 ### Device Type

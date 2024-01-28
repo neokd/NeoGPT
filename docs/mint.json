@@ -59,8 +59,8 @@
           "pages": [
             "language-models/local-models/llamacpp",
             "language-models/local-models/ollama",
-            "language-models/local-models/huggingface",
-            "language-models/local-models/lmstudio"
+            "language-models/local-models/lmstudio",
+            "language-models/local-models/huggingface"
           ]
         },
         {

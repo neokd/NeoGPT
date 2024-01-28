@@ -10,7 +10,6 @@ from langchain_openai.chat_models import ChatOpenAI
 from neogpt.callback_handler import (
     StreamingStdOutCallbackHandler,
     StreamlitStreamingHandler,
-    StreamOpenAICallbackHandler,
     TokenCallbackHandler,
 )
 from neogpt.config import (
@@ -36,7 +35,7 @@ def load_model(
     model_type: str = MODEL_TYPE,
     model_id: str = MODEL_NAME,
     model_basename: str = MODEL_FILE,
-    callback_manager: list = None,
+    callback_manager: list | None = None,
     show_stats: bool = False,
     LOGGING=logging,
 ):
@@ -61,9 +60,6 @@ def load_model(
     if show_stats:
         callbacks.append(TokenCallbackHandler())
 
-    if model_type == "openai":
-        callbacks.append(StreamOpenAICallbackHandler())
-        
     callback_manager = (
         CallbackManager(callback_manager)
         if callback_manager is not None
@@ -148,7 +144,7 @@ def load_model(
             llm = ChatOpenAI(
                 api_key=OPENAI_API_KEY,
                 callback_manager=CallbackManager(
-                    [StreamOpenAICallbackHandler(), TokenCallbackHandler()]
+                    [StreamingStdOutCallbackHandler(), TokenCallbackHandler()]
                 ),
                 streaming=True,
             )
@@ -166,6 +162,7 @@ def load_model(
                 streaming=True,
                 callback_manager=callback_manager,
             )
+            LOGGING.info("Loaded {model_id} using LM studio successfully")
             return llm
         except Exception as e:
             LOGGING.info(f"Error {e}")

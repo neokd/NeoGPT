@@ -6,7 +6,6 @@
 import logging
 import os
 
-from colorama import Fore
 from langchain_community.utilities.sql_database import SQLDatabase
 from langchain_experimental.sql import SQLDatabaseChain
 
@@ -18,7 +17,7 @@ def sql_retriever(llm, persona):
     SQL retriever
     """
     logging.info(
-        f"{Fore.YELLOW}Warning: The SQL retriever takes a long time to load. Please be patient 🤖 {Fore.RESET}"
+        "Warning: The SQL retriever takes a long time to load. Please be patient 🤖 "
     )
 
     # Find any .db file in source dir

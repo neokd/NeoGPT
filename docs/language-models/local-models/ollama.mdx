@@ -1,5 +1,36 @@
 ---
 title: Ollama 
-description: "🚧 Our documentation is currently under construction! We're working hard to bring you the best information.Contributions are welcome! 🚧"
 ---
+
+Ollama is an easy way to get LLMs running on your computer through a CLI.
+
+To run Ollama with NeoGPT
+
+
+1. Download Ollama for your OS from [here](https://ollama.ai/download)
+
+2. Open the installed ollama application, and go through the setup process.
+
+3. Now you are ready to download a model. You can see the list of available models [here](https://ollama.ai/library).
+
+4. To download a model, run the following command in your terminal:
+
+    ```bash
+    ollama pull **model-name**
+    ```
+
+5. It will likely take a few minutes to download the model.Once its done you can use it with NeoGPT.
+
+    ```bash
+    python main.py --model ollama/<model-name>
+    ```
+
+
+You can also export the model name as an environment variable and use it with NeoGPT.
+
+```bash
+export MODEL_NAME="Your_MODEL_NAME"
+python main.py --model-type ollama
+```
+
 

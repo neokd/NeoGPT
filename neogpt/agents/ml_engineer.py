@@ -1,9 +1,8 @@
-from colorama import Fore, Style
 from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
 
 from neogpt.config import AGENT_THOUGHTS, CURRENT_WORKING_AGENT, QA_ENGINEER_FEEDBACK
-from neogpt.prompts.prompt import ML_ENGINEER_PROMPT
+from neogpt.prompts.agent_prompt import ML_ENGINEER_PROMPT
 
 
 class ML_Engineer:

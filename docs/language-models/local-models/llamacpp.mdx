@@ -1,5 +1,48 @@
 ---
 title: LlamaCpp 
-description: "🚧 Our documentation is currently under construction! We're working hard to bring you the best information.Contributions are welcome! 🚧"
 ---
 
+By default, NeoGPT uses [LlamaCpp](https://github.com/abetlen/llama-cpp-python) to connect to local large language models.
+
+Simply run `python main.py` in the command line to start NeoGPT. You can also use `--model-type` flag to specifically use LlamaCpp.
+
+```bash
+python main.py
+```
+
+By default, we use `Mistral-7B-v0.2` model. You can change the model by using the following command:
+
+
+<CodeGroup>
+
+```bash MacOS/Linux
+export MODEL_NAME="Your_Model_Name" && export MODEL_FILE="Your_Model_File"
+```
+
+```bash Windows
+set MODEL_NAME=Your_Model_Name && set MODEL_FILE=Your_Model_File
+```
+</CodeGroup>
+
+
+
+
+
+
+## Metal (M1) Support
+
+Llama.cpp supports Apple silicon first-class citizen - optimized via ARM NEON, Accelerate and Metal frameworks. Use the `FORCE_CMAKE=1 ` environment variable to force the use of cmake and install the pip package for the Metal support
+
+```bash
+!CMAKE_ARGS="-DLLAMA_METAL=on" FORCE_CMAKE=1 pip install --upgrade --force-reinstall llama-cpp-python --no-cache-dir
+```
+
+
+## Windows Notes
+
+If you run into issues where it complains it can't find **'nmake' '?'** or **CMAKE_C_COMPILER**, you can extract w64devkit as mentioned in [llama.cpp repo](https://github.com/ggerganov/llama.cpp#openblas) and add those manually to CMAKE_ARGS before running pip install:
+
+```bash
+$env:CMAKE_GENERATOR = "MinGW Makefiles"
+$env:CMAKE_ARGS = "-DLLAMA_OPENBLAS=on -DCMAKE_C_COMPILER=C:/w64devkit/bin/gcc.exe -DCMAKE_CXX_COMPILER=C:/w64devkit/bin/g++.exe" 
+```

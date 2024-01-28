@@ -225,20 +225,6 @@ tests-mypy = ["mypy (>=1.6)", "pytest-mypy-plugins"]
 tests-no-zope = ["attrs[tests-mypy]", "cloudpickle", "hypothesis", "pympler", "pytest (>=4.3.0)", "pytest-xdist[psutil]"]
 
 [[package]]
-name = "babel"
-version = "2.14.0"
-description = "Internationalization utilities"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "Babel-2.14.0-py3-none-any.whl", hash = "sha256:efb1a25b7118e67ce3a259bed20545c29cb68be8ad2c784c83689981b7a57287"},
-    {file = "Babel-2.14.0.tar.gz", hash = "sha256:6919867db036398ba21eb5c7a0f6b28ab8cbc3ae7a73a44ebe34ae74a4e7d363"},
-]
-
-[package.extras]
-dev = ["freezegun (>=1.0,<2.0)", "pytest (>=6.0)", "pytest-cov"]
-
-[[package]]
 name = "backoff"
 version = "2.2.1"
 description = "Function decoration for backoff and retry"
@@ -778,26 +764,27 @@ test-randomorder = ["pytest-randomly"]
 
 [[package]]
 name = "curl-cffi"
-version = "0.5.10"
+version = "0.6.0b7"
 description = "libcurl ffi bindings for Python, with impersonation support"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "curl_cffi-0.5.10-cp37-abi3-macosx_10_9_x86_64.whl", hash = "sha256:892603dab5e56fb72bfff7ae969136138971f63f63defe98232e1ec55cb0f1c6"},
-    {file = "curl_cffi-0.5.10-cp37-abi3-macosx_11_0_arm64.whl", hash = "sha256:9937b8e13b1a6963c63e155b6621ec74649965105efedb919bc226fe731861cc"},
-    {file = "curl_cffi-0.5.10-cp37-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:b537595b9610a4dd0927c09823925b4e32b1ce0fd04385bfc5bb72ab830720e6"},
-    {file = "curl_cffi-0.5.10-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:1b2bc8822d23415f6533c8b750475e9bbc76764025fe1dcb5866dc033607fd7b"},
-    {file = "curl_cffi-0.5.10-cp37-abi3-win_amd64.whl", hash = "sha256:f9a1874b860c4e8db49bdfd9b9d4dc39999a1397d271ec78624c35c838e9e92a"},
-    {file = "curl_cffi-0.5.10.tar.gz", hash = "sha256:55bac4b73e2d80ceeaabea33270fc8ca6ace594128a46710242f2e688b4f8bfc"},
+    {file = "curl_cffi-0.6.0b7-cp37-abi3-macosx_10_9_x86_64.whl", hash = "sha256:0939e97e8f999bc51bde6a70e19b23aaee542ccc341955989d81e5b11d616cef"},
+    {file = "curl_cffi-0.6.0b7-cp37-abi3-macosx_11_0_arm64.whl", hash = "sha256:3dcb245dacaec556ed48dc8e4c609bdf5dfe52b84073a124ee3f5e9342e5a7af"},
+    {file = "curl_cffi-0.6.0b7-cp37-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:ef7e73e3148b482f69e30c7651dde5fd98900df597c0cdfdf1f433f3fb819037"},
+    {file = "curl_cffi-0.6.0b7-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:4df7a48a313688cb0dc2924229a3604b71700494a31ac7920701a2f930b49cdf"},
+    {file = "curl_cffi-0.6.0b7-cp37-abi3-win_amd64.whl", hash = "sha256:271892078905981880a40fbdf2d53c0e5814dcc102836d69d30772b731898de4"},
+    {file = "curl_cffi-0.6.0b7.tar.gz", hash = "sha256:f945aac9de95b53c3d0c77ce18391a7a4c7553b6eeb420631532dafdff298d43"},
 ]
 
 [package.dependencies]
+certifi = "*"
 cffi = ">=1.12.0"
 
 [package.extras]
 build = ["cibuildwheel", "wheel"]
-dev = ["autoflake (==1.4)", "black (==22.8.0)", "coverage (==6.4.1)", "cryptography (==38.0.3)", "flake8 (==6.0.0)", "flake8-bugbear (==22.7.1)", "flake8-pie (==0.15.0)", "httpx (==0.23.1)", "isort (==5.10.1)", "mypy (==0.971)", "pytest (==7.1.2)", "pytest-asyncio (==0.19.0)", "pytest-trio (==0.7.0)", "trio (==0.21.0)", "trio-typing (==0.7.0)", "trustme (==0.9.0)", "types-certifi (==2021.10.8.2)", "uvicorn (==0.18.3)"]
-test = ["cryptography (==38.0.3)", "httpx (==0.23.1)", "pytest (==7.1.2)", "pytest-asyncio (==0.19.0)", "pytest-trio (==0.7.0)", "trio (==0.21.0)", "trio-typing (==0.7.0)", "trustme (==0.9.0)", "types-certifi (==2021.10.8.2)", "uvicorn (==0.18.3)"]
+dev = ["autoflake (==1.4)", "black (==22.8.0)", "coverage (==6.4.1)", "cryptography (==38.0.3)", "flake8 (==6.0.0)", "flake8-bugbear (==22.7.1)", "flake8-pie (==0.15.0)", "httpx (==0.23.1)", "isort (==5.10.1)", "mypy (==0.971)", "pytest (==7.1.2)", "pytest-asyncio (==0.19.0)", "pytest-trio (==0.7.0)", "trio (==0.21.0)", "trio-typing (==0.7.0)", "trustme (==0.9.0)", "types-certifi (==2021.10.8.2)", "uvicorn (==0.18.3)", "websockets (==11.0.3)"]
+test = ["cryptography (==38.0.3)", "httpx (==0.23.1)", "proxy.py (==2.4.3)", "pytest (==7.1.2)", "pytest-asyncio (==0.19.0)", "pytest-trio (==0.7.0)", "trio (==0.21.0)", "trio-typing (==0.7.0)", "trustme (==0.9.0)", "types-certifi (==2021.10.8.2)", "uvicorn (==0.18.3)", "websockets (==11.0.3)"]
 
 [[package]]
 name = "cycler"
@@ -869,23 +856,38 @@ files = [
 ]
 
 [[package]]
+name = "docstring-inheritance"
+version = "2.1.2"
+description = "Avoid writing and maintaining duplicated docstrings."
+optional = false
+python-versions = "<3.13,>=3.8"
+files = [
+    {file = "docstring-inheritance-2.1.2.tar.gz", hash = "sha256:ac9af95a7b06a305d43720274d0e62523d23f835bf94ce2bb814687e6fe3957b"},
+    {file = "docstring_inheritance-2.1.2-py3-none-any.whl", hash = "sha256:05c8e3ef4c308406e66345b6d583df48ec1803ae90ae39cb7be03a78ac8d88d1"},
+]
+
+[package.extras]
+test = ["covdefaults", "pytest", "pytest-cov"]
+
+[[package]]
 name = "duckduckgo-search"
-version = "4.2"
+version = "4.3"
 description = "Search for words, documents, images, news, maps and text translation using the DuckDuckGo.com search engine."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "duckduckgo_search-4.2-py3-none-any.whl", hash = "sha256:959e94f2e17868bcb595f950077923ec138d62fd0b77bfa168d3bca4a0f1f4f4"},
-    {file = "duckduckgo_search-4.2.tar.gz", hash = "sha256:55656d426a73b0b248d9a540a83e2a9c25db7b5e74df88d3604d0f33f91b13e5"},
+    {file = "duckduckgo_search-4.3-py3-none-any.whl", hash = "sha256:f0b492007c4b6ff4c24f814758afc0372088ed2338c45d01bb25000714e551df"},
+    {file = "duckduckgo_search-4.3.tar.gz", hash = "sha256:1e719a152c993fc2abf9c0cccd25bf736fcb028b903e8af811141737500f64b7"},
 ]
 
 [package.dependencies]
 click = ">=8.1.7"
-curl-cffi = ">=0.5.10"
+curl-cffi = ">=0.6.0b7"
+docstring-inheritance = ">=2.1.2"
 lxml = ">=4.9.3"
 
 [package.extras]
-dev = ["pytest (>=7.4.2)", "pytest-asyncio (>=0.21.1)", "ruff (>=0.1.6)"]
+dev = ["pytest (>=7.4.2)", "ruff (>=0.1.6)"]
 
 [[package]]
 name = "effdet"
@@ -1220,23 +1222,6 @@ sftp = ["paramiko"]
 smb = ["smbprotocol"]
 ssh = ["paramiko"]
 tqdm = ["tqdm"]
-
-[[package]]
-name = "ghp-import"
-version = "2.1.0"
-description = "Copy your docs directly to the gh-pages branch."
-optional = false
-python-versions = "*"
-files = [
-    {file = "ghp-import-2.1.0.tar.gz", hash = "sha256:9c535c4c61193c2df8871222567d7fd7e5014d835f97dc7b7439069e2413d343"},
-    {file = "ghp_import-2.1.0-py3-none-any.whl", hash = "sha256:8337dd7b50877f163d4c0289bc1f1c7f127550241988d568c1db512c4324a619"},
-]
-
-[package.dependencies]
-python-dateutil = ">=2.8.1"
-
-[package.extras]
-dev = ["flake8", "markdown", "twine", "wheel"]
 
 [[package]]
 name = "gitdb"
@@ -2056,13 +2041,13 @@ extended-testing = ["aiosqlite (>=0.19.0,<0.20.0)", "aleph-alpha-client (>=2.15.
 
 [[package]]
 name = "langchain-core"
-version = "0.1.15"
+version = "0.1.16"
 description = "Building applications with LLMs through composability"
 optional = false
 python-versions = ">=3.8.1,<4.0"
 files = [
-    {file = "langchain_core-0.1.15-py3-none-any.whl", hash = "sha256:eb2e6a81400a98e8d27638ede158c0dc4245ca8e69578138f5ef4c913258ff95"},
-    {file = "langchain_core-0.1.15.tar.gz", hash = "sha256:129c0e92ef9a31971766496a9fade429217bd56d16bb6d0024d27925f26187d6"},
+    {file = "langchain_core-0.1.16-py3-none-any.whl", hash = "sha256:c1b2e7363771d64a72cb45032ed5a46facf67de005017fb5e74595cbf433f834"},
+    {file = "langchain_core-0.1.16.tar.gz", hash = "sha256:8cb546eed318009ee1a8a381d108074eddf0395ae61eb243db00d76e1e265e89"},
 ]
 
 [package.dependencies]
@@ -2177,12 +2162,12 @@ tesseract = ["pytesseract"]
 
 [[package]]
 name = "llama-cpp-python"
-version = "0.2.32"
+version = "0.2.34"
 description = "Python bindings for the llama.cpp library"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "llama_cpp_python-0.2.32.tar.gz", hash = "sha256:202d0596f044542678d062a4ef6d8eddb70acf818895b7535b3311a51f262fb4"},
+    {file = "llama_cpp_python-0.2.34.tar.gz", hash = "sha256:eca98f3daf31a9551971b122eca64224f0525911620a472b7b382c158a7131d4"},
 ]
 
 [package.dependencies]
@@ -2475,104 +2460,6 @@ python-versions = ">=3.7"
 files = [
     {file = "mdurl-0.1.2-py3-none-any.whl", hash = "sha256:84008a41e51615a49fc9966191ff91509e3c40b939176e643fd50a5c2196b8f8"},
     {file = "mdurl-0.1.2.tar.gz", hash = "sha256:bb413d29f5eea38f31dd4754dd7377d4465116fb207585f97bf925588687c1ba"},
-]
-
-[[package]]
-name = "mergedeep"
-version = "1.3.4"
-description = "A deep merge function for 🐍."
-optional = false
-python-versions = ">=3.6"
-files = [
-    {file = "mergedeep-1.3.4-py3-none-any.whl", hash = "sha256:70775750742b25c0d8f36c55aed03d24c3384d17c951b3175d898bd778ef0307"},
-    {file = "mergedeep-1.3.4.tar.gz", hash = "sha256:0096d52e9dad9939c3d975a774666af186eda617e6ca84df4c94dec30004f2a8"},
-]
-
-[[package]]
-name = "mkdocs"
-version = "1.5.3"
-description = "Project documentation with Markdown."
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "mkdocs-1.5.3-py3-none-any.whl", hash = "sha256:3b3a78e736b31158d64dbb2f8ba29bd46a379d0c6e324c2246c3bc3d2189cfc1"},
-    {file = "mkdocs-1.5.3.tar.gz", hash = "sha256:eb7c99214dcb945313ba30426c2451b735992c73c2e10838f76d09e39ff4d0e2"},
-]
-
-[package.dependencies]
-click = ">=7.0"
-colorama = {version = ">=0.4", markers = "platform_system == \"Windows\""}
-ghp-import = ">=1.0"
-jinja2 = ">=2.11.1"
-markdown = ">=3.2.1"
-markupsafe = ">=2.0.1"
-mergedeep = ">=1.3.4"
-packaging = ">=20.5"
-pathspec = ">=0.11.1"
-platformdirs = ">=2.2.0"
-pyyaml = ">=5.1"
-pyyaml-env-tag = ">=0.1"
-watchdog = ">=2.0"
-
-[package.extras]
-i18n = ["babel (>=2.9.0)"]
-min-versions = ["babel (==2.9.0)", "click (==7.0)", "colorama (==0.4)", "ghp-import (==1.0)", "importlib-metadata (==4.3)", "jinja2 (==2.11.1)", "markdown (==3.2.1)", "markupsafe (==2.0.1)", "mergedeep (==1.3.4)", "packaging (==20.5)", "pathspec (==0.11.1)", "platformdirs (==2.2.0)", "pyyaml (==5.1)", "pyyaml-env-tag (==0.1)", "typing-extensions (==3.10)", "watchdog (==2.0)"]
-
-[[package]]
-name = "mkdocs-git-revision-date-localized-plugin"
-version = "1.2.2"
-description = "Mkdocs plugin that enables displaying the localized date of the last git modification of a markdown file."
-optional = false
-python-versions = ">=3.6"
-files = [
-    {file = "mkdocs-git-revision-date-localized-plugin-1.2.2.tar.gz", hash = "sha256:0c43a9aac1fa69df99a823f833cc223bac9967b60d5261a857761c7c6e3b30de"},
-    {file = "mkdocs_git_revision_date_localized_plugin-1.2.2-py3-none-any.whl", hash = "sha256:85c7fe9ab06e7a63c4e522c26fee8b51d357cb8cbe605064501ad80f4f31cb94"},
-]
-
-[package.dependencies]
-babel = ">=2.7.0"
-GitPython = "*"
-mkdocs = ">=1.0"
-pytz = "*"
-
-[[package]]
-name = "mkdocs-material"
-version = "9.5.5"
-description = "Documentation that simply works"
-optional = false
-python-versions = ">=3.8"
-files = [
-    {file = "mkdocs_material-9.5.5-py3-none-any.whl", hash = "sha256:ac50b2431a79a3b160fdefbba37c9132485f1a69166aba115ad49fafdbbbc5df"},
-    {file = "mkdocs_material-9.5.5.tar.gz", hash = "sha256:4480d9580faf42fed0123d0465502bfc1c0c239ecc9c4d66159cf0459ea1b4ae"},
-]
-
-[package.dependencies]
-babel = ">=2.10,<3.0"
-colorama = ">=0.4,<1.0"
-jinja2 = ">=3.0,<4.0"
-markdown = ">=3.2,<4.0"
-mkdocs = ">=1.5.3,<1.6.0"
-mkdocs-material-extensions = ">=1.3,<2.0"
-paginate = ">=0.5,<1.0"
-pygments = ">=2.16,<3.0"
-pymdown-extensions = ">=10.2,<11.0"
-regex = ">=2022.4"
-requests = ">=2.26,<3.0"
-
-[package.extras]
-git = ["mkdocs-git-committers-plugin-2 (>=1.1,<2.0)", "mkdocs-git-revision-date-localized-plugin (>=1.2,<2.0)"]
-imaging = ["cairosvg (>=2.6,<3.0)", "pillow (>=10.2,<11.0)"]
-recommended = ["mkdocs-minify-plugin (>=0.7,<1.0)", "mkdocs-redirects (>=1.2,<2.0)", "mkdocs-rss-plugin (>=1.6,<2.0)"]
-
-[[package]]
-name = "mkdocs-material-extensions"
-version = "1.3.1"
-description = "Extension pack for Python Markdown and MkDocs Material."
-optional = false
-python-versions = ">=3.8"
-files = [
-    {file = "mkdocs_material_extensions-1.3.1-py3-none-any.whl", hash = "sha256:adff8b62700b25cb77b53358dad940f3ef973dd6db797907c49e3c2ef3ab4e31"},
-    {file = "mkdocs_material_extensions-1.3.1.tar.gz", hash = "sha256:10c9511cea88f568257f960358a467d12b970e1f7b2c0e5fb2bb48cab1928443"},
 ]
 
 [[package]]
@@ -3164,13 +3051,13 @@ sympy = "*"
 
 [[package]]
 name = "openai"
-version = "1.9.0"
+version = "1.10.0"
 description = "The official Python library for the openai API"
 optional = false
 python-versions = ">=3.7.1"
 files = [
-    {file = "openai-1.9.0-py3-none-any.whl", hash = "sha256:5774a0582ed82f6de92200ed5024e03e272b93e04e9d31caeda5fb80f63df50d"},
-    {file = "openai-1.9.0.tar.gz", hash = "sha256:3e9947a544556c051fa138a4def5bd8b468364ec52803c6628532ab949ddce55"},
+    {file = "openai-1.10.0-py3-none-any.whl", hash = "sha256:aa69e97d0223ace9835fbf9c997abe9ee95318f684fd2de6d02c870700c71ebc"},
+    {file = "openai-1.10.0.tar.gz", hash = "sha256:208886cb501b930dc63f48d51db9c15e5380380f80516d07332adad67c9f1053"},
 ]
 
 [package.dependencies]
@@ -3391,13 +3278,13 @@ files = [
 
 [[package]]
 name = "overrides"
-version = "7.6.0"
+version = "7.7.0"
 description = "A decorator to automatically detect mismatch when overriding a method."
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "overrides-7.6.0-py3-none-any.whl", hash = "sha256:c36e6635519ea9c5b043b65c36d4b886aee8bd45b7d4681d2a6df0898df4b654"},
-    {file = "overrides-7.6.0.tar.gz", hash = "sha256:01e15bbbf15b766f0675c275baa1878bd1c7dc9bc7b9ee13e677cdba93dc1bd9"},
+    {file = "overrides-7.7.0-py3-none-any.whl", hash = "sha256:c7ed9d062f78b8e4c1a7b70bd8796b35ead4d9f510227ef9c5dc7626c60d7e49"},
+    {file = "overrides-7.7.0.tar.gz", hash = "sha256:55158fa3d93b98cc75299b1e67078ad9003ca27945c76162c1c0766d6f91820a"},
 ]
 
 [[package]]
@@ -3409,16 +3296,6 @@ python-versions = ">=3.7"
 files = [
     {file = "packaging-23.2-py3-none-any.whl", hash = "sha256:8c491190033a9af7e1d931d0b5dacc2ef47509b34dd0de67ed209b5203fc88c7"},
     {file = "packaging-23.2.tar.gz", hash = "sha256:048fb0e9405036518eaaf48a55953c750c11e1a1b68e0dd1a9d62ed0c092cfc5"},
-]
-
-[[package]]
-name = "paginate"
-version = "0.5.6"
-description = "Divides large result sets into pages for easier browsing"
-optional = false
-python-versions = "*"
-files = [
-    {file = "paginate-0.5.6.tar.gz", hash = "sha256:5e6007b6a9398177a7e1648d04fdd9f8c9766a1a945bceac82f1929e8c78af2d"},
 ]
 
 [[package]]
@@ -3492,17 +3369,6 @@ spss = ["pyreadstat (>=1.2.0)"]
 sql-other = ["SQLAlchemy (>=2.0.0)", "adbc-driver-postgresql (>=0.8.0)", "adbc-driver-sqlite (>=0.8.0)"]
 test = ["hypothesis (>=6.46.1)", "pytest (>=7.3.2)", "pytest-xdist (>=2.2.0)"]
 xml = ["lxml (>=4.9.2)"]
-
-[[package]]
-name = "pathspec"
-version = "0.12.1"
-description = "Utility library for gitignore style pattern matching of file paths."
-optional = false
-python-versions = ">=3.8"
-files = [
-    {file = "pathspec-0.12.1-py3-none-any.whl", hash = "sha256:a0d503e138a4c123b27490a4f7beda6a01c6f288df0e4a8b79c7eb0dc7b4cc08"},
-    {file = "pathspec-0.12.1.tar.gz", hash = "sha256:a482d51503a1ab33b1c67a6c3813a26953dbdc71c31dacaef9a838c4e29f5712"},
-]
 
 [[package]]
 name = "pdf2image"
@@ -3695,21 +3561,6 @@ typing = ["typing-extensions"]
 xmp = ["defusedxml"]
 
 [[package]]
-name = "platformdirs"
-version = "4.1.0"
-description = "A small Python package for determining appropriate platform-specific dirs, e.g. a \"user data dir\"."
-optional = false
-python-versions = ">=3.8"
-files = [
-    {file = "platformdirs-4.1.0-py3-none-any.whl", hash = "sha256:11c8f37bcca40db96d8144522d925583bdb7a31f7b0e37e3ed4318400a8e2380"},
-    {file = "platformdirs-4.1.0.tar.gz", hash = "sha256:906d548203468492d432bcb294d4bc2fff751bf84971fbb2c10918cc206ee420"},
-]
-
-[package.extras]
-docs = ["furo (>=2023.7.26)", "proselint (>=0.13)", "sphinx (>=7.1.1)", "sphinx-autodoc-typehints (>=1.24)"]
-test = ["appdirs (==1.4.4)", "covdefaults (>=2.3)", "pytest (>=7.4)", "pytest-cov (>=4.1)", "pytest-mock (>=3.11.1)"]
-
-[[package]]
 name = "portalocker"
 version = "2.8.2"
 description = "Wraps the portalocker recipe for easy usage"
@@ -3730,13 +3581,13 @@ tests = ["pytest (>=5.4.1)", "pytest-cov (>=2.8.1)", "pytest-mypy (>=0.8.0)", "p
 
 [[package]]
 name = "posthog"
-version = "3.3.2"
+version = "3.3.3"
 description = "Integrate PostHog into any python application."
 optional = false
 python-versions = "*"
 files = [
-    {file = "posthog-3.3.2-py2.py3-none-any.whl", hash = "sha256:14fb43ea95c40b353db59c49af2c09ff15188aa2963f48091fc7912fa9375263"},
-    {file = "posthog-3.3.2.tar.gz", hash = "sha256:734bf89f3c372605a8bbf2b07f600885287209145d747b09ccd004c59834750e"},
+    {file = "posthog-3.3.3-py2.py3-none-any.whl", hash = "sha256:22b450be8cfdbcf403cbbcc50e9ca6e681d04c6a057336483cc4b8beb5794a15"},
+    {file = "posthog-3.3.3.tar.gz", hash = "sha256:2f16372675a81fb093dd19d7fb8ea8166068f5a7a17358d71ccb2f7080a4c8c1"},
 ]
 
 [package.dependencies]
@@ -4116,24 +3967,6 @@ plugins = ["importlib-metadata"]
 windows-terminal = ["colorama (>=0.4.6)"]
 
 [[package]]
-name = "pymdown-extensions"
-version = "10.7"
-description = "Extension pack for Python Markdown."
-optional = false
-python-versions = ">=3.8"
-files = [
-    {file = "pymdown_extensions-10.7-py3-none-any.whl", hash = "sha256:6ca215bc57bc12bf32b414887a68b810637d039124ed9b2e5bd3325cbb2c050c"},
-    {file = "pymdown_extensions-10.7.tar.gz", hash = "sha256:c0d64d5cf62566f59e6b2b690a4095c931107c250a8c8e1351c1de5f6b036deb"},
-]
-
-[package.dependencies]
-markdown = ">=3.5"
-pyyaml = "*"
-
-[package.extras]
-extra = ["pygments (>=2.12)"]
-
-[[package]]
 name = "pypandoc"
 version = "1.12"
 description = "Thin wrapper for pandoc."
@@ -4394,6 +4227,7 @@ files = [
     {file = "PyYAML-6.0.1-cp311-cp311-win_amd64.whl", hash = "sha256:bf07ee2fef7014951eeb99f56f39c9bb4af143d8aa3c21b1677805985307da34"},
     {file = "PyYAML-6.0.1-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:855fb52b0dc35af121542a76b9a84f8d1cd886ea97c84703eaa6d88e37a2ad28"},
     {file = "PyYAML-6.0.1-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:40df9b996c2b73138957fe23a16a4f0ba614f4c0efce1e9406a184b6d07fa3a9"},
+    {file = "PyYAML-6.0.1-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:a08c6f0fe150303c1c6b71ebcd7213c2858041a7e01975da3a99aed1e7a378ef"},
     {file = "PyYAML-6.0.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:6c22bec3fbe2524cde73d7ada88f6566758a8f7227bfbf93a408a9d86bcc12a0"},
     {file = "PyYAML-6.0.1-cp312-cp312-musllinux_1_1_x86_64.whl", hash = "sha256:8d4e9c88387b0f5c7d5f281e55304de64cf7f9c0021a3525bd3b1c542da3b0e4"},
     {file = "PyYAML-6.0.1-cp312-cp312-win32.whl", hash = "sha256:d483d2cdf104e7c9fa60c544d92981f12ad66a457afae824d146093b8c294c54"},
@@ -4427,20 +4261,6 @@ files = [
     {file = "PyYAML-6.0.1-cp39-cp39-win_amd64.whl", hash = "sha256:510c9deebc5c0225e8c96813043e62b680ba2f9c50a08d3724c7f28a747d1486"},
     {file = "PyYAML-6.0.1.tar.gz", hash = "sha256:bfdf460b1736c775f2ba9f6a92bca30bc2095067b8a9d77876d1fad6cc3b4a43"},
 ]
-
-[[package]]
-name = "pyyaml-env-tag"
-version = "0.1"
-description = "A custom YAML tag for referencing environment variables in YAML files. "
-optional = false
-python-versions = ">=3.6"
-files = [
-    {file = "pyyaml_env_tag-0.1-py3-none-any.whl", hash = "sha256:af31106dec8a4d68c60207c1886031cbf839b68aa7abccdb19868200532c2069"},
-    {file = "pyyaml_env_tag-0.1.tar.gz", hash = "sha256:70092675bda14fdec33b31ba77e7543de9ddc88f2e5b99160396572d11525bdb"},
-]
-
-[package.dependencies]
-pyyaml = "*"
 
 [[package]]
 name = "rank-bm25"
@@ -6069,13 +5889,13 @@ xlsx = ["networkx", "openpyxl", "pandas", "xlrd"]
 
 [[package]]
 name = "unstructured-client"
-version = "0.15.5"
+version = "0.16.0"
 description = "Python Client SDK for Unstructured API"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "unstructured-client-0.15.5.tar.gz", hash = "sha256:da36c26c230707aba5b4a586b954631f100e493a660b16f16442e8c8cac8803a"},
-    {file = "unstructured_client-0.15.5-py3-none-any.whl", hash = "sha256:82906fef86961a7efce35a4dcd46651e2fc4b96f3ad2b27d4e403def015bf76e"},
+    {file = "unstructured-client-0.16.0.tar.gz", hash = "sha256:88928dd6c18d6f3fe58a0a80b03aa34f841a35e1f60ed280bdafa7f05029d380"},
+    {file = "unstructured_client-0.16.0-py3-none-any.whl", hash = "sha256:351db1444a30133dc4f3946f80de6c93a786407b954db0828e5787df08b39125"},
 ]
 
 [package.dependencies]
@@ -6731,4 +6551,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<=3.12"
-content-hash = "4725fcc4695461100a98e42ad68ba357b4833d7448beeb6f1da6b44eb2c10ab1"
+content-hash = "f8d529d0eae412d581d2dd1ec25bd90250c732702d9d0fff8d3b8ff9b5f8c570"
