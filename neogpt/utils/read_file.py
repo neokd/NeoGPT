@@ -2,6 +2,7 @@ import re
 import base64
 from PIL import Image
 from io import BytesIO
+import PyMuPDF
 from langchain.schema import HumanMessage
 
 
@@ -18,6 +19,15 @@ def read_file(user_input):
             with open(file_path, "r") as f:
                 content = f.read()
                 user_input = user_input.replace(file_path, content)
+                
+        elif extension.lower() in ["pdf"]:
+            with open(file_path, "rb") as f:
+                pdf_doc = fitz.open(f)
+                pdf_content = ""
+                for page_num in range(pdf_doc.page_count):
+                    page = pdf_doc[page_num]
+                    pdf_content += page.get_text("text")
+                    user_input = user_input.replace(file_path, pdf_content)
 
         # elif extension.lower() in ["jpg", "jpeg", "png"]:
         #     with open(file_path, "rb") as f:
