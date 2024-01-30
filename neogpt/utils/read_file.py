@@ -3,7 +3,7 @@ import base64
 from PIL import Image
 from io import BytesIO
 from langchain.schema import HumanMessage
-from langchain_community.document_loaders import PyMuPDFLoader
+from langchain_community.document_loaders import PDFMinerLoader
 
 
 def read_file(user_input):
@@ -21,7 +21,7 @@ def read_file(user_input):
 
         elif extension.lower() in ["pdf"]:
             with open(file_path, "rb") as f:
-                loader = PyMuPDFLoader(f)
+                loader = PDFMinerLoader(f)
                 content = loader.extract_text()
                 user_input = user_input.replace(file_path, content)
         
