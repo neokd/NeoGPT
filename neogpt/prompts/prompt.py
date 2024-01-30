@@ -9,8 +9,6 @@ from langchain.prompts import (
 
 from neogpt.config import DEFAULT_MEMORY_KEY, MODEL_NAME
 
-# DEFAULT_MEMORY_KEY = 3
-
 # The prompts are taken from https://github.com/f/awesome-chatgpt-prompts. Thanks to the author for the amazing work.
 
 
@@ -88,6 +86,20 @@ def get_prompt(
             + END_INSTRUCTION
             + BEGIN_INSTRUCTION
             + """ Assistant:"""
+        )
+
+    elif "tinyllama" in model_name.lower():
+        SYSTEM = "<|system|>"
+        ASSISTANT = "<|assistant|>"
+        USER = "<|user|>"
+
+        prompt_template = (
+            SYSTEM
+            + SYSTEM_PROMPT
+            + """</s>"""
+            + USER
+            + """Context {context} {history} </s> {question} </s>"""
+            + ASSISTANT
         )
 
     elif "deepseek" in model_name.lower():
@@ -168,8 +180,9 @@ def get_prompt(
         prompt_template = (
             SYSTEM_PROMPT
             + BEGIN_INSTRUCTION
-            + """ Context: {history} \n {context} \n user {question}""" 
-            + IMAGE + "###"
+            + """ Context: {history} \n {context} \n user {question}"""
+            + IMAGE
+            + "###"
             + BEGIN_INSTRUCTION
             + """ Assistant:"""
         )
@@ -181,7 +194,6 @@ def get_prompt(
     prompt = PromptTemplate(
         input_variables=["history", "context", "question"], template=prompt_template
     )
-    print(prompt)
 
     return prompt, memory
 
@@ -267,29 +279,10 @@ def stepback_prompt(
 
 
 def conversation_prompt(
+    persona: str = "default",
     memory_key: int = DEFAULT_MEMORY_KEY,
 ):
-    INSTRUCTION_TEMLATE = """
-        History: {history}
-        User: {question}
-    """
-    INSTRUCTION_BEGIN, INSTRUCTION_END = "[INST]", "[/INST]"
-    SYSTEM_BEGIN, SYSTEM_END = "[SYS]", "[/SYS]"
-    memory = ConversationBufferWindowMemory(
-        k=memory_key, return_messages=True, input_key="question", memory_key="history"
-    )
-    SYSTEM_PROMPT = """
-    NeoGPT, You are an helpful assistant, you will be provided with users question. Answer the question based on the knowledge you have. if you can not answer a user question, inform the user. Do not use any other information for answering user. Initialize the conversation with a greeting if no context is provided.
-    """
-    prompt_template = (
-        INSTRUCTION_BEGIN + SYSTEM_PROMPT + INSTRUCTION_TEMLATE + INSTRUCTION_END
-    )
-    prompt = PromptTemplate(
-        input_variables=["history", "question"], template=prompt_template
-    )
-    memory = ConversationBufferWindowMemory(
-        k=memory_key, return_messages=True, input_key="question", memory_key="history"
-    )
+    prompt, memory = get_prompt(persona=persona, memory_key=memory_key)
+    prompt.input_variables.pop(0)
+    prompt = PromptTemplate.from_template(prompt.template.replace("{context}", ""))
     return prompt, memory
-
-

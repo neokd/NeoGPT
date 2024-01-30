@@ -1,5 +1,23 @@
 ---
 title: Hugging Face 
-description: "🚧 Our documentation is currently under construction! We're working hard to bring you the best information.Contributions are welcome! 🚧"
+description: ""
 ---
 
+<Warning>
+    Heads up! Using Hugging Face to load models is generally not advised unless you have higher RAM capabilities. Check [here](/language-models/introduction) for more information.
+</Warning>
+
+
+Hugging Face is a popular open-source library. It provides a large number of pre-trained models for a variety of tasks. To use HuggingFace models with NeoGPT, you can run the following command:
+
+```bash
+python main.py --model hf/<model-name>
+```
+
+where `<model-name>` is the name of the model you want to use. For example, to use the `TinyLlama/TinyLlama-1.1B-Chat-v1.0` model, you can run:
+
+```bash
+python main.py --model hf/TinyLlama/TinyLlama-1.1B-Chat-v1.0
+```
+
+You can find a list of all available models [here](https://huggingface.co/models?pipeline_tag=text-generation&sort=downloads).

@@ -4,9 +4,10 @@ import os
 from dotenv import load_dotenv
 from huggingface_hub import hf_hub_download
 from langchain.callbacks.manager import CallbackManager
-from langchain_community.llms import HuggingFacePipeline, LlamaCpp, Ollama
+from langchain_community.llms import LlamaCpp, Ollama
 from langchain_openai.chat_models import ChatOpenAI
-
+from langchain_community.llms.huggingface_pipeline import HuggingFacePipeline
+from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline, TextStreamer
 from neogpt.callback_handler import (
     StreamingStdOutCallbackHandler,
     StreamlitStreamingHandler,
@@ -118,21 +119,32 @@ def load_model(
     elif model_type == "hf":
         try:
             LOGGING.warning(
-                "🚨 You are using an large model. Please use a quantized model for better performance"
+                "🚨 You are using an huggingface's transformers library to load the model. This is not recommended. Use quantized model for better performance"
             )
             kwargs = {
                 # "temperature": 0,
                 "max_length": MAX_TOKEN_LENGTH,
-                "cache_dir": MODEL_DIRECTORY,
                 "trust_remote_code": True,
             }
-            llm = HuggingFacePipeline.from_model_id(
-                model_id=MODEL_NAME,
-                task="text-generation",
-                device=N_GPU_LAYERS if device_type.lower() == "cuda" else -1,
-                model_kwargs=kwargs,
-                callback_manager=callback_manager,
+            tokenizer = AutoTokenizer.from_pretrained(
+                model_id, cache_dir=MODEL_DIRECTORY
             )
+            model = AutoModelForCausalLM.from_pretrained(
+                model_id,
+                cache_dir=MODEL_DIRECTORY,
+                trust_remote_code=True, 
+            )
+            streamer = TextStreamer(tokenizer, skip_prompt=True)
+
+            pipe = pipeline(
+                "text-generation",
+                model=model,
+                tokenizer=tokenizer,
+                device=device_type,
+                streamer=streamer,
+                **kwargs,
+            )
+            llm = HuggingFacePipeline(pipeline=pipe)
             LOGGING.info(f"Loaded {model_id} successfully")
             return llm
         except Exception as e:

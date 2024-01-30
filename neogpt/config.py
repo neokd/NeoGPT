@@ -55,8 +55,8 @@ WORKSPACE_DIRECTORY = os.path.join(os.path.dirname(__file__), "workspace")
 DEFAULT_MEMORY_KEY = 2
 
 # GGUF MODELS (Recommended , Default and Fast)
-MODEL_NAME = os.getenv("MODEL_NAME", "TheBloke/Mistral-7B-Instruct-v0.2-GGUF")
-MODEL_FILE = os.getenv("MODEL_FILE", "mistral-7b-instruct-v0.2.Q4_K_M.gguf")
+MODEL_NAME = os.getenv("MODEL_NAME", "TheBloke/Mistral-7B-Instruct-v0.1-GGUF")
+MODEL_FILE = os.getenv("MODEL_FILE", "mistral-7b-instruct-v0.1.Q4_K_M.gguf")
 
 # OpenHathi Hindi Model (Testing)
 # MODEL_NAME = "sarvamai/OpenHathi-7B-Hi-v0.1-Base"

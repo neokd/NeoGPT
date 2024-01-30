@@ -27,7 +27,8 @@ def magic_commands(user_input, chain):
 
     else:
         cprint("Invalid command. Please try again.")
-        return 
+        return
+
 
 # Uncomment the following lines to test the magic commands
 # if __name__ == "__main__":
