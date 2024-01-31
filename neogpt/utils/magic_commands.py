@@ -10,7 +10,6 @@ def cprint(*args, **kwargs):
 
 # This file contains the magic commands that can be used during chat sessions.
 
-
 def magic_commands(user_input, chain):
     if user_input == "/reset":
         cprint("Resetting the chat session...")
@@ -25,9 +24,15 @@ def magic_commands(user_input, chain):
         cprint("\nNeoGPT 🤖 is shutting down. Bye 👋")
         return False
 
+    elif user_input == "/history":
+        cprint("Chat history: 📖")
+        for message in chain.combine_documents_chain.memory.chat_memory.messages:
+            cprint(message)
+        return True
+
     else:
         cprint("Invalid command. Please try again.")
-        return 
+        return False  # Return False if the command is not recognized
 
 # Uncomment the following lines to test the magic commands
 # if __name__ == "__main__":
