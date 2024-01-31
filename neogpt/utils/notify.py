@@ -1,23 +1,21 @@
 import asyncio
-
-from desktop_notifier import DesktopNotifier
-
-notifier = DesktopNotifier()
-
+from plyer import notification
 
 async def notify(title, message, timeout=10):
     """
-    Show a desktop notification to user
+    Show a desktop notification to the user.
 
-    Parameter:
+    Parameters:
     title: notification title - required
     message: notification message - required
-    timeout:  timeout in seconds to hide the notification. default value is 10 - optional
+    timeout: timeout in seconds to hide the notification. Default value is 10 - optional
     """
-    n = await notifier.send(title=title, message=message)
-    await asyncio.sleep(timeout)
-    await notifier.clear(n)
-
+    notification.notify(
+        title=title,
+        message=message,
+        timeout=timeout
+    )
+    await asyncio.sleep(timeout)  # Wait for the specified timeout
 
 ## test
-## asyncio.run(notify('test', 'this is a test notification'))
+await notify('test', 'this is a test notification')
