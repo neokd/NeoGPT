@@ -1,5 +1,28 @@
 ---
 title: OpenAI 
-description: "🚧 Our documentation is currently under construction! We're working hard to bring you the best information.Contributions are welcome! 🚧"
+description: ""
 ---
 
+To use models from OpenAI, simply run the following command:
+
+```bash
+python main.py --model openai/<model-name>
+```
+
+This will default to `gpt-3.5-turbo`, which is mostly capable of generating responses to your prompts. If you want to use a different model, `gpt-4` or any other fine-tuned model, you can specify it using the `--model` flag:
+
+```bash
+python main.py --model openai/gpt-4
+```
+
+<Info>
+Requires you to have an OpenAI API key. You can get one by signing up at [OpenAI](https://platform.openai.com/api-keys).
+</Info>
+
+## Supported Models
+
+All the text generation models from OpenAI are supported. You can find the full list of models [here](https://platform.openai.com/docs/models).
+
+## Required Environment Variables
+
+- `OPENAI_API_KEY`: Your OpenAI API key. 
