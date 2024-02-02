@@ -47,7 +47,8 @@
     {
       "group": "Guides",
       "pages" : [
-        "guides/quick-start"
+        "guides/quick-start",
+        "guides/setup-openai-key"
       ]
     },
     {
