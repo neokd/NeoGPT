@@ -103,7 +103,8 @@ def db_retriever(
     return chain
 
 
-def chat(chain, show_source, retriever, LOGGING):
+# RAG Chat
+def retrieval_chat(chain, show_source, retriever, LOGGING):
     # Run the chat loop
     cprint(
         "\n[bright_yellow]NeoGPT 🤖 is ready to chat. Type /exit to quit.[/bright_yellow]"
@@ -123,7 +124,7 @@ def chat(chain, show_source, retriever, LOGGING):
         regex = re.compile(r"([^']+)")
         if regex.search(query):
             query = read_file(query)
-        print(query)
+
         res = (
             chain.invoke({"question": query})
             if retriever == "stepback"
@@ -141,6 +142,7 @@ def chat(chain, show_source, retriever, LOGGING):
             cprint(f"{separator_line} SOURCE DOCUMENTS {separator_line}")
 
 
+# Agent related chat
 def hire(task: str = "", tries: int = 5, LOGGING=logging):
     global TOTAL_COST
     llm = load_model(
@@ -173,6 +175,7 @@ def hire(task: str = "", tries: int = 5, LOGGING=logging):
     print(f"The total cost of the project is {round(final_cost(),4)} INR")
 
 
+# TODO: Add shell mode
 def shell_():
     cprint(
         "\n[bright_yellow]NeoGPT 🤖 is ready to chat. Type /exit to quit.[/bright_yellow]"
@@ -201,4 +204,4 @@ def manager(
     if shell:
         shell_()
     else:
-        chat(chain, show_source, retriever, LOGGING)
+        retrieval_chat(chain, show_source, retriever, LOGGING)

@@ -5,7 +5,6 @@ from io import BytesIO
 from langchain.schema import HumanMessage
 from langchain_community.document_loaders import PDFMinerLoader
 
-
 def read_file(user_input):
     # regex to find if input has a file path between single quotes
     regex = re.compile(r"'([^']+)'")
