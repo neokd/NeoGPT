@@ -72,6 +72,13 @@
         }
       ]
     },
+    {
+      "group": "Persona",
+      "pages" : [
+        "persona/introduction",
+        "persona/persona"
+      ]
+    },
   
       {
         "group" : "Settings",
