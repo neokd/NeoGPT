@@ -6,28 +6,26 @@ from langchain.schema import HumanMessage
 from langchain_community.document_loaders import PDFMinerLoader
 
 def read_file(user_input):
-    # regex to find if input has a file path between single quotes
-    regex = re.compile(r"'([^']+)'")
-    file_paths = [match.group(1) for match in regex.finditer(user_input)]
 
-    for file_path in file_paths:
-        extension = file_path.split(".")[-1]
+    regex = re.compile(r'(?:[a-zA-Z]:)?(?:\./|/|\\)[\S\\ ]+?\.(?i:txt|pdf|png|svg|jpeg)\b')
+    file_paths = [match.group(0) for match in regex.finditer(user_input)]
 
-        if extension.lower() in ["txt"]:
-            with open(file_path, "r") as f:
+    for file in file_paths:
+        extension = file.split(".")[-1]
+
+        if extension.lower() in ["txt","log"]:
+            with open(file, "r") as f:
                 content = f.read()
-                user_input = user_input.replace(file_path, content)
+                user_input = user_input.replace(file, content)
 
-        elif extension.lower() in ["pdf"]:
-            with open(file_path, "rb") as f:
-                loader = PDFMinerLoader(f)
-                content = loader.extract_text()
-                user_input = user_input.replace(file_path, content)
+        elif extension.lower() == "pdf":
+            content = PDFMinerLoader(file).load()[0].page_content
+            user_input = user_input.replace(file, content)
         
-        # elif extension.lower() in ["jpg", "jpeg", "png"]:
-        #     with open(file_path, "rb") as f:
-        #         content = f.read()
-        #         encoded = base64.b64encode(content).decode("utf-8")
-        #         user_input = user_input.replace(file_path,encoded)
+        elif extension.lower() in ["jpg", "jpeg", "png"]:
+            with open(file, "rb") as f:
+                content = f.read()
+                encoded = base64.b64encode(content).decode("utf-8")
+                user_input = user_input.replace(file,encoded)
 
     return user_input

@@ -3,6 +3,10 @@ title: OpenAI
 description: ""
 ---
 
+<ParamField body="OPENAI_API_KEY" type="string" default="" required>
+    Requires your OpenAI API key. To set up your API key, please refer to the [guide on setting up OpenAI API key](/guides/setup-openai-key) for detailed instructions.
+</ParamField>
+
 To use models from OpenAI, simply run the following command:
 
 ```bash
@@ -15,14 +19,9 @@ This will default to `gpt-3.5-turbo`, which is mostly capable of generating resp
 python main.py --model openai/gpt-4
 ```
 
-<Info>
-Requires you to have an OpenAI API key. You can get one by signing up at [OpenAI](https://platform.openai.com/api-keys).
-</Info>
 
 ## Supported Models
 
 All the text generation models from OpenAI are supported. You can find the full list of models [here](https://platform.openai.com/docs/models).
 
-## Required Environment Variables
 
-- `OPENAI_API_KEY`: Your OpenAI API key. 

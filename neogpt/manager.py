@@ -77,10 +77,6 @@ def db_retriever(
         LOGGING=logging,
     )
 
-    cprint(
-        f"\nUsing [bold magenta]{model_type.capitalize()}[/bold magenta] to load [bold magenta]{model_name}[/bold magenta]."
-    )
-
     if persona != "default":
         cprint(
             "NeoGPT 🤖 is in [bold magenta]" + persona + "[/bold magenta] mode.",
@@ -115,10 +111,10 @@ def retrieval_chat(chain, show_source, retriever, LOGGING):
 
         # Matching for magic commands
         if query.startswith("/"):
-            if magic_commands(query, chain) is False:
+            result = magic_commands(query, chain)
+            if result is False:
                 break
             else:
-                magic_commands(query, chain)
                 continue
 
         regex = re.compile(r"([^']+)")

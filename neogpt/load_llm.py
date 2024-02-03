@@ -22,6 +22,7 @@ from neogpt.config import (
     MODEL_TYPE,
     N_GPU_LAYERS,
 )
+from rich.console import Console
 
 load_dotenv()
 try:
@@ -29,6 +30,11 @@ try:
 except Exception as e:
     logging.info(e)
 
+console = Console()
+
+# Define a shorthand for console.print using a lambda function
+def cprint(*args, **kwargs):
+    return console.print(*args, **kwargs)
 
 # Function to load the LLM
 def load_model(
@@ -91,11 +97,14 @@ def load_model(
                 "streaming": True,
             }
             if device_type.lower() == "mps":
-                kwargs["n_gpu_layers"] = 1  # only for MPS devices
+                kwargs["n_gpu_layers"] = -1  # only for MPS devices
             if device_type.lower() == "cuda":
                 kwargs["n_gpu_layers"] = N_GPU_LAYERS  # set this based on your GPU
             # Create a LlamaCpp object (language model)
             llm = LlamaCpp(**kwargs)
+            cprint(
+                f"\nUsing [bold magenta]LlamaCpp[/bold magenta] to load [bold magenta]{model_id}[/bold magenta]."
+            )
             LOGGING.info(f"Loaded {model_id} locally")
             return llm  # Returns a LlamaCpp object (language model)
         except Exception as e:
@@ -110,6 +119,9 @@ def load_model(
                 callback_manager=callback_manager,
             )
             LOGGING.info(f"Loaded {model_id} locally. ")
+            cprint(
+                f"\nUsing [bold magenta]Ollama[/bold magenta] to load [bold magenta]{model_id}[/bold magenta]."
+            )
             return llm  # Returns a Ollama object (language model)
         except Exception as e:
             LOGGING.warning(
@@ -145,6 +157,9 @@ def load_model(
                 **kwargs,
             )
             llm = HuggingFacePipeline(pipeline=pipe)
+            cprint(
+                f"\nUsing [bold magenta]HuggingFace[/bold magenta] to load [bold magenta]{model_id}[/bold magenta]."
+            )
             LOGGING.info(f"Loaded {model_id} successfully")
             return llm
         except Exception as e:
@@ -154,11 +169,15 @@ def load_model(
             LOGGING.warning("🚨 You are using openai")
             os.environ["TOKENIZERS_PARALLELISM"] = "false"
             llm = ChatOpenAI(
+                model=model_id,
                 api_key=OPENAI_API_KEY,
                 callback_manager=CallbackManager(
                     [StreamingStdOutCallbackHandler(), TokenCallbackHandler()]
                 ),
                 streaming=True,
+            )
+            cprint(
+                f"\nUsing [bold magenta]OpenAi[/bold magenta] to load [bold magenta]{model_id}[/bold magenta]."
             )
             LOGGING.info("Loaded openai successfully")
             return llm
@@ -173,6 +192,9 @@ def load_model(
                 base_url="http://localhost:1234/v1",
                 streaming=True,
                 callback_manager=callback_manager,
+            )
+            cprint(
+                f"\nUsing [bold magenta]LM Studio[/bold magenta] to load [bold magenta]{model_id}[/bold magenta]."
             )
             LOGGING.info("Loaded {model_id} using LM studio successfully")
             return llm

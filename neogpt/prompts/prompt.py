@@ -88,6 +88,15 @@ def get_prompt(
             + """ Assistant:"""
         )
 
+    elif "codellama" in model_name.lower():
+        BEGIN_INSTRUCTION, END_INSTRUCTION = "[INST]", "[/INST]"
+        prompt_template = (
+            BEGIN_INSTRUCTION
+            + SYSTEM_PROMPT
+            + """ Context: {history} \n {context} \n User: {question}"""
+            + END_INSTRUCTION
+        )
+
     elif "tinyllama" in model_name.lower():
         SYSTEM = "<|system|>"
         ASSISTANT = "<|assistant|>"

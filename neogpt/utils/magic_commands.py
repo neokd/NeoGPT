@@ -1,7 +1,8 @@
 # Import necessary modules
 from langchain_community.chat_message_histories.in_memory import ChatMessageHistory
 from rich.console import Console
-
+from langchain.schema import HumanMessage
+from neogpt.utils.user_info import get_username
 # Create a console object for pretty printing
 console = Console()
 
@@ -42,10 +43,19 @@ def magic_commands(user_input, chain):
 
     # If the user inputs '/history', print the chat history
     elif user_input == "/history":
-        cprint("Chat history: 📖")
+        cprint("\n[bold magenta]Chat history: 📖[/bold magenta]",get_time(),)
+        if len(chain.combine_documents_chain.memory.chat_memory.messages) == 0:
+            cprint("No chat history available. Start chatting with NeoGPT to see the history.")
+            return True
+        
         for message in chain.combine_documents_chain.memory.chat_memory.messages:
-            cprint(message)
+            if isinstance(message, HumanMessage):
+                cprint(f"   [bright_yellow]{get_username()} [/bright_yellow]{message.content}")
+            else:
+                cprint(f"   [bright_blue]NeoGPT: [/bright_blue]{message.content}")
+
         return True
+
 
     # If the command is not recognized, print an error message
     else:
