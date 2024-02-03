@@ -2,3 +2,25 @@
 title: Setting Up OpenAI API Key
 description: "Learn how to set up your OpenAI API key to use it with NeoGPT"
 ---
+
+<Note>
+	These steps are applicable to Windows, Linux as well as MacOS.
+</Note>
+
+<Steps>
+	<Step index="1" title="Create an OpenAI Account">
+		Go to the [OpenAI website](https://openai.com/) and create an account. Once you have created an account, or logged in to your existing account, go to the [APPS Page](https://platform.openai.com/apps) and choose the API app.
+	</Step>
+	<Step index="2" title="Get API Key">
+		Go to the [API keys page](https://platform.openai.com/account/api-keys) or choose the "API Keys" option from the left-hand menu and click on the "Create new Secret Key" button.
+	</Step>
+	<Step index="3" title="Naming the Key">
+		Give your key a name and click on the "Create" button. The permissions for the key should be set to "All" to allow NeoGPT to use the key.
+	</Step>
+	<Step index="4" title="Copy API Key">
+		Copy the API key that is generated for you. You will need this key to use the OpenAI API with NeoGPT.
+	</Step>
+	<Step index="5" title="Adding API Key to NeoGPT">
+		Open the `.env-template` file or your `.env` file in the root directory of your NeoGPT project and update the `OPENAI_API_KEY` variable with the API key you copied earlier.
+	</Step>
+</Steps>
