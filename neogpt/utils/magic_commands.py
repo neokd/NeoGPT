@@ -1,4 +1,5 @@
 # Import necessary modules
+import os
 from langchain_community.chat_message_histories.in_memory import ChatMessageHistory
 from rich.console import Console
 from langchain.schema import HumanMessage
@@ -56,6 +57,16 @@ def magic_commands(user_input, chain):
 
         return True
 
+    # If the user inputs '/save', save the chat history to a file
+    elif user_input == "/save":
+        with open('docs/chat_history.txt', 'w') as f:
+            for message in chain.combine_documents_chain.memory.chat_memory.messages:
+                if isinstance(message, HumanMessage):
+                    f.write(f"{get_username()} {message.content}\n")
+                else:
+                    f.write(f"NeoGPT: {message.content}\n")
+        cprint("Chat history saved to docs/chat_history.txt")
+        return True
 
     # If the command is not recognized, print an error message
     else:
