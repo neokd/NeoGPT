@@ -43,7 +43,7 @@ def magic_commands(user_input, chain):
 
     # If the user inputs '/history', print the chat history
     elif user_input == "/history":
-        cprint("\n[bold magenta]Chat history: 📖[/bold magenta]",get_time(),)
+        cprint("\n[bold magenta]Chat history: 📖[/bold magenta]")
         if len(chain.combine_documents_chain.memory.chat_memory.messages) == 0:
             cprint("No chat history available. Start chatting with NeoGPT to see the history.")
             return True
