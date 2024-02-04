@@ -95,6 +95,16 @@ def magic_commands(user_input, chain):
             cprint("🚫 No chat history available. Start a conversation with NeoGPT first. 😊")
             return False
 
+    # If the user inputs '/undo', remove the last response from the chat history
+    elif user_input == "/undo":
+        if len(chain.combine_documents_chain.memory.chat_memory.messages) > 0:
+            chain.combine_documents_chain.memory.chat_memory.messages.pop()
+            cprint("🔄 Last response from the chat history has been removed.")
+            return True
+        else:
+            cprint("🚫 No chat history available. Start a conversation first.")
+            return False
+        
     # If the command is not recognized, print an error message
     else:
         cprint("Invalid command. Please try again.")
