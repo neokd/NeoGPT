@@ -21,3 +21,4 @@ streamlit==1.30.0
 torch==2.1.2
 unstructured==0.11.8
 youtube-transcript-api==0.6.2
+pyperclip==1.8.2

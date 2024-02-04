@@ -6,7 +6,7 @@ from langchain_community.chat_message_histories.in_memory import ChatMessageHist
 from rich.console import Console
 
 from neogpt.utils.user_info import get_username
-
+from neogpt.utils.notify import notify
 # Create a console object for pretty printing
 console = Console()
 
@@ -86,7 +86,7 @@ def magic_commands(user_input, chain):
             last_message = chain.combine_documents_chain.memory.chat_memory.messages[-1]
             if not isinstance(last_message, HumanMessage):
                 pyperclip.copy(last_message.content)
-                cprint("📋 Last response from NeoGPT copied to clipboard. Paste it anywhere you like! 😊")
+                notify("NeoGPT", "Copied to clipboard!")
                 return True
             else:
                 cprint("🚫 Oops! The last message is from the user, not NeoGPT. Try again after NeoGPT's response. 😅")
