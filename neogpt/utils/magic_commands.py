@@ -1,23 +1,27 @@
 # Import necessary modules
-import datetime
-import pyperclip
+import datetime, pyperclip
+
+from langchain.schema import HumanMessage
 from langchain_community.chat_message_histories.in_memory import ChatMessageHistory
 from rich.console import Console
-from langchain.schema import HumanMessage
+
 from neogpt.utils.user_info import get_username
+
 # Create a console object for pretty printing
 console = Console()
+
 
 # Function to print to the console
 def cprint(*args, **kwargs):
     """Prints to the console with rich formatting."""
     return console.print(*args, **kwargs)
 
+
 # This file contains the magic commands that can be used during chat sessions.
 def magic_commands(user_input, chain):
     """
     Function to handle magic commands during chat sessions.
-    
+
     Parameters:
     user_input (str): The command input by the user.
     chain (Chain): The current chat session.
@@ -48,12 +52,16 @@ def magic_commands(user_input, chain):
     elif user_input == "/history":
         cprint("\n[bold magenta]Chat history: 📖[/bold magenta]")
         if len(chain.combine_documents_chain.memory.chat_memory.messages) == 0:
-            cprint("No chat history available. Start chatting with NeoGPT to see the history.")
+            cprint(
+                "No chat history available. Start chatting with NeoGPT to see the history."
+            )
             return True
-        
+
         for message in chain.combine_documents_chain.memory.chat_memory.messages:
             if isinstance(message, HumanMessage):
-                cprint(f"   [bright_yellow]{get_username()} [/bright_yellow]{message.content}")
+                cprint(
+                    f"   [bright_yellow]{get_username()} [/bright_yellow]{message.content}"
+                )
             else:
                 cprint(f"   [bright_blue]NeoGPT: [/bright_blue]{message.content}")
 
@@ -62,8 +70,8 @@ def magic_commands(user_input, chain):
     # If the user inputs '/save', save the chat history to a file
     elif user_input == "/save":
         timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-        filename = f'chat_history_{timestamp}.txt'
-        with open(filename, 'w') as f:
+        filename = f"chat_history_{timestamp}.txt"
+        with open(filename, "w") as f:
             for message in chain.combine_documents_chain.memory.chat_memory.messages:
                 if isinstance(message, HumanMessage):
                     f.write(f"{get_username()} {message.content}\n")
@@ -91,6 +99,7 @@ def magic_commands(user_input, chain):
     else:
         cprint("Invalid command. Please try again.")
         return False  # Return False if the command is not recognized
+
 
 # Uncomment the following lines to test the magic commands
 # if __name__ == "__main__":

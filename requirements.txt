@@ -9,6 +9,7 @@ langchain-community==0.0.13
 langchain-core==0.1.16
 langchain-experimental==0.0.42
 langchain-openai==0.0.2.post1
+langchain-together==0.0.2.post1
 llama-cpp-python==0.2.34
 openai==1.10.0
 pdfminer.six==20231228

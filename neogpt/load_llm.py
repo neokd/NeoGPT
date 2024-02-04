@@ -5,9 +5,11 @@ from dotenv import load_dotenv
 from huggingface_hub import hf_hub_download
 from langchain.callbacks.manager import CallbackManager
 from langchain_community.llms import LlamaCpp, Ollama
-from langchain_openai.chat_models import ChatOpenAI
 from langchain_community.llms.huggingface_pipeline import HuggingFacePipeline
-from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline, TextStreamer
+from langchain_openai.chat_models import ChatOpenAI
+from rich.console import Console
+from transformers import AutoModelForCausalLM, AutoTokenizer, TextStreamer, pipeline
+
 from neogpt.callback_handler import (
     StreamingStdOutCallbackHandler,
     StreamlitStreamingHandler,
@@ -22,7 +24,6 @@ from neogpt.config import (
     MODEL_TYPE,
     N_GPU_LAYERS,
 )
-from rich.console import Console
 
 load_dotenv()
 try:
@@ -32,9 +33,11 @@ except Exception as e:
 
 console = Console()
 
+
 # Define a shorthand for console.print using a lambda function
 def cprint(*args, **kwargs):
     return console.print(*args, **kwargs)
+
 
 # Function to load the LLM
 def load_model(
@@ -144,7 +147,7 @@ def load_model(
             model = AutoModelForCausalLM.from_pretrained(
                 model_id,
                 cache_dir=MODEL_DIRECTORY,
-                trust_remote_code=True, 
+                trust_remote_code=True,
             )
             streamer = TextStreamer(tokenizer, skip_prompt=True)
 
@@ -197,6 +200,29 @@ def load_model(
                 f"\nUsing [bold magenta]LM Studio[/bold magenta] to load [bold magenta]{model_id}[/bold magenta]."
             )
             LOGGING.info("Loaded {model_id} using LM studio successfully")
+            return llm
+        except Exception as e:
+            LOGGING.info(f"Error {e}")
+
+    elif model_type == "together":
+        try:
+            os.environ["TOKENIZERS_PARALLELISM"] = "false"
+            # llm = Together(
+            #     model=model_id,
+            #     callback_manager=callback_manager,
+            #     together_api_key=os.environ.get("TOGETHER_API_KEY"),
+            # )
+            llm = ChatOpenAI(
+                api_key=os.environ.get("TOGETHER_API_KEY"),
+                model=model_id,
+                streaming=True,
+                callback_manager=callback_manager,
+                base_url="https://api.together.xyz",
+            )
+            cprint(
+                f"\nUsing [bold magenta]Together AI[/bold magenta] to load [bold magenta]{model_id}[/bold magenta]."
+            )
+            LOGGING.info("Loaded {model_id} using TogetherAI successfully")
             return llm
         except Exception as e:
             LOGGING.info(f"Error {e}")
