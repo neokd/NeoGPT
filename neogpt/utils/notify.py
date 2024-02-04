@@ -1,19 +1,19 @@
-import asyncio
-
+import platform
 from plyer import notification
+import subprocess
 
 
-async def notify(
+def notify(
     title,
     message,
     timeout=10,
     ticker="NeoGPT says Hi!",
     app_name="NeoGPT",
-    app_icon="docs/assets/icon.ico",
+    app_icon="path/to/icon.icns",
     toast=False,
 ):
     """
-    Show a desktop notification to user
+    Show a desktop notification to the user
 
     Parameters:
     title (str): notification title - required
@@ -22,22 +22,26 @@ async def notify(
     app_name (str): name of the app - optional
     app_icon (str): path to the icon of the app - optional
 
-    The function uses the plyer library to send desktop notifications. Plyer is a Python library
-    for accessing features of your hardware / platforms.
+    The function uses osascript for macOS and plyer for other platforms.
     """
-    # Send a notification with the given title and message
-    notification.notify(
-        title=title,
-        message=message,
-        app_name=app_name,
-        app_icon=app_icon,
-        timeout=timeout,
-        toast=toast,
-        # ticker=ticker
-    )
-    # Sleep for the duration of the timeout, then continue
-    await asyncio.sleep(timeout)
+    if platform.system() == "Darwin":  # Check if the platform is macOS
+        osascript_cmd = [
+            "osascript",
+            "-e",
+            f'display notification "{message}" with title "{title}" sound name "default"',
+        ]
+        subprocess.run(osascript_cmd)
+    else:
+        notification.notify(
+            title=title,
+            message=message,
+            app_name=app_name,
+            app_icon=app_icon,
+            timeout=timeout,
+            toast=toast,
+            # ticker=ticker
+        )
 
 
 # Test the notify function
-# asyncio.run(notify('test', 'this is a test notification'))
+# notify("NeoGPT", "Copied to clipboard!")
