@@ -1,5 +1,6 @@
 # Import necessary modules
 import datetime
+import pyperclip
 from langchain_community.chat_message_histories.in_memory import ChatMessageHistory
 from rich.console import Console
 from langchain.schema import HumanMessage
@@ -24,6 +25,7 @@ def magic_commands(user_input, chain):
     Returns:
     bool: True if the command is recognized and executed, False otherwise.
     """
+    user_input = user_input.strip().lower() # Convert the input to lowercase and remove leading/trailing spaces
     # If the user inputs '/reset', reset the chat session
     if user_input == "/reset":
         cprint("Resetting the chat session...")
@@ -69,6 +71,21 @@ def magic_commands(user_input, chain):
                     f.write(f"NeoGPT: {message.content}\n")
         cprint(f"Chat history saved as {filename}")
         return True
+
+    # If the user inputs '/copy', copy the last response from NeoGPT to the clipboard
+    elif user_input == "/copy":
+        if len(chain.combine_documents_chain.memory.chat_memory.messages) > 0:
+            last_message = chain.combine_documents_chain.memory.chat_memory.messages[-1]
+            if not isinstance(last_message, HumanMessage):
+                pyperclip.copy(last_message.content)
+                cprint("📋 Last response from NeoGPT copied to clipboard. Paste it anywhere you like! 😊")
+                return True
+            else:
+                cprint("🚫 Oops! The last message is from the user, not NeoGPT. Try again after NeoGPT's response. 😅")
+                return False
+        else:
+            cprint("🚫 No chat history available. Start a conversation with NeoGPT first. 😊")
+            return False
 
     # If the command is not recognized, print an error message
     else:
