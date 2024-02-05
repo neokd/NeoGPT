@@ -108,7 +108,7 @@ def magic_commands(user_input, chain):
     # If the user inputs '/redo', resend the last human input to the model
     elif user_input == "/redo":
         if len(chain.combine_documents_chain.memory.chat_memory.messages) > 0:
-            last_message = chain.combine_documents_chain.memory.chat_memory.messages[-1]
+            last_message = chain.combine_documents_chain.memory.chat_memory.messages[-2]
             if isinstance(last_message, HumanMessage):
                 cprint(f"🔁 Resending the last human input to the model: {last_message.content}")
                 return last_message.content
