@@ -104,7 +104,19 @@ def magic_commands(user_input, chain):
         else:
             cprint("🚫 No chat history available. Start a conversation first.")
             return
+    
         
+    # If the user inputs '/help', print the list of available commands
+    elif user_input == "/help":
+        cprint("\n[bold magenta]📖 Available commands: [/bold magenta]")
+        cprint("🔄 /reset - Reset the chat session")
+        cprint("🚪 /exit - Exit the chat session")
+        cprint("📜 /history - Print the chat history")
+        cprint("💾 /save - Save the chat history to a file")
+        cprint("📋 /copy - Copy the last response from NeoGPT to the clipboard")
+        cprint("⏪ /undo - Remove the last response from the chat history")
+        return True
+
     # If the command is not recognized, print an error message
     else:
         cprint("Invalid command. Please try again.")
