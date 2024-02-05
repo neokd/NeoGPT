@@ -90,10 +90,10 @@ def magic_commands(user_input, chain):
                 return True
             else:
                 cprint("🚫 Oops! The last message is from the user, not NeoGPT. Try again after NeoGPT's response. 😅")
-                return False
+                return 
         else:
             cprint("🚫 No chat history available. Start a conversation with NeoGPT first. 😊")
-            return False
+            return 
 
     # If the user inputs '/undo', remove the last response from the chat history
     elif user_input == "/undo":
@@ -103,12 +103,12 @@ def magic_commands(user_input, chain):
             return True
         else:
             cprint("🚫 No chat history available. Start a conversation first.")
-            return False
+            return
         
     # If the command is not recognized, print an error message
     else:
         cprint("Invalid command. Please try again.")
-        return False  # Return False if the command is not recognized
+        return # Return False if the command is not recognized
 
 
 # Uncomment the following lines to test the magic commands

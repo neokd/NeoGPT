@@ -81,6 +81,7 @@ def load_model(
     ):
         try:
             LOGGING.info("Using LlamaCpp to load the model")
+            os.environ["TOKENIZERS_PARALLELISM"] = "false"
             # Download the model checkpoint from the Hugging Face Hub
             model_path = hf_hub_download(
                 repo_id=model_id,
