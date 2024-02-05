@@ -34,13 +34,13 @@ def magic_commands(user_input, chain):
     if user_input == "/reset":
         cprint("Resetting the chat session...")
         # Print the current memory before resetting
-        print(chain.combine_documents_chain.memory)
+        # print(chain.combine_documents_chain.memory)
         # Reset the chat memory
         chain.combine_documents_chain.memory.chat_memory = ChatMessageHistory(
             messages=[]
         )
         # Print the chat memory after resetting
-        print(chain.combine_documents_chain.memory.chat_memory)
+        # print(chain.combine_documents_chain.memory.chat_memory)
         return True
 
     # If the user inputs '/exit', exit the chat session
