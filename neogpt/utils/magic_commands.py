@@ -105,6 +105,19 @@ def magic_commands(user_input, chain):
             cprint("🚫 No chat history available. Start a conversation first.")
             return
     
+    # If the user inputs '/redo', resend the last human input to the model
+    elif user_input == "/redo":
+        if len(chain.combine_documents_chain.memory.chat_memory.messages) > 0:
+            last_message = chain.combine_documents_chain.memory.chat_memory.messages[-1]
+            if isinstance(last_message, HumanMessage):
+                cprint(f"🔁 Resending the last human input to the model: {last_message.content}")
+                return last_message.content
+            else:
+                cprint("🚫 Oops! The last message is from NeoGPT, not the user. Try again after the user's response. 😅")
+                return
+        else:
+            cprint("🚫 No chat history available. Start a conversation first.")
+            return
         
     # If the user inputs '/help', print the list of available commands
     elif user_input == "/help":
@@ -115,6 +128,7 @@ def magic_commands(user_input, chain):
         cprint("💾 /save - Save the chat history to a file")
         cprint("📋 /copy - Copy the last response from NeoGPT to the clipboard")
         cprint("⏪ /undo - Remove the last response from the chat history")
+        cprint("🔁 /redo - Resend the last human input to the model")
         return True
 
     # If the command is not recognized, print an error message
