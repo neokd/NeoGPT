@@ -4,12 +4,14 @@ from io import BytesIO
 
 from langchain.schema import HumanMessage
 from langchain_community.document_loaders import PDFMinerLoader
+from langchain_community.document_loaders.generic import GenericLoader
+from langchain_community.document_loaders.parsers import LanguageParser
 from PIL import Image
 
 
 def read_file(user_input):
     regex = re.compile(
-        r"(?:[a-zA-Z]:)?(?:\./|/|\\)[\S\\ ]+?\.(?i:txt|pdf|png|svg|jpeg)\b"
+        r"(?:[a-zA-Z]:)?(?:\./|/|\\)[\S\\ ]+?\.(?i:txt|pdf|png|svg|jpeg|py)\b"
     )
     file_paths = [match.group(0) for match in regex.finditer(user_input)]
 
@@ -20,6 +22,19 @@ def read_file(user_input):
             with open(file) as f:
                 content = f.read()
                 user_input = user_input.replace(file, content)
+
+
+        if extension.lower() == "py":
+            loader = GenericLoader.from_filesystem(
+                file,
+                glob="*",
+                suffixes=[".py"],
+                parser=LanguageParser(),
+            )
+            content = loader.load()[0].page_content
+            # print(content)
+            user_input = user_input.replace(file, content)
+
 
         elif extension.lower() == "pdf":
             content = PDFMinerLoader(file).load()[0].page_content

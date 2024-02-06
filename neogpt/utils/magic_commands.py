@@ -34,13 +34,13 @@ def magic_commands(user_input, chain):
     if user_input == "/reset":
         cprint("Resetting the chat session...")
         # Print the current memory before resetting
-        print(chain.combine_documents_chain.memory)
+        # print(chain.combine_documents_chain.memory)
         # Reset the chat memory
         chain.combine_documents_chain.memory.chat_memory = ChatMessageHistory(
             messages=[]
         )
         # Print the chat memory after resetting
-        print(chain.combine_documents_chain.memory.chat_memory)
+        # print(chain.combine_documents_chain.memory.chat_memory)
         return True
 
     # If the user inputs '/exit', exit the chat session
@@ -108,7 +108,7 @@ def magic_commands(user_input, chain):
     # If the user inputs '/redo', resend the last human input to the model
     elif user_input == "/redo":
         if len(chain.combine_documents_chain.memory.chat_memory.messages) > 0:
-            last_message = chain.combine_documents_chain.memory.chat_memory.messages[-1]
+            last_message = chain.combine_documents_chain.memory.chat_memory.messages[-2]
             if isinstance(last_message, HumanMessage):
                 cprint(f"🔁 Resending the last human input to the model: {last_message.content}")
                 return last_message.content
