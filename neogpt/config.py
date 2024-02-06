@@ -27,6 +27,7 @@ from langchain_community.document_loaders import (
     WebBaseLoader,
     YoutubeLoader,
     HNLoader,
+    GutenbergLoader,
 )
 
 # Load Environment Variables
@@ -123,6 +124,7 @@ DOCUMENT_EXTENSION = {
 URL_EXTENSION = {
     ".youtube": YoutubeLoader,
     ".ycombinator": HNLoader,
+    ".gutenberg": GutenbergLoader
     "recursive": RecursiveUrlLoader,
     "normal": WebBaseLoader,
 }
