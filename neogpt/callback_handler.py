@@ -285,13 +285,8 @@ class TokenCallbackHandler(BaseCallbackHandler):
         """
         Calculate the cost of the query based on the number of tokens generated.
         """
-        if completion:
-            cost_per_1m_tokens = TOGETHERAI_MODEL_COST_PER_1M_TOKENS.get(
-                f"{self.model_name}-completion"
-            )
-        else:
-            cost_per_1m_tokens = TOGETHERAI_MODEL_COST_PER_1M_TOKENS.get(self.model_name)
-
+        
+        cost_per_1m_tokens = TOGETHERAI_MODEL_COST_PER_1M_TOKENS.get(self.model_name)
         cost = round(((num_of_tokens / 1000000) * cost_per_1m_tokens), 5)
         return cost
 
