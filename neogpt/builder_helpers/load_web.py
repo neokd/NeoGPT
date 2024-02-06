@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup as Soup
 from langchain.schema.document import Document
 
 from neogpt.config import URL_EXTENSION
+from langchain_community.document_loaders import HNLoader
 
 
 def process_url(url_path: str, recursive: bool) -> Document:
@@ -29,6 +30,9 @@ def process_url(url_path: str, recursive: bool) -> Document:
             if "youtube.com" in url:
                 loader_class = URL_EXTENSION.get(".youtube", None)
                 loader = loader_class.from_youtube_url(url, add_video_info=True)
+            elif "news.ycombinator.com" in url:
+                loader_class = HNLoader
+                loader = loader_class(url)
             else:
                 if recursive is True:
                     loader_class = URL_EXTENSION.get("recursive", None)
