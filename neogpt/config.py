@@ -12,6 +12,7 @@ from langchain.chat_loaders.whatsapp import WhatsAppChatLoader
 from langchain.text_splitter import Language
 from langchain_community.document_loaders import (
     CSVLoader,
+    GutenbergLoader,
     HNLoader,
     JSONLoader,
     PDFMinerLoader,
@@ -27,8 +28,6 @@ from langchain_community.document_loaders import (
     UnstructuredWordDocumentLoader,
     WebBaseLoader,
     YoutubeLoader,
-    HNLoader,
-    GutenbergLoader,
 )
 
 # Load Environment Variables
