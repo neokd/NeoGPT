@@ -1,12 +1,14 @@
 # Import necessary modules
-import datetime, pyperclip
+import datetime
 
+import pyperclip
 from langchain.schema import HumanMessage
 from langchain_community.chat_message_histories.in_memory import ChatMessageHistory
 from rich.console import Console
 
-from neogpt.utils.user_info import get_username
 from neogpt.utils.notify import notify
+from neogpt.utils.user_info import get_username
+
 # Create a console object for pretty printing
 console = Console()
 
@@ -29,7 +31,9 @@ def magic_commands(user_input, chain):
     Returns:
     bool: True if the command is recognized and executed, False otherwise.
     """
-    user_input = user_input.strip().lower() # Convert the input to lowercase and remove leading/trailing spaces
+    user_input = (
+        user_input.strip().lower()
+    )  # Convert the input to lowercase and remove leading/trailing spaces
     # If the user inputs '/reset', reset the chat session
     if user_input == "/reset":
         cprint("Resetting the chat session...")
@@ -89,11 +93,15 @@ def magic_commands(user_input, chain):
                 notify("NeoGPT", "Copied to clipboard!")
                 return True
             else:
-                cprint("🚫 Oops! The last message is from the user, not NeoGPT. Try again after NeoGPT's response. 😅")
-                return 
+                cprint(
+                    "🚫 Oops! The last message is from the user, not NeoGPT. Try again after NeoGPT's response. 😅"
+                )
+                return
         else:
-            cprint("🚫 No chat history available. Start a conversation with NeoGPT first. 😊")
-            return 
+            cprint(
+                "🚫 No chat history available. Start a conversation with NeoGPT first. 😊"
+            )
+            return
 
     # If the user inputs '/undo', remove the last response from the chat history
     elif user_input == "/undo":
@@ -104,21 +112,25 @@ def magic_commands(user_input, chain):
         else:
             cprint("🚫 No chat history available. Start a conversation first.")
             return
-    
+
     # If the user inputs '/redo', resend the last human input to the model
     elif user_input == "/redo":
         if len(chain.combine_documents_chain.memory.chat_memory.messages) > 0:
             last_message = chain.combine_documents_chain.memory.chat_memory.messages[-2]
             if isinstance(last_message, HumanMessage):
-                cprint(f"🔁 Resending the last human input to the model: {last_message.content}")
+                cprint(
+                    f"🔁 Resending the last human input to the model: {last_message.content}"
+                )
                 return last_message.content
             else:
-                cprint("🚫 Oops! The last message is from NeoGPT, not the user. Try again after the user's response. 😅")
+                cprint(
+                    "🚫 Oops! The last message is from NeoGPT, not the user. Try again after the user's response. 😅"
+                )
                 return
         else:
             cprint("🚫 No chat history available. Start a conversation first.")
             return
-        
+
     # If the user inputs '/help', print the list of available commands
     elif user_input == "/help":
         cprint("\n[bold magenta]📖 Available commands: [/bold magenta]")
@@ -134,7 +146,7 @@ def magic_commands(user_input, chain):
     # If the command is not recognized, print an error message
     else:
         cprint("Invalid command. Please try again.")
-        return # Return False if the command is not recognized
+        return  # Return False if the command is not recognized
 
 
 # Uncomment the following lines to test the magic commands

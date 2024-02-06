@@ -12,6 +12,7 @@ from langchain.chat_loaders.whatsapp import WhatsAppChatLoader
 from langchain.text_splitter import Language
 from langchain_community.document_loaders import (
     CSVLoader,
+    HNLoader,
     JSONLoader,
     PDFMinerLoader,
     RecursiveUrlLoader,
@@ -124,7 +125,7 @@ DOCUMENT_EXTENSION = {
 URL_EXTENSION = {
     ".youtube": YoutubeLoader,
     ".ycombinator": HNLoader,
-    ".gutenberg": GutenbergLoader
+    ".gutenberg": GutenbergLoader,
     "recursive": RecursiveUrlLoader,
     "normal": WebBaseLoader,
 }

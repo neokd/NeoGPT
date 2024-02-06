@@ -1,4 +1,4 @@
-import re
+import os
 import sys
 import threading
 import time
@@ -6,12 +6,104 @@ from typing import Any
 from uuid import UUID
 
 import streamlit as st
+import tiktoken
 from langchain.callbacks.base import BaseCallbackHandler
 from langchain.schema.output import LLMResult
 from rich.console import Console
 
 from neogpt.config import CURRENT_WORKING_AGENT, PROJECT_COST, QUERY_COST, TOTAL_COST
 from neogpt.utils.formatter import MessageFormatter
+
+OPENAI_MODEL_COST_PER_1K_TOKENS = {
+    # GPT-4 input
+    "gpt-4": 0.03,
+    "gpt-4-0314": 0.03,
+    "gpt-4-0613": 0.03,
+    "gpt-4-32k": 0.06,
+    "gpt-4-32k-0314": 0.06,
+    "gpt-4-32k-0613": 0.06,
+    "gpt-4-vision-preview": 0.01,
+    "gpt-4-1106-preview": 0.01,
+    # GPT-4 output
+    "gpt-4-completion": 0.06,
+    "gpt-4-0314-completion": 0.06,
+    "gpt-4-0613-completion": 0.06,
+    "gpt-4-32k-completion": 0.12,
+    "gpt-4-32k-0314-completion": 0.12,
+    "gpt-4-32k-0613-completion": 0.12,
+    "gpt-4-vision-preview-completion": 0.03,
+    "gpt-4-1106-preview-completion": 0.03,
+    # GPT-3.5 input
+    "gpt-3.5-turbo": 0.0015,
+    "gpt-3.5-turbo-0301": 0.0015,
+    "gpt-3.5-turbo-0613": 0.0015,
+    "gpt-3.5-turbo-1106": 0.001,
+    "gpt-3.5-turbo-instruct": 0.0015,
+    "gpt-3.5-turbo-16k": 0.003,
+    "gpt-3.5-turbo-16k-0613": 0.003,
+    # GPT-3.5 output
+    "gpt-3.5-turbo-completion": 0.002,
+    "gpt-3.5-turbo-0301-completion": 0.002,
+    "gpt-3.5-turbo-0613-completion": 0.002,
+    "gpt-3.5-turbo-1106-completion": 0.002,
+    "gpt-3.5-turbo-instruct-completion": 0.002,
+    "gpt-3.5-turbo-16k-completion": 0.004,
+    "gpt-3.5-turbo-16k-0613-completion": 0.004,
+    # Azure GPT-35 input
+    "gpt-35-turbo": 0.0015,  # Azure OpenAI version of ChatGPT
+    "gpt-35-turbo-0301": 0.0015,  # Azure OpenAI version of ChatGPT
+    "gpt-35-turbo-0613": 0.0015,
+    "gpt-35-turbo-instruct": 0.0015,
+    "gpt-35-turbo-16k": 0.003,
+    "gpt-35-turbo-16k-0613": 0.003,
+    # Azure GPT-35 output
+    "gpt-35-turbo-completion": 0.002,  # Azure OpenAI version of ChatGPT
+    "gpt-35-turbo-0301-completion": 0.002,  # Azure OpenAI version of ChatGPT
+    "gpt-35-turbo-0613-completion": 0.002,
+    "gpt-35-turbo-instruct-completion": 0.002,
+    "gpt-35-turbo-16k-completion": 0.004,
+    "gpt-35-turbo-16k-0613-completion": 0.004,
+    # Others
+    "text-ada-001": 0.0004,
+    "ada": 0.0004,
+    "text-babbage-001": 0.0005,
+    "babbage": 0.0005,
+    "text-curie-001": 0.002,
+    "curie": 0.002,
+    "text-davinci-003": 0.02,
+    "text-davinci-002": 0.02,
+    "code-davinci-002": 0.02,
+    # Fine Tuned input
+    "babbage-002-finetuned": 0.0016,
+    "davinci-002-finetuned": 0.012,
+    "gpt-3.5-turbo-0613-finetuned": 0.012,
+    "gpt-3.5-turbo-1106-finetuned": 0.012,
+    # Fine Tuned output
+    "babbage-002-finetuned-completion": 0.0016,
+    "davinci-002-finetuned-completion": 0.012,
+    "gpt-3.5-turbo-0613-finetuned-completion": 0.016,
+    "gpt-3.5-turbo-1106-finetuned-completion": 0.016,
+    # Azure Fine Tuned input
+    "babbage-002-azure-finetuned": 0.0004,
+    "davinci-002-azure-finetuned": 0.002,
+    "gpt-35-turbo-0613-azure-finetuned": 0.0015,
+    # Azure Fine Tuned output
+    "babbage-002-azure-finetuned-completion": 0.0004,
+    "davinci-002-azure-finetuned-completion": 0.002,
+    "gpt-35-turbo-0613-azure-finetuned-completion": 0.002,
+    # Legacy fine-tuned models
+    "ada-finetuned-legacy": 0.0016,
+    "babbage-finetuned-legacy": 0.0024,
+    "curie-finetuned-legacy": 0.012,
+    "davinci-finetuned-legacy": 0.12,
+}
+
+# Need to add more models and their cost
+
+TOGETHERAI_MODEL_COST_PER_1M_TOKENS = {
+    "mistralai/Mistral-7B-Instruct-v0.2": 0.20,
+    "mistralai/Mixtral-8x7B-Instruct-v0.1": 0.60,
+}
 
 
 class StreamingStdOutCallbackHandler(BaseCallbackHandler):
@@ -61,43 +153,6 @@ class StreamingStdOutCallbackHandler(BaseCallbackHandler):
         """Run when LLM ends running."""
         self.streaming = False
         self.message_block_instance.end()
-
-
-# Define a custom callback handler class for token collection
-class TokenCallbackHandler(BaseCallbackHandler):
-    """
-    The TokenCallbackHandler class is a custom callback handler class for token and shows the cost of the query, total cost and total tokens generated.
-    The cost are based on OpenAI's pricing model.
-    """
-
-    def __init__(self):
-        super().__init__()
-        self._tokens = []
-        self.console = Console()
-
-    def on_llm_new_token(self, token: str, **kwargs: Any) -> None:
-        self._tokens.append(token)
-
-    def on_llm_end(
-        self,
-        response: LLMResult,
-        *,
-        run_id: UUID,
-        parent_run_id: UUID | None = None,
-        **kwargs: Any,
-    ) -> Any:
-        global TOTAL_COST, QUERY_COST  # Use the global variables
-        # Cost are based on OpenAI's pricing model
-        QUERY_COST = round(
-            ((len(self._tokens) / 1000) * 0.002) * 83.33, 5
-        )  # INR Cost per token, rounded to 5 decimal places
-        TOTAL_COST = round(
-            TOTAL_COST + QUERY_COST, 5
-        )  # Accumulate the cost, rounded to 5 decimal places
-        total_tokens = len(self._tokens)
-        self.console.print(f"\nTotal tokens generated: {total_tokens}")
-        self.console.print(f"Query cost: {QUERY_COST} INR")
-        self.console.print(f"Total cost: {TOTAL_COST} INR")
 
 
 class StreamlitStreamingHandler(StreamingStdOutCallbackHandler):
@@ -181,6 +236,97 @@ class AgentCallbackHandler(BaseCallbackHandler):
         )  # Accumulate the cost, rounded to 5 decimal places
         final_cost()
         # print(Fore.WHITE + f"Total cost: {TOTAL_COST} INR")
+
+
+"""
+TODO: Add dynamic cost calculation based on the model used
+"""
+
+
+# Define a custom callback handler class for token collection
+class TokenCallbackHandler(BaseCallbackHandler):
+    """
+    The TokenCallbackHandler class is a custom callback handler class for token and shows the cost of the query, total cost and total tokens generated.
+    The cost are based on OpenAI's pricing model.
+    """
+
+    def __init__(self):
+        super().__init__()
+        self._tokens = []
+        self.console = Console()
+        # self.model_name = os.environ.get("MODEL_NAME")
+        # Testing use the below line
+        self.model_name = os.environ.get("MODEL_NAME", "gpt-3.5-turbo")
+        # This is only for input tokens (OpenAI) and not for output tokens
+        self.tokenizer = tiktoken.get_encoding("cl100k_base")
+        self.input_tokens = 0
+
+        self.console.print(
+            """
+        "Token Callback Handler is under development. May not work as expected."
+        """
+        )
+
+    def calculate_openai_cost(self, num_of_tokens, completion: bool = False):
+        """
+        Calculate the cost of the query based on the number of tokens generated.
+        """
+        if completion:
+            cost_per_1k_tokens = OPENAI_MODEL_COST_PER_1K_TOKENS.get(
+                f"{self.model_name}-completion"
+            )
+        else:
+            cost_per_1k_tokens = OPENAI_MODEL_COST_PER_1K_TOKENS.get(self.model_name)
+
+        cost = round(((num_of_tokens / 1000) * cost_per_1k_tokens), 5)
+        return cost
+
+    def on_llm_start(
+        self,
+        serialized: dict[str, Any],
+        prompts: str,
+        *,
+        run_id: UUID,
+        parent_run_id: UUID | None = None,
+        tags: list[str] | None = None,
+        metadata: dict[str, Any] | None = None,
+        **kwargs: Any,
+    ) -> Any:
+        global QUERY_COST
+        if "gpt-" in self.model_name:
+            self.input_tokens = len(self.tokenizer.encode(prompts[0]))
+            QUERY_COST += self.calculate_openai_cost(
+                self.input_tokens, completion=False
+            )
+        else:
+            pass
+
+    def on_llm_new_token(self, token: str, **kwargs: Any) -> None:
+        self._tokens.append(token)
+
+    def on_llm_end(
+        self,
+        response: LLMResult,
+        *,
+        run_id: UUID,
+        parent_run_id: UUID | None = None,
+        **kwargs: Any,
+    ) -> Any:
+        global TOTAL_COST, QUERY_COST  # Use the global variables
+        # # Cost are based on OpenAI's pricing model
+        QUERY_COST = self.calculate_openai_cost(len(self._tokens), completion=True)
+        TOTAL_COST += QUERY_COST
+
+        # # QUERY_COST = round(
+        # #     (((len(self._tokens) + self.input_tokens) / 1000) * 0.002) * 83.33, 5
+        # # )  # INR Cost per token, rounded to 5 decimal places
+        # # TOTAL_COST = round(
+        # #     TOTAL_COST + QUERY_COST, 5
+        # # )  # Accumulate the cost, rounded to 5 decimal places
+        # # total_tokens = len(self._tokens)
+        # # self.console.print(f"\nTotal tokens generated: {total_tokens}")
+        self.console.print(f"Query cost: {QUERY_COST:.5f} INR")
+        self.console.print(f"Total cost: {TOTAL_COST:.5f} INR")
 
 
 def final_cost():

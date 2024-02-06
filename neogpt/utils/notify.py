@@ -1,6 +1,7 @@
 import platform
-from plyer import notification
 import subprocess
+
+from plyer import notification
 
 
 def notify(
