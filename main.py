@@ -14,6 +14,7 @@ from neogpt.config import (
     DEVICE_TYPE,
     MODEL_NAME,
     NEOGPT_LOG_FILE,
+    MAX_TOKEN_LENGTH,
     export_config,
     import_config,
 )
@@ -135,8 +136,8 @@ def main():
     parser.add_argument(
         "--max-tokens",
         type=int,
-        default=config.MAX_TOKEN_LENGTH,
-        help="Adjust max tokens to control response length. Default is 512",
+        default= MAX_TOKEN_LENGTH,
+        help=f"Adjust max tokens to control response length. Default is {MAX_TOKEN_LENGTH}",
         # The max tokens parameter sets the maximum length of the generated text.
         # If the text exceeds this length, it will be cut off.
     )
