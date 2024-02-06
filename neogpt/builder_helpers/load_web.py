@@ -32,6 +32,9 @@ def process_url(url_path: str, recursive: bool) -> Document:
             elif "news.ycombinator.com" in url: # Hacker News Loader
                 loader_class = URL_EXTENSION.get(".ycombinator", None)
                 loader = loader_class(url)
+            elif ".gutenberg.org/cache/epub/" in url:
+                loader_class = URL_EXTENSION.get(".gutenberg")
+                loader = loader_class(url)
             else:
                 if recursive is True:
                     loader_class = URL_EXTENSION.get("recursive", None)
