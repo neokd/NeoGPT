@@ -26,6 +26,7 @@ from langchain_community.document_loaders import (
     UnstructuredWordDocumentLoader,
     WebBaseLoader,
     YoutubeLoader,
+    HNLoader,
 )
 
 # Load Environment Variables
@@ -121,6 +122,7 @@ DOCUMENT_EXTENSION = {
 # List of URL patterns supported for ingest
 URL_EXTENSION = {
     ".youtube": YoutubeLoader,
+    ".ycombinator": HNLoader,
     "recursive": RecursiveUrlLoader,
     "normal": WebBaseLoader,
 }
