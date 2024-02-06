@@ -121,6 +121,36 @@ def main():
         help="Number of retries if the Agent fails to perform the task",
     )
 
+    # Adding the --temperature argument
+    parser.add_argument(
+        "--temperature",
+        type=float,
+        default=0.8,
+        help="The temperature influences the randomness of the generated text. Default is 0.8",
+        # The temperature parameter controls the randomness of predictions by scaling the logits before applying softmax.
+        # A higher value makes the output more random, while a lower value makes it more deterministic.
+    )
+
+    # Adding the --max-tokens argument
+    parser.add_argument(
+        "--max-tokens",
+        type=int,
+        default=config.MAX_TOKEN_LENGTH,
+        help="Adjust max tokens to control response length. Default is 512",
+        # The max tokens parameter sets the maximum length of the generated text.
+        # If the text exceeds this length, it will be cut off.
+    )
+
+    # Adding the --context-windows argument
+    parser.add_argument(
+        "--context-windows",
+        type=int,
+        default=256,
+        help="Context windows determine the number of tokens considered for context. Default is 256",
+        # The context windows parameter sets the number of previous tokens to consider as context for the next token prediction.
+        # A larger context window allows the model to consider more of the previous text when making predictions.
+    )
+
     # Adding the --import switch with a YAML filename parameter
     parser.add_argument(
         "--import-config",
