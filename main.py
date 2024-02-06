@@ -135,7 +135,7 @@ def main():
     parser.add_argument(
         "--max-tokens",
         type=int,
-        default=512,
+        default=config.MAX_TOKEN_LENGTH,
         help="Adjust max tokens to control response length. Default is 512",
         # The max tokens parameter sets the maximum length of the generated text.
         # If the text exceeds this length, it will be cut off.
