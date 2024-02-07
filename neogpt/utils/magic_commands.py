@@ -73,8 +73,13 @@ def magic_commands(user_input, chain):
 
     # If the user inputs '/save', save the chat history to a file
     elif user_input == "/save":
+        # Create the directory if it doesn't exist
+        directory = "neogpt/conversations"
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+
         timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-        filename = f"chat_history_{timestamp}.txt"
+        filename = f"{directory}/chat_history_{timestamp}.txt"  # Save the file in the 'conversations' directory
         with open(filename, "w") as f:
             for message in chain.combine_documents_chain.memory.chat_memory.messages:
                 if isinstance(message, HumanMessage):
@@ -165,7 +170,7 @@ def magic_commands(user_input, chain):
         cprint("🔄 /reset - Reset the chat session")
         cprint("🚪 /exit - Exit the chat session")
         cprint("📜 /history - Print the chat history")
-        cprint("💾 /save - Save the chat history to a file")
+        cprint("💾 /save - Save the chat history to a `neogpt/conversations`")
         cprint("📋 /copy - Copy the last response from NeoGPT to the clipboard")
         cprint("⏪ /undo - Remove the last response from the chat history")
         cprint("🔁 /redo - Resend the last human input to the model")
