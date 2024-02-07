@@ -60,6 +60,7 @@ def main():
         choices=["llamacpp", "ollama", "hf", "openai", "lmstudio"],
         default="llamacpp",
     )
+    # TODO: Implement Writer Assistant
     parser.add_argument(
         "--write",
         default=None,
@@ -179,21 +180,29 @@ def main():
         default="llamacpp",
         help="Specify the model dynamically and overwrite the config settings",
     )
-
+    
+    # Add budget and reduce the cost. If cost exceeds then stop the project
+    parser.add_argument(
+        "--max-budget",
+        default=None,
+        help="Specify the maximum budget for NeoGPT to spend. Useful when running an API",
+    )
     parser.add_argument(
         "-y",
         help="Shell mode. Allows to run commands",
     )
 
+    # TODO: Add proper voice mode when streaming text
     parser.add_argument(
-        "--max-budget",
-        default=None,
-        help="Specify the maximum budget for the AI model. Default is None",
+        "--voice",
+        default=False,
+        action="store_true",
+        help="Enable voice mode",
     )
-
+    
     args = parser.parse_args()
 
-    # Check if --import switch is received
+    # This doesn't work as expected need to change it 
     if args.import_config:
         config_filename = args.import_config
         overwrite = import_config(config_filename)
@@ -204,6 +213,12 @@ def main():
             "MODEL_TYPE": args.model_type,
         }
         # sys.exit()
+    # Doesn't work as expected this is a crappy way to do it quickly need to change it
+    if args.export_config:
+        config_filename = args.export_config
+        export_config(config_filename)
+        sys.exit()  # Exit the script after exporting configuration
+
 
     if args.max_tokens:
         config.MAX_TOKEN_LENGTH = args.max_tokens
@@ -213,12 +228,6 @@ def main():
 
     if args.context_window:
         config.CONTEXT_WINDOW = args.context_window
-
-    # Check if --export switch is received
-    if args.export_config:
-        config_filename = args.export_config
-        export_config(config_filename)
-        sys.exit()  # Exit the script after exporting configuration
 
     if args.debug:
         log_level = logging.DEBUG

@@ -2,7 +2,7 @@
 import datetime
 
 import pyperclip
-from langchain.schema import HumanMessage
+from langchain.schema import HumanMessage, AIMessage
 from langchain_community.chat_message_histories.in_memory import ChatMessageHistory
 from rich.console import Console
 
@@ -31,9 +31,6 @@ def magic_commands(user_input, chain):
     Returns:
     bool: True if the command is recognized and executed, False otherwise.
     """
-    user_input = (
-        user_input.strip().lower()
-    )  # Convert the input to lowercase and remove leading/trailing spaces
     # If the user inputs '/reset', reset the chat session
     if user_input == "/reset":
         cprint("Resetting the chat session...")
@@ -134,7 +131,7 @@ def magic_commands(user_input, chain):
     # If the user inputs '/load [path]', load the saved chat history from the specified file
     elif user_input.startswith("/load"):
         # Extract the file path from the command
-        file_path = user_input.split(" ")[1].strip()
+        file_path = user_input.split(" ")[1].strip().replace("'", "").replace('"', "")
         try:
             with open(file_path, "r") as f:
                 # Read the contents of the file
@@ -143,13 +140,13 @@ def magic_commands(user_input, chain):
                 loaded_chat_history = []
                 for line in contents:
                     # Split the line into username and message content
-                    message_content = line.strip().split(" ", 1)[1]
-                    # Create a HumanMessage object and add it to the loaded chat history
-                    loaded_chat_history.append(HumanMessage(content=message_content))
+                    if line.startswith("NeoGPT:"):
+                        loaded_chat_history.append(AIMessage(content=line.replace("NeoGPT:", "").strip()))
+                    else:
+                        loaded_chat_history.append(HumanMessage(content=line.replace(get_username(), "").strip()))
+
                 # Update the chat memory with the loaded chat history
-                chain.combine_documents_chain.memory.chat_memory = ChatMessageHistory(
-                    messages=loaded_chat_history
-                )
+                chain.combine_documents_chain.memory.chat_memory.messages += loaded_chat_history
                 cprint("Chat history loaded successfully. 🎉")
                 return True
         except FileNotFoundError:
@@ -169,6 +166,7 @@ def magic_commands(user_input, chain):
         cprint("📋 /copy - Copy the last response from NeoGPT to the clipboard")
         cprint("⏪ /undo - Remove the last response from the chat history")
         cprint("🔁 /redo - Resend the last human input to the model")
+        cprint("📂 /load [path] - Load the saved chat history from the specified file")
         return True
 
     # If the command is not recognized, print an error message
