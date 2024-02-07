@@ -131,6 +131,34 @@ def magic_commands(user_input, chain):
             cprint("🚫 No chat history available. Start a conversation first.")
             return
 
+    # If the user inputs '/load [path]', load the saved chat history from the specified file
+    elif user_input.startswith("/load"):
+        # Extract the file path from the command
+        file_path = user_input.split(" ")[1].strip()
+        try:
+            with open(file_path, "r") as f:
+                # Read the contents of the file
+                contents = f.readlines()
+                # Create a list to store the loaded chat history
+                loaded_chat_history = []
+                for line in contents:
+                    # Split the line into username and message content
+                    message_content = line.strip().split(" ", 1)[1]
+                    # Create a HumanMessage object and add it to the loaded chat history
+                    loaded_chat_history.append(HumanMessage(content=message_content))
+                # Update the chat memory with the loaded chat history
+                chain.combine_documents_chain.memory.chat_memory = ChatMessageHistory(
+                    messages=loaded_chat_history
+                )
+                cprint("Chat history loaded successfully. 🎉")
+                return True
+        except FileNotFoundError:
+            cprint("🚫 File not found. Please provide a valid file path. 😞")
+            return True
+        except Exception as e:
+            cprint(f"🚫 Error loading chat history: {str(e)} 😢")
+            return True
+
     # If the user inputs '/help', print the list of available commands
     elif user_input == "/help":
         cprint("\n[bold magenta]📖 Available commands: [/bold magenta]")
