@@ -100,9 +100,10 @@ OPENAI_MODEL_COST_PER_1K_TOKENS = {
 
 # Need to add more models and their cost
 
+
 TOGETHERAI_MODEL_COST_PER_1M_TOKENS = {
-    # Chat Models
-    "mistralai/Mixtral-8x7B-Instruct-v0.1": 0.60,
+	# Chat Models
+	"mistralai/Mixtral-8x7B-Instruct-v0.1": 0.60,
    	"mistralai/Mistral-7B-Instruct-v0.2": 0.20,
 	"deepseek-ai/deepseek-coder-33b-instruct":0.80,
 	"Qwen/Qwen1.5-72B-Chat":0.90,
@@ -146,7 +147,7 @@ TOGETHERAI_MODEL_COST_PER_1M_TOKENS = {
 	"togethercomputer/alpaca-7b": 0.20,
 	"togethercomputer/falcon-40b-instruct": 0.80,
 	"togethercomputer/falcon-7b-instruct": 0.20,
-    #Language Models
+	#Language Models
 	"Qwen/Qwen1.5-72B": 0.90,
 	"Qwen/Qwen1.5-14B": 0.30,
 	"Qwen/Qwen1.5-7B": 0.20,
@@ -172,7 +173,7 @@ TOGETHERAI_MODEL_COST_PER_1M_TOKENS = {
 	"togethercomputer/GPT-JT-Moderation-6B": 0.20,
 	"togethercomputer/falcon-40b": 0.80,
 	"togethercomputer/falcon-7b": 0.20,
-    #Code Models
+	#Code Models
 	"codellama/CodeLlama-70b-Python-hf": 0.90,
 	"codellama/CodeLlama-70b-hf": 0.90,
 	"codellama/CodeLlama-13b-Python-hf": 0.22,
@@ -328,13 +329,13 @@ class TokenCallbackHandler(BaseCallbackHandler):
     """
 
     def __init__(self):
-        super().__init__()
         self._tokens = []
         self.console = Console()
         # self.model_name = os.environ.get("MODEL_NAME")
         # Testing use the below line
         self.model_name = os.environ.get("MODEL_NAME", "gpt-3.5-turbo")
         # This is only for input tokens (OpenAI) and not for output tokens
+        print(self.model_name)
         self.tokenizer = tiktoken.get_encoding("cl100k_base")
         self.input_tokens = 0
 
@@ -355,16 +356,16 @@ class TokenCallbackHandler(BaseCallbackHandler):
         else:
             cost_per_1k_tokens = OPENAI_MODEL_COST_PER_1K_TOKENS.get(self.model_name)
 
-        cost = round(((num_of_tokens / 1000) * cost_per_1k_tokens), 5)
+        cost = round(((num_of_tokens / 1000) * cost_per_1k_tokens) * 83, 5)
         return cost
     
-    def calculate_togetherai_cost(self, num_of_tokens, completion: bool = False):
+    def calculate_togetherai_cost(self, num_of_tokens):
         """
         Calculate the cost of the query based on the number of tokens generated.
         """
         
         cost_per_1m_tokens = TOGETHERAI_MODEL_COST_PER_1M_TOKENS.get(self.model_name)
-        cost = round(((num_of_tokens / 1000000) * cost_per_1m_tokens), 5)
+        cost = round(((num_of_tokens / 1_000_000) * cost_per_1m_tokens) * 83, 5)
         return cost
 
     def on_llm_start(
@@ -399,10 +400,14 @@ class TokenCallbackHandler(BaseCallbackHandler):
         **kwargs: Any,
     ) -> Any:
         global TOTAL_COST, QUERY_COST  # Use the global variables
-        # # Cost are based on OpenAI's pricing model
-        QUERY_COST = self.calculate_openai_cost(len(self._tokens), completion=True)
-        TOTAL_COST += QUERY_COST
 
+
+        if "gpt-" in self.model_name:
+            QUERY_COST = self.calculate_openai_cost(len(self._tokens), completion=True)
+        else:
+            QUERY_COST = self.calculate_togetherai_cost(len(self._tokens))
+
+        TOTAL_COST += QUERY_COST
         # # QUERY_COST = round(
         # #     (((len(self._tokens) + self.input_tokens) / 1000) * 0.002) * 83.33, 5
         # # )  # INR Cost per token, rounded to 5 decimal places
@@ -411,6 +416,10 @@ class TokenCallbackHandler(BaseCallbackHandler):
         # # )  # Accumulate the cost, rounded to 5 decimal places
         # # total_tokens = len(self._tokens)
         # # self.console.print(f"\nTotal tokens generated: {total_tokens}")
+        self.console.print(f"\nTotal tokens generated: {len(self._tokens) + self.input_tokens}")
+        if "gpt-" in self.model_name:
+            self.console.print(f"Prompt Tokens: {self.input_tokens}")
+        self.console.print(f"Completion Tokens: {len(self._tokens)}")
         self.console.print(f"Query cost: {QUERY_COST:.5f} INR")
         self.console.print(f"Total cost: {TOTAL_COST:.5f} INR")
 
