@@ -185,6 +185,12 @@ def main():
         help="Shell mode. Allows to run commands",
     )
 
+    parser.add_argument(
+        "--max-budget",
+        default=None,
+        help="Specify the maximum budget for the AI model. Default is None",
+    )
+
     args = parser.parse_args()
 
     # Check if --import switch is received
