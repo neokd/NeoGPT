@@ -8,13 +8,12 @@ import warnings
 from langchain_core._api.deprecation import LangChainDeprecationWarning
 from streamlit.web import cli as stcli
 
+from neogpt import config
 from neogpt.builder import builder
 from neogpt.chat import chat_mode
 from neogpt.config import (
     DEVICE_TYPE,
-    MODEL_NAME,
     NEOGPT_LOG_FILE,
-    MAX_TOKEN_LENGTH,
     export_config,
     import_config,
 )
@@ -126,8 +125,8 @@ def main():
     parser.add_argument(
         "--temperature",
         type=float,
-        default=0.8,
-        help="The temperature influences the randomness of the generated text. Default is 0.8",
+        default=config.TEMPERATURE,
+        help=f"The temperature influences the randomness of the generated text. Default is {config.TEMPERATURE}",
         # The temperature parameter controls the randomness of predictions by scaling the logits before applying softmax.
         # A higher value makes the output more random, while a lower value makes it more deterministic.
     )
@@ -136,18 +135,18 @@ def main():
     parser.add_argument(
         "--max-tokens",
         type=int,
-        default= MAX_TOKEN_LENGTH,
-        help=f"Adjust max tokens to control response length. Default is {MAX_TOKEN_LENGTH}",
+        default=config.MAX_TOKEN_LENGTH,
+        help=f"Adjust max tokens to control response length. Default is {config.MAX_TOKEN_LENGTH}",
         # The max tokens parameter sets the maximum length of the generated text.
         # If the text exceeds this length, it will be cut off.
     )
 
-    # Adding the --context-windows argument
+    # Adding the --context-window argument
     parser.add_argument(
-        "--context-windows",
+        "--context-window",
         type=int,
-        default=256,
-        help="Context windows determine the number of tokens considered for context. Default is 256",
+        default=config.CONTEXT_WINDOW,
+        help=f"Context windows determine the number of tokens considered for context. Default is {config.CONTEXT_WINDOW}",
         # The context windows parameter sets the number of previous tokens to consider as context for the next token prediction.
         # A larger context window allows the model to consider more of the previous text when making predictions.
     )
@@ -200,6 +199,15 @@ def main():
         }
         # sys.exit()
 
+    if args.max_tokens:
+        config.MAX_TOKEN_LENGTH = args.max_tokens
+
+    if args.temperature:
+        config.TEMPERATURE = args.temperature
+
+    if args.context_window:
+        config.CONTEXT_WINDOW = args.context_window
+
     # Check if --export switch is received
     if args.export_config:
         config_filename = args.export_config
@@ -220,6 +228,7 @@ def main():
             level=log_level,
             filename=NEOGPT_LOG_FILE,
         )
+
     else:
         logging.basicConfig(
             format="%(asctime)s - %(levelname)s - %(filename)s:%(lineno)s - %(message)s",
@@ -258,6 +267,7 @@ def main():
             tries=args.tries,
             LOGGING=logging,
         )
+
     elif args.mode == "llm":
         chat_mode(
             device_type=args.device_type,
