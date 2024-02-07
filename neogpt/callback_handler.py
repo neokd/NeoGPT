@@ -280,6 +280,15 @@ class TokenCallbackHandler(BaseCallbackHandler):
 
         cost = round(((num_of_tokens / 1000) * cost_per_1k_tokens), 5)
         return cost
+    
+    def calculate_togetherai_cost(self, num_of_tokens, completion: bool = False):
+        """
+        Calculate the cost of the query based on the number of tokens generated.
+        """
+        
+        cost_per_1m_tokens = TOGETHERAI_MODEL_COST_PER_1M_TOKENS.get(self.model_name)
+        cost = round(((num_of_tokens / 1000000) * cost_per_1m_tokens), 5)
+        return cost
 
     def on_llm_start(
         self,
