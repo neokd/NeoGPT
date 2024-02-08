@@ -180,7 +180,7 @@ def main():
         default="llamacpp",
         help="Specify the model dynamically and overwrite the config settings",
     )
-    
+
     # Add budget and reduce the cost. If cost exceeds then stop the project
     parser.add_argument(
         "--max-budget",
@@ -199,10 +199,10 @@ def main():
         action="store_true",
         help="Enable voice mode",
     )
-    
+
     args = parser.parse_args()
 
-    # This doesn't work as expected need to change it 
+    # This doesn't work as expected need to change it
     if args.import_config:
         config_filename = args.import_config
         overwrite = import_config(config_filename)
@@ -218,7 +218,6 @@ def main():
         config_filename = args.export_config
         export_config(config_filename)
         sys.exit()  # Exit the script after exporting configuration
-
 
     if args.max_tokens:
         config.MAX_TOKEN_LENGTH = args.max_tokens

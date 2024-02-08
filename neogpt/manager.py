@@ -121,7 +121,7 @@ def retrieval_chat(chain, show_source, retriever, LOGGING):
 
         regex = re.compile(r"([^']+)")
         if regex.search(query):
-            query = read_file(query)
+            query = read_file(query, chain)
 
         res = (
             chain.invoke({"question": query})

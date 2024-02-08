@@ -1,5 +1,3 @@
-
-
 def interpreter(message):
     """
     This function interprets the user input and executes the corresponding command.
@@ -7,4 +5,3 @@ def interpreter(message):
     """
 
     return message
-

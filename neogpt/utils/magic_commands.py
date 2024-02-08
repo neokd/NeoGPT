@@ -1,8 +1,9 @@
 # Import necessary modules
 import datetime
+import os
 
 import pyperclip
-from langchain.schema import HumanMessage, AIMessage
+from langchain.schema import AIMessage, HumanMessage
 from langchain_community.chat_message_histories.in_memory import ChatMessageHistory
 from rich.console import Console
 
@@ -144,7 +145,7 @@ def magic_commands(user_input, chain):
         # Extract the file path from the command
         file_path = user_input.split(" ")[1].strip().replace("'", "").replace('"', "")
         try:
-            with open(file_path, "r") as f:
+            with open(file_path) as f:
                 # Read the contents of the file
                 contents = f.readlines()
                 # Create a list to store the loaded chat history
@@ -152,19 +153,27 @@ def magic_commands(user_input, chain):
                 for line in contents:
                     # Split the line into username and message content
                     if line.startswith("NeoGPT:"):
-                        loaded_chat_history.append(AIMessage(content=line.replace("NeoGPT:", "").strip()))
+                        loaded_chat_history.append(
+                            AIMessage(content=line.replace("NeoGPT:", "").strip())
+                        )
                     else:
-                        loaded_chat_history.append(HumanMessage(content=line.replace(get_username(), "").strip()))
+                        loaded_chat_history.append(
+                            HumanMessage(
+                                content=line.replace(get_username(), "").strip()
+                            )
+                        )
 
                 # Update the chat memory with the loaded chat history
-                chain.combine_documents_chain.memory.chat_memory.messages += loaded_chat_history
+                chain.combine_documents_chain.memory.chat_memory.messages += (
+                    loaded_chat_history
+                )
                 cprint("Chat history loaded successfully. 🎉")
                 return True
         except FileNotFoundError:
             cprint("🚫 File not found. Please provide a valid file path. 😞")
             return True
         except Exception as e:
-            cprint(f"🚫 Error loading chat history: {str(e)} 😢")
+            cprint(f"🚫 Error loading chat history: {e!s} 😢")
             return True
 
     # If the user inputs '/tokens [prompt]', calculate the number of tokens for the given prompt

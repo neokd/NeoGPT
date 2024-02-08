@@ -9,7 +9,23 @@ from langchain_community.document_loaders.parsers import LanguageParser
 from PIL import Image
 
 
-def read_file(user_input):
+def convert_to_base64(pil_image):
+    """
+    Convert PIL images to Base64 encoded strings
+
+    :param pil_image: PIL image
+    :return: Re-sized Base64 string
+    """
+    # Convert image to 'RGB' mode to avoid 'RGBA' mode issues
+    pil_image = pil_image.convert("RGB")
+
+    buffered = BytesIO()
+    pil_image.save(buffered, format="JPEG")  # You can change the format if needed
+    img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
+    return img_str
+
+
+def read_file(user_input, chain):
     regex = re.compile(
         r"(?:[a-zA-Z]:)?(?:\./|/|\\)[\S\\ ]+?\.(?i:txt|pdf|png|jpg|svg|jpeg|py|csv)\b"
     )
@@ -45,9 +61,11 @@ def read_file(user_input):
             user_input = user_input.replace(file, content)
 
         elif extension.lower() in ["jpg", "jpeg", "png"]:
-            with open(file, "rb") as f:
-                content = f.read()
-                encoded = base64.b64encode(content).decode("utf-8")
-                user_input = user_input.replace(file, encoded)
+            plt_img = Image.open(file)
+            encoded = convert_to_base64(plt_img)
+            # print(chain.combine_documents_chain.llm_chain.llm.client)
+            chain.combine_documents_chain.llm_chain.llm = (
+                chain.combine_documents_chain.llm_chain.llm.bind(images=[encoded])
+            )
 
     return user_input

@@ -12,8 +12,8 @@ from langchain.schema.output import LLMResult
 from rich.console import Console
 
 from neogpt.config import CURRENT_WORKING_AGENT, QUERY_COST, TOTAL_COST
-from neogpt.utils.formatter import MessageFormatter
 from neogpt.utils.budget_manager import final_cost
+from neogpt.utils.formatter import MessageFormatter
 
 OPENAI_MODEL_COST_PER_1K_TOKENS = {
     # GPT-4 input
@@ -101,87 +101,86 @@ OPENAI_MODEL_COST_PER_1K_TOKENS = {
 
 # Need to add more models and their cost
 
-
 TOGETHERAI_MODEL_COST_PER_1M_TOKENS = {
-	# Chat Models
-	"mistralai/Mixtral-8x7B-Instruct-v0.1": 0.60,
-   	"mistralai/Mistral-7B-Instruct-v0.2": 0.20,
-	"deepseek-ai/deepseek-coder-33b-instruct":0.80,
-	"Qwen/Qwen1.5-72B-Chat":0.90,
-	"Qwen/Qwen1.5-14B-Chat":0.30,
-	"Qwen/Qwen1.5-7B-Chat":0.20,
-	"Qwen/Qwen1.5-4B-Chat":0.10,
-	"Qwen/Qwen1.5-1.8B-Chat":0.10,
-	"Qwen/Qwen1.5-0.5B-Chat":0.10,
-	"codellama/CodeLlama-70b-Instruct-hf": 0.90,
-	"meta-llama/Llama-2-70b-chat-hf": 0.90,
-	"snorkelai/Snorkel-Mistral-PairRM-DPO": 0.20,
-	"codellama/CodeLlama-13b-Instruct-hf": 0.22,
-	"codellama/CodeLlama-34b-Instruct-hf": 0.776,
-	"codellama/CodeLlama-7b-Instruct-hf": 0.20,
-	"NousResearch/Nous-Hermes-2-Mixtral-8x7B-DPO": 0.60,
-	"NousResearch/Nous-Hermes-2-Mixtral-8x7B-SFT": 0.60,
-	"NousResearch/Nous-Hermes-2-Yi-34B": 0.80,
-	"openchat/openchat-3.5-1210": 0.20,
-	"togethercomputer/StripedHyena-Nous-7B": 0.20,
-	"DiscoResearch/DiscoLM-mixtral-8x7b-v2": 0.60,
-	"mistralai/Mistral-7B-Instruct-v0.1": 0.20,
-	"zero-one-ai/Yi-34B-Chat": 0.80,
-	"NousResearch/Nous-Capybara-7B-V1p9": 0.20,
-	"teknium/OpenHermes-2p5-Mistral-7B": 0.20,
-	"upstage/SOLAR-10.7B-Instruct-v1.0": 0.30,
-	"togethercomputer/llama-2-13b-chat": 0.22,
-	"togethercomputer/llama-2-7b-chat": 0.20,
-	"NousResearch/Nous-Hermes-Llama2-13b": 0.30,
-	"NousResearch/Nous-Hermes-llama-2-7b": 0.20,
-	"Open-Orca/Mistral-7B-OpenOrca": 0.20,
-	"teknium/OpenHermes-2-Mistral-7B": 0.20,
-	"WizardLM/WizardLM-13B-V1.2": 0.20,
-	"togethercomputer/Llama-2-7B-32K-Instruct": 0.20,
-	"lmsys/vicuna-13b-v1.5": 0.30,
-	"Austism/chronos-hermes-13b": 0.30,
-	"garage-bAInd/Platypus2-70B-instruct": 0.90,
-	"Gryphe/MythoMax-L2-13b": 0.30,
-	"togethercomputer/Qwen-7B-Chat": 0.20,
-	"togethercomputer/RedPajama-INCITE-7B-Chat": 0.20,
-	"togethercomputer/RedPajama-INCITE-Chat-3B-v1": 0.10,
-	"togethercomputer/alpaca-7b": 0.20,
-	"togethercomputer/falcon-40b-instruct": 0.80,
-	"togethercomputer/falcon-7b-instruct": 0.20,
-	#Language Models
-	"Qwen/Qwen1.5-72B": 0.90,
-	"Qwen/Qwen1.5-14B": 0.30,
-	"Qwen/Qwen1.5-7B": 0.20,
-	"Qwen/Qwen1.5-4B": 0.10,
-	"Qwen/Qwen1.5-1.8B": 0.10,
-	"Qwen/Qwen1.5-0.5B": 0.10,
-	"mistralai/Mixtral-8x7B-v0.1": 0.60,
-	"meta-llama/Llama-2-70b-hf": 0.90,
-	"togethercomputer/StripedHyena-Hessian-7B": 0.20,
-	"mistralai/Mistral-7B-v0.1": 0.20,
-	"microsoft/phi-2": 0.10,
-	"zero-one-ai/Yi-34B": 0.80,
-	"zero-one-ai/Yi-6B": 0.14,
-	"Nexusflow/NexusRaven-V2-13B": 0.30,
-	"togethercomputer/LLaMA-2-7B-32K": 0.20,
-	"togethercomputer/llama-2-13b": 0.22,
-	"togethercomputer/llama-2-7b": 0.20,
-	"togethercomputer/Qwen-7B": 0.20,
-	"togethercomputer/RedPajama-INCITE-7B-Instruct": 0.20,
-	"togethercomputer/RedPajama-INCITE-7B-Base": 0.20,
-	"togethercomputer/RedPajama-INCITE-Instruct-3B-v1": 0.10,
-	"togethercomputer/RedPajama-INCITE-Base-3B-v1": 0.10,
-	"togethercomputer/GPT-JT-Moderation-6B": 0.20,
-	"togethercomputer/falcon-40b": 0.80,
-	"togethercomputer/falcon-7b": 0.20,
-	#Code Models
-	"codellama/CodeLlama-70b-Python-hf": 0.90,
-	"codellama/CodeLlama-70b-hf": 0.90,
-	"codellama/CodeLlama-13b-Python-hf": 0.22,
-	"codellama/CodeLlama-34b-Python-hf": 0.776,
-	"codellama/CodeLlama-7b-Python-hf": 0.20,
-	"WizardLM/WizardCoder-Python-34B-V1.0": 0.80,
-	"Phind/Phind-CodeLlama-34B-v2": 0.80,
+    # Chat Models
+    "mistralai/Mixtral-8x7B-Instruct-v0.1": 0.60,
+    "mistralai/Mistral-7B-Instruct-v0.2": 0.20,
+    "deepseek-ai/deepseek-coder-33b-instruct": 0.80,
+    "Qwen/Qwen1.5-72B-Chat": 0.90,
+    "Qwen/Qwen1.5-14B-Chat": 0.30,
+    "Qwen/Qwen1.5-7B-Chat": 0.20,
+    "Qwen/Qwen1.5-4B-Chat": 0.10,
+    "Qwen/Qwen1.5-1.8B-Chat": 0.10,
+    "Qwen/Qwen1.5-0.5B-Chat": 0.10,
+    "codellama/CodeLlama-70b-Instruct-hf": 0.90,
+    "meta-llama/Llama-2-70b-chat-hf": 0.90,
+    "snorkelai/Snorkel-Mistral-PairRM-DPO": 0.20,
+    "codellama/CodeLlama-13b-Instruct-hf": 0.22,
+    "codellama/CodeLlama-34b-Instruct-hf": 0.776,
+    "codellama/CodeLlama-7b-Instruct-hf": 0.20,
+    "NousResearch/Nous-Hermes-2-Mixtral-8x7B-DPO": 0.60,
+    "NousResearch/Nous-Hermes-2-Mixtral-8x7B-SFT": 0.60,
+    "NousResearch/Nous-Hermes-2-Yi-34B": 0.80,
+    "openchat/openchat-3.5-1210": 0.20,
+    "togethercomputer/StripedHyena-Nous-7B": 0.20,
+    "DiscoResearch/DiscoLM-mixtral-8x7b-v2": 0.60,
+    "mistralai/Mistral-7B-Instruct-v0.1": 0.20,
+    "zero-one-ai/Yi-34B-Chat": 0.80,
+    "NousResearch/Nous-Capybara-7B-V1p9": 0.20,
+    "teknium/OpenHermes-2p5-Mistral-7B": 0.20,
+    "upstage/SOLAR-10.7B-Instruct-v1.0": 0.30,
+    "togethercomputer/llama-2-13b-chat": 0.22,
+    "togethercomputer/llama-2-7b-chat": 0.20,
+    "NousResearch/Nous-Hermes-Llama2-13b": 0.30,
+    "NousResearch/Nous-Hermes-llama-2-7b": 0.20,
+    "Open-Orca/Mistral-7B-OpenOrca": 0.20,
+    "teknium/OpenHermes-2-Mistral-7B": 0.20,
+    "WizardLM/WizardLM-13B-V1.2": 0.20,
+    "togethercomputer/Llama-2-7B-32K-Instruct": 0.20,
+    "lmsys/vicuna-13b-v1.5": 0.30,
+    "Austism/chronos-hermes-13b": 0.30,
+    "garage-bAInd/Platypus2-70B-instruct": 0.90,
+    "Gryphe/MythoMax-L2-13b": 0.30,
+    "togethercomputer/Qwen-7B-Chat": 0.20,
+    "togethercomputer/RedPajama-INCITE-7B-Chat": 0.20,
+    "togethercomputer/RedPajama-INCITE-Chat-3B-v1": 0.10,
+    "togethercomputer/alpaca-7b": 0.20,
+    "togethercomputer/falcon-40b-instruct": 0.80,
+    "togethercomputer/falcon-7b-instruct": 0.20,
+    # Language Models
+    "Qwen/Qwen1.5-72B": 0.90,
+    "Qwen/Qwen1.5-14B": 0.30,
+    "Qwen/Qwen1.5-7B": 0.20,
+    "Qwen/Qwen1.5-4B": 0.10,
+    "Qwen/Qwen1.5-1.8B": 0.10,
+    "Qwen/Qwen1.5-0.5B": 0.10,
+    "mistralai/Mixtral-8x7B-v0.1": 0.60,
+    "meta-llama/Llama-2-70b-hf": 0.90,
+    "togethercomputer/StripedHyena-Hessian-7B": 0.20,
+    "mistralai/Mistral-7B-v0.1": 0.20,
+    "microsoft/phi-2": 0.10,
+    "zero-one-ai/Yi-34B": 0.80,
+    "zero-one-ai/Yi-6B": 0.14,
+    "Nexusflow/NexusRaven-V2-13B": 0.30,
+    "togethercomputer/LLaMA-2-7B-32K": 0.20,
+    "togethercomputer/llama-2-13b": 0.22,
+    "togethercomputer/llama-2-7b": 0.20,
+    "togethercomputer/Qwen-7B": 0.20,
+    "togethercomputer/RedPajama-INCITE-7B-Instruct": 0.20,
+    "togethercomputer/RedPajama-INCITE-7B-Base": 0.20,
+    "togethercomputer/RedPajama-INCITE-Instruct-3B-v1": 0.10,
+    "togethercomputer/RedPajama-INCITE-Base-3B-v1": 0.10,
+    "togethercomputer/GPT-JT-Moderation-6B": 0.20,
+    "togethercomputer/falcon-40b": 0.80,
+    "togethercomputer/falcon-7b": 0.20,
+    # Code Models
+    "codellama/CodeLlama-70b-Python-hf": 0.90,
+    "codellama/CodeLlama-70b-hf": 0.90,
+    "codellama/CodeLlama-13b-Python-hf": 0.22,
+    "codellama/CodeLlama-34b-Python-hf": 0.776,
+    "codellama/CodeLlama-7b-Python-hf": 0.20,
+    "WizardLM/WizardCoder-Python-34B-V1.0": 0.80,
+    "Phind/Phind-CodeLlama-34B-v2": 0.80,
 }
 
 
@@ -322,7 +321,6 @@ TODO: Add dynamic cost calculation based on the model used
 """
 
 
-
 class TokenCallbackHandler(BaseCallbackHandler):
     """
     The TokenCallbackHandler class is a custom callback handler class for token and shows the cost of the query, total cost and total tokens generated.
@@ -359,12 +357,12 @@ class TokenCallbackHandler(BaseCallbackHandler):
 
         cost = round(((num_of_tokens / 1000) * cost_per_1k_tokens) * 83, 5)
         return cost
-    
+
     def calculate_togetherai_cost(self, num_of_tokens):
         """
         Calculate the cost of the query based on the number of tokens generated.
         """
-        
+
         cost_per_1m_tokens = TOGETHERAI_MODEL_COST_PER_1M_TOKENS.get(self.model_name)
         cost = round(((num_of_tokens / 1_000_000) * cost_per_1m_tokens) * 83, 5)
         return cost
@@ -402,7 +400,6 @@ class TokenCallbackHandler(BaseCallbackHandler):
     ) -> Any:
         global TOTAL_COST, QUERY_COST  # Use the global variables
 
-
         if "gpt-" in self.model_name:
             QUERY_COST = self.calculate_openai_cost(len(self._tokens), completion=True)
         else:
@@ -417,7 +414,9 @@ class TokenCallbackHandler(BaseCallbackHandler):
         # # )  # Accumulate the cost, rounded to 5 decimal places
         # # total_tokens = len(self._tokens)
         # # self.console.print(f"\nTotal tokens generated: {total_tokens}")
-        self.console.print(f"\nTotal tokens generated: {len(self._tokens) + self.input_tokens}")
+        self.console.print(
+            f"\nTotal tokens generated: {len(self._tokens) + self.input_tokens}"
+        )
         if "gpt-" in self.model_name:
             self.console.print(f"Prompt Tokens: {self.input_tokens}")
         self.console.print(f"Completion Tokens: {len(self._tokens)}")
