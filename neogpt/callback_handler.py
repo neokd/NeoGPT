@@ -101,9 +101,10 @@ OPENAI_MODEL_COST_PER_1K_TOKENS = {
 
 # Need to add more models and their cost
 
+
 TOGETHERAI_MODEL_COST_PER_1M_TOKENS = {
-    # Chat Models
-    "mistralai/Mixtral-8x7B-Instruct-v0.1": 0.60,
+	# Chat Models
+	"mistralai/Mixtral-8x7B-Instruct-v0.1": 0.60,
    	"mistralai/Mistral-7B-Instruct-v0.2": 0.20,
 	"deepseek-ai/deepseek-coder-33b-instruct":0.80,
 	"Qwen/Qwen1.5-72B-Chat":0.90,
@@ -147,7 +148,7 @@ TOGETHERAI_MODEL_COST_PER_1M_TOKENS = {
 	"togethercomputer/alpaca-7b": 0.20,
 	"togethercomputer/falcon-40b-instruct": 0.80,
 	"togethercomputer/falcon-7b-instruct": 0.20,
-    #Language Models
+	#Language Models
 	"Qwen/Qwen1.5-72B": 0.90,
 	"Qwen/Qwen1.5-14B": 0.30,
 	"Qwen/Qwen1.5-7B": 0.20,
@@ -173,7 +174,7 @@ TOGETHERAI_MODEL_COST_PER_1M_TOKENS = {
 	"togethercomputer/GPT-JT-Moderation-6B": 0.20,
 	"togethercomputer/falcon-40b": 0.80,
 	"togethercomputer/falcon-7b": 0.20,
-    #Code Models
+	#Code Models
 	"codellama/CodeLlama-70b-Python-hf": 0.90,
 	"codellama/CodeLlama-70b-hf": 0.90,
 	"codellama/CodeLlama-13b-Python-hf": 0.22,
