@@ -15,7 +15,7 @@ def convert_to_base64(pil_image):
     Convert PIL images to Base64 encoded strings
 
     :param pil_image: PIL image
-    :return: Re-sized Base64 string
+    :return: Re-sized BSase64 string
     """
     # Convert image to 'RGB' mode to avoid 'RGBA' mode issues
     pil_image = pil_image.convert("RGB")
@@ -28,7 +28,7 @@ def convert_to_base64(pil_image):
 
 def read_file(user_input, chain):
     regex = re.compile(
-        r"(?:[a-zA-Z]:)?(?:\.?/|\\)?[^:<>:\"/|?*]*\.(?i:txt|pdf|png|jpg|svg|jpeg|py|csv|doc|docx|ppt|pptx|xls|xlsx)\b"
+        r"(?:[a-zA-Z]:)?(?:\.?/|\\)?(?:[^:<>\"/|?*\n\r]+)?\.(?i:txt|pdf|png|jpg|svg|jpeg|py|csv|doc|docx|ppt|pptx|xls|xlsx)\b"
     )
     file_paths = [match.group(0) for match in regex.finditer(user_input)]
 
