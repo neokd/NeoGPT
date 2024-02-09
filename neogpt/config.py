@@ -198,7 +198,9 @@ def import_config(config_filename):
         CHROMA_PERSIST_DIRECTORY, \
         FAISS_PERSIST_DIRECTORY, \
         PINECONE_PERSIST_DIRECTORY, \
-        MODEL_TYPE
+        MODEL_TYPE, \
+        TEMPERATURE, \
+        CONTEXT_WINDOW
 
     SETTINGS_DIR = os.path.join(os.path.dirname(__file__), "settings")
 
@@ -218,6 +220,8 @@ def import_config(config_filename):
         INGEST_THREADS = config["model"]["INGEST_THREADS"]
         MAX_TOKEN_LENGTH = config["model"]["MAX_TOKEN_LENGTH"]
         N_GPU_LAYERS = config["model"]["N_GPU_LAYERS"]
+        TEMPERATURE = config["model"]["TEMPERATURE"]
+        CONTEXT_WINDOW = config["model"]["CONTEXT_WINDOW"]
         # MODEL TYPE (mistral, openai, hf)
         MODEL_TYPE = config["neogpt"]["MODEL_TYPE"]
         # DEFAULT MEMORY KEY FOR CONVERSATION MEMORY (DEFAULT IS 2)
@@ -275,11 +279,14 @@ def export_config(config_filename="settings.yaml"):
         },
         "model": {
             "MODEL_NAME": MODEL_NAME,
+            "MODEL_TYPE": MODEL_TYPE,
             "MODEL_FILE": MODEL_FILE,
             "EMBEDDING_MODEL": EMBEDDING_MODEL,
             "INGEST_THREADS": INGEST_THREADS,
-            "MAX_TOKEN_LENGTH": MAX_TOKEN_LENGTH,
             "N_GPU_LAYERS": N_GPU_LAYERS,
+            "MAX_TOKEN_LENGTH": MAX_TOKEN_LENGTH,
+            "TEMPERATURE": TEMPERATURE,
+            "CONTEXT_WINDOW": CONTEXT_WINDOW,
         },
         "database": {
             "PARENT_DB_DIRECTORY": os.path.basename(PARENT_DB_DIRECTORY),
@@ -295,6 +302,9 @@ def export_config(config_filename="settings.yaml"):
         "logs": {
             "LOG_FOLDER": os.path.basename(LOG_FOLDER),
         },
+        "pytorch device config": {
+            "DEVICE_TYPE": DEVICE_TYPE,
+        },
     }
 
     SETTINGS_DIR = os.path.join(os.path.dirname(__file__), "settings")
@@ -306,12 +316,12 @@ def export_config(config_filename="settings.yaml"):
         overwrite = input(f"\nFile {filepath} already exists. Do you want to overwrite it? (yes/no): ")
         if overwrite.lower() != "yes":
             filepath = os.path.join(SETTINGS_DIR, input("Enter a new file name: "))
-            if os.path.exists(filepath):
-                print(f"\nFile {filepath} already exists. Exiting...")
-                sys.exit()
+            if os.path.exists(filepath) or os.path.exists(str(filepath+".yaml")):
+                print(f"\nFile {filepath} already exists.")
+                filepath = filepath.removesuffix(".yaml")
+                filepath = f'{filepath}-{datetime.now().strftime("%d-%m-%Y-%H-%M-%S")}.yaml'
             if not filepath.endswith(".yaml"):
                 filepath += ".yaml"
-
 
     try:
         with open(filepath, "w") as file:
