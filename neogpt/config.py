@@ -198,7 +198,9 @@ def import_config(config_filename):
         CHROMA_PERSIST_DIRECTORY, \
         FAISS_PERSIST_DIRECTORY, \
         PINECONE_PERSIST_DIRECTORY, \
-        MODEL_TYPE
+        MODEL_TYPE, \
+        TEMPERATURE, \
+        CONTEXT_WINDOW
 
     SETTINGS_DIR = os.path.join(os.path.dirname(__file__), "settings")
 
@@ -218,6 +220,8 @@ def import_config(config_filename):
         INGEST_THREADS = config["model"]["INGEST_THREADS"]
         MAX_TOKEN_LENGTH = config["model"]["MAX_TOKEN_LENGTH"]
         N_GPU_LAYERS = config["model"]["N_GPU_LAYERS"]
+        TEMPERATURE = config["model"]["TEMPERATURE"]
+        CONTEXT_WINDOW = config["model"]["CONTEXT_WINDOW"]
         # MODEL TYPE (mistral, openai, hf)
         MODEL_TYPE = config["neogpt"]["MODEL_TYPE"]
         # DEFAULT MEMORY KEY FOR CONVERSATION MEMORY (DEFAULT IS 2)
@@ -260,7 +264,7 @@ def read_pyproject_toml(file_path):
 
 
 # Export Configuration
-def export_config(config_filename):
+def export_config(config_filename="settings.yaml"):
     toml_path = "./pyproject.toml"
     toml_info = read_pyproject_toml(toml_path)
     config = {
@@ -275,11 +279,14 @@ def export_config(config_filename):
         },
         "model": {
             "MODEL_NAME": MODEL_NAME,
+            "MODEL_TYPE": MODEL_TYPE,
             "MODEL_FILE": MODEL_FILE,
             "EMBEDDING_MODEL": EMBEDDING_MODEL,
             "INGEST_THREADS": INGEST_THREADS,
-            "MAX_TOKEN_LENGTH": MAX_TOKEN_LENGTH,
             "N_GPU_LAYERS": N_GPU_LAYERS,
+            "MAX_TOKEN_LENGTH": MAX_TOKEN_LENGTH,
+            "TEMPERATURE": TEMPERATURE,
+            "CONTEXT_WINDOW": CONTEXT_WINDOW,
         },
         "database": {
             "PARENT_DB_DIRECTORY": os.path.basename(PARENT_DB_DIRECTORY),
@@ -295,42 +302,26 @@ def export_config(config_filename):
         "logs": {
             "LOG_FOLDER": os.path.basename(LOG_FOLDER),
         },
+        "pytorch device config": {
+            "DEVICE_TYPE": DEVICE_TYPE,
+        },
     }
-    # Ensure the directory exists
-    # os.makedirs("settings", exist_ok=True)
-    while True:
-        # Validate config filename format
-        if "." in os.path.basename(config_filename):
-            # Remove existing suffix and replace with .yml suffix
-            if not config_filename.endswith(".yaml"):
-                config_filename = os.path.splitext(config_filename)[0] + ".yaml"
-                print(
-                    f"Config file must be saved in YAML file format, saving as {config_filename}"
-                )
 
-        # Add .yml suffix if there is no suffix
-        else:
-            config_filename += ".yaml"
-            print(
-                f"Config file must be saved in YAML file format, saving as {config_filename}"
-            )
+    SETTINGS_DIR = os.path.join(os.path.dirname(__file__), "settings")
+    if not os.path.exists(SETTINGS_DIR):
+        os.makedirs(SETTINGS_DIR)
 
-        filepath = os.path.join(os.path.dirname(__file__), "settings", config_filename)
-
-        if os.path.exists(filepath):
-            response = input(
-                f"\nA file with the name '{  config_filename }' already exists.\n\nEnter a new filename OR press enter to overwrite current config file OR type 'exit' to cancel export: "
-            )
-            if response.lower() == "exit":
-                print("Export cancelled ")
-                sys.exit()  # Exit the loop and end the program
-            elif response.strip() == "":
-                break  # Exit the loop to overwrite the current filename
-            else:
-                config_filename = response.lower()
-                continue  # Continue to the beginning of the loop to validate new filename
-        else:
-            break  # Exit the loop if the filename is unique
+    filepath = os.path.join(SETTINGS_DIR, config_filename)
+    if os.path.exists(filepath):
+        overwrite = input(f"\nFile {filepath} already exists. Do you want to overwrite it? (yes/no): ")
+        if overwrite.lower() != "yes":
+            filepath = os.path.join(SETTINGS_DIR, input("Enter a new file name: "))
+            if os.path.exists(filepath) or os.path.exists(str(filepath+".yaml")):
+                print(f"\nFile {filepath} already exists.")
+                filepath = filepath.removesuffix(".yaml")
+                filepath = f'{filepath}-{datetime.now().strftime("%d-%m-%Y-%H-%M-%S")}.yaml'
+            if not filepath.endswith(".yaml"):
+                filepath += ".yaml"
 
     try:
         with open(filepath, "w") as file:

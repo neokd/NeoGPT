@@ -186,7 +186,15 @@ def magic_commands(user_input, chain):
         # Print the number of tokens to the console
         cprint(f"The prompt contains {num_tokens} tokens.")
         return True
+    
+    # If the user inputs '/export', export the current chat memory to the settings/settings.yaml file
+    elif user_input == "/export":
+        cprint("Exporting the current chat memory to the settings/settings.yaml file...")
+        from neogpt.config import export_config
 
+        export_config()
+        return True
+    
     # If the user inputs '/help', print the list of available commands
     elif user_input == "/help":
         cprint("\n[bold magenta]📖 Available commands: [/bold magenta]")
@@ -198,9 +206,9 @@ def magic_commands(user_input, chain):
         cprint("⏪ /undo - Remove the last response from the chat history")
         cprint("🔁 /redo - Resend the last human input to the model")
         cprint("📂 /load [path] - Load the saved chat history from the specified file")
-        cprint(
-            "🔖 /tokens [prompt] - Calculate the number of tokens for a given prompt"
-        )
+        cprint("🔖 /tokens [prompt] - Calculate the number of tokens for a given prompt")
+        cprint("📄 /export - Export the current chat memory to the settings/settings.yaml file")
+
         return True
 
     # If the command is not recognized, print an error message
