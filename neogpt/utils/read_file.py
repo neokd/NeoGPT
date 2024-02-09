@@ -6,6 +6,7 @@ import pandas as pd
 from langchain_community.document_loaders import PDFMinerLoader
 from langchain_community.document_loaders.generic import GenericLoader
 from langchain_community.document_loaders.parsers import LanguageParser
+from langchain_community.document_loaders import UnstructuredWordDocumentLoader, UnstructuredExcelLoader, UnstructuredPowerPointLoader
 from PIL import Image
 
 
@@ -27,7 +28,7 @@ def convert_to_base64(pil_image):
 
 def read_file(user_input, chain):
     regex = re.compile(
-        r"(?:[a-zA-Z]:)?(?:\./|/|\\)[\S\\ ]+?\.(?i:txt|pdf|png|jpg|svg|jpeg|py|csv)\b"
+        r"(?:[a-zA-Z]:)?(?:\./|/|\\)[\S\\ ]+?\.(?i:txt|pdf|png|jpg|svg|jpeg|py|csv|doc|docx|ppt|pptx|xls|xlsx)\b"
     )
     file_paths = [match.group(0) for match in regex.finditer(user_input)]
 
@@ -67,5 +68,17 @@ def read_file(user_input, chain):
             chain.combine_documents_chain.llm_chain.llm = (
                 chain.combine_documents_chain.llm_chain.llm.bind(images=[encoded])
             )
+
+        elif extension.lower() in ["dox","docx"]:
+            content = UnstructuredWordDocumentLoader(file).load()[0].page_content
+            user_input = user_input.replace(file, content)
+
+        elif extension.lower() in ["xls","xlsx"]:
+            content = UnstructuredExcelLoader(file).load()[0].page_content
+            user_input = user_input.replace(file, content)
+
+        elif extension.lower() in ["ppt","pptx"]:
+            content = UnstructuredPowerPointLoader(file).load()[0].page_content
+            user_input = user_input.replace(file, content)
 
     return user_input
