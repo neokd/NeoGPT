@@ -308,9 +308,10 @@ def export_config(config_filename="settings.yaml"):
             filepath = os.path.join(SETTINGS_DIR, input("Enter a new file name: "))
             if os.path.exists(filepath):
                 print(f"\nFile {filepath} already exists. Exiting...")
-                if not filepath.endswith(".yaml"):
-                    filepath += ".yaml"
                 sys.exit()
+            if not filepath.endswith(".yaml"):
+                filepath += ".yaml"
+
 
     try:
         with open(filepath, "w") as file:
