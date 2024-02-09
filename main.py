@@ -8,11 +8,11 @@ import warnings
 from langchain_core._api.deprecation import LangChainDeprecationWarning
 from streamlit.web import cli as stcli
 
+from neogpt import config
 from neogpt.builder import builder
 from neogpt.chat import chat_mode
 from neogpt.config import (
     DEVICE_TYPE,
-    MODEL_NAME,
     NEOGPT_LOG_FILE,
     export_config,
     import_config,
@@ -60,6 +60,7 @@ def main():
         choices=["llamacpp", "ollama", "hf", "openai", "lmstudio"],
         default="llamacpp",
     )
+    # TODO: Implement Writer Assistant
     parser.add_argument(
         "--write",
         default=None,
@@ -121,6 +122,36 @@ def main():
         help="Number of retries if the Agent fails to perform the task",
     )
 
+    # Adding the --temperature argument
+    parser.add_argument(
+        "--temperature",
+        type=float,
+        default=config.TEMPERATURE,
+        help=f"The temperature influences the randomness of the generated text. Default is {config.TEMPERATURE}",
+        # The temperature parameter controls the randomness of predictions by scaling the logits before applying softmax.
+        # A higher value makes the output more random, while a lower value makes it more deterministic.
+    )
+
+    # Adding the --max-tokens argument
+    parser.add_argument(
+        "--max-tokens",
+        type=int,
+        default=config.MAX_TOKEN_LENGTH,
+        help=f"Adjust max tokens to control response length. Default is {config.MAX_TOKEN_LENGTH}",
+        # The max tokens parameter sets the maximum length of the generated text.
+        # If the text exceeds this length, it will be cut off.
+    )
+
+    # Adding the --context-window argument
+    parser.add_argument(
+        "--context-window",
+        type=int,
+        default=config.CONTEXT_WINDOW,
+        help=f"Context windows determine the number of tokens considered for context. Default is {config.CONTEXT_WINDOW}",
+        # The context windows parameter sets the number of previous tokens to consider as context for the next token prediction.
+        # A larger context window allows the model to consider more of the previous text when making predictions.
+    )
+
     # Adding the --import switch with a YAML filename parameter
     parser.add_argument(
         "--import-config",
@@ -150,14 +181,28 @@ def main():
         help="Specify the model dynamically and overwrite the config settings",
     )
 
+    # Add budget and reduce the cost. If cost exceeds then stop the project
+    parser.add_argument(
+        "--max-budget",
+        default=None,
+        help="Specify the maximum budget for NeoGPT to spend. Useful when running an API",
+    )
     parser.add_argument(
         "-y",
         help="Shell mode. Allows to run commands",
     )
 
+    # TODO: Add proper voice mode when streaming text
+    parser.add_argument(
+        "--voice",
+        default=False,
+        action="store_true",
+        help="Enable voice mode",
+    )
+
     args = parser.parse_args()
 
-    # Check if --import switch is received
+    # This doesn't work as expected need to change it
     if args.import_config:
         config_filename = args.import_config
         overwrite = import_config(config_filename)
@@ -168,12 +213,20 @@ def main():
             "MODEL_TYPE": args.model_type,
         }
         # sys.exit()
-
-    # Check if --export switch is received
+    # Doesn't work as expected this is a crappy way to do it quickly need to change it
     if args.export_config:
         config_filename = args.export_config
         export_config(config_filename)
         sys.exit()  # Exit the script after exporting configuration
+
+    if args.max_tokens:
+        config.MAX_TOKEN_LENGTH = args.max_tokens
+
+    if args.temperature:
+        config.TEMPERATURE = args.temperature
+
+    if args.context_window:
+        config.CONTEXT_WINDOW = args.context_window
 
     if args.debug:
         log_level = logging.DEBUG
@@ -189,6 +242,7 @@ def main():
             level=log_level,
             filename=NEOGPT_LOG_FILE,
         )
+
     else:
         logging.basicConfig(
             format="%(asctime)s - %(levelname)s - %(filename)s:%(lineno)s - %(message)s",
@@ -227,6 +281,7 @@ def main():
             tries=args.tries,
             LOGGING=logging,
         )
+
     elif args.mode == "llm":
         chat_mode(
             device_type=args.device_type,

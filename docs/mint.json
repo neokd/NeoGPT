@@ -47,7 +47,14 @@
     {
       "group": "Guides",
       "pages" : [
-        "guides/quick-start"
+        "guides/quick-start",
+        "guides/magic-commands"
+      ]
+    },
+    {
+      "group" : "Settings",
+      "pages" : [
+        "settings/settings"
       ]
     },
     {
@@ -72,14 +79,19 @@
         }
       ]
     },
-  
-      {
-        "group" : "Settings",
-        "pages" : [
-          "settings/settings"
-        ]
-      }
-
+    {
+      "group" : "Code Execution",
+      "pages" : [
+        "code-execution/introduction"
+      ]
+    },
+    {
+      "group": "Persona",
+      "pages" : [
+        "persona/introduction",
+        "persona/persona"
+      ]
+    }
   ],
   "feedback": {
     "suggestEdit": true

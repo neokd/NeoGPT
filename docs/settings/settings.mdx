@@ -18,6 +18,44 @@ python main.py --model ollama/<model-name>
 </CodeGroup>
 
 
+## Temperature
+
+The temperature parameter controls the randomness of the output. Lower temperatures make the model more confident, but also more conservative. Higher temperatures make the model more creative but also more unpredictable.
+
+<CodeGroup>
+
+```bash Terminal
+python main.py --temperature 0.5
+```
+
+</CodeGroup>
+
+## Max Token Length
+
+Specifies the maximum number of tokens to generate. This is useful when you want to limit the length of the output.
+
+<CodeGroup>
+
+```bash Terminal
+python main.py --max-tokens 100
+```
+
+</CodeGroup>
+
+
+## Context Window
+
+Specifies the number of tokens to use as context when generating the output. This is useful when you want to provide more context to the model.
+
+<CodeGroup>
+
+```bash Terminal
+python main.py --context-window 100
+```
+
+</CodeGroup>
+
+
 ### Model Type
 
 Specifies which language model to use. Check out the [models](/language-models/introduction) page for more information.

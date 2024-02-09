@@ -4,10 +4,14 @@ import os
 from dotenv import load_dotenv
 from huggingface_hub import hf_hub_download
 from langchain.callbacks.manager import CallbackManager
-from langchain_community.llms import LlamaCpp, Ollama
-from langchain_openai.chat_models import ChatOpenAI
 from langchain_community.llms.huggingface_pipeline import HuggingFacePipeline
-from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline, TextStreamer
+from langchain_community.llms.llamacpp import LlamaCpp
+from langchain_community.llms.ollama import Ollama
+from langchain_openai.chat_models import ChatOpenAI
+from rich.console import Console
+from transformers import AutoModelForCausalLM, AutoTokenizer, TextStreamer, pipeline
+
+from neogpt import config
 from neogpt.callback_handler import (
     StreamingStdOutCallbackHandler,
     StreamlitStreamingHandler,
@@ -15,14 +19,12 @@ from neogpt.callback_handler import (
 )
 from neogpt.config import (
     DEVICE_TYPE,
-    MAX_TOKEN_LENGTH,
     MODEL_DIRECTORY,
     MODEL_FILE,
     MODEL_NAME,
     MODEL_TYPE,
     N_GPU_LAYERS,
 )
-from rich.console import Console
 
 load_dotenv()
 try:
@@ -32,9 +34,11 @@ except Exception as e:
 
 console = Console()
 
+
 # Define a shorthand for console.print using a lambda function
 def cprint(*args, **kwargs):
     return console.print(*args, **kwargs)
+
 
 # Function to load the LLM
 def load_model(
@@ -78,6 +82,7 @@ def load_model(
     ):
         try:
             LOGGING.info("Using LlamaCpp to load the model")
+            os.environ["TOKENIZERS_PARALLELISM"] = "false"
             # Download the model checkpoint from the Hugging Face Hub
             model_path = hf_hub_download(
                 repo_id=model_id,
@@ -88,12 +93,13 @@ def load_model(
             # Model Parameters
             kwargs = {
                 "model_path": model_path,
-                "max_tokens": MAX_TOKEN_LENGTH,
-                "n_ctx": MAX_TOKEN_LENGTH,
+                "max_tokens": config.MAX_TOKEN_LENGTH,
+                "n_ctx": config.CONTEXT_WINDOW,
                 "n_batch": 512,
                 "callback_manager": callback_manager,
                 "verbose": False,
                 "f16_kv": True,
+                "temperature": config.TEMPERATURE,
                 "streaming": True,
             }
             if device_type.lower() == "mps":
@@ -116,6 +122,8 @@ def load_model(
             llm = Ollama(
                 base_url="http://localhost:11434",
                 model=model_id,
+                temperature=config.TEMPERATURE,
+                num_ctx=config.CONTEXT_WINDOW,
                 callback_manager=callback_manager,
             )
             LOGGING.info(f"Loaded {model_id} locally. ")
@@ -135,7 +143,8 @@ def load_model(
             )
             kwargs = {
                 # "temperature": 0,
-                "max_length": MAX_TOKEN_LENGTH,
+                "temperature": config.TEMPERATURE,
+                "max_length": config.MAX_TOKEN_LENGTH,
                 "trust_remote_code": True,
             }
             tokenizer = AutoTokenizer.from_pretrained(
@@ -144,7 +153,7 @@ def load_model(
             model = AutoModelForCausalLM.from_pretrained(
                 model_id,
                 cache_dir=MODEL_DIRECTORY,
-                trust_remote_code=True, 
+                trust_remote_code=True,
             )
             streamer = TextStreamer(tokenizer, skip_prompt=True)
 
@@ -171,9 +180,9 @@ def load_model(
             llm = ChatOpenAI(
                 model=model_id,
                 api_key=OPENAI_API_KEY,
-                callback_manager=CallbackManager(
-                    [StreamingStdOutCallbackHandler(), TokenCallbackHandler()]
-                ),
+                temperature=config.TEMPERATURE,
+                max_tokens=config.MAX_TOKEN_LENGTH,
+                callback_manager=callback_manager,
                 streaming=True,
             )
             cprint(
@@ -190,6 +199,8 @@ def load_model(
             llm = ChatOpenAI(
                 model="local",
                 base_url="http://localhost:1234/v1",
+                temperature=config.TEMPERATURE,
+                max_tokens=config.MAX_TOKEN_LENGTH,
                 streaming=True,
                 callback_manager=callback_manager,
             )
@@ -197,6 +208,31 @@ def load_model(
                 f"\nUsing [bold magenta]LM Studio[/bold magenta] to load [bold magenta]{model_id}[/bold magenta]."
             )
             LOGGING.info("Loaded {model_id} using LM studio successfully")
+            return llm
+        except Exception as e:
+            LOGGING.info(f"Error {e}")
+
+    elif model_type == "together":
+        try:
+            os.environ["TOKENIZERS_PARALLELISM"] = "false"
+            # llm = Together(
+            #     model=model_id,
+            #     callback_manager=callback_manager,
+            #     together_api_key=os.environ.get("TOGETHER_API_KEY"),
+            # )
+            llm = ChatOpenAI(
+                api_key=os.environ.get("TOGETHER_API_KEY"),
+                model=model_id,
+                streaming=True,
+                temperature=config.TEMPERATURE,
+                max_tokens=config.MAX_TOKEN_LENGTH,
+                callback_manager=callback_manager,
+                base_url="https://api.together.xyz",
+            )
+            cprint(
+                f"\nUsing [bold magenta]Together AI[/bold magenta] to load [bold magenta]{model_id}[/bold magenta]."
+            )
+            LOGGING.info("Loaded {model_id} using TogetherAI successfully")
             return llm
         except Exception as e:
             LOGGING.info(f"Error {e}")

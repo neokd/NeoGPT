@@ -12,6 +12,8 @@ from langchain.chat_loaders.whatsapp import WhatsAppChatLoader
 from langchain.text_splitter import Language
 from langchain_community.document_loaders import (
     CSVLoader,
+    GutenbergLoader,
+    HNLoader,
     JSONLoader,
     PDFMinerLoader,
     RecursiveUrlLoader,
@@ -77,6 +79,8 @@ INGEST_THREADS = 8
 
 # MODEL CONFIG
 MAX_TOKEN_LENGTH = 8192  # 8192 is the max for Mistral-7B
+CONTEXT_WINDOW = MAX_TOKEN_LENGTH
+TEMPERATURE = 0.7
 N_GPU_LAYERS = 40
 MODEL_TYPE = os.environ.get("MODEL_TYPE", "llamacpp")
 
@@ -121,6 +125,8 @@ DOCUMENT_EXTENSION = {
 # List of URL patterns supported for ingest
 URL_EXTENSION = {
     ".youtube": YoutubeLoader,
+    ".ycombinator": HNLoader,
+    ".gutenberg": GutenbergLoader,
     "recursive": RecursiveUrlLoader,
     "normal": WebBaseLoader,
 }

@@ -114,12 +114,14 @@ def retrieval_chat(chain, show_source, retriever, LOGGING):
             result = magic_commands(query, chain)
             if result is False:
                 break
+            elif isinstance(result, str):
+                query = result
             else:
                 continue
 
         regex = re.compile(r"([^']+)")
         if regex.search(query):
-            query = read_file(query)
+            query = read_file(query, chain)
 
         res = (
             chain.invoke({"question": query})

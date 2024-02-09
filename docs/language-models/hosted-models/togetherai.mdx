@@ -1,5 +1,25 @@
 ---
 title: TogetherAI
-description: "🚧 Our documentation is currently under construction! We're working hard to bring you the best information.Contributions are welcome! 🚧"
+
 ---
 
+<ParamField body="TOGETHER_API_KEY" type="string" default="" required>
+    Requires your TogetherAI key. To set up your API key, please refer to the [guide on setting up Together AI API key](/guides/setup-togetherai-key) for detailed instructions.
+</ParamField>
+
+
+To use models from TogetherAI, use the prefix `together/` in the model flag to load the model from TogtherAI. For example,
+
+```bash
+python main.py --model together/<model-name>
+```
+
+Following is an example of using `mistralai/Mixtral-8x7B-Instruct-v0.1` from TogetherAI.
+
+```bash
+python main.py --model together/mistralai/Mixtral-8x7B-Instruct-v0.1
+```
+
+## Supported Models
+
+All the models available in TogetherAI can be found [here](https://api.together.xyz/playground) and are supported by NeoGPT.
