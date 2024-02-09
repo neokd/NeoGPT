@@ -48,7 +48,8 @@
       "group": "Guides",
       "pages" : [
         "guides/quick-start",
-        "guides/magic-commands"
+        "guides/magic-commands",
+        "guides/multi-modal"
       ]
     },
     {
@@ -80,7 +81,7 @@
       ]
     },
     {
-      "group" : "Code Execution",
+      "group" : "Code Interpreter",
       "pages" : [
         "code-execution/introduction"
       ]

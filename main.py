@@ -200,6 +200,13 @@ def main():
         help="Enable voice mode",
     )
 
+    parser.add_argument(
+        "--interpreter",
+        default=False,
+        action="store_true",
+        help="Enable voice mode",
+    )
+
     args = parser.parse_args()
 
     # This doesn't work as expected need to change it
@@ -308,6 +315,7 @@ def main():
             else overwrite["PERSONA"],
             show_source=args.show_source,
             write=args.write,
+            interpreter_mode=args.interpreter,
             shell=args.shell,
             show_stats=args.stats,
             LOGGING=logging,

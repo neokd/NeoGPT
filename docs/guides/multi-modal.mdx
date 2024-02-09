@@ -1,0 +1,27 @@
+---
+title: Multi Modal Support 👀
+---
+
+NeoGPT now supports multi-modal inputs! 🎉 via Ollama. To start with multi-modal make sure you have ollama running in your system. Refer [here](/language-models/local-models/ollama) on how to run ollama.
+
+You need to have any of the following models running in ollama:
+
+- [Llava](https://ollama.ai/library/llava)
+- [Bakllava](https://ollama.ai/library/bakllava)
+
+
+To use multi-modal support, you need to add the `--model` flag. For example, to use `bakllava` model, you can use the following command:
+
+```bash
+python main.py --model ollama/bakllava
+```
+
+To interact with images and text, you can start the chat session in the terminal and then send the image to the chat session. The model will respond to the image and text.
+
+```bash Chat with NeoGPT
+user: Describe the image ./path/to/image.jpg
+```
+
+<Note>
+We are working on adding support for multi-modal inputs with other models as well. Stay tuned for updates!
+</Note>

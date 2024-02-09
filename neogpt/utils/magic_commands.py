@@ -10,11 +10,11 @@ from rich.console import Console
 from neogpt.utils.notify import notify
 from neogpt.utils.user_info import get_username
 
-from tiktoken import Tokenizer, TokenCount
-from tiktoken.models import GPT2
+import tiktoken
+
 
 # Create a Tokenizer and TokenCount object
-tokenizer = Tokenizer()
+tokenizer = tiktoken.get_encoding("cl100k_base")
 
 # Create a console object for pretty printing
 console = Console()
@@ -186,7 +186,7 @@ def magic_commands(user_input, chain):
         # Print the number of tokens to the console
         cprint(f"The prompt contains {num_tokens} tokens.")
         return True
-    
+
     # If the user inputs '/help', print the list of available commands
     elif user_input == "/help":
         cprint("\n[bold magenta]📖 Available commands: [/bold magenta]")
@@ -198,7 +198,9 @@ def magic_commands(user_input, chain):
         cprint("⏪ /undo - Remove the last response from the chat history")
         cprint("🔁 /redo - Resend the last human input to the model")
         cprint("📂 /load [path] - Load the saved chat history from the specified file")
-        cprint("🔖 /tokens [prompt] - Calculate the number of tokens for a given prompt")
+        cprint(
+            "🔖 /tokens [prompt] - Calculate the number of tokens for a given prompt"
+        )
         return True
 
     # If the command is not recognized, print an error message

@@ -118,6 +118,7 @@ def load_model(
 
     elif model_type == "ollama":
         try:
+            os.environ["TOKENIZERS_PARALLELISM"] = "false"
             LOGGING.info("Using Ollama to load the model")
             llm = Ollama(
                 base_url="http://localhost:11434",

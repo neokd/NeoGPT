@@ -33,6 +33,7 @@ from neogpt.retrievers import (
     stepback,
     web_research,
 )
+from neogpt.interpreter import interpreter
 from neogpt.utils import get_username, magic_commands, read_file, writing_assistant
 from neogpt.vectorstore import ChromaStore, FAISSStore
 
@@ -100,7 +101,7 @@ def db_retriever(
 
 
 # RAG Chat
-def retrieval_chat(chain, show_source, retriever, LOGGING):
+def retrieval_chat(chain, show_source, retriever, interpreter_mode, LOGGING):
     # Run the chat loop
     cprint(
         "\n[bright_yellow]NeoGPT 🤖 is ready to chat. Type /exit to quit.[/bright_yellow]"
@@ -128,6 +129,9 @@ def retrieval_chat(chain, show_source, retriever, LOGGING):
             if retriever == "stepback"
             else chain.invoke(query)
         )
+
+        if interpreter_mode:
+            interpreter(message=res["result"], chain = chain)
 
         if show_source:
             answer, docs = res["result"], res["source_documents"]
@@ -188,6 +192,7 @@ def manager(
     persona: str = "default",
     show_source: bool = False,
     write: str | None = None,
+    interpreter_mode: bool = False,
     shell: bool = False,
     show_stats: bool = False,
     LOGGING=logging,
@@ -202,4 +207,4 @@ def manager(
     if shell:
         shell_()
     else:
-        retrieval_chat(chain, show_source, retriever, LOGGING)
+        retrieval_chat(chain, show_source, retriever, interpreter_mode, LOGGING)
