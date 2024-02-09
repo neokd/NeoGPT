@@ -28,7 +28,7 @@ def convert_to_base64(pil_image):
 
 def read_file(user_input, chain):
     regex = re.compile(
-        r"(?:[a-zA-Z]:)?(?:\./|/|\\)[\S\\ ]+?\.(?i:txt|pdf|png|jpg|svg|jpeg|py|csv|doc|docx|ppt|pptx|xls|xlsx)\b"
+        r"(?:[a-zA-Z]:)?(?:\.?/|\\)?[^:<>:\"/|?*]*\.(?i:txt|pdf|png|jpg|svg|jpeg|py|csv|doc|docx|ppt|pptx|xls|xlsx)\b"
     )
     file_paths = [match.group(0) for match in regex.finditer(user_input)]
 
