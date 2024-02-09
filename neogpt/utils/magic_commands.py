@@ -199,6 +199,7 @@ def magic_commands(user_input, chain):
         cprint("🔁 /redo - Resend the last human input to the model")
         cprint("📂 /load [path] - Load the saved chat history from the specified file")
         cprint("🔖 /tokens [prompt] - Calculate the number of tokens for a given prompt")
+        cprint("📄 /export - Export the current chat memory to the settings/settings.yaml file")
         return True
 
     elif user_input == "/export":
