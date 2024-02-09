@@ -28,7 +28,7 @@ def convert_to_base64(pil_image):
 
 def read_file(user_input, chain):
     regex = re.compile(
-        r"(?:[a-zA-Z]:)?(?:\.?/|\\)?(?:[^:<>\"/|?*\n\r]+)?\.(?i:txt|pdf|png|jpg|svg|jpeg|py|csv|doc|docx|ppt|pptx|xls|xlsx)\b"
+        r"(?:[a-zA-Z]:)?(?:[\\/][^:<>\"/|?*\n\r\s]+(?:\s[^:<>\"/|?*\n\r]+)*)+(?:\.(?i:txt|pdf|png|jpg|svg|jpeg|py|csv|doc|docx|ppt|pptx|xls|xlsx)\b)"
     )
     file_paths = [match.group(0) for match in regex.finditer(user_input)]
 
@@ -69,7 +69,7 @@ def read_file(user_input, chain):
                 chain.combine_documents_chain.llm_chain.llm.bind(images=[encoded])
             )
 
-        elif extension.lower() in ["dox","docx"]:
+        elif extension.lower() in ["dox","docx","doc"]:
             content = UnstructuredWordDocumentLoader(file).load()[0].page_content
             user_input = user_input.replace(file, content)
 

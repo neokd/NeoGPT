@@ -3,7 +3,7 @@ from neogpt.utils.formatter import MessageFormatter
 from neogpt.utils.magic_commands import magic_commands
 from neogpt.utils.read_file import read_file
 from neogpt.utils.user_info import get_user_info, get_username
-from neogpt.utils.writing_assistant import writing_assistant
+from neogpt.utils.writer_assistant import writing_assistant
 
 __all__ = [
     "MessageFormatter",
