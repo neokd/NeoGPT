@@ -254,7 +254,7 @@ def read_pyproject_toml(file_path):
 
 
 # Export Configuration
-def export_config(config_filename):
+def export_config(config_filename="settings.yaml"):
     toml_path = "./pyproject.toml"
     toml_info = read_pyproject_toml(toml_path)
     config = {
