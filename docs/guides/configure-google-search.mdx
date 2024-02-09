@@ -1,4 +1,26 @@
----
-title: Configure Google Search 🔍
----
+# Configure Google Search 🔍
 
+> **Note:** 🚨 A Google API key is required to use the Web Research Retriever.
+
+Follow these steps to obtain your Google API key:
+
+1. 🔍 Locate the `.env-template` file in the root directory of the repository. Rename this file to `.env`.
+
+2. 🌐 Visit the [Google Cloud Console](https://console.cloud.google.com/) and create a new project.
+    - If you do not have an account, you will be prompted to create one and sign in.
+    - To create a new project, click on the `Select a Project` dropdown at the top of the page and select `New Project`.
+    - Assign a name to your project and click `Create`.
+
+3. 🛠️ Set up a custom search API.
+    - Navigate to the `API and Services` page.
+    - Click on `Enable APIs and Services`.
+    - Search for `Custom Search API`, click on it, and then click `Enable`.
+    - Click on `Create Credentials` and select `API Key`.
+    - In the `.env` file, assign this key to `GOOGLE_API_KEY`.
+
+4. 🔎 Set up a custom search engine and add it to your `.env` file.
+    - Visit the [Custom Search Engine](https://cse.google.com/cse/all) page.
+    - Click on `Add`. Follow the provided instructions to set up the search engine. You can configure it to search the entire web or only specific sites, depending on your needs.
+    - After creating the search engine, click on `Control Panel` and then `Basics`. Copy the `Search engine ID` and assign it to `GOOGLE_CSE_ID` in the `.env` file.
+
+> **Warning:** 🚫 Do not commit your `.env` file to the repository, as it contains sensitive information. Always add `.env` to your `.gitignore` file to prevent accidental commits.
