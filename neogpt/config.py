@@ -290,43 +290,21 @@ def export_config(config_filename):
             "LOG_FOLDER": os.path.basename(LOG_FOLDER),
         },
     }
-    # Ensure the directory exists
-    # os.makedirs("settings", exist_ok=True)
-    while True:
-        # Validate config filename format
-        if "." in os.path.basename(config_filename):
-            # Remove existing suffix and replace with .yml suffix
-            if not config_filename.endswith(".yaml"):
-                config_filename = os.path.splitext(config_filename)[0] + ".yaml"
-                print(
-                    f"Config file must be saved in YAML file format, saving as {config_filename}"
-                )
 
-        # Add .yml suffix if there is no suffix
-        else:
-            config_filename += ".yaml"
-            print(
-                f"Config file must be saved in YAML file format, saving as {config_filename}"
-            )
+    SETTINGS_DIR = os.path.join(os.path.dirname(__file__), "settings")
+    if not os.path.exists(SETTINGS_DIR):
+        os.makedirs(SETTINGS_DIR)
 
-        filepath = os.path.join(os.path.dirname(__file__), "settings", config_filename)
-
-        if os.path.exists(filepath):
-            response = input(
-                f"\nA file with the name '{  config_filename }' already exists.\n\nEnter a new filename OR press enter to overwrite current config file OR type 'exit' to cancel export: "
-            )
-            if response.lower() == "exit":
-                print("Export cancelled ")
-                sys.exit()  # Exit the loop and end the program
-            elif response.strip() == "":
-                break  # Exit the loop to overwrite the current filename
-            else:
-                config_filename = response.lower()
-                continue  # Continue to the beginning of the loop to validate new filename
-        else:
-            # creating the settings directory if it doesn't exist
-            print("\nCreating settings/settings.yaml since it doesn't exist")
-            os.makedirs(os.path.dirname(filepath), exist_ok=True)
+    filepath = os.path.join(SETTINGS_DIR, config_filename)
+    if os.path.exists(filepath):
+        overwrite = input(f"\nFile {filepath} already exists. Do you want to overwrite it? (yes/no): ")
+        if overwrite.lower() != "yes":
+            filepath = os.path.join(SETTINGS_DIR, input("Enter a new file name: "))
+            if os.path.exists(filepath):
+                print(f"\nFile {filepath} already exists. Exiting...")
+                if not filepath.endswith(".yaml"):
+                    filepath += ".yaml"
+                sys.exit()
 
     try:
         with open(filepath, "w") as file:
