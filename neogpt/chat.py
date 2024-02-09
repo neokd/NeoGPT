@@ -9,7 +9,7 @@ from rich.console import Console
 
 from neogpt.agents import ML_Engineer, QA_Engineer
 from neogpt.callback_handler import AgentCallbackHandler, final_cost
-from neogpt.config import (
+from neogpt.settings.config import (
     DEVICE_TYPE,
     MODEL_FILE,
     MODEL_NAME,

@@ -9,7 +9,7 @@ import os
 from langchain_community.utilities.sql_database import SQLDatabase
 from langchain_experimental.sql import SQLDatabaseChain
 
-from neogpt.config import SOURCE_DIR
+from neogpt.settings.config import SOURCE_DIR
 
 
 def sql_retriever(llm, persona):

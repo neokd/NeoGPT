@@ -7,7 +7,7 @@ from langchain.prompts import (
     PromptTemplate,
 )
 
-from neogpt.config import DEFAULT_MEMORY_KEY, MODEL_NAME
+from neogpt.settings.config import DEFAULT_MEMORY_KEY, MODEL_NAME
 from datetime import datetime
 # The prompts are taken from https://github.com/f/awesome-chatgpt-prompts. Thanks to the author for the amazing work.
 

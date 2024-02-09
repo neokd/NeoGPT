@@ -38,12 +38,16 @@ warnings.filterwarnings(
     "ignore", category=UserWarning, message="TypedStorage is deprecated"
 )
 
+
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
 # Source Directory for Documents to Ingest
-SOURCE_DIR = os.path.join(os.path.dirname(__file__), "documents")
+SOURCE_DIR = os.path.join(ROOT_DIR, "documents")
 # To store models from HuggingFace
-MODEL_DIRECTORY = os.path.join(os.path.dirname(__file__), "models")
+MODEL_DIRECTORY = os.path.join(ROOT_DIR, "models")
 # PARENT DB DIRECTORY
-PARENT_DB_DIRECTORY = os.path.join(os.path.dirname(__file__), "db")
+PARENT_DB_DIRECTORY = os.path.join(ROOT_DIR, "db")
 # CHROMA DB DIRECTORY
 CHROMA_PERSIST_DIRECTORY = os.path.join(PARENT_DB_DIRECTORY, "chroma")
 # FAISS DB DIRECTORY
@@ -51,7 +55,7 @@ FAISS_PERSIST_DIRECTORY = os.path.join(PARENT_DB_DIRECTORY, "faiss")
 # PINECONE DB DIRECTORY
 PINECONE_PERSIST_DIRECTORY = os.path.join(PARENT_DB_DIRECTORY, "pinecone")
 # WORKSPACE DIRECTORY
-WORKSPACE_DIRECTORY = os.path.join(os.path.dirname(__file__), "workspace")
+WORKSPACE_DIRECTORY = os.path.join(ROOT_DIR, "workspace")
 
 # DEFAULT MEMORY KEY FOR CONVERSATION MEMORY (DEFAULT IS 2)
 DEFAULT_MEMORY_KEY = 2
@@ -202,7 +206,7 @@ def import_config(config_filename):
         TEMPERATURE, \
         CONTEXT_WINDOW
 
-    SETTINGS_DIR = os.path.join(os.path.dirname(__file__), "settings")
+    SETTINGS_DIR = os.path.join(ROOT_DIR, "settings")
 
     try:
         if not os.path.isabs(config_filename):
@@ -244,89 +248,4 @@ def import_config(config_filename):
     }
 
 
-# Extract version info from TOML
-def read_pyproject_toml(file_path):
-    with open(file_path) as toml_file:
-        toml_data = toml.load(toml_file)
 
-    poetry_section = toml_data.get("tool", {}).get("poetry", {})
-
-    # Extracting information
-    version = poetry_section.get("version", "")
-    authors = poetry_section.get("authors", [])
-    license_info = poetry_section.get("license", "")
-
-    return {
-        "version": version,
-        "authors": authors,
-        "license": license_info,
-    }
-
-
-# Export Configuration
-def export_config(config_filename="settings.yaml"):
-    toml_path = "./pyproject.toml"
-    toml_info = read_pyproject_toml(toml_path)
-    config = {
-        "neogpt": {
-            "VERSION": toml_info["version"],
-            "ENV": "development",
-            "PERSONA": "default",
-            "UI": False,
-            "MODEL_TYPE": MODEL_TYPE,
-            "EXPORT_DATE": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            "LICENSE": toml_info["license"],
-        },
-        "model": {
-            "MODEL_NAME": MODEL_NAME,
-            "MODEL_TYPE": MODEL_TYPE,
-            "MODEL_FILE": MODEL_FILE,
-            "EMBEDDING_MODEL": EMBEDDING_MODEL,
-            "INGEST_THREADS": INGEST_THREADS,
-            "N_GPU_LAYERS": N_GPU_LAYERS,
-            "MAX_TOKEN_LENGTH": MAX_TOKEN_LENGTH,
-            "TEMPERATURE": TEMPERATURE,
-            "CONTEXT_WINDOW": CONTEXT_WINDOW,
-        },
-        "database": {
-            "PARENT_DB_DIRECTORY": os.path.basename(PARENT_DB_DIRECTORY),
-        },
-        "directories": {
-            "SOURCE_DIR": os.path.basename(SOURCE_DIR),
-            "WORKSPACE_DIRECTORY": os.path.basename(WORKSPACE_DIRECTORY),
-            "MODEL_DIRECTORY": os.path.basename(MODEL_DIRECTORY),
-        },
-        "memory": {
-            "DEFAULT_MEMORY_KEY": DEFAULT_MEMORY_KEY,
-        },
-        "logs": {
-            "LOG_FOLDER": os.path.basename(LOG_FOLDER),
-        },
-        "pytorch device config": {
-            "DEVICE_TYPE": DEVICE_TYPE,
-        },
-    }
-
-    SETTINGS_DIR = os.path.join(os.path.dirname(__file__), "settings")
-    if not os.path.exists(SETTINGS_DIR):
-        os.makedirs(SETTINGS_DIR)
-
-    filepath = os.path.join(SETTINGS_DIR, config_filename)
-    if os.path.exists(filepath):
-        overwrite = input(f"\nFile {filepath} already exists. Do you want to overwrite it? (yes/no): ")
-        if overwrite.lower() != "yes":
-            filepath = os.path.join(SETTINGS_DIR, input("Enter a new file name: "))
-            if os.path.exists(filepath) or os.path.exists(str(filepath+".yaml")):
-                print(f"\nFile {filepath} already exists.")
-                filepath = filepath.removesuffix(".yaml")
-                filepath = f'{filepath}-{datetime.now().strftime("%d-%m-%Y-%H-%M-%S")}.yaml'
-            if not filepath.endswith(".yaml"):
-                filepath += ".yaml"
-
-    try:
-        with open(filepath, "w") as file:
-            yaml.dump(config, file, sort_keys=False)
-            print(f"\nConfiguration exported to {filepath}")
-
-    except Exception as e:
-        print(f"An error occurred during export: {e}")

@@ -8,7 +8,7 @@ from langchain.chat_loaders.utils import map_ai_messages, merge_chat_runs
 from langchain.schema import AIMessage
 from langchain.schema.document import Document
 
-from neogpt.config import SOCIAL_CHAT_EXTENSION
+from neogpt.settings.config import SOCIAL_CHAT_EXTENSION
 
 if TYPE_CHECKING:
     from langchain.chat_loaders.base import ChatSession

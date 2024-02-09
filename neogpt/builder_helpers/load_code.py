@@ -4,7 +4,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 from langchain.schema import Document
 
-from neogpt.config import CODE_EXTENSION
+from neogpt.settings.config import CODE_EXTENSION
 
 
 def load_single_code(file_path: str) -> Document:

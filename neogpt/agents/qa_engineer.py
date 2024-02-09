@@ -6,7 +6,7 @@ from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
 from rich import print
 
-from neogpt.config import (
+from neogpt.settings.config import (
     AGENT_THOUGHTS,
     CURRENT_WORKING_AGENT,
     QA_ENGINEER_FEEDBACK,

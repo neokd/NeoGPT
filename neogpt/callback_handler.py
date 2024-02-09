@@ -11,7 +11,7 @@ from langchain.callbacks.base import BaseCallbackHandler
 from langchain.schema.output import LLMResult
 from rich.console import Console
 
-from neogpt.config import CURRENT_WORKING_AGENT, QUERY_COST, TOTAL_COST
+from neogpt.settings.config import CURRENT_WORKING_AGENT, QUERY_COST, TOTAL_COST
 from neogpt.utils.budget_manager import final_cost
 from neogpt.utils.formatter import MessageFormatter
 

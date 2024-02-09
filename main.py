@@ -8,15 +8,15 @@ import warnings
 from langchain_core._api.deprecation import LangChainDeprecationWarning
 from streamlit.web import cli as stcli
 
-from neogpt import config
+from neogpt.settings import config
 from neogpt.builder import builder
 from neogpt.chat import chat_mode
-from neogpt.config import (
+from neogpt.settings.config import (
     DEVICE_TYPE,
     NEOGPT_LOG_FILE,
-    export_config,
     import_config,
 )
+from neogpt.settings import export_config
 from neogpt.manager import hire, manager
 
 
@@ -259,9 +259,10 @@ def main():
     if args.model:
         model = args.model.split("/", 1)
         overwrite["MODEL_TYPE"] = model[0]
-
+        config.MODEL_TYPE = model[0]
         if len(model) >= 2:
             os.environ["MODEL_NAME"] = model[1]
+            config.MODEL_NAME = model[1]
 
     # if not os.path.exists(FAISS_PERSIST_DIRECTORY):
     #     builder(vectorstore="FAISS")

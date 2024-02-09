@@ -1,0 +1,29 @@
+neogpt:
+  VERSION: 0.1.0-beta
+  ENV: development
+  PERSONA: default
+  UI: false
+  EXPORT_DATE: '2024-02-10 02:33:10'
+  LICENSE: MIT
+model:
+  MODEL_NAME: TheBloke/Mistral-7B-Instruct-v0.1-GGUF
+  MODEL_TYPE: llamacpp
+  MODEL_FILE: mistral-7b-instruct-v0.1.Q4_K_M.gguf
+  EMBEDDING_MODEL: sentence-transformers/all-MiniLM-L12-v2
+  INGEST_THREADS: 8
+  N_GPU_LAYERS: 40
+  MAX_TOKEN_LENGTH: 8192
+  TEMPERATURE: 0.7
+  CONTEXT_WINDOW: 8192
+database:
+  PARENT_DB_DIRECTORY: db
+directories:
+  SOURCE_DIR: documents
+  WORKSPACE_DIRECTORY: workspace
+  MODEL_DIRECTORY: models
+memory:
+  DEFAULT_MEMORY_KEY: 2
+logs:
+  LOG_FOLDER: logs
+pytorch device config:
+  DEVICE_TYPE: mps

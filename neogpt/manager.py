@@ -15,7 +15,7 @@ from neogpt.callback_handler import (
     TokenCallbackHandler,
     final_cost,
 )
-from neogpt.config import (
+from neogpt.settings.config import (
     DEVICE_TYPE,
     MODEL_FILE,
     MODEL_NAME,

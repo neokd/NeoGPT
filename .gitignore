@@ -10,5 +10,4 @@ neogpt/models/*
 .vs
 .ruff_cache/*
 dist/*
-neogpt/settings/*
 neogpt/db/*

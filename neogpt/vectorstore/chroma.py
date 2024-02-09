@@ -9,7 +9,7 @@ from langchain.schema.document import Document
 from langchain_community.embeddings import HuggingFaceInstructEmbeddings
 from langchain_community.vectorstores.chroma import Chroma
 
-from neogpt.config import (
+from neogpt.settings.config import (
     CHROMA_PERSIST_DIRECTORY,
     CHROMA_SETTINGS,
     DEVICE_TYPE,
