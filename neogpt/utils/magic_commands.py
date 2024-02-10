@@ -190,8 +190,8 @@ def magic_commands(user_input, chain):
     # If the user inputs '/export', export the current chat memory to the settings/settings.yaml file
     elif user_input == "/export":
         cprint("Exporting the current chat memory to the settings/settings.yaml file...")
-        from neogpt.config import export_config
-
+        from neogpt.settings.export_config import export_config
+        
         export_config()
         return True
     
@@ -215,7 +215,7 @@ def magic_commands(user_input, chain):
     else:
         cprint("Invalid command. Please try again.")
         return  # Return False if the command is not recognized
-
+    
 
 # Uncomment the following lines to test the magic commands
 # if __name__ == "__main__":

@@ -6,7 +6,7 @@ from langchain.schema.document import Document
 from langchain_community.embeddings import HuggingFaceInstructEmbeddings
 from pinecone import Pinecone
 
-from neogpt.config import (
+from neogpt.settings.config import (
     DEVICE_TYPE,
     EMBEDDING_DIMENSION,
     EMBEDDING_MODEL,

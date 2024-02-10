@@ -1,4 +1,4 @@
-from neogpt.config import PROJECT_COST, TOTAL_COST
+from neogpt.settings.config import PROJECT_COST, TOTAL_COST
 
 
 # Define a function to manage the budget of the project

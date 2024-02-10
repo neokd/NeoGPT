@@ -1,7 +1,7 @@
 from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
 
-from neogpt.config import AGENT_THOUGHTS, CURRENT_WORKING_AGENT, QA_ENGINEER_FEEDBACK
+from neogpt.settings.config import AGENT_THOUGHTS, CURRENT_WORKING_AGENT, QA_ENGINEER_FEEDBACK
 from neogpt.prompts.agent_prompt import ML_ENGINEER_PROMPT
 
 

@@ -4,7 +4,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 from langchain.schema.document import Document
 
-from neogpt.config import DOCUMENT_EXTENSION
+from neogpt.settings.config import DOCUMENT_EXTENSION
 
 
 def load_single_document(file_path: str) -> Document:

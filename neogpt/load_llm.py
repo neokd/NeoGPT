@@ -11,13 +11,13 @@ from langchain_openai.chat_models import ChatOpenAI
 from rich.console import Console
 from transformers import AutoModelForCausalLM, AutoTokenizer, TextStreamer, pipeline
 
-from neogpt import config
+from neogpt.settings import config
 from neogpt.callback_handler import (
     StreamingStdOutCallbackHandler,
     StreamlitStreamingHandler,
     TokenCallbackHandler,
 )
-from neogpt.config import (
+from neogpt.settings.config import (
     DEVICE_TYPE,
     MODEL_DIRECTORY,
     MODEL_FILE,

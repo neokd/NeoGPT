@@ -6,7 +6,7 @@ from langchain.schema.document import Document
 from langchain_community.embeddings import HuggingFaceInstructEmbeddings
 from langchain_community.vectorstores.faiss import FAISS
 
-from neogpt.config import (
+from neogpt.settings.config import (
     DEVICE_TYPE,
     EMBEDDING_MODEL,
     FAISS_PERSIST_DIRECTORY,

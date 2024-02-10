@@ -6,7 +6,7 @@ from functools import partial  # Import partial
 from bs4 import BeautifulSoup as Soup
 from langchain.schema.document import Document
 
-from neogpt.config import URL_EXTENSION
+from neogpt.settings.config import URL_EXTENSION
 
 
 def process_url(url_path: str, recursive: bool) -> Document:

@@ -14,7 +14,7 @@ from neogpt.builder_helpers import (
     load_document_batch,
     load_url_batch,
 )
-from neogpt.config import (
+from neogpt.settings.config import (
     BUILDER_LOG_FILE,
     DEVICE_TYPE,
     DOCUMENT_EXTENSION,
