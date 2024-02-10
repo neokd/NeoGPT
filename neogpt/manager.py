@@ -15,15 +15,7 @@ from neogpt.callback_handler import (
     TokenCallbackHandler,
     final_cost,
 )
-from neogpt.settings.config import (
-    DEVICE_TYPE,
-    MODEL_FILE,
-    MODEL_NAME,
-    MODEL_TYPE,
-    QUERY_COST,
-    TOTAL_COST,
-    WORKSPACE_DIRECTORY,
-)
+from neogpt.interpreter import interpreter
 from neogpt.load_llm import load_model
 from neogpt.retrievers import (
     context_compress,
@@ -33,8 +25,17 @@ from neogpt.retrievers import (
     stepback,
     web_research,
 )
-from neogpt.interpreter import interpreter
+from neogpt.settings.config import (
+    DEVICE_TYPE,
+    MODEL_FILE,
+    MODEL_NAME,
+    MODEL_TYPE,
+    QUERY_COST,
+    TOTAL_COST,
+    WORKSPACE_DIRECTORY,
+)
 from neogpt.utils import get_username, magic_commands, read_file, writing_assistant
+from neogpt.utils.conversation_navigator import load_conversations
 from neogpt.vectorstore import ChromaStore, FAISSStore
 
 # Create a console instance
@@ -45,6 +46,17 @@ console = Console()
 def cprint(*args, **kwargs):
     return console.print(*args, **kwargs)
 
+def manage_conversations():
+    # Load the conversations
+    files = load_conversations()
+    if files:
+        cprint("Select a conversation to load:", style="bold blue")
+        for i, file in enumerate(files, start=1):
+            cprint(f"{i}. {file}", style="bold green")
+        selected = int(input("Enter the number of the conversation to load: "))
+        cprint(f"You selected: {files[selected-1]}", style="bold yellow")
+    else:
+        cprint("No conversations found.", style="bold red")
 
 def db_retriever(
     device_type: str = DEVICE_TYPE,
