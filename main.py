@@ -10,7 +10,7 @@ from streamlit.web import cli as stcli
 
 from neogpt.builder import builder
 from neogpt.chat import chat_mode
-from neogpt.manager import hire, manager
+from neogpt.manager import hire, manage_conversations, manager
 from neogpt.settings import config, export_config
 from neogpt.settings.config import (
     DEFAULT_MEMORY_KEY,
@@ -18,7 +18,6 @@ from neogpt.settings.config import (
     NEOGPT_LOG_FILE,
     import_config,
 )
-from neogpt.utils.conversation_navigator import load_conversations
 
 
 def main():
@@ -253,15 +252,7 @@ def main():
 
     # If the --conversations flag is included, call the load_conversations function
     if args.conversations:
-        files = load_conversations()
-        if files:
-            print("Select a conversation to load:")
-            for i, file in enumerate(files, start=1):
-                print(f"{i}. {file}")
-            selected = int(input("Enter the number of the conversation to load: "))
-            print(f"You selected: {files[selected-1]}")
-        else:
-            print("No conversations found.")
+        manage_conversations()
 
     if args.log:
         log_level = logging.INFO
