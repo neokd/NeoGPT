@@ -340,4 +340,8 @@ def main():
 
 if __name__ == "__main__":
     # Parse the arguments
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("\nExiting NeoGPT 🤖")
+        sys.exit()
