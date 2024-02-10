@@ -8,16 +8,17 @@ import warnings
 from langchain_core._api.deprecation import LangChainDeprecationWarning
 from streamlit.web import cli as stcli
 
-from neogpt.settings import config
 from neogpt.builder import builder
 from neogpt.chat import chat_mode
+from neogpt.manager import hire, manager
+from neogpt.settings import config, export_config
 from neogpt.settings.config import (
+    DEFAULT_MEMORY_KEY,
     DEVICE_TYPE,
     NEOGPT_LOG_FILE,
     import_config,
 )
-from neogpt.settings import export_config
-from neogpt.manager import hire, manager
+from neogpt.utils.conversation_navigator import load_conversations
 
 
 def main():
@@ -152,6 +153,14 @@ def main():
         # A larger context window allows the model to consider more of the previous text when making predictions.
     )
 
+    #Adding the --conversations flag for loading conversation files into the chatbot
+    parser.add_argument(
+        "--conversation",
+        default=DEFAULT_MEMORY_KEY,
+        action="store_true",
+        help="Load the conversation files into the chatbot",
+    )
+
     # Adding the --import switch with a YAML filename parameter
     parser.add_argument(
         "--import-config",
@@ -241,6 +250,18 @@ def main():
         log_level = logging.INFO
     else:
         log_level = logging.WARNING
+
+    # If the --conversations flag is included, call the load_conversations function
+    if args.conversations:
+        files = load_conversations()
+        if files:
+            print("Select a conversation to load:")
+            for i, file in enumerate(files, start=1):
+                print(f"{i}. {file}")
+            selected = int(input("Enter the number of the conversation to load: "))
+            print(f"You selected: {files[selected-1]}")
+        else:
+            print("No conversations found.")
 
     if args.log:
         log_level = logging.INFO
