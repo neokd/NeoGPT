@@ -154,9 +154,10 @@ def main():
 
     #Adding the --conversations flag for loading conversation files into the chatbot
     parser.add_argument(
-        "--conversation",
-        default=DEFAULT_MEMORY_KEY,
-        action="store_true",
+        "--conversations",
+        default=None,
+        nargs="?",
+        const=DEFAULT_MEMORY_KEY,
         help="Load the conversation files into the chatbot",
     )
 
@@ -252,7 +253,7 @@ def main():
 
     # If the --conversations flag is included, call the load_conversations function
     if args.conversations:
-        manage_conversations()
+         manage_conversations(args.conversations)
 
     if args.log:
         log_level = logging.INFO

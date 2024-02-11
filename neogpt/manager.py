@@ -48,15 +48,15 @@ def cprint(*args, **kwargs):
 
 def manage_conversations():
     # Load the conversations
-    files = load_conversations()
-    if files:
-        cprint("Select a conversation to load:", style="bold blue")
-        for i, file in enumerate(files, start=1):
-            cprint(f"{i}. {file}", style="bold green")
-        selected = int(input("Enter the number of the conversation to load: "))
-        cprint(f"You selected: {files[selected-1]}", style="bold yellow")
+    selected_file = load_conversations()
+    if selected_file:
+        # Load the selected file into memory
+        with open(selected_file, 'r') as file:
+            history = file.read()
+        # Now history contains the content of the selected file
+        # You can process it as needed
     else:
-        cprint("No conversations found.", style="bold red")
+        cprint("No conversations found or selected.", style="bold red")
 
 def db_retriever(
     device_type: str = DEVICE_TYPE,
