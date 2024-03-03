@@ -210,6 +210,25 @@ def magic_commands(user_input, chain):
         cprint("📄 /export - Export the current chat memory to the settings/settings.yaml file")
 
         return True
+    
+    # If the user inputs '/search [keyword]', search the chat history for the keyword
+    elif user_input.startswith("/search"):
+        # Extract the keyword from the command
+        keyword = user_input.split(" ", 1)[1].strip().replace("'", "").replace('"', "")
+        # Create a flag to indicate if any messages are found
+        found = False
+        for message in chain.combine_documents_chain.memory.chat_memory.messages:
+            if keyword in message.content:
+                if isinstance(message, HumanMessage):
+                    cprint(
+                        f"   [bright_yellow]{get_username()} [/bright_yellow]{message.content}"
+                    )
+                else:
+                    cprint(f"   [bright_blue]NeoGPT: [/bright_blue]{message.content}")
+                found = True
+        if not found:
+            cprint(f"No messages found with the keyword '{keyword}'.")
+        return True
 
     # If the command is not recognized, print an error message
     else:
