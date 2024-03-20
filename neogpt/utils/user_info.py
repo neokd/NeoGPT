@@ -1,5 +1,6 @@
 import getpass
 import os
+import platform
 
 
 def get_username():
@@ -9,13 +10,7 @@ def get_username():
 def get_user_info():
     username = get_username()
     shell_name = os.getenv("SHELL")
-    os_name = os.name
+    os_name = platform.platform()
+    python_version = platform.python_version()
     cwd = os.getcwd()
-    return username, shell_name, os_name, cwd
-
-
-# username, shell_name, os_name, cwd = get_user_info()
-# print("Username:", username)
-# print("Shell:", shell_name)
-# print("OS Name:", os_name)
-# print("Current Working Directory:", cwd)
+    return username, shell_name, os_name, python_version, cwd

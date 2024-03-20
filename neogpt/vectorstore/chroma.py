@@ -5,8 +5,12 @@
     from the database.
 """
 
+import warnings
+
 from langchain.schema.document import Document
-from langchain_community.embeddings import HuggingFaceInstructEmbeddings
+from langchain_community.embeddings import (
+    HuggingFaceEmbeddings,
+)
 from langchain_community.vectorstores.chroma import Chroma
 
 from neogpt.settings.config import (
@@ -27,9 +31,12 @@ class ChromaStore(VectorStore):
     """
 
     def __init__(self) -> None:
-        self.embeddings = HuggingFaceInstructEmbeddings(
+        warnings.filterwarnings(
+            "ignore", message="<All keys matched successfully>", lineno=357
+        )
+        self.embeddings = HuggingFaceEmbeddings(
             model_name=EMBEDDING_MODEL,
-            model_kwargs={"device": DEVICE_TYPE},
+            model_kwargs={"device": DEVICE_TYPE, "trust_remote_code": True},
             cache_folder=MODEL_DIRECTORY,
         )
         self.chroma = Chroma(

@@ -1,14 +1,18 @@
 import logging
-import os
 import re
-from datetime import datetime
 
 from langchain.chains import LLMChain
-from langchain.memory import ConversationBufferMemory
 from rich.console import Console
+from rich.prompt import Prompt
 
-from neogpt.agents import ML_Engineer, QA_Engineer
-from neogpt.callback_handler import AgentCallbackHandler, final_cost
+from neogpt.load_llm import load_model
+from neogpt.prompts.prompt import conversation_prompt
+from neogpt.utils import get_username, magic_commands, read_file
+
+try:
+    import readline
+except ImportError:
+    pass
 from neogpt.settings.config import (
     DEVICE_TYPE,
     MODEL_FILE,
@@ -18,8 +22,6 @@ from neogpt.settings.config import (
     TOTAL_COST,
     WORKSPACE_DIRECTORY,
 )
-from neogpt.load_llm import load_model
-from neogpt.prompts.prompt import conversation_prompt
 
 # Create a global console instance
 console = Console()
@@ -60,31 +62,25 @@ def chat_mode(
     if persona != "default":
         cprint(f"NeoGPT 🤖 is in {persona} mode.")
 
-    if persona == "shell":
-        cprint(
-            "\nYou are using NeoGPT 🤖 as a shell. It may generate commands that can be harmful to your system. Use it at your own risk. ⚠️"
-        )
-        execute = input("Do you want to execute the commands? (Y/N): ").upper()
-        if execute == "Y":
-            cprint("NeoGPT 🤖 will execute the commands in your default shell.")
-        else:
-            cprint("You can copy the commands and execute them manually.")
-
-    # Main Loop with timer
-    last_input_time = datetime.now()
     while True:
-        time_difference = (datetime.now() - last_input_time).total_seconds()
-        # Check if 1.5 minute have passed since the last input
-        if time_difference > 90:
-            cprint("\n \nNo input received for 1.5 minute! Exiting the program.")
-            break
+        query = Prompt.ask(f"[bold cyan]\n{get_username()} 🙎‍♂️ [/bold cyan]")
+        try:
+            readline.add_history(query)
+        except:
+            pass
 
-        query = input("\nEnter your query 🙋‍♂️: ")
+        if query.startswith("/"):
+            result = magic_commands(query, conversation)
+            if result is False:
+                break
+            elif isinstance(result, str):
+                query = result
+            else:
+                continue
 
-        if query == "/exit":
-            cprint(f"Total chat session cost: {final_cost()} INR")
-            LOGGING.info("Byee 👋.")
-            break
+        regex = re.compile(r"([^']+)")
+        if regex.search(query):
+            query = read_file(query, conversation)
 
         res = conversation.invoke({"question": query})
 
@@ -100,35 +96,3 @@ def chat_mode(
             cprint(
                 "----------------------------------SOURCE DOCUMENTS---------------------------"
             )
-
-        # Writing the results to a file if write is specified. It can be used to write assignments, reports etc.
-        if write is not None:
-            if not os.path.exists(WORKSPACE_DIRECTORY):
-                os.makedirs(WORKSPACE_DIRECTORY)
-
-            base_filename = write
-            file_counter = 1
-
-            while os.path.exists(os.path.join(WORKSPACE_DIRECTORY, write)):
-                # If the file already exists, append a counter to the filename
-                write, extension = os.path.splitext(base_filename)
-                write = f"{write}_{file_counter}{extension}"
-                file_counter += 1
-
-            answer = res["result"]
-
-            with open(os.path.join(WORKSPACE_DIRECTORY, write), "w") as result:
-                result.writelines(answer)
-
-            cprint(
-                "\n[lightyellow]Your work is written to {WORKSPACE_DIRECTORY}/{write}[/reset]"
-            )
-
-            break
-
-        if persona == "shell" and execute == "Y":
-            os.environ["TOKENIZERS_PARALLELISM"] = "false"
-            command = re.sub(r"```bash|```", "", res["result"])
-            os.system(command)
-
-        last_input_time = datetime.now()  # update the last_input_time to now

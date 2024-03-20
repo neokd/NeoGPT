@@ -30,11 +30,11 @@ NeoGPT is continuously evolving, and your feedback shapes its future. Join our [
 1. **Installation:** Clone this repository and install the necessary dependencies.
 
 
- ```
+    ```
       git clone https://github.com/neokd/NeoGPT.git
       cd NeoGPT
       pip install -r requirements.txt
-   ```
+    ```
 
 2. **Building Database** Currently NeoGPT supports local files and Youtube videos. To build the database add your local files to the documents directory and URL in the `builder.url` file. Then run the builder script.
 

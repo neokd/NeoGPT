@@ -11,8 +11,12 @@ from langchain.callbacks.base import BaseCallbackHandler
 from langchain.schema.output import LLMResult
 from rich.console import Console
 
-from neogpt.settings.config import CURRENT_WORKING_AGENT, QUERY_COST, TOTAL_COST
-from neogpt.utils.budget_manager import final_cost
+from neogpt.settings.config import (
+    CURRENT_WORKING_AGENT,
+    PROJECT_COST,
+    QUERY_COST,
+    TOTAL_COST,
+)
 from neogpt.utils.formatter import MessageFormatter
 
 OPENAI_MODEL_COST_PER_1K_TOKENS = {
@@ -183,6 +187,13 @@ TOGETHERAI_MODEL_COST_PER_1M_TOKENS = {
     "Phind/Phind-CodeLlama-34B-v2": 0.80,
 }
 
+console = Console()
+
+
+# Define a shorthand for console.print using a lambda function
+def cprint(*args, **kwargs):
+    return console.print(*args, **kwargs)
+
 
 class StreamingStdOutCallbackHandler(BaseCallbackHandler):
     """
@@ -225,7 +236,7 @@ class StreamingStdOutCallbackHandler(BaseCallbackHandler):
             while not self.streaming:
                 time.sleep(0.1)
                 status.update()
-                self.console.print("\r", end="")
+                cprint("\r", end="")
 
     def on_llm_end(self, response: LLMResult, **kwargs: Any) -> None:
         """Run when LLM ends running."""
@@ -250,7 +261,8 @@ class StreamlitStreamingHandler(StreamingStdOutCallbackHandler):
     def on_llm_new_token(self, token: str, **kwargs: Any) -> None:
         """Run on new LLM token. Only available when streaming is enabled."""
         self._token += token
-        self.output.info(self._token)
+        self.output.write(self._token)
+        # print(self._token)
 
     def on_llm_end(self, response: LLMResult, **kwargs: Any) -> None:
         # Remove info message
@@ -297,7 +309,7 @@ class AgentCallbackHandler(BaseCallbackHandler):
             while not self.streaming:
                 time.sleep(0.1)
                 status.update()
-                self.console.print("\r", end="")
+                cprint("\r", end="")
 
     def on_llm_end(self, response: LLMResult, **kwargs: Any) -> None:
         """Run when LLM ends running."""
@@ -316,33 +328,24 @@ class AgentCallbackHandler(BaseCallbackHandler):
         # print(Fore.WHITE + f"Total cost: {TOTAL_COST} INR")
 
 
-"""
-TODO: Add dynamic cost calculation based on the model used
-"""
-
-
 class TokenCallbackHandler(BaseCallbackHandler):
     """
     The TokenCallbackHandler class is a custom callback handler class for token and shows the cost of the query, total cost and total tokens generated.
     The cost are based on OpenAI's pricing model.
     """
 
-    def __init__(self):
+    def __init__(self, show_stats: bool = False):
         self._tokens = []
-        self.console = Console()
+        self.show_stats = show_stats
         # self.model_name = os.environ.get("MODEL_NAME")
         # Testing use the below line
-        self.model_name = os.environ.get("MODEL_NAME", "gpt-3.5-turbo")
+        self.model_name = os.environ.get(
+            "MODEL_NAME", "mistralai/Mistral-7B-Instruct-v0.1"
+        )
+        # print(self.model_name)
         # This is only for input tokens (OpenAI) and not for output tokens
-        print(self.model_name)
         self.tokenizer = tiktoken.get_encoding("cl100k_base")
         self.input_tokens = 0
-
-        self.console.print(
-            """
-        "Token Callback Handler is under development. May not work as expected."
-        """
-        )
 
     def calculate_openai_cost(self, num_of_tokens, completion: bool = False):
         """
@@ -354,7 +357,8 @@ class TokenCallbackHandler(BaseCallbackHandler):
             )
         else:
             cost_per_1k_tokens = OPENAI_MODEL_COST_PER_1K_TOKENS.get(self.model_name)
-
+        if cost_per_1k_tokens is None:
+            cost_per_1k_tokens = 0.002
         cost = round(((num_of_tokens / 1000) * cost_per_1k_tokens) * 83, 5)
         return cost
 
@@ -364,6 +368,9 @@ class TokenCallbackHandler(BaseCallbackHandler):
         """
 
         cost_per_1m_tokens = TOGETHERAI_MODEL_COST_PER_1M_TOKENS.get(self.model_name)
+        # Default cost for 1M Tokens if model is not found
+        if cost_per_1m_tokens is None:
+            cost_per_1m_tokens = 0.20
         cost = round(((num_of_tokens / 1_000_000) * cost_per_1m_tokens) * 83, 5)
         return cost
 
@@ -414,11 +421,24 @@ class TokenCallbackHandler(BaseCallbackHandler):
         # # )  # Accumulate the cost, rounded to 5 decimal places
         # # total_tokens = len(self._tokens)
         # # self.console.print(f"\nTotal tokens generated: {total_tokens}")
-        self.console.print(
-            f"\nTotal tokens generated: {len(self._tokens) + self.input_tokens}"
-        )
-        if "gpt-" in self.model_name:
-            self.console.print(f"Prompt Tokens: {self.input_tokens}")
-        self.console.print(f"Completion Tokens: {len(self._tokens)}")
-        self.console.print(f"Query cost: {QUERY_COST:.5f} INR")
-        self.console.print(f"Total cost: {TOTAL_COST:.5f} INR")
+        if self.show_stats:
+            cprint(f"\nTotal tokens generated: {len(self._tokens) + self.input_tokens}")
+            if "gpt-" in self.model_name:
+                cprint(f"Prompt Tokens: {self.input_tokens}")
+                cprint(f"Completion Tokens: {len(self._tokens)}")
+            cprint(f"Query cost: {QUERY_COST:.5f} INR")
+            cprint(f"Total cost: {TOTAL_COST:.5f} INR")
+
+
+def budget_manager(max_budget):
+    global TOTAL_COST, QUERY_COST
+    TOTAL_COST += QUERY_COST
+    if max_budget < TOTAL_COST:
+        return False
+    return True
+
+
+def final_cost():
+    global PROJECT_COST
+    PROJECT_COST += TOTAL_COST
+    return PROJECT_COST

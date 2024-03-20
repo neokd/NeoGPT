@@ -1,15 +1,15 @@
 neogpt:
-  VERSION: 0.1.0-beta
+  VERSION: 0.1.0
   ENV: development
   PERSONA: default
   UI: false
-  EXPORT_DATE: '2024-02-10 02:33:10'
+  EXPORT_DATE: '2024-03-07 13:50:33'
   LICENSE: MIT
 model:
   MODEL_NAME: TheBloke/Mistral-7B-Instruct-v0.1-GGUF
   MODEL_TYPE: llamacpp
   MODEL_FILE: mistral-7b-instruct-v0.1.Q4_K_M.gguf
-  EMBEDDING_MODEL: sentence-transformers/all-MiniLM-L12-v2
+  EMBEDDING_MODEL: nomic-ai/nomic-embed-text-v1
   INGEST_THREADS: 8
   N_GPU_LAYERS: 40
   MAX_TOKEN_LENGTH: 8192

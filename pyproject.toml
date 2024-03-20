@@ -1,10 +1,11 @@
 [tool.poetry]
 name = "neogpt"
-version = "0.1.0-beta"
+version = "0.1.0"
 description = "NeoGPT: Chat effortlessly with Documents, YouTube Videos,Code, and Social Media Chats. Your go-to for quick and smart interactions! 🤖💬"
 authors = ["Neokd"]
 license = "MIT"
 readme = "README.md"
+exclude = ["neogpt/models/**", "neogpt/db/chroma/**", "neogpt/db/faiss/**", "neogpt/conversations/*.txt"]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<=3.12"
@@ -16,7 +17,7 @@ streamlit = "^1.29.0"
 unstructured = {extras = ["all-docs"], version = "^0.11.8"}
 torch = "^2.1.2"
 duckduckgo-search = "^4.1.1"
-llama-cpp-python = "^0.2.27"
+llama-cpp-python = "^0.2.34"
 google-api-python-client = "2.95.0"
 faiss-cpu = "^1.7.4"
 chromadb = "^0.4.22"
@@ -29,13 +30,13 @@ langchain-openai = "^0.0.2"
 rich = "^13.7.0"
 sentence-transformers = "^2.2.2"
 instructorembedding = "^1.0.1"
-
+pyperclip = "^1.8.2"
+einops = "^0.7.0"
 
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
-exclude = ["neogpt/models/**"]
 
 
 [tool.ruff]
@@ -74,7 +75,8 @@ ignore = [
     "F401",
     "F841",
     "B024",
-    "B027"
+    "B027",
+    "SIM105"
 ]
 
 fixable = ["ALL"]

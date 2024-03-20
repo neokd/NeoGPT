@@ -11,3 +11,4 @@ neogpt/models/*
 .ruff_cache/*
 dist/*
 neogpt/db/*
+neogpt/conversations/*

@@ -20,10 +20,10 @@ def writing_assistant(filepath, content, code=False):
         else:
             raise
 
-    if code and not filepath.endswith(".py"): # ensure the file has a .py extension
+    if code and not filepath.endswith(".py"):  # ensure the file has a .py extension
         filepath += ".py"
 
-    with open(filepath, "w", encoding="UTF8") as f: # write content to file
+    with open(filepath, "w", encoding="UTF8") as f:  # write content to file
         f.write(content)
 
 

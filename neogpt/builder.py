@@ -2,10 +2,12 @@ import argparse
 import logging
 import os
 import re
+import warnings
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from functools import partial  # Import partial
 
 from langchain.text_splitter import RecursiveCharacterTextSplitter
+from rich.progress import Progress
 from tqdm import tqdm
 
 from neogpt.builder_helpers import (

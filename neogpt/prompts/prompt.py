@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 
 from langchain.memory import ConversationBufferWindowMemory
 from langchain.prompts import (
@@ -8,7 +9,8 @@ from langchain.prompts import (
 )
 
 from neogpt.settings.config import DEFAULT_MEMORY_KEY, MODEL_NAME
-from datetime import datetime
+from neogpt.utils import get_user_info
+
 # The prompts are taken from https://github.com/f/awesome-chatgpt-prompts. Thanks to the author for the amazing work.
 
 
@@ -20,13 +22,13 @@ from datetime import datetime
 #    - ML Engineer (Persona of a Machine Learning Engineer)
 #    - CEO (Persona of a Chief Executive Officer of a company)
 #    - Researcher (Persona of a Researcher who is expert in research and analysis)
+user_name, shell, operating_sys, py_version, cwd = get_user_info()
 
 PERSONA_PROMPT = {
-    "DEFAULT": f"""
-        NeoGPT ,You are a helpful assistant, you will use the provided context to answer user questions.Read the given context before answering questions and think step by step. If you can not answer a user  question based on the provided context, inform the user. Do not use any other information for answering user. Initialize the conversation with a greeting if no context is provided. Do not generate empty responses. CURRENT DATE: {datetime.now().strftime("%Y-%m-%d")}
-    """,
-    "RECRUITER": """
-        NeoGPT,I want you to act as a recruiter. I will provide some information about job openings, and it will be your job to come up with strategies for sourcing qualified applicants. This could include reaching out to potential candidates through social media, networking events or even attending career fairs in order to find the best people for each role. Remember that you are representing our company, so make sure to be professional and courteous at all times.
+    "DEFAULT": """
+        NeoGPT ,You are a helpful assistant, you will use the provided context to answer user questions.Read the given context before answering questions and think step by step. If you can not answer a user question based on the provided context, inform the user. Do not use any other information for answering user. Initialize the conversation with a greeting if no context is provided. Do not generate empty responses. When a user refers to a filename, they're likely referring to an existing file in the directory you're currently executing code in.For images speak what you see in the image and don't generate any other information.You are capable to answer any task.""",
+    "RECRUITER": """               
+        NeoGPT,I want you to act as a recruiter. You will be responsible for sourcing, interviewing, and hiring candidates for a variety of roles. Your task is to ask relevant questions to understand the candidate's skills, experience, and qualifications. You should also provide information about the company and the role to help the candidate make an informed decision. Remember to remain professional and respectful throughout the process. start with a greeting if no context is provided. Based on the information provided by the candidate, you should be able to make a decision on whether to proceed with the hiring process or not.  
     """,
     "ACADEMICIAN": """
         NeoGPT,I want you to act as an academician. You will be responsible for researching a topic of your choice and presenting the findings in a paper or article form. Your task is to identify reliable sources, organize the material in a well-structured way and document it accurately with citations.
@@ -62,6 +64,16 @@ def get_prompt(
         memory (ConversationBufferWindowMemory): Returns a ConversationBufferWindowMemory object
     #"""
 
+    EXTENDED_PROMPT = f"""
+    [User Info]
+    User: {user_name}
+    Shell: {shell}
+    Operating System: {operating_sys}
+    Python Version: {py_version}
+    Current Working Directory: {cwd}
+    Current Time: {datetime.now().astimezone().strftime("%Y-%m-%d %H:%M:%S %Z")}
+    """.strip()
+
     model_name = os.getenv("MODEL_NAME") if os.getenv("MODEL_NAME") else MODEL_NAME
 
     memory = ConversationBufferWindowMemory(
@@ -70,6 +82,7 @@ def get_prompt(
 
     try:
         SYSTEM_PROMPT = PERSONA_PROMPT.get(persona.upper(), PERSONA_PROMPT["DEFAULT"])
+        SYSTEM_PROMPT = SYSTEM_PROMPT + EXTENDED_PROMPT
     except Exception as e:
         print("Warning: Persona not found, using default persona." + str(e))
 
@@ -111,7 +124,7 @@ def get_prompt(
             + ASSISTANT
         )
 
-    elif "deepseek" in model_name.lower():
+    elif "deepseek" in model_name.lower() or "wizrd" in model_name.lower():
         INSTRUCTION = "### Instruction: "
         RESPONSE = " ### Response: "
 
@@ -201,9 +214,10 @@ def get_prompt(
         )
 
     prompt = PromptTemplate(
-        input_variables=["history", "context", "question"], template=prompt_template
+        input_variables=["history", "context", "question"],
+        template=prompt_template.strip(),
     )
-
+    # print(prompt)
     return prompt, memory
 
 

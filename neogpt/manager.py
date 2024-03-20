@@ -1,6 +1,7 @@
 import logging
 import os
 import re
+import sys
 import warnings
 from datetime import datetime
 
@@ -11,9 +12,18 @@ from rich.prompt import Prompt
 from neogpt.agents import ML_Engineer, QA_Engineer
 from neogpt.callback_handler import (
     AgentCallbackHandler,
-    StreamingStdOutCallbackHandler,
-    TokenCallbackHandler,
+    budget_manager,
     final_cost,
+)
+from neogpt.interpreter import interpreter
+from neogpt.load_llm import load_model
+from neogpt.retrievers import (
+    context_compress,
+    hybrid_retriever,
+    local_retriever,
+    sql_retriever,
+    stepback,
+    web_research,
 )
 from neogpt.settings.config import (
     DEVICE_TYPE,
@@ -24,19 +34,19 @@ from neogpt.settings.config import (
     TOTAL_COST,
     WORKSPACE_DIRECTORY,
 )
-from neogpt.load_llm import load_model
-from neogpt.retrievers import (
-    context_compress,
-    hybrid_retriever,
-    local_retriever,
-    sql_retriever,
-    stepback,
-    web_research,
+from neogpt.utils import (
+    conversation_navigator,
+    get_username,
+    magic_commands,
+    read_file,
+    writing_assistant,
 )
-from neogpt.interpreter import interpreter
-from neogpt.utils import get_username, magic_commands, read_file, writing_assistant
 from neogpt.vectorstore import ChromaStore, FAISSStore
 
+try:
+    import readline
+except ImportError:
+    pass
 # Create a console instance
 console = Console()
 
@@ -52,6 +62,7 @@ def db_retriever(
     vectordb: str = "Chroma",
     retriever: str = "local",
     persona: str = "default",
+    ui: bool = False,
     show_stats: bool = False,
     LOGGING=logging,
 ):
@@ -75,6 +86,7 @@ def db_retriever(
         model_id=model_name,
         model_basename=MODEL_FILE,
         show_stats=show_stats,
+        ui=ui,
         LOGGING=logging,
     )
 
@@ -101,15 +113,22 @@ def db_retriever(
 
 
 # RAG Chat
-def retrieval_chat(chain, show_source, retriever, interpreter_mode, LOGGING):
+def retrieval_chat(
+    chain, show_source, max_budget, retriever, interpreter_mode, force_run, LOGGING
+):
+    global TOTAL_COST, QUERY_COST
     # Run the chat loop
     cprint(
         "\n[bright_yellow]NeoGPT 🤖 is ready to chat. Type /exit to quit.[/bright_yellow]"
     )
+    # chain.invoke("Hello, introduce yourself to someone opening this program for the first time. Be concise.")
     while True:
         query = Prompt.ask(f"[bold cyan]\n{get_username()} 🙎‍♂️ [/bold cyan]")
         # print(chain.combine_documents_chain.memory.chat_memory)
-
+        try:
+            readline.add_history(query)
+        except:
+            pass
         # Matching for magic commands
         if query.startswith("/"):
             result = magic_commands(query, chain)
@@ -131,7 +150,15 @@ def retrieval_chat(chain, show_source, retriever, interpreter_mode, LOGGING):
         )
 
         if interpreter_mode:
-            interpreter(message=res["result"], chain = chain)
+            interpreter(message=res["result"], chain=chain, force_run=force_run)
+
+        # cprint(budget)
+        if max_budget is not None and not budget_manager(max_budget):
+            cprint(
+                f"[bold bright_yellow]\nBudget Exceeded. The total cost for the conversation is {round(final_cost(),4)} INR and the maximum budget is {max_budget} INR. Exiting the conversation. [/bold bright_yellow]"
+            )
+            cprint("Bye! 👋")
+            break
 
         if show_source:
             answer, docs = res["result"], res["source_documents"]
@@ -193,18 +220,35 @@ def manager(
     show_source: bool = False,
     write: str | None = None,
     interpreter_mode: bool = False,
-    shell: bool = False,
+    force_run: bool = False,
+    load_conversation: bool = False,
+    prompt: str | None = None,
     show_stats: bool = False,
+    max_budget: int = 0,
     LOGGING=logging,
 ):
     """
     The manager function is the main function that runs NeoGPT.
     """
+    # device_type, model_type, vectordb, retriever, persona, show_stats, LOGGING
     chain = db_retriever(
-        device_type, model_type, vectordb, retriever, persona, show_stats, LOGGING
+        device_type=device_type,
+        model_type=model_type,
+        vectordb=vectordb,
+        retriever=retriever,
+        persona=persona,
+        ui=False,
+        show_stats=show_stats,
+        LOGGING=LOGGING,
     )
 
-    if shell:
-        shell_()
-    else:
-        retrieval_chat(chain, show_source, retriever, interpreter_mode, LOGGING)
+    if prompt:
+        cprint(f"[bold cyan]\n{get_username()} 🙎‍♂️ [/bold cyan]", prompt)
+        return chain.invoke(prompt)
+
+    if load_conversation:
+        history = conversation_navigator(chain)
+
+    retrieval_chat(
+        chain, show_source, max_budget, retriever, interpreter_mode, force_run, LOGGING
+    )

@@ -3,15 +3,14 @@ import datetime
 import os
 
 import pyperclip
+import tiktoken
 from langchain.schema import AIMessage, HumanMessage
 from langchain_community.chat_message_histories.in_memory import ChatMessageHistory
 from rich.console import Console
 
+from neogpt.utils import conversation_navigator
 from neogpt.utils.notify import notify
 from neogpt.utils.user_info import get_username
-
-import tiktoken
-
 
 # Create a Tokenizer and TokenCount object
 tokenizer = tiktoken.get_encoding("cl100k_base")
@@ -38,6 +37,8 @@ def magic_commands(user_input, chain):
     Returns:
     bool: True if the command is recognized and executed, False otherwise.
     """
+    tokenizer = tiktoken.get_encoding("cl100k_base")
+    # cprint(chain)
     # If the user inputs '/reset', reset the chat session
     if user_input == "/reset":
         cprint("Resetting the chat session...")
@@ -64,14 +65,14 @@ def magic_commands(user_input, chain):
                 "No chat history available. Start chatting with NeoGPT to see the history."
             )
             return True
-
+        # print(chain.combine_documents_chain.memory.chat_memory.messages)
         for message in chain.combine_documents_chain.memory.chat_memory.messages:
             if isinstance(message, HumanMessage):
                 cprint(
-                    f"   [bright_yellow]{get_username()} [/bright_yellow]{message.content}"
+                    f"[bright_yellow]{get_username()} [/bright_yellow]{message.content}"
                 )
             else:
-                cprint(f"   [bright_blue]NeoGPT: [/bright_blue]{message.content}")
+                cprint(f"[bright_blue]NeoGPT: [/bright_blue]{message.content}")
 
         return True
 
@@ -142,8 +143,13 @@ def magic_commands(user_input, chain):
 
     # If the user inputs '/load [path]', load the saved chat history from the specified file
     elif user_input.startswith("/load"):
-        # Extract the file path from the command
+        # Extract the file path from the command]
+        if len(user_input.split(" ")) < 2:
+            conversation_navigator(chain)
+            return True
+
         file_path = user_input.split(" ")[1].strip().replace("'", "").replace('"', "")
+
         try:
             with open(file_path) as f:
                 # Read the contents of the file
@@ -181,20 +187,27 @@ def magic_commands(user_input, chain):
         # Extract the prompt from the command
         prompt = user_input.split(" ", 1)[1].strip().replace("'", "").replace('"', "")
         # Calculate the number of tokens in the prompt
-        tokens = list(tokenizer.tokenize(prompt))
+        tokens = list(tokenizer.encode(prompt))
         num_tokens = len(tokens)
         # Print the number of tokens to the console
         cprint(f"The prompt contains {num_tokens} tokens.")
         return True
-    
+
     # If the user inputs '/export', export the current chat memory to the settings/settings.yaml file
     elif user_input == "/export":
-        cprint("Exporting the current chat memory to the settings/settings.yaml file...")
+        cprint(
+            "Exporting the current chat memory to the settings/settings.yaml file..."
+        )
         from neogpt.settings.export_config import export_config
-        
+
         export_config()
         return True
-    
+
+    elif user_input == "/conversations":
+        cprint("📜 Available conversations:")
+        conversation_navigator(chain)
+        return True
+
     # If the user inputs '/help', print the list of available commands
     elif user_input == "/help":
         cprint("\n[bold magenta]📖 Available commands: [/bold magenta]")
@@ -206,8 +219,13 @@ def magic_commands(user_input, chain):
         cprint("⏪ /undo - Remove the last response from the chat history")
         cprint("🔁 /redo - Resend the last human input to the model")
         cprint("📂 /load [path] - Load the saved chat history from the specified file")
-        cprint("🔖 /tokens [prompt] - Calculate the number of tokens for a given prompt")
-        cprint("📄 /export - Export the current chat memory to the settings/settings.yaml file")
+        cprint(
+            "🔖 /tokens [prompt] - Calculate the number of tokens for a given prompt"
+        )
+        cprint(
+            "📄 /export - Export the current chat memory to the settings/settings.yaml file"
+        )
+        cprint("📜 /conversations - List available previously saved conversations.")
 
         return True
 
@@ -215,7 +233,7 @@ def magic_commands(user_input, chain):
     else:
         cprint("Invalid command. Please try again.")
         return  # Return False if the command is not recognized
-    
+
 
 # Uncomment the following lines to test the magic commands
 # if __name__ == "__main__":

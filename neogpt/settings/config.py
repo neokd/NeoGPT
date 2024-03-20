@@ -56,6 +56,15 @@ FAISS_PERSIST_DIRECTORY = os.path.join(PARENT_DB_DIRECTORY, "faiss")
 PINECONE_PERSIST_DIRECTORY = os.path.join(PARENT_DB_DIRECTORY, "pinecone")
 # WORKSPACE DIRECTORY
 WORKSPACE_DIRECTORY = os.path.join(ROOT_DIR, "workspace")
+# CONVERSATION MEMORY DIRECTORY
+CONVERSTAION_MEMORY_DIRECTORY = os.path.join(ROOT_DIR, "conversations")
+
+if not os.path.exists(WORKSPACE_DIRECTORY):
+    os.makedirs(WORKSPACE_DIRECTORY)
+
+if not os.path.exists(CONVERSTAION_MEMORY_DIRECTORY):
+    os.makedirs(CONVERSTAION_MEMORY_DIRECTORY)
+
 
 # DEFAULT MEMORY KEY FOR CONVERSATION MEMORY (DEFAULT IS 2)
 DEFAULT_MEMORY_KEY = 2
@@ -77,7 +86,7 @@ MODEL_FILE = os.getenv("MODEL_FILE", "mistral-7b-instruct-v0.1.Q4_K_M.gguf")
 # MODEL_FILE = None
 
 # DEFAULT EMBEDDING MODEL
-EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L12-v2"
+EMBEDDING_MODEL = "nomic-ai/nomic-embed-text-v1"
 # EMBEDDING MODEL CONFIG
 INGEST_THREADS = 8
 
@@ -246,6 +255,3 @@ def import_config(config_filename):
         "VERSION": config["neogpt"]["VERSION"],
         "MODEL_TYPE": config["neogpt"]["MODEL_TYPE"],
     }
-
-
-

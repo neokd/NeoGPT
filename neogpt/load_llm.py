@@ -11,12 +11,12 @@ from langchain_openai.chat_models import ChatOpenAI
 from rich.console import Console
 from transformers import AutoModelForCausalLM, AutoTokenizer, TextStreamer, pipeline
 
-from neogpt.settings import config
 from neogpt.callback_handler import (
     StreamingStdOutCallbackHandler,
     StreamlitStreamingHandler,
     TokenCallbackHandler,
 )
+from neogpt.settings import config
 from neogpt.settings.config import (
     DEVICE_TYPE,
     MODEL_DIRECTORY,
@@ -47,6 +47,7 @@ def load_model(
     model_id: str = MODEL_NAME,
     model_basename: str = MODEL_FILE,
     callback_manager: list | None = None,
+    ui: bool = False,
     show_stats: bool = False,
     LOGGING=logging,
 ):
@@ -67,9 +68,16 @@ def load_model(
         llm (ChatOpenAI): Returns a OpenAI object (language model)
         llm (ChatOpenAI): Returns a model from LMStudio
     """
-    callbacks = [StreamingStdOutCallbackHandler()]
-    if show_stats:
-        callbacks.append(TokenCallbackHandler())
+    if ui:
+        callbacks = [
+            StreamlitStreamingHandler(),
+            TokenCallbackHandler(show_stats),
+        ]
+    else:
+        callbacks = [
+            StreamingStdOutCallbackHandler(),
+            TokenCallbackHandler(show_stats),
+        ]
 
     callback_manager = (
         CallbackManager(callback_manager)

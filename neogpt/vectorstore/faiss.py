@@ -3,7 +3,7 @@
 """
 
 from langchain.schema.document import Document
-from langchain_community.embeddings import HuggingFaceInstructEmbeddings
+from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.vectorstores.faiss import FAISS
 
 from neogpt.settings.config import (
@@ -23,9 +23,9 @@ class FAISSStore(VectorStore):
     """
 
     def __init__(self) -> None:
-        self.embeddings = HuggingFaceInstructEmbeddings(
+        self.embeddings = HuggingFaceEmbeddings(
             model_name=EMBEDDING_MODEL,
-            model_kwargs={"device": DEVICE_TYPE},
+            model_kwargs={"device": DEVICE_TYPE, "trust_remote_code": True},
             cache_folder=MODEL_DIRECTORY,
         )
         self.faiss = FAISS(

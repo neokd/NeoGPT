@@ -1,12 +1,10 @@
-
 import os
 from datetime import datetime
 
 import toml
 import yaml
+
 from neogpt.settings import config
-
-
 
 
 # Extract version info from TOML
@@ -77,20 +75,32 @@ def export_config(config_filename="settings.yaml"):
 
     filepath = os.path.join(SETTINGS_DIR, config_filename)
     if os.path.exists(filepath):
-        overwrite = input(f"\nFile {filepath} already exists. Do you want to overwrite it? (yes/no): ")
-        if overwrite.lower() != "yes":
+        overwrite = input(
+            f"\nFile {filepath} already exists. Do you want to overwrite it? (yes/no): "
+        )
+        if overwrite.lower() == "yes":
+            try:
+                with open(filepath, "w") as file:
+                    yaml.dump(data, file, sort_keys=False)
+                    print(f"\nConfiguration exported to {filepath}")
+
+            except Exception as e:
+                print(f"An error occurred during export: {e}")
+        else:
             filepath = os.path.join(SETTINGS_DIR, input("Enter a new file name: "))
-            if os.path.exists(filepath) or os.path.exists(str(filepath+".yaml")):
+            if os.path.exists(filepath) or os.path.exists(str(filepath + ".yaml")):
                 print(f"\nFile {filepath} already exists.")
                 filepath = filepath.removesuffix(".yaml")
-                filepath = f'{filepath}-{datetime.now().strftime("%d-%m-%Y-%H-%M-%S")}.yaml'
+                filepath = (
+                    f'{filepath}-{datetime.now().strftime("%d-%m-%Y-%H-%M-%S")}.yaml'
+                )
             if not filepath.endswith(".yaml"):
                 filepath += ".yaml"
 
-    try:
-        with open(filepath, "w") as file:
-            yaml.dump(data, file, sort_keys=False)
-            print(f"\nConfiguration exported to {filepath}")
+            try:
+                with open(filepath, "w") as file:
+                    yaml.dump(data, file, sort_keys=False)
+                    print(f"\nConfiguration exported to {filepath}")
 
-    except Exception as e:
-        print(f"An error occurred during export: {e}")
+            except Exception as e:
+                print(f"An error occurred during export: {e}")
