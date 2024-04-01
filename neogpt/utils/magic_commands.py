@@ -12,6 +12,7 @@ from neogpt.utils import conversation_navigator
 from neogpt.utils.notify import notify
 from neogpt.utils.user_info import get_username
 
+from neogpt.settings.config import SOURCE_DIR
 # Create a Tokenizer and TokenCount object
 tokenizer = tiktoken.get_encoding("cl100k_base")
 
@@ -40,7 +41,11 @@ def magic_commands(user_input, chain):
     tokenizer = tiktoken.get_encoding("cl100k_base")
     # cprint(chain)
     # If the user inputs '/reset', reset the chat session
-    if user_input == "/reset":
+    if user_input == "/source":
+        cprint(f"Source directory: {SOURCE_DIR}")
+        return True
+    
+    elif user_input == "/reset":
         cprint("Resetting the chat session...")
         # Print the current memory before resetting
         # print(chain.combine_documents_chain.memory)
@@ -104,7 +109,7 @@ def magic_commands(user_input, chain):
                 return True
             else:
                 cprint(
-                    "🚫 Oops! The last message is from the user, not NeoGPT. Try again after NeoGPT's response. 😅"
+                    "🚫 Oops! The last message is from the user, not  Try again after NeoGPT's response. 😅"
                 )
                 return
         else:
@@ -198,7 +203,7 @@ def magic_commands(user_input, chain):
         cprint(
             "Exporting the current chat memory to the settings/settings.yaml file..."
         )
-        from neogpt.settings.export_config import export_config
+        from settings.export_config import export_config
 
         export_config()
         return True
@@ -209,7 +214,7 @@ def magic_commands(user_input, chain):
         return True
 
     # If the user inputs '/help', print the list of available commands
-    elif user_input == "/help":
+    elif user_input == "/help" or user_input == "/":
         cprint("\n[bold magenta]📖 Available commands: [/bold magenta]")
         cprint("🔄 /reset - Reset the chat session")
         cprint("🚪 /exit - Exit the chat session")
@@ -226,12 +231,13 @@ def magic_commands(user_input, chain):
             "📄 /export - Export the current chat memory to the settings/settings.yaml file"
         )
         cprint("📜 /conversations - List available previously saved conversations.")
+        cprint("📚 /source - Prints the source directory")
 
         return True
 
     # If the command is not recognized, print an error message
     else:
-        cprint("Invalid command. Please try again.")
+        cprint("Invalid magic command. Please try again.")
         return  # Return False if the command is not recognized
 
 

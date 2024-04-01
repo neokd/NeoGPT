@@ -8,19 +8,20 @@ readme = "README.md"
 exclude = ["neogpt/models/**", "neogpt/db/chroma/**", "neogpt/db/faiss/**", "neogpt/conversations/*.txt"]
 
 [tool.poetry.dependencies]
-python = ">=3.10,<=3.12"
+python = ">=3.8"
 pdfminer-six = "^20231228"
 langchain = "^0.1.0"
 youtube-transcript-api = "^0.6.2"
 pytube = "^15.0.0"
 streamlit = "^1.29.0"
-unstructured = {extras = ["all-docs"], version = "^0.11.8"}
-torch = "^2.1.2"
+onnxruntime = "^1.14.0"
+unstructured = "^0.11.0"
+torch = "^2.2.2"
 duckduckgo-search = "^4.1.1"
-llama-cpp-python = "^0.2.34"
+llama-cpp-python = "^0.2.55"
 google-api-python-client = "2.95.0"
 faiss-cpu = "^1.7.4"
-chromadb = "^0.4.22"
+chromadb = "^0.4.23"
 rank-bm25 = "^0.2.2"
 html2text = "^2020.1.16"
 openai = "^1.6.1"
@@ -32,6 +33,8 @@ sentence-transformers = "^2.2.2"
 instructorembedding = "^1.0.1"
 pyperclip = "^1.8.2"
 einops = "^0.7.0"
+plyer = "^2.0.0"
+psutil = "^5.8.0"
 
 
 [build-system]
@@ -104,4 +107,4 @@ exclude = [
 ]
 
 [tool.poetry.scripts]
-neogpt = "neogpt.main:main"
+neogpt = "neogpt.cli:main"

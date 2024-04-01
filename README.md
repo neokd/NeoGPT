@@ -7,12 +7,11 @@
   [![GitHub stars](https://img.shields.io/github/stars/neokd/NeoGPT)](https://github.com/neokd/NeoGPT/stargazers)
   [![GitHub forks](https://img.shields.io/github/forks/neokd/NeoGPT)](https://github.com/neokd/NeoGPT/network)
 
-  > **Note:** Looking for the documentation? Check out the [official documentation](https://neokd.github.io/NeoGPT/).
 </div>
 
 # Overview
 
-Bid farewell to mundane engagements with documents and YouTube videos. NeoGPT emerges as your reliable companion, facilitating seamless and engaging conversations with both local documents and extensive YouTube content. Tailored to meet the needs of professionals, developers, researchers, and enthusiasts,  NeoGPT is designed to elevate your experience and streamline your interactions with diverse content sources. Experience a new dimension of productivity and engagement with NeoGPT, your go-to tool for navigating the world of information with ease and sophistication.🚀
+NeoGPT is an AI assistant that runs locally on your machine. It transforms your workspace into a powerful environment with features like code interpretation, multi-RAG support, vision models, and LLM support. NeoGPT is designed to enhance your productivity and streamline your workflow. 🚀🧠
 
 
 
@@ -32,7 +31,7 @@ NeoGPT is continuously evolving, and your feedback shapes its future. Join our [
 
     ```
       git clone https://github.com/neokd/NeoGPT.git
-      cd NeoGPT
+      cd NeoGPT/neogpt
       pip install -r requirements.txt
     ```
 
@@ -73,17 +72,17 @@ NeoGPT is continuously evolving, and your feedback shapes its future. Join our [
 ## Features
 
 
-- **Hybrid RAG (Keyword based and Semantic Search) 🕵️‍♂️📂:**
-   NeoGPT supports a Hybrid Retriever that combines both keyword-based and semantic search functionalities. This allows users to perform more nuanced and context-aware searches, enhancing the accuracy and relevance of retrieved information.
+- **Code Interpreter:**
+    Execute code seamlessly in your local environment with our Code Interpreter. Enjoy the convenience of real-time code execution, all within your personal workspace.
 
-- **Docker Support 🐳:**
-   NeoGPT is designed to be Docker-compatible, providing users with the flexibility and convenience of containerization. This ensures easy deployment and compatibility across various environments, streamlining the setup process for users.
+- **Multi RAG Support:**
+    NeoGPT supports multiple RAG techniques, enabling you to choose the most suitable model for your needs. It includes local RAG, ensemble RAG, web RAG, and more. 🧠📚
 
-- **User Interface 💻 (Streamlit):**
-   The inclusion of a user-friendly command-line interface (CLI) along with a Streamlit-based User Interface (UI) enhances the accessibility of NeoGPT. This dual-interface approach caters to users with different technical backgrounds, making interactions more seamless.
+- **Vision:**
+   Explore a new dimension as NeoGPT supports vision models like bakllava and llava, enabling you to chat with images using Ollama. 🖼️👁️🧠
 
-- **Agent-based Chatbot 🤖:**
-   NeoGPT introduces an agent-based chatbot system, allowing users to interact with specialized agents tailored for different purposes. This feature enhances the versatility of NeoGPT, enabling it to cater to a wide range of user needs and use cases.
+- **LLM 🤖:**
+   NeoGPT supports multiple LLM models, allowing users to interact with a variety of language models. We support LlamaCpp, Ollama, LM Studio, OpenAI, and Togerther Ai. 🤖🧠📚
 
 
 

@@ -89,8 +89,9 @@ def language_parser(language, code):
         if is_bash_code(code):
             return "bash", code
         elif is_python_code(code):
-            if ">>> " in code:
-                code = code.replace(">>> ", "")
+            if ">>>" in code:
+                code = code.replace(">>>", "")
+                print(code)
             return "python", code
         elif is_html_code(code):
             return "html", code
@@ -166,8 +167,6 @@ def shell(language, code, force_run):
                 os.system(f"open {file_path}")
             else:
                 os.system(f"xdg-open {file_path}")
-        finally:
-            os.remove(file_path)
         return "Opening the HTML file in the default browser...", None
 
     elif language == "javascript":
@@ -254,7 +253,7 @@ def interpreter(message, chain, force_run):
                     )
                     if result.returncode == 0:
                         cprint(f"Module {module} installed successfully.")
-                        shell(language, combined_blocks.get(language))
+                        shell(language, combined_blocks.get(language), force_run)
                     else:
                         cprint(f"Error installing module {module}.")
                 else:

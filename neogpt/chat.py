@@ -11,7 +11,7 @@ from neogpt.utils import get_username, magic_commands, read_file
 
 try:
     import readline
-except ImportError:
+except:
     pass
 from neogpt.settings.config import (
     DEVICE_TYPE,

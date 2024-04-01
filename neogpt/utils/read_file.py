@@ -16,11 +16,12 @@ from langchain_community.document_loaders.parsers import LanguageParser
 from langchain_community.document_transformers import Html2TextTransformer
 from PIL import Image
 from rich.console import Console
-from neogpt.settings import config
 
+from neogpt.settings import config
 
 # Create a console instance
 console = Console()
+
 
 # Define a shorthand for console.print using a lambda function
 def cprint(*args, **kwargs):
@@ -77,7 +78,7 @@ def read_file(user_input, chain):
     )
 
     file_paths = [match.group(0) for match in file_regex.finditer(user_input)]
-    
+
     if len(file_paths) > 0:
         for file in file_paths:
             extension = file.split(".")[-1]
@@ -133,6 +134,8 @@ def read_file(user_input, chain):
     if len(tokenizer.encode(user_input)) > config.MAX_TOKEN_LENGTH:
         user_input = user_input[: config.MAX_TOKEN_LENGTH]
         # Not the best way to handle this, but it's a quick fix for now
-        cprint(f"\n[bold red]The input prompt is too long. It has been truncated to {config.MAX_TOKEN_LENGTH} tokens.[/bold red]")
+        cprint(
+            f"\n[bold red]The input prompt is too long. It has been truncated to {config.MAX_TOKEN_LENGTH} tokens.[/bold red]"
+        )
 
     return user_input

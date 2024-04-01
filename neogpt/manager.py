@@ -45,7 +45,7 @@ from neogpt.vectorstore import ChromaStore, FAISSStore
 
 try:
     import readline
-except ImportError:
+except:
     pass
 # Create a console instance
 console = Console()
