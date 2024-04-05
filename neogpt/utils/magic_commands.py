@@ -203,7 +203,7 @@ def magic_commands(user_input, chain):
         cprint(
             "Exporting the current chat memory to the settings/settings.yaml file..."
         )
-        from settings.export_config import export_config
+        from neogpt.settings.export_config import export_config
 
         export_config()
         return True

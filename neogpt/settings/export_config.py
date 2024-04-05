@@ -92,7 +92,7 @@ def export_config(config_filename="settings.yaml"):
                 print(f"\nFile {filepath} already exists.")
                 filepath = filepath.removesuffix(".yaml")
                 filepath = (
-                    f'{filepath}-{datetime.now().strftime("%d-%m-%Y-%H-%M-%S")}.yaml'
+                    f"{filepath}_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.yaml"
                 )
             if not filepath.endswith(".yaml"):
                 filepath += ".yaml"
