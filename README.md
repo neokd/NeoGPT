@@ -20,6 +20,15 @@
     <img style="padding:12px; margin-top: 12px;" src="./docs/assets/intro.png" alt="Intro Image"/>
 </div>
 
+```bash
+pip install https://github.com/neokd/NeoGPT/releases/download/v0.1.0/neogpt-0.1.0-py3-none-any.whl
+```
+> Not working? Read our setup guide [here](https://docs.neogpt.dev/installation)
+
+```bash
+$ neogpt
+```
+
 # Introduction
 NeoGPT is an AI assistant that transforms your local workspace into a powerhouse of productivity from your CLI. With features like code interpretation, multi-RAG support, vision models, and LLM integration, NeoGPT redefines how you work and create. Join the revolution and experience a new era of efficiency with NeoGPT.
 
@@ -80,7 +89,6 @@ NeoGPT is continuously evolving, and your feedback shapes its future. Join our [
     
 
 ## Features
-
 
 - **Code Interpreter:**
     Execute code seamlessly in your local environment with our Code Interpreter. Enjoy the convenience of real-time code execution, all within your personal workspace.
