@@ -1,6 +1,7 @@
 <div align="center">
   <!-- <img src="https://github.com/neokd/NeoGPT/assets/71772185/82d5c63d-81b5-4b45-95d4-53641016bfdc" alt="NeoGPT Gif" width="500"/> -->
-  <h1>NeoGPT 🚀</h1>
+  
+<h1 style="font-size: 3em;">NeoGPT 🚀</h1>
 
   [![GitHub license](https://img.shields.io/github/license/neokd/NeoGPT)](https://github.com/neokd/NeoGPT/blob/main/LICENSE)
   [![GitHub issues](https://img.shields.io/github/issues/neokd/NeoGPT)](https://github.com/neokd/NeoGPT/issues)
@@ -16,7 +17,7 @@
         <span> | </span>
         <a href="https://discord.gg/qNqjsGuCTG">Discord</a>
     </span>
-    <img style="padding:12px;" src="./docs/assets/intro.png" alt="Intro Image"/>
+    <img style="padding:12px; margin-top: 12px;" src="./docs/assets/intro.png" alt="Intro Image"/>
 </div>
 
 # Introduction
