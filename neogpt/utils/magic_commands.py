@@ -213,28 +213,6 @@ def magic_commands(user_input, chain):
         conversation_navigator(chain)
         return True
 
-    # If the user inputs '/help', print the list of available commands
-    elif user_input == "/help" or user_input == "/":
-        cprint("\n[bold magenta]📖 Available commands: [/bold magenta]")
-        cprint("🔄 /reset - Reset the chat session")
-        cprint("🚪 /exit - Exit the chat session")
-        cprint("📜 /history - Print the chat history")
-        cprint("💾 /save - Save the chat history to a `neogpt/conversations`")
-        cprint("📋 /copy - Copy the last response from NeoGPT to the clipboard")
-        cprint("⏪ /undo - Remove the last response from the chat history")
-        cprint("🔁 /redo - Resend the last human input to the model")
-        cprint("📂 /load [path] - Load the saved chat history from the specified file")
-        cprint(
-            "🔖 /tokens [prompt] - Calculate the number of tokens for a given prompt"
-        )
-        cprint(
-            "📄 /export - Export the current chat memory to the settings/settings.yaml file"
-        )
-        cprint("📜 /conversations - List available previously saved conversations.")
-        cprint("📚 /source - Prints the source directory")
-
-        return True
-    
     # If the user inputs '/search [keyword]', search the chat history for the keyword
     elif user_input.startswith("/search"):
         # Extract the keyword from the command
@@ -254,6 +232,51 @@ def magic_commands(user_input, chain):
             cprint(f"No messages found with the keyword '{keyword}'.")
         return True
 
+    elif user_input.startswith("/copycode") or user_input.startswith("/cc"):
+        # Find previous code block in chat history
+        code_block = ""
+        import re
+        for message in reversed(chain.combine_documents_chain.memory.chat_memory.messages):
+            if "```" in message.content:
+                # Extract the code block from the message
+                code_pattern = re.compile(r"```([^\n]*)\n(.*?)```", re.DOTALL)
+                code_match = code_pattern.search(message.content)
+                if code_match:
+                    code_block = code_match.group(2)
+                break
+        if code_block:
+            pyperclip.copy(code_block)
+            cprint("\n[bold green]📋 Code block copied to clipboard![/bold green]")
+            notify("NeoGPT", "Code block copied to clipboard!")
+            return True
+        else:
+            cprint("🚫 No code block found in the chat history. Please try again.")
+            return True
+    
+     # If the user inputs '/help', print the list of available commands
+    elif user_input == "/help" or user_input == "/":
+        cprint("\n[bold magenta]📖 Available commands: [/bold magenta]")
+        cprint("🔄 /reset - Reset the chat session")
+        cprint("🚪 /exit - Exit the chat session")
+        cprint("📜 /history - Print the chat history")
+        cprint("💾 /save - Save the chat history to a `neogpt/conversations`")
+        cprint("📋 /copy - Copy the last response from NeoGPT to the clipboard")
+        cprint("⏪ /undo - Remove the last response from the chat history")
+        cprint("🔁 /redo - Resend the last human input to the model")
+        cprint("📂 /load [path] - Load the saved chat history from the specified file")
+        cprint(
+            "🔖 /tokens [prompt] - Calculate the number of tokens for a given prompt"
+        )
+        cprint(
+            "📄 /export - Export the current chat memory to the settings/settings.yaml file"
+        )
+        cprint("📜 /conversations - List available previously saved conversations.")
+        cprint("📚 /source - Prints the source directory")
+        cprint("🔍 /search [keyword] - Search the chat history for the keyword")
+        cprint("📋 /copycode or /cc - Copy the last code block to the clipboard")
+
+        return True
+    
     # If the command is not recognized, print an error message
     else:
         cprint("Invalid magic command. Please try again.")

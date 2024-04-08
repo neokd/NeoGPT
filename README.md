@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://github.com/neokd/NeoGPT/assets/71772185/82d5c63d-81b5-4b45-95d4-53641016bfdc" alt="NeoGPT Gif" width="500"/>
+  <!-- <img src="https://github.com/neokd/NeoGPT/assets/71772185/82d5c63d-81b5-4b45-95d4-53641016bfdc" alt="NeoGPT Gif" width="500"/> -->
   <h1>NeoGPT 🚀</h1>
 
   [![GitHub license](https://img.shields.io/github/license/neokd/NeoGPT)](https://github.com/neokd/NeoGPT/blob/main/LICENSE)
@@ -9,9 +9,18 @@
 
 </div>
 
-# Overview
 
-NeoGPT is an AI assistant that runs locally on your machine. It transforms your workspace into a powerful environment with features like code interpretation, multi-RAG support, vision models, and LLM support. NeoGPT is designed to enhance your productivity and streamline your workflow. 🚀🧠
+<div align="center">
+    <span>
+        <a href="https://docs.neogpt.dev/introduction">Documentation</a>
+        <span> | </span>
+        <a href="https://discord.gg/qNqjsGuCTG">Discord</a>
+    </span>
+    <img style="padding:12px;" src="./docs/assets/intro.png" alt="Intro Image"/>
+</div>
+
+# Introduction
+NeoGPT is an AI assistant that transforms your local workspace into a powerhouse of productivity from your CLI. With features like code interpretation, multi-RAG support, vision models, and LLM integration, NeoGPT redefines how you work and create. Join the revolution and experience a new era of efficiency with NeoGPT.
 
 
 

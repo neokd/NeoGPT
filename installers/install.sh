@@ -59,7 +59,7 @@ if [ "$continue_installation" == "y" ]; then
 
     echo -e "${NC}Run the following command to start NeoGPT:${NC}"
     echo -e "${YELLOW}python main.py --build${NC}"
-    echo -e "${NC} Refer docs at https://neokd.github.io/NeoGPT/ for more details.${NC}"
+    echo -e "${NC} Refer docs at https://docs.neogpt.dev/ for more details.${NC}"
 
 else
     echo -e "${YELLOW}Alright! If you change your mind, I'm here to help.${NC}"
