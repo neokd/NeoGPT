@@ -75,19 +75,19 @@ NeoGPT is continuously evolving, and your feedback shapes its future. Join our [
 
 3. **Run NeoGPT:** Run the CLI to start using NeoGPT. Requires `Python v3.10`. You can use the `--help` flag to view the available commands and options.
     ```bash
-        python main.py
+    python main.py
     ```
     You can also use `--ui` flag to run the Streamlit UI.
     ```bash
-        python main.py --ui
+    python main.py --ui
     ```
 
 4. **Project Documentation:**
     To view the project documentation, run the following command in your terminal or command prompt (Development ⚠️)
     ```bash
-        cd docs
-        npm i mintlify
-        mintlify dev
+    cd docs
+    npm i mintlify
+    mintlify dev
     ```
     
 
@@ -185,7 +185,7 @@ $ neogpt --model together/mistralai/Mistral-7B-Instruct-v0.2
 - 🔁 `/redo` - Resend the last human input to the model
 - 📂 `/load [path]` - Load the saved chat history from the specified file
 - 🔖 `/tokens [prompt]` - Calculate the number of tokens for a given prompt
-- 📄 `/export` - Export the current chat memory to the settings/settings.yaml file
+- 📄 `/export` - Export the current settings to the settings/settings.yaml file
 - 📜 `/conversations` - List available previously saved conversations.
 - 📚 `/source` - Prints the source directory
 - 🔍 `/search [keyword]` - Search the chat history for the keyword
