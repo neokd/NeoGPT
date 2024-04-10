@@ -12,12 +12,16 @@
 
 
 <div align="center">
-    <span>
+    
+<span>
         <a href="https://docs.neogpt.dev/introduction">Documentation</a>
         <span> | </span>
         <a href="https://discord.gg/qNqjsGuCTG">Discord</a>
-    </span>
-    <img style="padding:12px; margin-top: 12px;" src="./docs/assets/intro.png" alt="Intro Image"/>
+</span>
+<div>
+<br/>
+<img src="./docs/assets/intro.png" alt="Intro Image"/>
+</div>
 </div>
 
 ```bash
@@ -102,6 +106,91 @@ NeoGPT is continuously evolving, and your feedback shapes its future. Join our [
 - **LLM 🤖:**
    NeoGPT supports multiple LLM models, allowing users to interact with a variety of language models. We support LlamaCpp, Ollama, LM Studio, OpenAI, and Togerther Ai. 🤖🧠📚
 
+
+## Quick Start
+
+```bash
+pip install https://github.com/neokd/NeoGPT/releases/download/v0.1.0/neogpt-0.1.0-py3-none-any.whl
+```
+
+## Terminal
+
+After installing the package, you can run the CLI by typing the following command in your terminal.
+
+```bash
+$ neogpt
+```
+
+## Python
+
+```python
+from neogpt import db_retriever
+
+chain = db_retriever()
+
+chain.invoke("What operating system are we on?")
+```
+
+## Commands
+
+
+### Code Interpreter
+To use the Interpreter, type the following command in your terminal.
+
+```bash
+$ neogpt --interpreter
+```
+
+### Build Vector Database
+To build the vector database, type the following command in your terminal.
+
+```bash
+$ neogpt --build
+```
+
+### Run Streamlit UI
+To run the Streamlit UI, type the following command in your terminal.
+
+```bash
+$ neogpt --ui
+```
+
+### Change Your LLM
+
+#### Offline LLM
+
+To change your LLM, type the following command in your terminal.
+
+```bash
+$ neogpt --model ollama/bakllava
+```
+#### Online LLM
+
+To change your LLM, type the following command in your terminal.
+
+> Warning: Add your API key to the `.env` file before running the command.
+
+```bash
+$ neogpt --model together/mistralai/Mistral-7B-Instruct-v0.2
+```
+
+## Magic Commands
+
+
+- 🔄 `/reset` - Reset the chat session
+- 🚪 `/exit` - Exit the chat session
+- 📜 `/history` - Print the chat history
+- 💾 `/save` - Save the chat history to a `neogpt/conversations`
+- 📋 `/copy` - Copy the last response from NeoGPT to the clipboard
+- ⏪ `/undo` - Remove the last response from the chat history
+- 🔁 `/redo` - Resend the last human input to the model
+- 📂 `/load [path]` - Load the saved chat history from the specified file
+- 🔖 `/tokens [prompt]` - Calculate the number of tokens for a given prompt
+- 📄 `/export` - Export the current chat memory to the settings/settings.yaml file
+- 📜 `/conversations` - List available previously saved conversations.
+- 📚 `/source` - Prints the source directory
+- 🔍 `/search [keyword]` - Search the chat history for the keyword
+- 📋 `/copycode` or `/cc` - Copy the last code block to the clipboard
 
 
 ## Contributing
