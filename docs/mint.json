@@ -47,6 +47,7 @@
       "group": "Guides",
       "pages" : [
         "guides/quick-start",
+        "guides/basic-usage",
         "guides/magic-commands",
         "guides/multi-modal"
       ]

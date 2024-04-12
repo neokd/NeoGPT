@@ -1,0 +1,53 @@
+---
+title: Basic Usage
+---
+
+<Card title="Jupyter Notebook" icon="python" href="https://colab.research.google.com/drive/1ngzHdvoHfbSXZaeW5dBA__W4oHGLTQhV?usp=sharing">
+   Ready to give NeoGPT a spin? No need to mess with installations – just hop on your browser and dive in! It's that simple.
+</Card>
+
+## Python Usage 
+
+```python
+from neogpt import db_retriever
+
+chain = db_retriever()
+
+chain.invoke("What operating system are we on?")
+```
+
+## Terminal Usage
+
+To start a chat from your terminal just run `neogpt` in your terminal
+
+```bash
+neogpt
+```
+
+### Configure model dynamically 
+
+To use model from different sources based on your requirements
+
+```bash
+neogpt --model <model>
+```
+
+Read [here](/language-models/introduction) to know more about loading different LLM'S
+
+### To start interpreter mode
+
+To start interpreter mode for executing code as the LLM generates it.
+
+```bash
+neogpt --interpreter
+```
+
+### To Save and Load Conversations 
+
+Save and load conversations that you had with neogpt from your CLI 
+> **Info:** Use Magic Commands to do it during a live chat
+
+```bash
+neogpt --conversations
+```
+
