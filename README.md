@@ -22,12 +22,12 @@
 </span>
 <div>
 <br/>
-<img src="./docs/assets/intro.png" alt="Intro Image"/>
+<img src="https://github.com/neokd/NeoGPT/blob/f04841e9afbac5bf426aca3619cd86a464da4932/docs/assets/intro.png?raw=true" alt="Intro Image"/>
 </div>
 </div>
 
 ```bash
-pip install https://github.com/neokd/NeoGPT/releases/download/v0.1.0/neogpt-0.1.0-py3-none-any.whl
+pip install neogpt
 ```
 > Not working? Read our setup guide [here](https://docs.neogpt.dev/installation)
 
