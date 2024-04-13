@@ -25,6 +25,7 @@
 <img src="https://github.com/neokd/NeoGPT/blob/f04841e9afbac5bf426aca3619cd86a464da4932/docs/assets/intro.png?raw=true" alt="Intro Image"/>
 </div>
 </div>
+<br/>
 
 ```bash
 pip install neogpt
