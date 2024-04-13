@@ -3,11 +3,11 @@
   
 <h1 style="font-size: 3em;">NeoGPT 🚀</h1>
 
-  [![GitHub license](https://img.shields.io/github/license/neokd/NeoGPT?style=flat-square&color=blue&logo=github)](https://github.com/neokd/NeoGPT/blob/main/LICENSE)
-[![GitHub issues](https://img.shields.io/github/issues/neokd/NeoGPT?style=flat-square&color=green&logo=github)](https://github.com/neokd/NeoGPT/issues)
-[![GitHub stars](https://img.shields.io/github/stars/neokd/NeoGPT?style=flat-square&color=yellow&logo=github)](https://github.com/neokd/NeoGPT/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/neokd/NeoGPT?style=flat-square&color=orange&logo=github)](https://github.com/neokd/NeoGPT/network)
-[![Google Collab](https://img.shields.io/badge/Colab-F9AB00?style=flat-square&logo=googlecolab&labelColor=525252)](https://colab.research.google.com/drive/1ngzHdvoHfbSXZaeW5dBA__W4oHGLTQhV?usp=sharing)
+  [![GitHub license](https://img.shields.io/github/license/neokd/NeoGPT?style=flat-round&color=blue&logo=github)](https://github.com/neokd/NeoGPT/blob/main/LICENSE)
+[![GitHub issues](https://img.shields.io/github/issues/neokd/NeoGPT?style=flat-round&color=green&logo=github)](https://github.com/neokd/NeoGPT/issues)
+[![GitHub stars](https://img.shields.io/github/stars/neokd/NeoGPT?style=flat-round&color=yellow&logo=github)](https://github.com/neokd/NeoGPT/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/neokd/NeoGPT?style=flat-round&color=orange&logo=github)](https://github.com/neokd/NeoGPT/network)
+[![Google Collab](https://img.shields.io/badge/Colab-F9AB00?style=flat-round&logo=googlecolab&labelColor=525252)](https://colab.research.google.com/drive/1ngzHdvoHfbSXZaeW5dBA__W4oHGLTQhV?usp=sharing)
 
 
 </div>
