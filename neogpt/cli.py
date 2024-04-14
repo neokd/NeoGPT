@@ -6,11 +6,8 @@ import sys
 import warnings
 
 from langchain_core._api.deprecation import LangChainDeprecationWarning
-from streamlit.web import cli as stcli
 
-from neogpt.builder import builder
-from neogpt.chat import chat_mode
-from neogpt.manager import hire, manager
+from neogpt.manager import manager
 from neogpt.settings import config, export_config
 from neogpt.settings.config import (
     DEVICE_TYPE,
@@ -288,6 +285,8 @@ def main():
     #     builder(vectorstore="Chroma")
 
     if args.build:
+        from neogpt.builder import builder
+
         builder(
             vectorstore=args.db,
             recursive=args.recursive,
@@ -296,6 +295,8 @@ def main():
         )
 
     if args.ui or (overwrite and overwrite["UI"]):
+        from streamlit.web import cli as stcli
+
         logging.info("Starting the UI server for NeoGPT 🤖")
         logging.info("Note: The UI server only supports local retriever and Chroma DB")
         try:
@@ -306,6 +307,8 @@ def main():
             sys.exit(stcli.main())
 
     elif args.task is not None:
+        from neogpt.manager import hire
+
         hire(
             task=args.task,
             tries=args.tries,
@@ -313,6 +316,8 @@ def main():
         )
 
     elif args.mode == "llm":
+        from neogpt.chat import chat_mode
+
         chat_mode(
             device_type=args.device_type,
             model_type=args.model_type

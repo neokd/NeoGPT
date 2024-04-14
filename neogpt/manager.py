@@ -17,14 +17,6 @@ from neogpt.callback_handler import (
 )
 from neogpt.interpreter import interpreter
 from neogpt.load_llm import load_model
-from neogpt.retrievers import (
-    context_compress,
-    hybrid_retriever,
-    local_retriever,
-    sql_retriever,
-    stepback,
-    web_research,
-)
 from neogpt.settings.config import (
     DEVICE_TYPE,
     MODEL_FILE,
@@ -41,7 +33,6 @@ from neogpt.utils import (
     read_file,
     writing_assistant,
 )
-from neogpt.vectorstore import ChromaStore, FAISSStore
 
 try:
     import readline
@@ -70,9 +61,13 @@ def db_retriever(
 
     match vectordb:
         case "Chroma":
+            from neogpt.vectorstore import ChromaStore
+
             db = ChromaStore()
             LOGGING.info("Loaded Chroma DB Successfully")
         case "FAISS":
+            from neogpt.vectorstore import FAISSStore
+
             db = FAISSStore() if retriever == "hybrid" else FAISSStore().load_local()
             LOGGING.info("Loaded FAISS DB Successfully")
 
@@ -97,16 +92,28 @@ def db_retriever(
 
     match retriever:
         case "local":
+            from neogpt.retrievers import local_retriever
+
             chain = local_retriever(db, llm, persona)
         case "web":
+            from neogpt.retrievers import web_research
+
             chain = web_research(db, llm, persona)
         case "hybrid":
+            from neogpt.retrievers import hybrid_retriever
+
             chain = hybrid_retriever(db, llm, persona)
         case "stepback":
+            from neogpt.retrievers import stepback
+
             chain = stepback(llm, db)
         case "compress":
+            from neogpt.retrievers import context_compress
+
             chain = context_compress(llm, db, persona)
         case "sql":
+            from neogpt.retrievers import sql_retriever
+
             chain = sql_retriever(llm, persona)
 
     return chain

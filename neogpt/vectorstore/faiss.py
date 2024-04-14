@@ -1,5 +1,5 @@
 """
-    The Purpose of this file is to provide a wrapper around the FAISS from langchain
+The Purpose of this file is to provide a wrapper around the FAISS from langchain
 """
 
 from langchain.schema.document import Document

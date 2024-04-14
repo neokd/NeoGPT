@@ -1,6 +1,6 @@
 """
-   SQL retriever
-   Refer : https://python.langchain.com/docs/expression_language/cookbook/sql_db
+SQL retriever
+Refer : https://python.langchain.com/docs/expression_language/cookbook/sql_db
 """
 
 import logging

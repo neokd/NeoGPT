@@ -2,20 +2,9 @@ import logging
 import os
 
 from dotenv import load_dotenv
-from huggingface_hub import hf_hub_download
 from langchain.callbacks.manager import CallbackManager
-from langchain_community.llms.huggingface_pipeline import HuggingFacePipeline
-from langchain_community.llms.llamacpp import LlamaCpp
-from langchain_community.llms.ollama import Ollama
-from langchain_openai.chat_models import ChatOpenAI
 from rich.console import Console
-from transformers import AutoModelForCausalLM, AutoTokenizer, TextStreamer, pipeline
 
-from neogpt.callback_handler import (
-    StreamingStdOutCallbackHandler,
-    StreamlitStreamingHandler,
-    TokenCallbackHandler,
-)
 from neogpt.settings import config
 from neogpt.settings.config import (
     DEVICE_TYPE,
@@ -27,10 +16,6 @@ from neogpt.settings.config import (
 )
 
 load_dotenv()
-try:
-    OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
-except Exception as e:
-    logging.info(e)
 
 console = Console()
 
@@ -38,6 +23,50 @@ console = Console()
 # Define a shorthand for console.print using a lambda function
 def cprint(*args, **kwargs):
     return console.print(*args, **kwargs)
+
+
+def check_openai_api_key():
+    """
+    Check if the OpenAI API key is set
+    """
+
+    if (
+        os.environ.get("OPENAI_API_KEY") is None
+        or os.environ.get("OPENAI_API_KEY") == ""
+    ):
+        cprint(
+            "\nYou can get your OpenAI API key from https://platform.openai.com/account/api-keys"
+        )
+        OPENAI_API_KEY = input("Enter your OpenAI API key: ")
+        # Write the API key to the .env file if OPENAI_API_KEY is not set write it inside the "string"
+        with open(".env", "a") as f:
+            f.write(f'\nOPENAI_API_KEY="{OPENAI_API_KEY}"')
+    else:
+        OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+
+    return OPENAI_API_KEY
+
+
+def check_together_api_key():
+    """
+    Check if the Together API key is set
+    """
+
+    if (
+        os.environ.get("TOGETHER_API_KEY") is None
+        or os.environ.get("TOGETHER_API_KEY") == ""
+    ):
+        cprint(
+            "\nYou can get your Together API key from https://together.xyz/account/api-keys"
+        )
+        TOGETHER_API_KEY = input("Enter your Together API key: ")
+        # Write the API key to the .env file if TOGETHER_API_KEY is not set write it inside the "string"
+        with open(".env", "a") as f:
+            f.write(f'\nTOGETHER_API_KEY="{TOGETHER_API_KEY}"')
+    else:
+        TOGETHER_API_KEY = os.environ.get("TOGETHER_API_KEY")
+
+    return TOGETHER_API_KEY
 
 
 # Function to load the LLM
@@ -69,11 +98,21 @@ def load_model(
         llm (ChatOpenAI): Returns a model from LMStudio
     """
     if ui:
+        from neogpt.callback_handler import (
+            StreamlitStreamingHandler,
+            TokenCallbackHandler,
+        )
+
         callbacks = [
             StreamlitStreamingHandler(),
             TokenCallbackHandler(show_stats),
         ]
     else:
+        from neogpt.callback_handler import (
+            StreamingStdOutCallbackHandler,
+            TokenCallbackHandler,
+        )
+
         callbacks = [
             StreamingStdOutCallbackHandler(),
             TokenCallbackHandler(show_stats),
@@ -88,6 +127,13 @@ def load_model(
     if (model_type == "llamacpp") and (
         model_basename is not None and ".gguf" in model_basename.lower()
     ):
+        try:
+            from huggingface_hub import hf_hub_download
+            from langchain_community.llms.llamacpp import LlamaCpp
+        except ImportError:
+            cprint(
+                "Please install the llama-cpp-python library using the following command: [bold magenta]pip install llama-cpp-python[/bold magenta]"
+            )
         try:
             LOGGING.info("Using LlamaCpp to load the model")
             os.environ["TOKENIZERS_PARALLELISM"] = "false"
@@ -126,6 +172,12 @@ def load_model(
 
     elif model_type == "ollama":
         try:
+            from langchain_community.llms.ollama import Ollama
+        except ImportError:
+            cprint(
+                "Do you have Ollama installed? Please install it from here: https://ollama.com/download"
+            )
+        try:
             os.environ["TOKENIZERS_PARALLELISM"] = "false"
             LOGGING.info("Using Ollama to load the model")
             llm = Ollama(
@@ -146,6 +198,20 @@ def load_model(
             )
 
     elif model_type == "hf":
+        try:
+            from langchain_community.llms.huggingface_pipeline import (
+                HuggingFacePipeline,
+            )
+            from transformers import (
+                AutoModelForCausalLM,
+                AutoTokenizer,
+                TextStreamer,
+                pipeline,
+            )
+        except ImportError:
+            cprint(
+                "Please install the transformers library using the following command: [bold magenta]pip install transformers[/bold magenta]"
+            )
         try:
             LOGGING.warning(
                 "🚨 You are using an huggingface's transformers library to load the model. This is not recommended. Use quantized model for better performance"
@@ -184,6 +250,13 @@ def load_model(
             LOGGING.info(f"Error {e}")
     elif model_type == "openai":
         try:
+            from langchain_openai.chat_models import ChatOpenAI
+        except ImportError:
+            cprint(
+                "Please install the openai library using the following command: [bold magenta]pip install openai[/bold magenta]"
+            )
+        OPENAI_API_KEY = check_openai_api_key()
+        try:
             LOGGING.warning("🚨 You are using openai")
             os.environ["TOKENIZERS_PARALLELISM"] = "false"
             llm = ChatOpenAI(
@@ -204,6 +277,12 @@ def load_model(
 
     elif model_type == "lmstudio":
         try:
+            from langchain_openai.chat_models import ChatOpenAI
+        except ImportError:
+            cprint(
+                "Please install the openai library using the following command: [bold magenta]pip install openai[/bold magenta]"
+            )
+        try:
             os.environ["TOKENIZERS_PARALLELISM"] = "false"
             llm = ChatOpenAI(
                 model="local",
@@ -223,14 +302,21 @@ def load_model(
 
     elif model_type == "together":
         try:
+            from langchain_openai.chat_models import ChatOpenAI
+        except ImportError:
+            cprint(
+                "Please install the openai library using the following command: [bold magenta]pip install openai[/bold magenta]"
+            )
+        try:
             os.environ["TOKENIZERS_PARALLELISM"] = "false"
+            TOGETHER_API_KEY = check_together_api_key()
             # llm = Together(
             #     model=model_id,
             #     callback_manager=callback_manager,
             #     together_api_key=os.environ.get("TOGETHER_API_KEY"),
             # )
             llm = ChatOpenAI(
-                api_key=os.environ.get("TOGETHER_API_KEY"),
+                api_key=TOGETHER_API_KEY,
                 model=model_id,
                 streaming=True,
                 temperature=config.TEMPERATURE,

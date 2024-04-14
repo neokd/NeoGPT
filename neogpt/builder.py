@@ -25,7 +25,6 @@ from neogpt.settings.config import (
     SOCIAL_CHAT_EXTENSION,
     SOURCE_DIR,
 )
-from neogpt.vectorstore import ChromaStore, FAISSStore
 
 
 def build_documents(SOURCE_DIR: str = SOURCE_DIR, recursive: bool = False):
@@ -66,12 +65,15 @@ def build_documents(SOURCE_DIR: str = SOURCE_DIR, recursive: bool = False):
     total_documents = (
         len(document_paths) + len(url_paths) + len(chat_paths) + len(code_paths)
     )
-    with ProcessPoolExecutor(workers) as executor, tqdm(
-        total=total_documents,
-        desc=f"Builder is loading {total_documents} docs.",
-        unit="files",
-        bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}, {rate_fmt}{postfix}]",
-    ) as pbar:
+    with (
+        ProcessPoolExecutor(workers) as executor,
+        tqdm(
+            total=total_documents,
+            desc=f"Builder is loading {total_documents} docs.",
+            unit="files",
+            bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}, {rate_fmt}{postfix}]",
+        ) as pbar,
+    ):
         futures = []
 
         # partial function to pass recursive argument to load_url_batch
@@ -135,10 +137,14 @@ def builder(
 
     match vectorstore:
         case "Chroma":
+            from neogpt.vectorstore.chroma import ChromaStore
+
             logging.info("Using Chroma for vectorstore")
             db = ChromaStore().from_documents(documents=texts)
             logging.info("Loaded Documents to Chroma DB Successfully")
         case "FAISS":
+            from neogpt.vectorstore.faiss import FAISSStore
+
             logging.info("Using FAISS for vectorstore")
             db = FAISSStore().from_documents(documents=texts)
             logging.info("Loaded Documents to FAISS DB Successfully")

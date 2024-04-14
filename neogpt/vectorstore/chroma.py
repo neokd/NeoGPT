@@ -1,8 +1,8 @@
 # --- Under Development ---
 """
-    The Purpose of this file is to provide a wrapper around the ChromaDB
-    to provide a simple interface for storing and retrieving documents
-    from the database.
+The Purpose of this file is to provide a wrapper around the ChromaDB
+to provide a simple interface for storing and retrieving documents
+from the database.
 """
 
 import warnings

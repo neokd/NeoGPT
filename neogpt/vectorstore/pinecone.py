@@ -1,11 +1,10 @@
 """
-    The Purpose of this file is to provide a wrapper around the PINECONE from langchain
+The Purpose of this file is to provide a wrapper around the PINECONE from langchain
 """
 
 from langchain.schema.document import Document
 from langchain_community.embeddings import HuggingFaceInstructEmbeddings
 from pinecone import Pinecone
-from neogpt.vectorstore.base import VectorStore
 
 from neogpt.settings.config import (
     DEVICE_TYPE,
@@ -15,6 +14,7 @@ from neogpt.settings.config import (
     MODEL_DIRECTORY,
     PINECONE_PERSIST_DIRECTORY,
 )
+from neogpt.vectorstore.base import VectorStore
 
 
 class PineconeVectorStore(VectorStore):

@@ -8,11 +8,11 @@ from langchain.schema import AIMessage, HumanMessage
 from langchain_community.chat_message_histories.in_memory import ChatMessageHistory
 from rich.console import Console
 
+from neogpt.settings.config import SOURCE_DIR
 from neogpt.utils import conversation_navigator
 from neogpt.utils.notify import notify
 from neogpt.utils.user_info import get_username
 
-from neogpt.settings.config import SOURCE_DIR
 # Create a Tokenizer and TokenCount object
 tokenizer = tiktoken.get_encoding("cl100k_base")
 
@@ -44,7 +44,7 @@ def magic_commands(user_input, chain):
     if user_input == "/source":
         cprint(f"Source directory: {SOURCE_DIR}")
         return True
-    
+
     elif user_input == "/reset":
         cprint("Resetting the chat session...")
         # Print the current memory before resetting
@@ -236,7 +236,10 @@ def magic_commands(user_input, chain):
         # Find previous code block in chat history
         code_block = ""
         import re
-        for message in reversed(chain.combine_documents_chain.memory.chat_memory.messages):
+
+        for message in reversed(
+            chain.combine_documents_chain.memory.chat_memory.messages
+        ):
             if "```" in message.content:
                 # Extract the code block from the message
                 code_pattern = re.compile(r"```([^\n]*)\n(.*?)```", re.DOTALL)
@@ -252,8 +255,8 @@ def magic_commands(user_input, chain):
         else:
             cprint("🚫 No code block found in the chat history. Please try again.")
             return True
-    
-     # If the user inputs '/help', print the list of available commands
+
+    # If the user inputs '/help', print the list of available commands
     elif user_input == "/help" or user_input == "/":
         cprint("\n[bold magenta]📖 Available commands: [/bold magenta]")
         cprint("🔄 /reset - Reset the chat session")
@@ -276,7 +279,7 @@ def magic_commands(user_input, chain):
         cprint("📋 /copycode or /cc - Copy the last code block to the clipboard")
 
         return True
-    
+
     # If the command is not recognized, print an error message
     else:
         cprint("Invalid magic command. Please try again.")
