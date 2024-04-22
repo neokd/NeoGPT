@@ -12,9 +12,10 @@
 
 </div>
 
+> Currently We are in the development phase and are in progress of removing langchain as a dependency from the existing codebase. We are also working on adding more features to the CLI .
 
 <div align="center">
-    
+
 <span>
         <a href="https://docs.neogpt.dev/introduction">Documentation</a>
         <span> | </span>

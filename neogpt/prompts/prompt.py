@@ -75,7 +75,6 @@ def get_prompt(
     """.strip()
 
     model_name = os.getenv("MODEL_NAME") if os.getenv("MODEL_NAME") else MODEL_NAME
-
     memory = ConversationBufferWindowMemory(
         k=memory_key, return_messages=True, input_key="question", memory_key="history"
     )
@@ -144,6 +143,14 @@ def get_prompt(
             + """ Context: {history} \n {context}  \n User: {question}"""
             + END_INSTRUCTION
         )
+
+    # elif "llama-3" in model_name.lower():
+    #     BEGIN_TEXT = "<|begin_of_text|>"
+    #     START_HEADER, END_HEADER = "<|start_header_id|>", "<|end_header_id|>"
+    #     EOT_ID = "<|eot_id|>"
+    #     prompt_template = (
+    #       BEGIN_TEXT + START_HEADER + "system" + END_HEADER + SYSTEM_PROMPT.strip() +  EOT_ID + START_HEADER + """User""" + END_HEADER + """\n {history} \n {context} \n {question}""" + EOT_ID + START_HEADER + "assistant" + END_HEADER + EOT_ID
+    #     )
 
     elif "llama" in model_name.lower():
         BEGIN_INSTRUCTION, END_INSTRUCTION = "[INST]", "[/INST]"
