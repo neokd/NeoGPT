@@ -21,6 +21,7 @@
         <a href="https://discord.gg/qNqjsGuCTG">Discord</a>
 </span>
 <div>
+<br/>
 
 > Currently We are in the development phase and are in progress of removing langchain as a dependency from the existing codebase. We are also working on adding more features to the CLI . Check out the [development branch](https://github.com/neokd/NeoGPT/tree/v0.2) for the latest updates.
 
