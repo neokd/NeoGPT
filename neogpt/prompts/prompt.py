@@ -157,7 +157,23 @@ def get_prompt(
             + END_INSTRUCTION
         )
 
-    elif "phi" in model_name.lower():
+    elif ("phi-3" or "phi3") in model_name.lower():
+        SYSTEM = "<|system|>"
+        USER = "<|user|>"
+        ASSISTANT = "<|assistant|>"
+        END = "<|end|>"
+        prompt_template = (
+            SYSTEM
+            + SYSTEM_PROMPT
+            + END
+            + USER
+            + """ {history} \n {context} \n {question}"""
+            + END
+            + ASSISTANT
+            + END
+        )
+
+    elif "phi-2" in model_name.lower():
         INSTRUCTION = "Instruct:"
         OUTPUT = " Output:"
 
