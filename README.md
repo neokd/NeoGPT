@@ -61,7 +61,7 @@ NeoGPT is continuously evolving, and your feedback shapes its future. Join our [
 
     ```
       git clone https://github.com/neokd/NeoGPT.git
-      cd NeoGPT/neogpt
+      cd NeoGPT
       pip install -r requirements.txt
     ```
 
