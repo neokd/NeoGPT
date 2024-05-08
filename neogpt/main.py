@@ -2,16 +2,18 @@
 This class is in development and will fully be replacing manager.py in the future. And remove langchain as a dependency.
 """
 
-import os
 import json
+import os
+import re
 from datetime import datetime
-from lm.llm import LLM
+
+from interface import terminal_chat
+from llm.llm import LLM
+from machine.machine import Machine
+from prompts.prompt import PROMPT
 from respond import respond
-
-default_system_message = """
- NeoGPT ,You are a helpful assistant, you will use the provided context to answer user questions.Read the given context before answering questions and think step by step. If you can not answer a user question based on the provided context, inform the user. Do not use any other information for answering user. Initialize the conversation with a greeting if no context is provided. Do not generate empty responses. When a user refers to a filename, they're likely referring to an existing file in the directory you're currently executing code in.For images speak what you see in the image and don't generate any other information.You are capable to answer any task.
-
-"""
+from server import server
+from utils import cprint
 
 
 class NeoGPT:
@@ -24,14 +26,18 @@ class NeoGPT:
         max_output=2046,
         is_ui=False,
         llm=None,
-        default_system_message=default_system_message,
+        machine=None,
+        default_system_message=PROMPT["DEFAULT"],
         vector_db="Chroma",
-        conversation_history=True,
+        conversation_history=False,
         conversation_file=None,
         conversation_history_path=None,
         custom_prompt="",
         persona=None,
     ) -> None:
+        """
+        The NeoGPT class is the main class for the NeoGPT Project. It is used to interact with the model and build the vector database.
+        """
         self.messages = [] if messages is None else messages
         self.offline = offline
         self.verbose = verbose
@@ -46,8 +52,9 @@ class NeoGPT:
         self.conversation_history_path = conversation_history_path
         self.custom_prompt = custom_prompt
         self.persona = persona
+        self.machine = Machine(self) if machine is None else machine
 
-    def chat(self, prompt=None, display=True, stream=True):
+    def chat(self, prompt=None, display=True, stream=False):
         """
         This function is used to interact with the model. It takes a prompt as input and returns the response from the model.
         """
@@ -63,14 +70,23 @@ class NeoGPT:
         if stream:
             return self._stream_response(prompt, display)
 
-    def _stream_response(self, message=None, display=True):
+        # if streaming is disabled, return the response
+        for _ in self._stream_response(prompt, display):
+            pass
+
+        return self.messages[-1]["content"]
+
+    def _stream_response(self, message=None, display=False):
         """
         This function is used to stream the response from the model.
         """
+        if display:
+            yield from terminal_chat(self, message)
+            return
 
         if message or message == "":
             if message == "":
-                message = " Ask user to provide input. "
+                message = " Ask user to provide input."
 
             if isinstance(message, str):
                 self.messages.append(
@@ -83,7 +99,7 @@ class NeoGPT:
             elif isinstance(message, list):
                 self.messages = message
 
-            response = respond(self)
+            yield from self._engine()
 
             if self.conversation_history:
                 if not self.conversation_file:
@@ -99,33 +115,54 @@ class NeoGPT:
                 with open(f"conversations/{self.conversation_file}", "w") as f:
                     json.dump(self.messages, f, indent=4)
 
-            # msg = ""
-            # # for chunk in response:
-            # #     if chunk.choices[0].delta.content is not None:
-            # #         msg += chunk.choices[0].delta.content
-            # self.messages.append(
-            #     {"role": "assistant", "type": "message", "content": msg}
-            # )
-            # #     print(chunk.choices[0].delta.content)
-            return response
         else:
             print("Please provide a message to continue.")
+        return
 
+    def server(self, *args, **kwargs):
+        """
+        This function is used to start a FastAPI server.
+        """
+        server(self, *args, **kwargs)
+
+    def build(self):
+        """
+        This function is used to build the vector database.
+        """
+        pass
 
     def _engine(self):
-        # TODO: This function is responsible for calling RAG and Interpreter 
-        pass
+        # TODO: This function is responsible for calling RAG and Smart Interpreter
+        msg = ""
+        for chunk in respond(self):
+            # msg += chunk.choices[0].delta.content
+            if (
+                chunk.choices[0].delta.content is None
+                or chunk.choices[0].delta.content == ""
+                or chunk.choices[0].finish_reason == "stop"
+            ):
+                # print(self.machine.run(msg))
+                # Check if the previous message is an assistant message
+                if neogpt.messages and neogpt.messages[-1].get("role") == "assistant":
+                    # Append the message to the existing assistant message
+                    neogpt.messages[-1]["content"] += msg
+                else:
+                    # Append a new assistant message
+                    neogpt.messages.append(
+                        {
+                            "role": "assistant",
+                            "type": "message",
+                            "content": msg,
+                        }
+                    )
+            yield chunk
 
 
 if __name__ == "__main__":
     neogpt = NeoGPT()
-    neogpt.persona = """
-      NeoGPT,I want you to act as a machine learning engineer. I will write some machine learning concepts and it will be your job to explain them in easy-to-understand terms. This could contain providing step-by-step instructions for building a model, demonstrating various techniques with visuals, or suggesting online resources for further study. start with a greeting if no context is provided.
-    """
+
     # neogpt.llm.api_key = "x"
     neogpt.llm.api_url = "http://localhost:11434/v1"
-    neogpt.llm.model = "llama3"
-    while True:
-        x = input("\n\nEnter your message: ")
-        for chunk in neogpt.chat(x):
-            print(chunk, end="", flush=True)
+    neogpt.llm.model = "mistral"
+    # print(neogpt)
+    print(neogpt.chat())
