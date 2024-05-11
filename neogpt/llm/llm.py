@@ -105,7 +105,8 @@ class LLM:
             "messages": messages,
             "stream": True,
         }
-
+        # Create a copy of the messages and convert it to OpenAI format
+        model_params["messages"] = convert_to_openai_format(messages)
         # model_params["messages"] = (prompt_factory(self.model, messages))
         # print(model_params)
         # print(messages)
@@ -162,6 +163,7 @@ def run_llama_cpp_llm(llm_instance, params):
     # Check if the model is loaded, if not, load it
     if llm_instance.llama_cpp_model is None:
         print("Model loaded with LlamaCpp.")
+
         llm_instance.llama_cpp_model = Llama(
             model_path=params["model"].removeprefix("llamacpp/"), verbose=False
         )
@@ -173,6 +175,29 @@ def run_llama_cpp_llm(llm_instance, params):
     )
     yield from completion
 
+
+def convert_to_openai_format(messages):
+    """
+    This function is used to convert the messages to OpenAI format.
+    """
+    openai_messages = []
+    for message in messages:
+       # If any other type of role is present, then it is considered as assistant
+        if message["role"] != "system" and message["role"] != "user":
+            openai_messages.append(
+                {
+                    "role": "assistant",
+                    "content": message["content"],
+                }
+            )
+        else:
+            openai_messages.append(
+                {
+                    "role": "user",
+                    "content": message["content"],
+                }
+            )
+    return openai_messages
 
 # if __name__  == "__main__":
 #     llm = LLM(None)

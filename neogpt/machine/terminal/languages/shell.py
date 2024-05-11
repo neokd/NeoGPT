@@ -4,7 +4,7 @@ import re
 import subprocess
 import tempfile
 
-from machine.terminal.base import CodeRunner
+from ..base import CodeRunner
 
 
 class ShellRunner(CodeRunner):

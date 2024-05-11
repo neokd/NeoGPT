@@ -3,7 +3,8 @@ import re
 from machine.terminal.languages.python import PythonRunner
 from machine.terminal.languages.shell import ShellRunner
 from rich.markdown import Markdown
-from utils.cprint import cprint
+
+# from utils.cprint import cprint
 
 
 class Terminal:
@@ -42,19 +43,29 @@ class Terminal:
         if language:
             retry = 3  # Max retries allowed for the code execution
             while retry > 0:
-                result, err = self.executors[language].execute(language, code)
+                try:
+                    result, err = self.executors[language].execute(language, code)
+                except KeyError:
+                    result = "Language is not supported."
+                    err = True
+                # result, err = self.executors[language].execute(language, code)
 
                 if err:
                     # Check for basic errors and retry or else
                     # Add fix for common ModuleNotFoundError in python and retry
                     retry -= 1
-                    cprint("An error occurred while executing the code. Retrying...")
+                    print("An error occurred while executing the code. Retrying...")
                 else:
-                    cprint(Markdown(f"\n\nOutput:\n```bash\n{result}\n```"))
+                    print(Markdown(f"\n\nOutput:\n```bash\n{result}\n```"))
                     # Add result to the previous message
-                    self.neogpt.messages[-1]["content"] += (
-                        f"Output \n```bash\n{result}```"
-                    )
+                    # self.neogpt.messages[-1]["content"] += (
+                    #     f"Output \n```bash\n{result}```"
+                    # )
+                    self.neogpt.messages.append({
+                        "role": "terminal",
+                        "content": f"{result}"
+                    })
+
 
                     break
             return result

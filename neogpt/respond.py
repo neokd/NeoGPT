@@ -1,6 +1,5 @@
 from rich.markdown import Markdown
 from rich.rule import Rule
-from utils.cprint import cprint
 
 budget = 0
 
@@ -28,6 +27,6 @@ def respond(neogpt):
                 "content": msg,
             }
         )
-        #  PASS MESSAGE TO RUN CODE IF ANY
+        #  PASS MESSAGE TO RUN CODE IF ANY v
         neogpt.machine.run(msg)
         # PASS MESSAGE TO RUN CODE IF ANY ^
