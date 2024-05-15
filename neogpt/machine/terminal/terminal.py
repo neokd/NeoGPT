@@ -61,11 +61,9 @@ class Terminal:
                     # self.neogpt.messages[-1]["content"] += (
                     #     f"Output \n```bash\n{result}```"
                     # )
-                    self.neogpt.messages.append({
-                        "role": "terminal",
-                        "content": f"{result}"
-                    })
-
+                    self.neogpt.messages.append(
+                        {"role": "terminal", "content": f"{result}"}
+                    )
 
                     break
             return result

@@ -13,5 +13,3 @@ class Browser:
         # Close the session after the search
         # self.browser._close_session()
         return result
-
-

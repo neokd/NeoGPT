@@ -14,7 +14,6 @@ def server(neogpt):
         )
         return
 
-
     app = FastAPI()
 
     def send_api_stream(prompt):

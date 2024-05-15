@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeoGPT</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+
+<body class="flex flex-row h-screen overflow-hidden">
+    <!-- Left Sidebar -->
+    <aside id="leftSidebar" class="w-60 m-2 rounded-lg bg-black  transition-transform duration-300 transform">
+        Left Sidebar
+    </aside>
+
+    <!-- Main Content -->
+    <main id="mainContent" class="flex flex-col flex-1 h-screen transition-margin duration-300">
+        <!-- Navbar -->
+        <nav class="flex items-center justify-between px-6 py-4 bg-gray-300">
+            <!-- Left Sidebar toggle button -->
+            
+
+            <div>
+                <h1 class="lg:text-2xl text-lg font-bold text-gray-800">NeoGPT</h1>
+            </div>
+            <div>
+                <button id="toggleLeftSidebarButton"
+                class="p-2 bg-gray-500 text-white rounded focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-panel-right-close"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M15 3v18"/><path d="m8 9 3 3-3 3"/></svg>
+            </button>
+                <button id="toggleRightSidebarButton" 
+                    class=" p-2 bg-gray-500 text-white rounded focus:outline-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-panel-right-open"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M15 3v18"/><path d="m10 15-3-3 3-3"/></svg>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Chat -->
+        <div class="flex-1 ">
+            <h1 class="text-lg font-semibold text-gray-800 text-center">Chat</h1>
+        </div>
+
+        <!-- Input -->
+        <div class="">
+            <h1 class="text-lg font-semibold text-gray-800 text-center">Input</h1>
+        </div>
+    </main>
+
+    <!-- Right Sidebar -->
+    <aside id="rightSidebar" class="w-60 m-2 rounded-lg  transition-transform bg-black duration-300 transform ">
+        Right Sidebar
+    </aside>
+
+ 
+    <script>
+        // JavaScript to toggle left sidebar
+        const leftSidebar = document.getElementById('leftSidebar');
+        const mainContent = document.getElementById('mainContent');
+        const toggleLeftSidebarButton = document.getElementById('toggleLeftSidebarButton');
+
+        toggleLeftSidebarButton.addEventListener('click', function () {
+            leftSidebar.classList.toggle('-translate-x-full');
+            mainContent.classList.toggle('-ml-60');
+        });
+
+        // JavaScript to toggle right sidebar
+        const rightSidebar = document.getElementById('rightSidebar');
+        const toggleRightSidebarButton = document.getElementById('toggleRightSidebarButton');
+
+        toggleRightSidebarButton.addEventListener('click', function () {
+            rightSidebar.classList.toggle('translate-x-full');
+            mainContent.classList.toggle('-mr-60');
+        });
+    </script>
+</body>
+
+</html>

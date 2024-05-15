@@ -182,7 +182,7 @@ def convert_to_openai_format(messages):
     """
     openai_messages = []
     for message in messages:
-       # If any other type of role is present, then it is considered as assistant
+        # If any other type of role is present, then it is considered as assistant
         if message["role"] != "system" and message["role"] != "user":
             openai_messages.append(
                 {
@@ -198,6 +198,7 @@ def convert_to_openai_format(messages):
                 }
             )
     return openai_messages
+
 
 # if __name__  == "__main__":
 #     llm = LLM(None)
