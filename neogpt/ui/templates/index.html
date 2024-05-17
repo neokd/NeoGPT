@@ -10,6 +10,9 @@
     rel="stylesheet"
     href="{{url_for('static',path='./css/out.css')}}"
   /> -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
 
     <script defer src="{{url_for('static',path='./js/theme.js')}}"></script>
 
@@ -77,21 +80,23 @@
                 </button>
             </div>
         </nav>
-        <div class="flex flex-col flex-1 items-center">
+        <div class="flex flex-col flex-1 overflow-y-auto items-center">
             <!-- Chat -->
-            <div class="flex-1 dark:text-slate-100">
-                <div class="flex-1 overflow-y-auto rounded-xl p-4 text-sm leading-6  sm:text-base sm:leading-7">
-
-                    <ul id="chat-messages" class="overflow-y-auto flex-1"></ul>
-
+            <!-- Chat -->
+            <div class="flex-1 dark:text-slate-100 w-full max-w-4xl ">
+                <div class="flex-1 flex flex-col p-4 text-sm leading-6 sm:text-base sm:leading-7">
+                    <ul id="chat-messages" class="flex flex-col space-y-6"></ul>
                 </div>
             </div>
+
+
             <!-- Input -->
             <div class="mb-8 w-full max-w-4xl absolute bottom-0">
                 <!-- Button above input -->
                 <div class="mt-4 flex justify-center">
                     <button
-                        class="inline-flex items-center gap-x-2 rounded-lg  p-2 text-xs  outline outline-red-500 dark:text-gray-100 hover:bg-red-500 duration-300">
+                        class="inline-flex items-center gap-x-2 rounded-lg  p-2 text-xs  outline outline-red-500 dark:text-gray-100 hover:bg-red-500 duration-300"
+                        id="regenerate-response">
                         <svg xmlns="http://www.w3.org/2000/svg" class="inline h-4 w-4" viewBox="0 0 24 24"
                             stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
                             stroke-linejoin="round">
@@ -146,137 +151,7 @@
 
     <!-- <script src="{{url_for('static',path='./js/chat.js')}}"></script> -->
     <script src="{{url_for('static',path='./js/sidebar.js')}}"></script>
-    <!-- <script src="{{url_for('static',path='./js/chat.js')}}"></script> -->
-    <script type="module">
-
-        import { marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
-        const chatForm = document.getElementById('chat-form');
-        const userMessageInput = document.getElementById('user-message');
-        let previousHistory = ''; // Variable to store the previous history
-
-        chatForm.addEventListener('submit', async (event) => {
-            event.preventDefault();
-            const userMessage = userMessageInput.value;
-            console.log(userMessage);
-            userMessageInput.value = '';
-
-            await chatLLM(userMessage);
-        });
-
-
-        // Function to render Markdown text
-        const renderMarkdown = (text) => {
-            return marked(text);
-        };
-        // Update the updateStreamResponse function to render Markdown
-        const updateStreamResponse = (response) => {
-            const messagesList = document.getElementById('response-list');
-            const listItem = messagesList.lastElementChild || document.createElement('li');
-            messagesList.innerHTML = '';
-            // Append response to the existing list item's text content
-            listItem.textContent += response;
-
-            if (!messagesList.contains(listItem)) {
-                messagesList.appendChild(listItem);
-            }
-            messagesList.scrollTop = messagesList.scrollHeight;
-        };
-
-
-        // Update the updateMessages function to render Markdown
-        const updateMessages = (history) => {
-            const messagesList = document.getElementById('messages-list');
-
-            // Clear previous messages
-            messagesList.innerHTML = '';
-
-            // Create a grid container for each message
-            history.forEach(message => {
-                if (message.role !== "system") {
-                    const listItem = document.createElement('li');
-                    listItem.classList.add('message-item', 'grid', 'grid-cols-5', 'mb-2', 'p-2', 'rounded-md');
-
-                    listItem.classList.add(message.role === 'user' ? 'bg-purple-500' : 'dark:bg-gray-800');
-
-                    // Role column (20% width)
-                    const roleColumn = document.createElement('div');
-                    roleColumn.classList.add('font-bold', 'col-span-1', 'dark:text-white');
-                    roleColumn.textContent = message.role.toUpperCase() + ': ';
-
-                    // Content column (80% width)
-                    const contentColumn = document.createElement('div');
-                    contentColumn.classList.add('col-span-4', 'text-white');
-                    contentColumn.innerHTML = renderMarkdown(message.content); // Render content as Markdown
-
-                    listItem.appendChild(roleColumn);
-                    listItem.appendChild(contentColumn);
-
-                    if (message.role === 'terminal') {
-                        terminalList.innerHTML = '';
-                        terminalList.appendChild(listItem); // Append only the latest message
-                    } else {
-                        messagesList.appendChild(listItem);
-                    }
-                } else {
-                    systemPrompt.value = message.content;
-                }
-            });
-            messagesList.lastElementChild.scrollIntoView();
-        };
-
-
-
-
-        const chatLLM = async (userMessage) => {
-
-            // Remove the stream response list
-            const messagesList = document.getElementById('response-list');
-            messagesList.innerHTML = '';
-
-            try {
-                const response = await fetch('/v1/chat', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ message: userMessage })
-                });
-
-
-                const reader = response.body.getReader();
-                let partialMessage = '';
-                while (true) {
-                    const { done, value } = await reader.read();
-                    if (done) {
-                        break;
-                    }
-                    const chunk = new TextDecoder().decode(value);
-                    partialMessage += chunk;
-                    if (partialMessage.includes('\n')) {
-                        const messages = partialMessage.split('\n');
-                        partialMessage = messages.pop();
-                        for (const message of messages) {
-                            if (message) {
-                                const parsedMessage = JSON.parse(message);
-                                if (parsedMessage.content) {
-                                    updateStreamResponse(parsedMessage.content);
-
-                                }
-                                if (parsedMessage.history) {
-                                    updateMessages(parsedMessage.history);
-                                }
-                            }
-                        }
-                    }
-                }
-                console.log(response);
-            } catch (error) {
-                console.error('Error fetching chat:', error);
-            }
-        };
-
-    </script>
-
+    <script src="{{url_for('static',path='./js/chat.js')}}"></script>
 </body>
 
 </html>
