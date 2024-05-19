@@ -12,6 +12,7 @@ if __name__ == "__main__":
 
     # neogpt.llm.api_key = "x"
     neogpt.llm.api_url = "http://localhost:11434/v1"
-    neogpt.llm.model = "mistral"
+    neogpt.llm.model = "llava"
+    # neogpt.llm.support_vision = True  # When ollama brings Vision with OpenAI Compatability
     # print(neogpt)
-    print(neogpt.playground())
+    print(neogpt.chat())

@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NeoGPT</title>
+    <link rel="icon" href="{{url_for('static',path='./img/favicon.png')}}" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- <link
     rel="stylesheet"
@@ -13,7 +14,6 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
-
     <script defer src="{{url_for('static',path='./js/theme.js')}}"></script>
 
 
@@ -21,19 +21,8 @@
 
 <body class="flex flex-row h-screen dark:bg-[#181818] bg-slate-100 overflow-hidden">
     <!-- Left Sidebar -->
-    <aside id="leftSidebar"
-        class="w-60 dark:bg-zinc-900 bg-white dark:text-gray-200 text-black transition-transform duration-200 transform">
-        <div class="">
-            <!-- <img src="https://raw.githubusercontent.com/neokd/NeoGPT/f04841e9afbac5bf426aca3619cd86a464da4932/docs/assets/dark.png" alt="logo" class="dark:block hidden bg-transparent">
-            <img src="https://raw.githubusercontent.com/neokd/NeoGPT/f04841e9afbac5bf426aca3619cd86a464da4932/docs/assets/light.png" alt="logo" class="dark:hidden visible"> -->
-
-            <div class="flex items-center justify-center">
-                <h1 class="text-4xl dark:text-gray-200 my-4 font-bold text-cente">NeoGPT</h1>
-            </div>
-        </div>
-
-    </aside>
-
+    
+    {% include 'sidebar.html' %}
     <!-- Main Content -->
     <main id="mainContent" class="flex flex-col flex-1 dark:bg-neutral-800 h-screen transition-margin duration-300">
         <!-- Navbar -->
@@ -41,7 +30,7 @@
             class="flex items-center justify-between px-6 py-4 bg-white bg-clip-padding backdrop-filter backdrop-blur-sm  bg-white dark:bg-zinc-900 dark:text-gray-100">
             <!-- Left Sidebar toggle button -->
             <div>
-                <h1 class="lg:text-2xl  text-lg ">V0.2.0</h1>
+                <h1 class="lg:text-2xl  text-md ">V0.2.0</h1>
             </div>
             <div class="space-x-2">
 
@@ -81,21 +70,26 @@
             </div>
         </nav>
         <div class="flex flex-col flex-1 overflow-y-auto items-center">
-            <!-- Chat -->
-            <!-- Chat -->
-            <div class="flex-1 dark:text-slate-100 w-full max-w-4xl ">
+           
+            <!-- Show logo if no chat is there -->
+            <div id="logo-placeholder" class="flex flex-col items-center justify-center  h-full w-full">
+                <img src="../static/img/favicon.png" alt="Company Logo" class="h-48 w-48 dark:bg-slate-50 object-fit  box-decoration-slice rounded-[52px]">
+                <h1 class="text-4xl dark:text-gray-200 my-4 font-bold text-center">NeoGPT</h1>
+            </div>
+             <!-- Chat -->
+            <div class="flex-1 dark:text-slate-100 w-full max-w-4xl mb-28">
                 <div class="flex-1 flex flex-col p-4 text-sm leading-6 sm:text-base sm:leading-7">
-                    <ul id="chat-messages" class="flex flex-col space-y-6"></ul>
+                    <ul id="chat-messages" class="flex flex-col lg:space-y-4"></ul>
                 </div>
             </div>
 
-
             <!-- Input -->
             <div class="mb-8 w-full max-w-4xl absolute bottom-0">
+                
                 <!-- Button above input -->
                 <div class="mt-4 flex justify-center">
                     <button
-                        class="inline-flex items-center gap-x-2 rounded-lg  p-2 text-xs  outline outline-red-500 dark:text-gray-100 hover:bg-red-500 duration-300"
+                        class="inline-flex items-center gap-x-2 rounded-lg hover:text-white   p-2 text-xs  outline outline-1 outline-red-500 dark:text-gray-100 hover:bg-red-500 duration-300"
                         id="regenerate-response">
                         <svg xmlns="http://www.w3.org/2000/svg" class="inline h-4 w-4" viewBox="0 0 24 24"
                             stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
@@ -130,7 +124,7 @@
                             class="mt-2 block w-full resize-none rounded-xl  p-4 pl-10 pr-20 text-sm dark:text-slate-50 text-slate-900 shadow-md dark:bg-neutral-900 sm:text-base"
                             placeholder="Enter your prompt" rows="1" required />
                         <button type="submit"
-                            class="absolute bottom-2 right-2.5 rounded-lg  px-4 py-2 text-sm font-medium outline outline-red-500 dark:text-gray-100 hover:bg-red-500 duration-300">
+                            class="absolute bottom-3 right-2.5 rounded-lg outline-1  px-4 py-2 text-sm font-medium outline outline-red-500 dark:text-gray-100 hover:bg-red-500 duration-300">
                             Send
                         </button>
                     </div>

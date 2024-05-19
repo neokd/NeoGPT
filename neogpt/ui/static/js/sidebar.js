@@ -15,3 +15,15 @@ toggleRightSidebarButton.addEventListener('click', function () {
     rightSidebar.classList.toggle('translate-x-full');
     mainContent.classList.toggle('-mr-60');
 });
+
+
+const clearChatButton = document.getElementById('clearChatButton');
+
+clearChatButton.addEventListener('click', function () {
+    const chatHistory = sessionStorage.getItem('chatMessageHistory');
+    console.log(chatHistory);
+    if (chatHistory) {
+        sessionStorage.removeItem('chatMessageHistory');
+    }
+    location.reload();
+});

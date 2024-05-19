@@ -28,17 +28,14 @@ def terminal_chat(neogpt, message):
                 if image_path:
                     cprint("Image detected. Processing image...")
                     # Handle image processing
-                    message.replace(image_path, "")
-                    image = open(image_path.replace("'", ""), "rb").read()
-                    base64_image = base64.b64encode(image).decode("utf-8")
+                    # message.replace(image_path, "")
                     print(message)
-
                     neogpt.messages.append(
                         {
                             "role": "user",
-                            "type": "message",
+                            "type": "image",
                             "content": message,
-                            "images": [base64_image],
+                            "image": image_path,
                         }
                     )
 

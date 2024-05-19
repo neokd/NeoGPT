@@ -2,8 +2,8 @@
 This module contains the LLM class which is the main class for the LLM model. We'll be following openai message format for interaction with the model.
 """
 
-import base64
-
+from base64 import b64encode
+from pathlib import Path
 from openai import OpenAI
 from PIL import Image
 
@@ -57,9 +57,43 @@ class LLM:
                 message["role"] != "system"
             ), "The subsequent messages should be from the user."
 
-        #         if self.support_vision:
+        if self.support_vision:
+            print("Vision Supported")
 
-        #             image_message = [ message for message in messages if "type" in message and message["type"] == "image" ]
+            image_message = [
+                message for message in messages if message["type"] == "image"
+            ]
+            if image_message:
+                last_message = image_message[-1]
+                content = last_message["content"]
+                image = last_message["image"]
+                file_extension = image.split(".")[-1]
+                print(image_message)
+
+                messages.append(
+                    {
+                        "role": "user",
+                        "content": content,
+                        "image": [_encode_image(image)],
+                        "type": "image",
+                    }
+                )
+
+                # with open(image, "rb") as image:
+                #     # original_image = Image.open(image)
+                #     # resized_image = original_image.resize((672, 672))
+                #     image_data = b64encode(image.read()).decode("utf-8")
+                # print(image_data)
+                # # file_extension = image.split(".")[-1]
+
+                # messages.append(
+                #     {
+                #         "role": "user",
+                #         "content": content,
+                #         "images": [image_data],
+                #         "type": "image",
+                #     }
+                # )
         #             print(image_message)
         #             print(messages)
         # # ]
@@ -191,14 +225,36 @@ def convert_to_openai_format(messages):
                 }
             )
         else:
-            openai_messages.append(
-                {
-                    "role": "user",
-                    "content": message["content"],
-                }
-            )
+            if message["role"] == "user" and message["type"] == "images":
+
+                openai_messages.append(
+                    {
+                        "role": message["role"],
+                        "content": message["content"],
+                        "images": message["images"],
+                    }
+                )
+                print("Image Added tp t")
+            else:
+                openai_messages.append(
+                    {
+                        "role": "user",
+                        "content": message["content"],
+                    }
+                )
     return openai_messages
 
+
+def _encode_image(image_path):
+    """
+    This function is used to encode the image to base64.
+    """
+    if isinstance(image_path, str):
+        image_path = Path(image_path)
+        if not image_path.exists():
+            raise FileNotFoundError(f"Image file not found: {image_path}")
+        
+        return b64encode(image_path.read_bytes()).decode("utf-8")
 
 # if __name__  == "__main__":
 #     llm = LLM(None)
