@@ -21,7 +21,7 @@
 
 <body class="flex flex-row h-screen dark:bg-[#181818] bg-slate-100 overflow-hidden">
     <!-- Left Sidebar -->
-    
+
     {% include 'sidebar.html' %}
     <!-- Main Content -->
     <main id="mainContent" class="flex flex-col flex-1 dark:bg-neutral-800 h-screen transition-margin duration-300">
@@ -70,13 +70,14 @@
             </div>
         </nav>
         <div class="flex flex-col flex-1 overflow-y-auto items-center">
-           
+
             <!-- Show logo if no chat is there -->
             <div id="logo-placeholder" class="flex flex-col items-center justify-center  h-full w-full">
-                <img src="../static/img/favicon.png" alt="Company Logo" class="h-48 w-48 dark:bg-slate-50 object-fit  box-decoration-slice rounded-[52px]">
+                <img src="../static/img/favicon.png" alt="Company Logo"
+                    class="h-48 w-48 dark:bg-slate-50 object-fit  box-decoration-slice rounded-[52px]">
                 <h1 class="text-4xl dark:text-gray-200 my-4 font-bold text-center">NeoGPT</h1>
             </div>
-             <!-- Chat -->
+            <!-- Chat -->
             <div class="flex-1 dark:text-slate-100 w-full max-w-4xl mb-28">
                 <div class="flex-1 flex flex-col p-4 text-sm leading-6 sm:text-base sm:leading-7">
                     <ul id="chat-messages" class="flex flex-col lg:space-y-4"></ul>
@@ -85,18 +86,16 @@
 
             <!-- Input -->
             <div class="mb-8 w-full max-w-4xl absolute bottom-0">
-                
                 <!-- Button above input -->
                 <div class="mt-4 flex justify-center">
                     <button
-                        class="inline-flex items-center gap-x-2 rounded-lg hover:text-white   p-2 text-xs  outline outline-1 outline-red-500 dark:text-gray-100 hover:bg-red-500 duration-300"
+                        class="inline-flex items-center gap-x-2 rounded-lg hover:text-white p-2 text-xs outline outline-1 outline-red-500 dark:text-gray-100 hover:bg-red-500 duration-300"
                         id="regenerate-response">
                         <svg xmlns="http://www.w3.org/2000/svg" class="inline h-4 w-4" viewBox="0 0 24 24"
                             stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
                             stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M19.933 13.041a8 8 0 1 1 -9.925 -8.788c3.899 -1 7.935 1.007 9.425 4.747">
-                            </path>
+                            <path d="M19.933 13.041a8 8 0 1 1 -9.925 -8.788c3.899 -1 7.935 1.007 9.425 4.747"></path>
                             <path d="M20 4v5h-5"></path>
                         </svg>
                         Regenerate response
@@ -120,11 +119,30 @@
                             </svg>
                             <span class="sr-only">Use voice input</span>
                         </button>
+                        <button type="button"
+                            class="absolute inset-y-0 left-0 flex items-center pl-9 text-slate-500 hover:text-red-500 dark:text-slate-50 duration-300 dark:hover:text-red-500">
+
+                            <!-- File Input button -->
+                            <label for="file-input" class="cursor-pointer">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-up h-5 w-5">
+                                    <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+                                    <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+                                    <path d="M12 12v6" />
+                                    <path d="m15 15-3-3-3 3" />
+                                </svg>
+                                <span class="sr-only">Upload file</span>
+                            </label>
+                            <input id="file-input" type="file" class="hidden" />
+                        </button>
+
+
                         <input id="chat-input"
-                            class="mt-2 block w-full resize-none rounded-xl  p-4 pl-10 pr-20 text-sm dark:text-slate-50 text-slate-900 shadow-md dark:bg-neutral-900 sm:text-base"
+                            class="mt-2 block w-full resize-none rounded-xl p-4 pl-16 pr-20 text-sm dark:text-slate-50 text-slate-900 shadow-md dark:bg-neutral-900 sm:text-base"
                             placeholder="Enter your prompt" rows="1" required />
                         <button type="submit"
-                            class="absolute bottom-3 right-2.5 rounded-lg outline-1  px-4 py-2 text-sm font-medium outline outline-red-500 dark:text-gray-100 hover:bg-red-500 duration-300">
+                            class="absolute bottom-3 right-2.5 rounded-lg outline-1 px-4 py-2 text-sm font-medium outline outline-red-500 dark:text-gray-100 hover:bg-red-500 duration-300">
                             Send
                         </button>
                     </div>
@@ -132,7 +150,6 @@
 
             </div>
         </div>
-
     </main>
 
     <!-- Right Sidebar -->

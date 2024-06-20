@@ -1,6 +1,8 @@
 import os
 import re
 
+from loaders.file import JSONLoader, PDFLoader, TxtLoader
+
 
 def read_file(user_input: str) -> str:
     """
@@ -15,8 +17,9 @@ def read_file(user_input: str) -> str:
     pattern = re.compile(
         r"([A-Za-z]:\\[^:\n]*?\.(png|jpg|jpeg|PNG|JPG|JPEG))|(/[^:\n]*?\.(png|jpg|jpeg|PNG|JPG|JPEG))"
     )
-    matches = [match.group() for match in re.finditer(pattern, user_input) if match.group()]
+    matches = [
+        match.group() for match in re.finditer(pattern, user_input) if match.group()
+    ]
     matches += [match.replace("\\", "") for match in matches if match]
     existing_paths = [match for match in matches if os.path.exists(match)]
-    # print(existing_paths)
     return max(existing_paths, key=len) if existing_paths else None

@@ -89,7 +89,7 @@ class NeoGPT:
             if message == "":
                 message = " Ask user to provide input."
 
-            if isinstance(message, str):
+            if isinstance(message, str) and not self.llm.support_vision:
                 self.messages.append(
                     {"role": "user", "type": "message", "content": message}
                 )
@@ -140,5 +140,4 @@ class NeoGPT:
 
     def _engine(self):
         # TODO: This function is responsible for calling RAG and Smart Interpreter
-        for chunk in respond(self):
-            yield chunk
+        yield from respond(self)

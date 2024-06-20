@@ -28,8 +28,8 @@ def terminal_chat(neogpt, message):
                 if image_path:
                     cprint("Image detected. Processing image...")
                     # Handle image processing
-                    # message.replace(image_path, "")
-                    print(message)
+                    message = message.replace(image_path, "")
+                    # print(message)
                     neogpt.messages.append(
                         {
                             "role": "user",

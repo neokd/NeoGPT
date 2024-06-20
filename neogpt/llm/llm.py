@@ -1,13 +1,11 @@
 """
-This module contains the LLM class which is the main class for the LLM model. We'll be following openai message format for interaction with the model.
+This module contains the LLM class which is the main class for the LLM model. We'll be following OpenAI message format for interaction with the model.
 """
 
 from base64 import b64encode
 from pathlib import Path
-from openai import OpenAI
-from PIL import Image
 
-# from prompts.factory import prompt_factory
+from openai import OpenAI
 
 
 class LLM:
@@ -31,15 +29,46 @@ class LLM:
         # Set the persona
         self.persona = None
 
-        # Avoid Repatition of loading LlamaCpp Model
+        # Avoid repetition of loading LlamaCpp Model
         self.llama_cpp_model = None
+
+    def format_message(self, message, image_path=None):
+        """
+        This method formats a message according to OpenAI's expected input.
+        If image_path is provided, it reads and encodes the image.
+        """
+        if image_path:
+            try:
+                with open(image_path, "rb") as img_file:
+                    image_data = b64encode(img_file.read()).decode("utf-8")
+                return {
+                    "role": "user",
+                    "content": [
+                        {"type": "text", "text": message},
+                        {
+                            "type": "image_url",
+                            "image_url": {
+                                "url": f"data:image/jpeg;base64,{image_data}"
+                            },
+                        },
+                    ],
+                }
+            except FileNotFoundError:
+                print(f"Image file not found: {image_path}")
+            except Exception as e:
+                print(f"Error processing image: {e}")
+        else:
+            return {
+                "role": "user",
+                "content": message,
+            }
 
     def inference(self, messages):
         """
         This function is used to interact with the model. It takes a prompt as input and returns the response from the model.
         Format:
         messages = [
-         {
+            {
                 "role": "system",
                 "content": "I'm fine, thank you.",
             },
@@ -57,95 +86,51 @@ class LLM:
                 message["role"] != "system"
             ), "The subsequent messages should be from the user."
 
-        if self.support_vision:
-            print("Vision Supported")
+        if self.support_vision and messages[-1].get("type") == "image":
+            last_message = messages[-1]
+            content = last_message["content"]
+            image_path = last_message["image"]
+            file_extension = image_path.split(".")[-1]
+            content = content.replace(image_path, "")
 
-            image_message = [
-                message for message in messages if message["type"] == "image"
-            ]
-            if image_message:
-                last_message = image_message[-1]
-                content = last_message["content"]
-                image = last_message["image"]
-                file_extension = image.split(".")[-1]
-                print(image_message)
+            try:
+                with open(image_path, "rb") as image_file:
+                    image_data = b64encode(image_file.read()).decode("utf-8")
+            except FileNotFoundError:
+                print(f"Image file not found: {image_path}")
+                return  # Exit the function if the image file is not found
 
-                messages.append(
+            formatted_message = {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": content},
                     {
-                        "role": "user",
-                        "content": content,
-                        "image": [_encode_image(image)],
-                        "type": "image",
-                    }
-                )
-
-                # with open(image, "rb") as image:
-                #     # original_image = Image.open(image)
-                #     # resized_image = original_image.resize((672, 672))
-                #     image_data = b64encode(image.read()).decode("utf-8")
-                # print(image_data)
-                # # file_extension = image.split(".")[-1]
-
-                # messages.append(
-                #     {
-                #         "role": "user",
-                #         "content": content,
-                #         "images": [image_data],
-                #         "type": "image",
-                #     }
-                # )
-        #             print(image_message)
-        #             print(messages)
-        # # ]
-        #             if image_message:
-        #                 last_image_message = image_message[-1]
-        #                 content_path = last_image_message["content"]
-
-        #                 # Open the image file and read its content as binary
-        #                 with open(content_path, "rb") as image:
-        #                     original_image = Image.open(image)
-
-        #                     # Resize the image to 672 x 672
-        #                     resized_image = original_image.resize((672, 672))
-
-        #                     # Convert the image to base64
-        #                     image_data = base64.b64encode(resized_image.tobytes()).decode("utf-8")
-
-        #                 file_extension = content_path.split(".")[-1]
-
-        #                 messages.append(
-        #                     {
-        #                         "role": "user",
-        #                         "content" : "Describe the image" + content_path,
-        #                         "image": [f"data:image/{file_extension};base64,{image_data}"],
-        #                         "type": "image",
-        #                     }
-        #                 )
-        # # else:
-        #     # Handle text messages
-        #     message = messages[1:]
-        # TODO: Add support running LlamaCpp here and add mechanism to trim tokens if the message is too long
-        # self.model = "llama3"
+                        "type": "image_url",
+                        "image_url": {
+                            "url": f"data:image/{file_extension};base64,{image_data}"
+                        },
+                    },
+                ],
+            }
+            messages[-1] = formatted_message
 
         try:
             if self.context_window and self.max_tokens:
                 print("---Yet to implement---")
                 print(self.context_window - self.max_tokens)
-        except:
-            print()
+        except Exception as e:
+            print(f"Error: {e}")
 
         model_params = {
             "model": self.model,
             "messages": messages,
             "stream": True,
+            "temperature": self.temperature,
+            "max_tokens": self.max_tokens,
+            "context_window": self.context_window,
         }
-        # Create a copy of the messages and convert it to OpenAI format
+
         model_params["messages"] = convert_to_openai_format(messages)
-        # model_params["messages"] = (prompt_factory(self.model, messages))
-        # print(model_params)
-        # print(messages)
-        # self.api_url = "http://localhost:11434/v1"
-        # self.api_key = "x"
 
         if self.api_key:
             model_params["api_key"] = self.api_key
@@ -160,11 +145,6 @@ class LLM:
         if self.context_window:
             model_params["context_window"] = self.context_window
 
-        # TODO: Add support for max_budget
-        # if self.max_budget:
-        #     # In older way we were using a variable and then passing it to the model_params dictionary
-        #     model_params["max_budget"] = self.max_budget
-        # print("Running OpenAI-like LLM")
         if self.model.startswith("llamacpp"):
             yield from run_llama_cpp_llm(self, model_params)
         else:
@@ -175,10 +155,7 @@ def run_openai_like_llm(llm, params):
     """
     This function is used to run the model in OpenAI-like format.
     """
-    # print(llm)
     client = OpenAI(base_url=params.get("api_url"), api_key=params.get("api_key"))
-    # print(params)
-    # print(type(params["messages"]))
     completion = client.chat.completions.create(
         model=params["model"],
         messages=params["messages"],
@@ -194,15 +171,12 @@ def run_llama_cpp_llm(llm_instance, params):
     """
     from llama_cpp import Llama
 
-    # Check if the model is loaded, if not, load it
     if llm_instance.llama_cpp_model is None:
         print("Model loaded with LlamaCpp.")
-
         llm_instance.llama_cpp_model = Llama(
             model_path=params["model"].removeprefix("llamacpp/"), verbose=False
         )
 
-    # Use the loaded model for inference
     completion = llm_instance.llama_cpp_model.create_chat_completion_openai_v1(
         messages=params["messages"],
         stream=params.get("stream"),
@@ -216,7 +190,6 @@ def convert_to_openai_format(messages):
     """
     openai_messages = []
     for message in messages:
-        # If any other type of role is present, then it is considered as assistant
         if message["role"] != "system" and message["role"] != "user":
             openai_messages.append(
                 {
@@ -225,16 +198,13 @@ def convert_to_openai_format(messages):
                 }
             )
         else:
-            if message["role"] == "user" and message["type"] == "images":
-
+            if message["role"] == "user" and isinstance(message.get("content"), list):
                 openai_messages.append(
                     {
                         "role": message["role"],
                         "content": message["content"],
-                        "images": message["images"],
                     }
                 )
-                print("Image Added tp t")
             else:
                 openai_messages.append(
                     {
@@ -243,33 +213,3 @@ def convert_to_openai_format(messages):
                     }
                 )
     return openai_messages
-
-
-def _encode_image(image_path):
-    """
-    This function is used to encode the image to base64.
-    """
-    if isinstance(image_path, str):
-        image_path = Path(image_path)
-        if not image_path.exists():
-            raise FileNotFoundError(f"Image file not found: {image_path}")
-        
-        return b64encode(image_path.read_bytes()).decode("utf-8")
-
-# if __name__  == "__main__":
-#     llm = LLM(None)
-#     messages = [
-#         {
-#             "role": "system",
-#             "content": "I'm fine, thank you.",
-#         },
-#         {
-#             "role": "user",
-#             "content": "Hello, how are you?",
-#         }
-#     ]
-#     print()
-#     for chunk in llm.inference(messages):
-#         if chunk.choices[0].delta.content:
-#             print(chunk.choices[0].delta.content, end="", flush=True)
-#     print("Done")

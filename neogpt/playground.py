@@ -1,16 +1,20 @@
-import json
-
-
 def playground(neogpt):
+    import json
+
     import uvicorn
-    from fastapi import FastAPI, Request
-    from fastapi.responses import StreamingResponse, JSONResponse
-    from fastapi.templating import Jinja2Templates
+    from fastapi import FastAPI, File, Form, Request, UploadFile
+    from fastapi.responses import JSONResponse, StreamingResponse
     from fastapi.staticfiles import StaticFiles
+    from fastapi.templating import Jinja2Templates
+    from utils.cprint import cprint
 
     app = FastAPI()
     templates = Jinja2Templates(directory="ui/templates")
-    app.mount("/static", StaticFiles(directory="./ui/static"), name="static",)
+    app.mount(
+        "/static",
+        StaticFiles(directory="./ui/static"),
+        name="static",
+    )
 
     @app.get("/chat")
     async def read_root(request: Request):
@@ -61,8 +65,9 @@ def playground(neogpt):
         data = await request.json()
         return StreamingResponse(send_api_stream(data), media_type="text/event-stream")
 
-    print(f"Serving the playground at http://127.0.0.1:8000/chat")
-    uvicorn.run(app)
+    cprint("\nServing playground at http://127.0.0.1:8000/chat")
+    cprint("Press Ctrl+C to stop the server.")
+    uvicorn.run(app, host="127.0.0.1", port=8000)
 
 
 # Example usage:

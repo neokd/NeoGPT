@@ -123,5 +123,9 @@ def magic_commands(user_input, neogpt):
         "/reset": reset_chat,
         "/help": lambda neogpt: cprint(help_message),
     }
-    action = magic_command.get(user_input, neogpt)
+    try:
+        action = magic_command.get(user_input, neogpt)
+    except TypeError:
+        cprint(f"\nInvalid magic command. Type /help for a list of available commands.")
+        return False
     return action(neogpt)
