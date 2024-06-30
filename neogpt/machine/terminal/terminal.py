@@ -3,6 +3,7 @@ import re
 from machine.terminal.languages.python import PythonRunner
 from machine.terminal.languages.shell import ShellRunner
 from rich.markdown import Markdown
+from utils.cprint import cprint
 
 # from utils.cprint import cprint
 
@@ -52,11 +53,12 @@ class Terminal:
 
                 if err:
                     # Check for basic errors and retry or else
-                    # Add fix for common ModuleNotFoundError in python and retry
+                    # Add fix for common ModuleNotFoundError in python and retry or else
                     retry -= 1
                     print("An error occurred while executing the code. Retrying...")
                 else:
-                    print(Markdown(f"\n\nOutput:\n```bash\n{result}\n```"))
+                    cprint()
+                    cprint(Markdown(f"\n\nOutput:\n```bash\n{result}\n```"))
                     # Add result to the previous message
                     # self.neogpt.messages[-1]["content"] += (
                     #     f"Output \n```bash\n{result}```"
@@ -64,7 +66,6 @@ class Terminal:
                     self.neogpt.messages.append(
                         {"role": "terminal", "content": f"{result}"}
                     )
-
                     break
             return result
         else:

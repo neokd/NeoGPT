@@ -1,8 +1,8 @@
 def mistral_pt(messages):
     """
-    This function is used to generate the prompt for Mistral model.
+    This function generates the prompt for Mistral model with special tokens.
     """
-    prompt = custom_prompt(
+    return custom_prompt(
         initial_prompt_value="<s>",
         role_dict={
             "system": {
@@ -14,8 +14,9 @@ def mistral_pt(messages):
         },
         final_prompt_value="",
         messages=messages,
+        bos_token="",
+        eos_token="",
     )
-    return prompt
 
 
 def custom_prompt(
@@ -26,15 +27,10 @@ def custom_prompt(
     bos_token: str = "",
     eos_token: str = "",
 ):
+    formatted_messages = []
     prompt = bos_token + initial_prompt_value
-    bos_open = True
-
     for message in messages:
         role = message["role"]
-
-        if role in ["system", "human"] and not bos_open:
-            prompt += bos_token
-            bos_open = True
 
         pre_message_str = (
             role_dict[role]["pre_message"]
@@ -47,30 +43,18 @@ def custom_prompt(
             else ""
         )
 
-        prompt += pre_message_str + message["content"] + post_message_str
+        formatted_message = pre_message_str + message["content"] + post_message_str
+        formatted_messages.append({"role": role, "content": formatted_message})
 
-        if role == "assistant":
-            prompt += eos_token
-            bos_open = False
-
-    prompt += final_prompt_value
-    return prompt
-
-
-def convert_to_open_ai_message(messages):
-    new_messages = []
-
-    for message in messages:
-        new_message = {
-            "role": message["role"],
-            "content": message["content"],
-        }
-        new_messages.append(new_message)
+    return formatted_messages
 
 
 def prompt_factory(model, messages):
-    original_model = model.lower()
-    # print(original_model)
+    original_model = model.lower().strip()
     if "mistral" in original_model:
         prompt = mistral_pt(messages)
-    return prompt.split()
+    elif "phi3" in original_model:
+        prompt = messages
+    else:
+        prompt = messages
+    return prompt

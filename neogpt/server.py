@@ -36,4 +36,8 @@ def server(neogpt):
         data = await request.json()
         return StreamingResponse(send_api_stream(data), media_type="text/event-stream")
 
+    #######################
+    # Add route to ingest data
+    #######################
+
     uvicorn.run(app)

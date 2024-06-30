@@ -11,8 +11,8 @@ class PythonRunner(CodeRunner):
 
     def execute(self, language, code):
         os.makedirs(self.neogpt.machine.working_dir, exist_ok=True)
-        # import_machine_code = "import time\nfrom neogpt import neogpt\nmachine = neogpt.machine\nprint(machine)\n"
-        # code = import_machine_code + code
+        import_machine_code = "import time\nfrom neogpt import neogpt\nmachine = neogpt.machine\nprint(machine)\n"
+        code = import_machine_code + code
         with tempfile.NamedTemporaryFile(
             mode="w",
             suffix=".py",

@@ -12,3 +12,6 @@ class Machine:
 
     def run(self, command):
         return self.terminal.run(command)
+
+    def search(self, query):
+        return self.browser.search(query)
